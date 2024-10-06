@@ -1,0 +1,1 @@
+antlr4 -Dlanguage=TypeScript -o lib -visitor ./grammars/LambdaCalc.g4
