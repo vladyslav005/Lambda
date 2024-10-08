@@ -1,7 +1,7 @@
 grammar LambdaCalc;
 
 expression
-    : ( globalDecl+ | term ) + EOF                # Expr
+    : ( globalDecl )*  term EOF                # Expr
     ;
 
 globalDecl

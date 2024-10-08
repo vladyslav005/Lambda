@@ -6,10 +6,10 @@ import {TreeGenerator} from "./tree/TreeGenerator";
 import TypeChecker from "./typechecker/TypeChecker";
 
 const input = `
-    f : (α -> β) -> (α -> γ)
-    g : α -> β
-    h : α
-    f g h
+    x : α
+    z : β
+    M = λ y:α.y : α -> α
+    (λ y:α->α.(y x)) M 
     `;
 
 
@@ -26,13 +26,15 @@ const tree = parser.expression();
 
 const typeCheck = typeChecker.visit(tree)
 
+
+
 const globalContext = typeChecker.globalContext;
 
-
-
 const treeGenerator = new TreeGenerator(globalContext);
+treeGenerator.visit(tree)
+const proofTree = treeGenerator.proofTree;
 
-treeGenerator.visit(tree);
+console.log(JSON.stringify(proofTree, null, 2));
 
 
 

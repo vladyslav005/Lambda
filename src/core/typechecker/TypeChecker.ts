@@ -18,6 +18,7 @@ import {Simulate} from "react-dom/test-utils";
 import input = Simulate.input;
 
 
+
 class ContextElement {
     constructor(name: string, type: string) {
         this._name = name;
@@ -92,11 +93,30 @@ export class Context {
 export default class TypeChecker extends LambdaCalcVisitor<any> {
 
     private _globalContext: Context = new Context();
-    private localContext: Context = new Context();
+    private _localContext: Context = new Context();
 
+    get localContext(): Context {
+        return this._localContext;
+    }
+
+    set localContext(value: Context) {
+        this._localContext = value;
+    }
+
+    set globalContext(value: Context) {
+        this._globalContext = value;
+    }
 
     get globalContext(): Context {
         return this._globalContext;
+    }
+
+    clearLocalContext() {
+        this._localContext = new Context();
+    }
+
+    clearGlobalContext() {
+        this._globalContext = new Context();
     }
 
     visitExpr = (ctx: ExprContext): any => {
@@ -147,7 +167,7 @@ export default class TypeChecker extends LambdaCalcVisitor<any> {
 
         let body: ParseTree = ctx.term();
 
-        this.localContext.addVariable(paramName, paramType);
+        this._localContext.addVariable(paramName, paramType);
 
         body = this.eliminateOutParentheses(body);
 
@@ -155,7 +175,7 @@ export default class TypeChecker extends LambdaCalcVisitor<any> {
 
         console.log("Visiting a lambda abstraction", ctx.getText());
 
-        this.localContext.deleteVariable(paramName);
+        this._localContext.deleteVariable(paramName);
 
         if (this.parseType(paramType) instanceof FunctionTypeContext ) {
             paramType = '(' + paramType + ')';
@@ -173,8 +193,8 @@ export default class TypeChecker extends LambdaCalcVisitor<any> {
 
         const name: string = ctx.getText();
 
-        if (this.localContext.isVariableInContext((name))) {
-            return this.localContext.getType(name);
+        if (this._localContext.isVariableInContext((name))) {
+            return this._localContext.getType(name);
         } else if (this._globalContext.isVariableInContext((name))) {
             return this._globalContext.getType(name);
         }
@@ -197,8 +217,8 @@ export default class TypeChecker extends LambdaCalcVisitor<any> {
         let argumentType: string | undefined = undefined;
 
         /* defining the type of term which is on the left side of application */
-        if (this.localContext.isVariableInContext(funcName)) {
-            funcType = this.localContext.getType(funcName);
+        if (this._localContext.isVariableInContext(funcName)) {
+            funcType = this._localContext.getType(funcName);
         } else if (this._globalContext.isVariableInContext(funcName)) {
             funcType = this._globalContext.getType(funcName);
         } else {
@@ -206,8 +226,8 @@ export default class TypeChecker extends LambdaCalcVisitor<any> {
         }
 
         /* defining the type of term which is on the right side of application */
-        if (this.localContext.isVariableInContext(argumentName)) {
-            argumentType = this.localContext.getType(argumentName);
+        if (this._localContext.isVariableInContext(argumentName)) {
+            argumentType = this._localContext.getType(argumentName);
         } else if (this._globalContext.isVariableInContext(argumentName)) {
             argumentType = this._globalContext.getType(argumentName);
         } else {

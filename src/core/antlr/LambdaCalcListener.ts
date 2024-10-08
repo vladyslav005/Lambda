@@ -1,4 +1,4 @@
-// Generated from src/core/antlr/LambdaCalc.g4 by ANTLR 4.13.2
+// Generated from ./src/core/antlr/LambdaCalc.g4 by ANTLR 4.13.2
 
 import {ParseTreeListener} from "antlr4";
 
