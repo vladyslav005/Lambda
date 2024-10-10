@@ -13,7 +13,7 @@ import {
 } from "../antlr/LambdaCalcParser";
 import TypeChecker, {Context} from "../typechecker/TypeChecker";
 
-interface ProofNode {
+export interface ProofNode {
     type: string;
     conclusion: string;
     rule: string;
@@ -72,7 +72,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
             conclusion: ctx.getText(),
             rule: "T-app",
             // context: ctx,
-            premises: this.visit(body),
+            premises: [this.visit(body)],
         } as ProofNode;
 
         this.typeChecker.clearLocalContext();

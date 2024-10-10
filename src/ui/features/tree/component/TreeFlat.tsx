@@ -1,38 +1,52 @@
-import React, { useState } from 'react';
+import {useZoomAndDragHook} from "../../lambdainput/hook/ZoomAndDragHook";
+import {ProofNode} from "../../../../core/tree/TreeGenerator";
+
+const DEMO_TREE : ProofNode = {
+    "type": "α",
+    "conclusion": "(λy:α->α.(yx))M",
+    "rule": "T-app",
+    "premises": [
+        {
+            "type": "(α->α)->α",
+            "conclusion": "λy:α->α.(yx)",
+            "rule": "T-app",
+            "premises": [
+                {
+                    "type": "α",
+                    "conclusion": "yx",
+                    "rule": "T-app",
+                    "premises": [
+                        {
+                            "type": "α->α",
+                            "conclusion": "y",
+                            "rule": "T-var"
+                        },
+                        {
+                            "type": "α",
+                            "conclusion": "x",
+                            "rule": "T-var"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "α->α",
+            "conclusion": "M",
+            "rule": "T-var"
+        }
+    ]
+}
+
+
+
 
 export function TreeFlat() {
-    const [scale, setScale] = useState(1);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [dragging, setDragging] = useState(false);
-    const [startDragPos, setStartDragPos] = useState({ x: 0, y: 0 });
-    const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+    const {
+        scale, position, dragging, handleWheel,
+        handleMouseDown, handleMouseUp, handleMouseMove
+    } = useZoomAndDragHook();
 
-    const handleWheel = (e: React.WheelEvent) => {
-        e.preventDefault();
-        const newScale = scale + e.deltaY * -0.01; // zoom in/out based on scroll
-        setScale(Math.min(Math.max(0.5, newScale), 3)); // limit zoom between 0.5x and 3x
-    };
-
-    const handleMouseDown = (e: React.MouseEvent) => {
-        setDragging(true);
-        setStartDragPos({ x: e.clientX, y: e.clientY });
-        setStartPos({ x: position.x, y: position.y });
-    };
-
-    const handleMouseUp = () => {
-        setDragging(false);
-    };
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (dragging) {
-            const dx = e.clientX - startDragPos.x;
-            const dy = e.clientY - startDragPos.y;
-            setPosition({
-                x: startPos.x + dx,
-                y: startPos.y + dy
-            });
-        }
-    };
 
     return (
         <div
@@ -53,14 +67,15 @@ export function TreeFlat() {
                 className="tree-flat bg-white"
                 style={{
                     transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-                    transformOrigin: '0 0',
+                    transformOrigin: `50% 50%`,
                     transition: dragging ? 'none' : 'transform 0.1s ease',
                     width: '100%',
                     height: '100%',
                     backgroundColor: 'white',
                 }}
             >
-                TREE CONTENT
+
+
             </div>
         </div>
     );
