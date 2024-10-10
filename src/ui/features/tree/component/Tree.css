@@ -1,0 +1,62 @@
+.proof-node {
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.premises {
+    display: inline-flex; /* Align premises horizontally */
+    justify-content: space-between; /* Space premises out evenly */
+    /*width: 100%; !* Ensure premises take up the entire width *!*/
+}
+
+.premises .premises {
+    width: 100%;
+
+}
+.premises  {
+    width: 50%;
+}
+
+.premise {
+    /*margin: 10px; !* Add some margin between premises *!*/
+    align-content: flex-end;
+    justify-content: space-between;
+    width: 110%;
+
+
+}
+
+.conclusion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.line {
+    /*width: 100%; !* Ensure the line stretches across the entire width *!*/
+    height: 1px;
+    background-color: black;
+}
+
+.conclusion-text {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.rule-name {
+    margin-left: 10px;
+    font-style: italic;
+}
+
+.premise mjx-container,
+.conclusion mjx-container {
+    margin: 5px !important;
+}

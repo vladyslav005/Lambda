@@ -10,7 +10,7 @@ export function useZoomAndDragHook() {
 
     const handleWheel = (e: React.WheelEvent) => {
         e.preventDefault();
-        const newScale = scale + e.deltaY * -0.01; // zoom in/out based on scroll
+        const newScale = scale + e.deltaY * -0.001; // zoom in/out based on scroll
         setScale(Math.min(Math.max(0.4, newScale), 5)); // limit zoom between 0.5x and 3x
     };
 

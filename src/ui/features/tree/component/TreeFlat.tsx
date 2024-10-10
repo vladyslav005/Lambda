@@ -1,5 +1,8 @@
-import {useZoomAndDragHook} from "../../lambdainput/hook/ZoomAndDragHook";
+import {useZoomAndDragHook} from "../hook/ZoomAndDragHook";
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
+import {ProofTreeComponent} from "./ProofTreeComponent";
+import "./Tree.css"
+import {ProofTree} from "./ProofTree";
 
 const DEMO_TREE : ProofNode = {
     "type": "α",
@@ -25,16 +28,45 @@ const DEMO_TREE : ProofNode = {
                             "type": "α",
                             "conclusion": "x",
                             "rule": "T-var"
+                        },
+                        {
+                            "type": "α",
+                            "conclusion": "z",
+                            "rule": "T-var"
                         }
                     ]
                 }
             ]
         },
         {
-            "type": "α->α",
-            "conclusion": "M",
-            "rule": "T-var"
-        }
+            "type": "(α->α)->α",
+            "conclusion": "λy:α->α.(yx)",
+            "rule": "T-app",
+            "premises": [
+                {
+                    "type": "α",
+                    "conclusion": "yx",
+                    "rule": "T-app",
+                    "premises": [
+                        {
+                            "type": "α->α",
+                            "conclusion": "y",
+                            "rule": "T-var"
+                        },
+                        {
+                            "type": "α",
+                            "conclusion": "x",
+                            "rule": "T-var"
+                        },
+                        {
+                            "type": "α",
+                            "conclusion": "z",
+                            "rule": "T-var"
+                        }
+                    ]
+                }
+            ]
+        },
     ]
 }
 
@@ -74,7 +106,7 @@ export function TreeFlat() {
                     backgroundColor: 'white',
                 }}
             >
-
+                <ProofTree root={DEMO_TREE}></ProofTree>
 
             </div>
         </div>
