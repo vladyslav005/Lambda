@@ -83,12 +83,13 @@ export function TreeFlat() {
             }}
         >
             <div
+                id={"id"}
                 ref={elementRef}
                 className="tree-flat bg-white flex justify-around"
                 style={{
                     transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-                    transition: dragging ? 'none' : 'transform 0.1s ease',
-                    transformOrigin: "0 0",
+                    // transition: dragging ? 'none' : 'transform 0.1s ease',
+                    transformOrigin: "0% 0%",
                     backgroundColor: 'white',
                     position: 'absolute',
                 }}

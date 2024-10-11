@@ -9,10 +9,9 @@ export function useZoomAndDragHook() {
 
     const elementRef = useRef<HTMLDivElement>(null);
 
+    // TODO: ANIMATION (zoom not working properly when transition is active)
     const handleWheel = (e: React.WheelEvent) => {
-
         if (elementRef.current) {
-            e.preventDefault();
 
             const rect = elementRef.current?.getBoundingClientRect();
             if (!rect) return;
@@ -25,12 +24,12 @@ export function useZoomAndDragHook() {
 
             const scaleChange = newScale / scale;
 
-            const newPositionX = position.x - mouseX * (scaleChange - 1);
-            const newPositionY = position.y - mouseY * (scaleChange - 1);
+            const newPositionX = (position.x ) - (mouseX) * (scaleChange - 1);
+            const newPositionY = (position.y ) - (mouseY) * (scaleChange - 1);
 
-            console.log(scaleChange - 1)
             setScale(newScale);
             setPosition({ x: newPositionX, y: newPositionY });
+
         }
     };
 
