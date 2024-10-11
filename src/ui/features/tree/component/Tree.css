@@ -1,62 +1,125 @@
-.proof-node {
-
-
-    display: flex;
+.proof-node
+{
+    display: inline-flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-
 }
 
-.premises {
-    display: inline-flex; /* Align premises horizontally */
-    justify-content: space-between; /* Space premises out evenly */
-    /*width: 100%; !* Ensure premises take up the entire width *!*/
-}
-
-.premises .premises {
-    width: 100%;
-
-}
-.premises  {
-    width: 50%;
-}
-
-.premise {
-    /*margin: 10px; !* Add some margin between premises *!*/
-    align-content: flex-end;
-    justify-content: space-between;
-    width: 110%;
-
-
-}
-
-.conclusion {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.premises
+{
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: flex-end;
     justify-content: center;
+    /*border-bottom: 1px solid black;*/
 
 }
 
-.line {
-    /*width: 100%; !* Ensure the line stretches across the entire width *!*/
-    height: 1px;
-    background-color: black;
+.conclusion.not-root {
+    /*background-color: lightgray;*/
+    /*border-bottom: 1px solid black;*/
+    /*border-top: 1px solid black;*/
+
 }
 
-.conclusion-text {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
+.conclusion.not-leaf-node {
+    /*border-top: 1px solid black;*/
+}
+
+.premises.leaf-node {
+
+    /*border-bottom: 1px solid black;*/
+
+}
+
+
+
+.conclusion
+{
+    display: inline-flex;
+    margin-top: -1px;
+    position: relative;
+}
+
+.conclusion::after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    position: relative;
+    content: "";
+}
+
+
+.conclusion-left
+{
+    /*border-top: 1px solid black;*/
+
+    flex-grow: 1;
+}
+.conclusion-center.not-leaf-node
+{
+    /*border-top: 1px solid black;*/
+    /*border-bottom: 1px solid black;*/
+    /*flex-grow: 1;*/
+}
+
+.conclusion-center.leaf-node {
+    /*border-bottom: 1px solid black;*/
+}
+
+
+.conclusion-right
+{
+    border-top: 1px solid black;
+    flex-grow: 1;
+    display: inline-flex;
+    justify-content: flex-end;
 }
 
 .rule-name {
-    margin-left: 10px;
+    position: relative;
+    bottom: 9px;
+    left: 8px;
+    width: 0;
+    height: 0;
+    white-space: nowrap;
+
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.2;
+    color: black;
     font-style: italic;
+
 }
 
-.premise mjx-container,
-.conclusion mjx-container {
-    margin: 5px !important;
+
+.inter-proof
+{
+    border-bottom: 1px solid black;
+    width: 8rem;
+}
+
+.premises > .proof-node:not(:first-child) > .conclusion > .conclusion-left
+{
+    border-bottom: 1px solid black;
+    /*border-top: 1px solid black;*/
+
+}
+.premises > .proof-node > .conclusion > .conclusion-center
+{
+    /*border-top: 1px solid black;*/
+    border-bottom: 1px solid black;
+}
+.premises > .proof-node:not(:last-child) > .conclusion > .conclusion-right
+{
+    /*border-top: 1px solid black;*/
+    border-bottom: 1px solid black;
+}
+
+.premise mjx-container, .conclusion mjx-container {
+    margin: 11px !important;
+}
+
+.conclusion-center:hover {
+    color: darkorange;
 }

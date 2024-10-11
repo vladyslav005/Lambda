@@ -1,74 +1,48 @@
 import {useZoomAndDragHook} from "../hook/ZoomAndDragHook";
-import {ProofNode} from "../../../../core/tree/TreeGenerator";
+import {ProofNode, TreeGenerator} from "../../../../core/tree/TreeGenerator";
 import {ProofTreeComponent} from "./ProofTreeComponent";
 import "./Tree.css"
 import {ProofTree} from "./ProofTree";
+import LambdaCalcLexer from "../../../../core/antlr/LambdaCalcLexer";
+import {CharStream, CommonTokenStream} from "antlr4";
+import LambdaCalcParser from "../../../../core/antlr/LambdaCalcParser";
+import TypeChecker from "../../../../core/typechecker/TypeChecker";
 
-const DEMO_TREE : ProofNode = {
-    "type": "α",
-    "conclusion": "(λy:α->α.(yx))M",
-    "rule": "T-app",
-    "premises": [
-        {
-            "type": "(α->α)->α",
-            "conclusion": "λy:α->α.(yx)",
-            "rule": "T-app",
-            "premises": [
-                {
-                    "type": "α",
-                    "conclusion": "yx",
-                    "rule": "T-app",
-                    "premises": [
-                        {
-                            "type": "α->α",
-                            "conclusion": "y",
-                            "rule": "T-var"
-                        },
-                        {
-                            "type": "α",
-                            "conclusion": "x",
-                            "rule": "T-var"
-                        },
-                        {
-                            "type": "α",
-                            "conclusion": "z",
-                            "rule": "T-var"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "(α->α)->α",
-            "conclusion": "λy:α->α.(yx)",
-            "rule": "T-app",
-            "premises": [
-                {
-                    "type": "α",
-                    "conclusion": "yx",
-                    "rule": "T-app",
-                    "premises": [
-                        {
-                            "type": "α->α",
-                            "conclusion": "y",
-                            "rule": "T-var"
-                        },
-                        {
-                            "type": "α",
-                            "conclusion": "x",
-                            "rule": "T-var"
-                        },
-                        {
-                            "type": "α",
-                            "conclusion": "z",
-                            "rule": "T-var"
-                        }
-                    ]
-                }
-            ]
-        },
-    ]
-}
+
+
+
+const input = `
+    x : α
+    z : β
+    M = λ y:α->α.y : (α->α)->(α->α)
+    N = λ x:α.x : α->α
+    M N x
+    `;
+
+
+const lexer = new LambdaCalcLexer(new CharStream(input));
+
+const tokens = new CommonTokenStream(lexer);
+
+const parser = new LambdaCalcParser(tokens);
+
+const typeChecker = new TypeChecker()
+
+const tree = parser.expression();
+
+
+const typeCheck = typeChecker.visit(tree)
+
+
+
+const globalContext = typeChecker.globalContext;
+
+const treeGenerator = new TreeGenerator(globalContext);
+treeGenerator.visit(tree)
+const DEMO_TREE = treeGenerator.proofTree;
+console.log(DEMO_TREE)
+
+
 
 
 
@@ -96,7 +70,7 @@ export function TreeFlat() {
             }}
         >
             <div
-                className="tree-flat bg-white"
+                className="tree-flat bg-white flex justify-around al"
                 style={{
                     transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
                     transformOrigin: `50% 50%`,
@@ -106,7 +80,7 @@ export function TreeFlat() {
                     backgroundColor: 'white',
                 }}
             >
-                <ProofTree root={DEMO_TREE}></ProofTree>
+                { DEMO_TREE !== undefined && (<ProofTree root={DEMO_TREE}></ProofTree>)}
 
             </div>
         </div>

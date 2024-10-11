@@ -19,6 +19,7 @@ export interface ProofNode {
     rule: string;
     // context: ParserRuleContext;
     premises?: ProofNode[];
+    root: boolean;
 }
 
 
@@ -30,7 +31,10 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
 
     get proofTree(): ProofNode | undefined {
-        return this._proofTree;
+        if (this._proofTree !== undefined) {
+            this._proofTree.root = true;
+            return this._proofTree;
+        }
     }
 
     constructor(globalContext: Context) {
@@ -69,9 +73,10 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
         const result = {
             type : type,
-            conclusion: ctx.getText(),
-            rule: "T-app",
+            conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${type}`,
+            rule: "(T-app)",
             // context: ctx,
+            root: false,
             premises: [this.visit(body)],
         } as ProofNode;
 
@@ -87,8 +92,18 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
         return {
             type : type,
-            conclusion: ctx.getText(),
-            rule: "T-var",
+            conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${type}`,
+            rule: "(T-var)",
+            root: false,
+            premises: [
+                {
+                    type : type,
+                    conclusion: `${ctx.getText()} : ${type} \\in \\Gamma`,
+                    rule: "",
+                    root: false,
+                }
+
+            ],
             // context: ctx,
         } as ProofNode;
     };
@@ -100,9 +115,10 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
         return {
             type : type,
-            conclusion: ctx.getText(),
-            rule: "T-app",
+            conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${type}`,
+            rule: "(T-app)",
             // context: ctx,
+            root: false,
             premises: this.visitChildren(ctx),
         } as ProofNode;
 
