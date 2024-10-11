@@ -6,10 +6,12 @@ import {TreeGenerator} from "./tree/TreeGenerator";
 import TypeChecker from "./typechecker/TypeChecker";
 
 const input = `
-    x : α
-    z : β
-    M = λ y:α.y : α -> α
-    (λ y:α->α.(y x)) M 
+
+
+
+
+
+
     `;
 
 
