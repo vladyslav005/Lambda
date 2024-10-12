@@ -1,16 +1,60 @@
-
+import React, { useEffect } from 'react';
+import Editor, { useMonaco } from '@monaco-editor/react';
+import { setUpMonacoLanguage } from "../hook/SetUpMonacoLanguage";
 
 export function LambdaInput() {
+    const monaco = useMonaco(); // Ensures monaco is ready before usage
+
+    useEffect(() => {
+        if (monaco) {
+            try {
+                setUpMonacoLanguage(monaco);
+                monaco.editor.setTheme("lambda-theme");
+            } catch (e) {
+                console.log('Error setting up Monaco:', e);
+            }
+        }
+    }, [monaco]);
+
     return (
-
-        <div className="lambda-input bg-amber-100 ui-block m-0"
-            style={{flexGrow: 2}}
-
+        <div
+            className="lambda-input bg-amber-100 ui-block m-0"
+            style={{
+                position: 'relative',
+                flexGrow: 2,
+            }}
         >
-            Lambda Input
+            <Editor
+                className="h-full"
+                language="lambda"
+                options={{
+                    minimap: { enabled: false },
+                    automaticLayout: true,
+                    fontSize: 14,
+                }}
+                wrapperProps={{
+                    style: {
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                    }
+                }}
+            />
+
+            <button
+                className="bg-transparent hover:bg-green-500 text-green-700 font-semibold
+                    hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+                style={{
+                    position: 'absolute',
+                    bottom: '10px',
+                    right: '20px',
+                    zIndex: 1
+                }}
+            >
+                Build tree
+            </button>
         </div>
-
-
-
-    )
+    );
 }

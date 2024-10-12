@@ -62,6 +62,7 @@ export function TreeFlat() {
         handleMouseDown,
         handleMouseUp,
         handleMouseMove,
+        handleMouseLeave
     } = useZoomAndDragHook();
 
     return (
@@ -71,6 +72,7 @@ export function TreeFlat() {
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
             style={{
                 flexGrow: 4,
                 overflow: 'hidden',
@@ -88,7 +90,7 @@ export function TreeFlat() {
                 className="tree-flat bg-white flex justify-around"
                 style={{
                     transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-                    // transition: dragging ? 'none' : 'transform 0.1s ease',
+                    // transition: dragging ? 'none' : 'transform 0.1s linear',
                     transformOrigin: "0% 0%",
                     backgroundColor: 'white',
                     position: 'absolute',

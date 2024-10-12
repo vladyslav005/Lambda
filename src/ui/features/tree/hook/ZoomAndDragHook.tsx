@@ -19,8 +19,8 @@ export function useZoomAndDragHook() {
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
 
-            const zoomSpeed = 0.001;
-            const newScale = Math.max(0.1, scale - e.deltaY * zoomSpeed);
+            const zoomSpeed = 0.0009;
+            const newScale = Math.max(0.2, scale - e.deltaY * zoomSpeed);
 
             const scaleChange = newScale / scale;
 
@@ -54,6 +54,10 @@ export function useZoomAndDragHook() {
         }
     };
 
+    const handleMouseLeave = (e: React.MouseEvent) => {
+        setDragging(false);
+    }
+
     return {
         elementRef,
         scale,
@@ -63,5 +67,6 @@ export function useZoomAndDragHook() {
         handleMouseDown,
         handleMouseUp,
         handleMouseMove,
+        handleMouseLeave
     };
 }
