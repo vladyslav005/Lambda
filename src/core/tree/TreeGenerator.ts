@@ -11,7 +11,8 @@ import {
     ParenTypeContext,
     VariableContext
 } from "../antlr/LambdaCalcParser";
-import TypeChecker, {Context} from "../typechecker/TypeChecker";
+import {TypeChecker, Context} from "../typechecker/TypeChecker";
+import {ParseTree} from "antlr4";
 
 export interface ProofNode {
     type: string;
@@ -26,23 +27,40 @@ export interface ProofNode {
 export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     private typeChecker: TypeChecker = new TypeChecker();
-    private globalContext: Context;
+    private globalContext: Context | undefined;
     private _proofTree: ProofNode | undefined;
 
 
     get proofTree(): ProofNode | undefined {
+        return this._proofTree;
+    }
+
+    constructor() {
+        super();
+        this._proofTree = undefined;
+        this.globalContext = undefined;
+
+
+    }
+
+    public generateTree(AST : ParseTree, globalContext: Context): ProofNode | undefined {
+
+        this.globalContext = globalContext;
+        this.typeChecker.globalContext = globalContext;
+        this.visit(AST);
+
         if (this._proofTree !== undefined) {
             this._proofTree.root = true;
             return this._proofTree;
         }
-    }
 
-    constructor(globalContext: Context) {
-        super();
+        const result = this._proofTree;
+
         this._proofTree = undefined;
-        this.globalContext = globalContext;
+        this.typeChecker.clearGlobalContext();
+        this.typeChecker.clearLocalContext()
 
-        this.typeChecker.globalContext = globalContext;
+        return result;
     }
 
     visitExpr = (ctx: ExprContext): any => {

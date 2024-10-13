@@ -90,7 +90,7 @@ export class Context {
     }
 }
 
-export default class TypeChecker extends LambdaCalcVisitor<any> {
+export class TypeChecker extends LambdaCalcVisitor<any> {
 
     private _globalContext: Context = new Context();
     private _localContext: Context = new Context();
@@ -110,6 +110,8 @@ export default class TypeChecker extends LambdaCalcVisitor<any> {
     get globalContext(): Context {
         return this._globalContext;
     }
+
+
 
     clearLocalContext() {
         this._localContext = new Context();

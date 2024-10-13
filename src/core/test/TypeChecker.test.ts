@@ -1,5 +1,5 @@
 import {CharStream, CommonTokenStream} from "antlr4";
-import TypeChecker from "../typechecker/TypeChecker";
+import {TypeChecker} from "../typechecker/TypeChecker";
 import LambdaCalcParser, {ExpressionContext} from "../antlr/LambdaCalcParser";
 import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
 

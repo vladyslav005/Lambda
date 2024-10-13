@@ -1,42 +1,25 @@
 
-import antlr4, {CharStream, CommonTokenStream} from "antlr4";
-import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
-import LambdaCalcParser from "./antlr/LambdaCalcParser";
-import {TreeGenerator} from "./tree/TreeGenerator";
-import TypeChecker from "./typechecker/TypeChecker";
+import {InputAnalyzer} from "./AnalyzeInput";
 
 const input = `
-
-
-
-
-
-
+    f : (α -> β) -> (α -> γ)
+    g : α -> β
+    h : α
+    f g h
     `;
 
+// const input = ""
 
-const lexer = new LambdaCalcLexer(new CharStream(input));
-
-const tokens = new CommonTokenStream(lexer);
-
-const parser = new LambdaCalcParser(tokens);
-
-const typeChecker = new TypeChecker()
-
-const tree = parser.expression();
+const analyzer = new InputAnalyzer()
 
 
-const typeCheck = typeChecker.visit(tree)
+analyzer.analyzeInput(input)
+
+analyzer.checkTypes()
+
+console.log(analyzer.generateTree())
 
 
-
-const globalContext = typeChecker.globalContext;
-
-const treeGenerator = new TreeGenerator(globalContext);
-treeGenerator.visit(tree)
-const proofTree = treeGenerator.proofTree;
-
-console.log(JSON.stringify(proofTree, null, 2));
 
 
 
