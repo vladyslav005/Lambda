@@ -54,7 +54,7 @@ export class InputAnalyzer {
         this.globalContext = this.typeChecker.globalContext;
     }
 
-    public generateTree() : ProofNode | undefined {
+    public generateProofTree() : ProofNode | undefined {
 
         if (!this.globalContext) {
             throw new Error("Error: Can't generate tree, global context is empty");

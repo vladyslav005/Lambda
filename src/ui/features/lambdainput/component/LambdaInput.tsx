@@ -2,12 +2,14 @@ import React, {useContext, useEffect} from 'react';
 import Editor, { useMonaco } from '@monaco-editor/react';
 import { setUpMonacoLanguage } from "../hook/SetUpMonacoLanguage";
 import {EditorContext} from "../context/EditorContext";
+import {useBuildTree} from "../hook/BuildTreeHook";
 
 
 
 export function LambdaInput() {
     const monaco = useMonaco(); // Ensures monaco is ready before usage
     const editorContext = useContext(EditorContext);
+    const { buildTree } = useBuildTree();
 
     useEffect(() => {
         if (monaco) {
@@ -21,9 +23,7 @@ export function LambdaInput() {
     }, [monaco]);
 
     function buttonClickHandler(e: any) {
-
-
-
+        buildTree()
     }
 
 

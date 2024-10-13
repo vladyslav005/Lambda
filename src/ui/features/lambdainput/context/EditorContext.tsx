@@ -5,7 +5,7 @@ import {createContext, useState} from 'react';
 
 export interface EditorContextInterface {
     setEditorValue : ( value : any) => void,
-    setTree : (tree: ProofNode) => void,
+    setTree : (tree: ProofNode | undefined) => void,
     setErrors :( errors : string[]) => void,
     editorValue : string,
     tree: ProofNode | undefined,
@@ -14,7 +14,7 @@ export interface EditorContextInterface {
 
 export const EditorContext = createContext<EditorContextInterface>({
         setEditorValue  : ( value : any) => {},
-        setTree : (tree : ProofNode) => {},
+        setTree : (tree : ProofNode | undefined) => {},
         setErrors :( errors : string[]) => {},
         editorValue : '',
         tree:  undefined,
@@ -28,7 +28,7 @@ interface EditorProviderProps {
 
 export const EditorState = (props: EditorProviderProps) => {
     const [editorValue, setEditorValue] = useState<string>('');
-    const [tree, setTree] = useState<any>(null);  // Replace 'any' with your actual type
+    const [tree, setTree] = useState<ProofNode | undefined>(undefined);  // Replace 'any' with your actual type
     const [errors, setErrors] = useState<string[] | undefined>(undefined);
 
 

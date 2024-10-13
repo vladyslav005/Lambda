@@ -2,6 +2,7 @@
 {
     display: inline-flex;
     flex-direction: column;
+
 }
 
 .premises
@@ -57,9 +58,15 @@
 }
 .conclusion-center.not-leaf-node
 {
-    /*border-top: 1px solid black;*/
-    /*border-bottom: 1px solid black;*/
+    /*box-shadow: inset 0px -1px 0 0 rgb(0, 0, 0), inset 0 1px 0 0 rgba(0, 0, 0);*/
+
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
     /*flex-grow: 1;*/
+}
+
+.conclusion-center.root {
+    border-bottom: none;
 }
 
 .conclusion-center.leaf-node {
@@ -75,10 +82,13 @@
     justify-content: flex-end;
 }
 
+
 .rule-name {
+    display: inline-flex;
+    justify-content: flex-end;
     position: relative;
     bottom: 9px;
-    left: 8px;
+    left: 38px;
     width: 0;
     height: 0;
     white-space: nowrap;
@@ -96,24 +106,25 @@
 .inter-proof
 {
     border-bottom: 1px solid black;
+    /*height: 1px;*/
     width: 8rem;
 }
 
 .premises > .proof-node:not(:first-child) > .conclusion > .conclusion-left
 {
-    border-bottom: 1px solid black;
+    /*border-bottom: 1px solid black;*/
     /*border-top: 1px solid black;*/
 
 }
 .premises > .proof-node > .conclusion > .conclusion-center
 {
     /*border-top: 1px solid black;*/
-    border-bottom: 1px solid black;
+    /*border-bottom: 1px solid black;*/
 }
 .premises > .proof-node:not(:last-child) > .conclusion > .conclusion-right
 {
     /*border-top: 1px solid black;*/
-    border-bottom: 1px solid black;
+    /*border-bottom: 1px solid black;*/
 }
 
 .premise mjx-container, .conclusion mjx-container {

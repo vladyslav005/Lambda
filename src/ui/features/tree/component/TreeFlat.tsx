@@ -1,12 +1,6 @@
 import {useZoomAndDragHook} from "../hook/ZoomAndDragHook";
-import {ProofNode, TreeGenerator} from "../../../../core/tree/TreeGenerator";
-import {ProofTreeComponent} from "./ProofTreeComponent";
 import "./Tree.css"
 import {ProofTree} from "./ProofTree";
-import LambdaCalcLexer from "../../../../core/antlr/LambdaCalcLexer";
-import {CharStream, CommonTokenStream} from "antlr4";
-import LambdaCalcParser from "../../../../core/antlr/LambdaCalcParser";
-import TypeChecker from "../../../../core/typechecker/TypeChecker";
 import React, {useContext, useState} from "react";
 import {EditorContext} from "../../lambdainput/context/EditorContext";
 
@@ -32,26 +26,6 @@ S = λ q: ((α -> α) -> α) -> α . (q R) : (((α -> α) -> α) -> α) -> α
     `;
 
 
-const lexer = new LambdaCalcLexer(new CharStream(input));
-
-const tokens = new CommonTokenStream(lexer);
-
-const parser = new LambdaCalcParser(tokens);
-
-const typeChecker = new TypeChecker()
-
-const tree = parser.expression();
-
-
-const typeCheck = typeChecker.visit(tree)
-
-
-
-const globalContext = typeChecker.globalContext;
-
-const treeGenerator = new TreeGenerator(globalContext);
-treeGenerator.visit(tree)
-const DEMO_TREE = treeGenerator.proofTree;
 
 export function TreeFlat() {
     const {

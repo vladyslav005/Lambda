@@ -28,11 +28,12 @@ export function ProofTreeComponent({ node }: { node: ProofNode }) {
             <div className={`conclusion ${isItRoot} ${isItLeaf}`}>
                 <div className="conclusion-left">
                 </div>
-                <div className={`conclusion-center ${isItLeaf}`}>
+                <div className={`conclusion-center ${isItLeaf} ${isItRoot}`}>
                     <MathComponent tex={node.conclusion.replaceAll("->", " \\rightarrow ")}/>
                 </div>
                 <div className="conclusion-right">
                     <p className="rule-name">{node.rule}</p>
+
                 </div>
             </div>
         </div>

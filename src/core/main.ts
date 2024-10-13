@@ -17,7 +17,7 @@ analyzer.analyzeInput(input)
 
 analyzer.checkTypes()
 
-console.log(analyzer.generateTree())
+console.log(analyzer.generateProofTree())
 
 
 
