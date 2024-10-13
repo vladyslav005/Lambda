@@ -32,19 +32,19 @@ export function setUpMonacoLanguage(monaco: any)   {
         base: 'vs',
         inherit: true,
         rules: [
-            { token: 'keyword', foreground: '#FF6600', fontStyle: 'bold' },
-            { token: 'comment', foreground: '#999999' },
-            { token: 'string', foreground: '#009966' },
-            { token: 'variable', foreground: '#ea0e6b' },
-            { token: 'delimiter', foreground: '#f6ac1e' },
+            // { token: 'keyword', foreground: '#FF6600', fontStyle: 'bold' },
+            // { token: 'comment', foreground: '#999999' },
+            // { token: 'string', foreground: '#009966' },
+            // { token: 'variable', foreground: '#ea0e6b' },
+            // { token: 'delimiter', foreground: '#f6ac1e' },
 
         ],
         colors: {
-            "editor.foreground": "#000000", // text color
-            "editor.background": "#ffffff",  // Background color for editor
-            "editorCursor.foreground": "#7a7671",  // Cursor color
-            "editor.lineHighlightBackground": "#ebfb63",  // Highlight for the active line
-            "editorLineNumber.foreground": "#008800",  // Line number color
+            // "editor.foreground": "#000000", // text color
+            // "editor.background": "#ffffff",  // Background color for editor
+            // "editorCursor.foreground": "#7a7671",  // Cursor color
+            // "editor.lineHighlightBackground": "#ebfb63",  // Highlight for the active line
+            // "editorLineNumber.foreground": "#008800",  // Line number color
         },
     });
 
@@ -70,10 +70,10 @@ export function setUpMonacoLanguage(monaco: any)   {
 
             const suggestions = [
                 {
-                    label: 'func',
+                    label: 'abs',
                     kind: monaco.languages.CompletionItemKind.Text,
                     insertText: 'λ x : T . (M)',
-                    detail: 'Lambda keyword',
+                    detail: 'Abstraction',
                     range: range,
                 },
                 {

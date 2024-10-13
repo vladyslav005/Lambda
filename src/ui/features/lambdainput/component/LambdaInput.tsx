@@ -1,9 +1,17 @@
-import React, { useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
 import Editor, { useMonaco } from '@monaco-editor/react';
 import { setUpMonacoLanguage } from "../hook/SetUpMonacoLanguage";
+import {EditorContext} from "../context/EditorContext";
+import {CharStream, CommonTokenStream} from "antlr4";
+import LambdaCalcLexer from "../../../../core/antlr/LambdaCalcLexer";
+import LambdaCalcParser from "../../../../core/antlr/LambdaCalcParser";
+import TypeChecker from "../../../../core/typechecker/TypeChecker";
+import {TreeGenerator} from "../../../../core/tree/TreeGenerator";
+
 
 export function LambdaInput() {
     const monaco = useMonaco(); // Ensures monaco is ready before usage
+    const editorContext = useContext(EditorContext);
 
     useEffect(() => {
         if (monaco) {
@@ -15,6 +23,37 @@ export function LambdaInput() {
             }
         }
     }, [monaco]);
+
+    function buttonClickHandler(e: any) {
+        console.log(editorContext.editorValue);
+
+        const input = editorContext.editorValue
+
+        const lexer = new LambdaCalcLexer(new CharStream(input));
+
+        const tokens = new CommonTokenStream(lexer);
+
+        const parser = new LambdaCalcParser(tokens);
+
+        const typeChecker = new TypeChecker()
+
+        const tree = parser.expression();
+
+
+        const typeCheck = typeChecker.visit(tree)
+
+
+
+        const globalContext = typeChecker.globalContext;
+
+        const treeGenerator = new TreeGenerator(globalContext);
+        treeGenerator.visit(tree)
+        if ( treeGenerator.proofTree)
+            editorContext.setTree(treeGenerator.proofTree)
+
+
+    }
+
 
     return (
         <div
@@ -32,6 +71,7 @@ export function LambdaInput() {
                     automaticLayout: true,
                     fontSize: 14,
                 }}
+                onChange={(value, event) => editorContext.setEditorValue(value)}
                 wrapperProps={{
                     style: {
                         position: 'absolute',
@@ -52,9 +92,14 @@ export function LambdaInput() {
                     right: '20px',
                     zIndex: 1
                 }}
+                onClick={buttonClickHandler}
             >
                 Build tree
             </button>
         </div>
     );
 }
+
+
+
+

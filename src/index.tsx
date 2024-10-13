@@ -4,6 +4,7 @@ import './ui/common/css/index.css';
 import App from './ui/common/component/App';
 import reportWebVitals from './ui/common/reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
+import {EditorState} from "./ui/features/lambdainput/context/EditorContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
       <BrowserRouter>
-        <App />
+          <EditorState>
+              <App />
+          </EditorState>
       </BrowserRouter>
 );
 

@@ -7,7 +7,8 @@ import LambdaCalcLexer from "../../../../core/antlr/LambdaCalcLexer";
 import {CharStream, CommonTokenStream} from "antlr4";
 import LambdaCalcParser from "../../../../core/antlr/LambdaCalcParser";
 import TypeChecker from "../../../../core/typechecker/TypeChecker";
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
+import {EditorContext} from "../../lambdainput/context/EditorContext";
 
 
 
@@ -65,6 +66,9 @@ export function TreeFlat() {
         handleMouseLeave
     } = useZoomAndDragHook();
 
+
+    const editorContext = useContext(EditorContext);
+
     return (
         <div
             className="tree-flat-container ui-block justify-around ali"
@@ -96,7 +100,7 @@ export function TreeFlat() {
                     position: 'absolute',
                 }}
             >
-                {DEMO_TREE !== undefined && <ProofTree root={DEMO_TREE} />}
+                {editorContext.tree  && <ProofTree root={editorContext.tree} />}
             </div>
         </div>
     );
