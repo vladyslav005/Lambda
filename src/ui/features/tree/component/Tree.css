@@ -1,17 +1,15 @@
-.proof-node
-{
+.proof-node {
     display: inline-flex;
     flex-direction: column;
 
 }
 
-.premises
-{
+.premises {
     display: inline-flex;
     flex-wrap: nowrap;
     align-items: flex-end;
     justify-content: center;
-    /*border-bottom: 1px solid black;*/
+    border-bottom: 1px solid black;
 
 }
 
@@ -22,20 +20,23 @@
 
 }
 
-.conclusion.not-leaf-node {
+.conclusion-center {
     /*border-top: 1px solid black;*/
+    /*border-bottom: 1px solid black;*/
 }
+
+.conclusion-center.leaf-node {
+    /*border-top: none !important;*/
+    /*border-bottom: 1px solid black;*/
+}
+
 
 .premises.leaf-node {
-
     /*border-bottom: 1px solid black;*/
-
 }
 
 
-
-.conclusion
-{
+.conclusion {
     display: inline-flex;
     margin-top: -1px;
     position: relative;
@@ -50,18 +51,17 @@
 }
 
 
-.conclusion-left
-{
+.conclusion-left {
     /*border-top: 1px solid black;*/
 
     flex-grow: 1;
 }
-.conclusion-center.not-leaf-node
-{
+
+.conclusion-center.not-leaf-node {
     /*box-shadow: inset 0px -1px 0 0 rgb(0, 0, 0), inset 0 1px 0 0 rgba(0, 0, 0);*/
 
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    /*border-top: 1px solid black;*/
+    /*border-bottom: 1px solid black;*/
     /*flex-grow: 1;*/
 }
 
@@ -74,9 +74,8 @@
 }
 
 
-.conclusion-right
-{
-    border-top: 1px solid black;
+.conclusion-right {
+    /*border-top: 1px solid black;*/
     flex-grow: 1;
     display: inline-flex;
     justify-content: flex-end;
@@ -103,26 +102,24 @@
 }
 
 
-.inter-proof
-{
-    border-bottom: 1px solid black;
+.inter-proof {
+    /*border-bottom: 1px solid black;*/
     /*height: 1px;*/
     width: 8rem;
 }
 
-.premises > .proof-node:not(:first-child) > .conclusion > .conclusion-left
-{
+.premises > .proof-node:not(:first-child) > .conclusion > .conclusion-left {
     /*border-bottom: 1px solid black;*/
     /*border-top: 1px solid black;*/
 
 }
-.premises > .proof-node > .conclusion > .conclusion-center
-{
+
+.premises > .proof-node > .conclusion > .conclusion-center {
     /*border-top: 1px solid black;*/
     /*border-bottom: 1px solid black;*/
 }
-.premises > .proof-node:not(:last-child) > .conclusion > .conclusion-right
-{
+
+.premises > .proof-node:not(:last-child) > .conclusion > .conclusion-right {
     /*border-top: 1px solid black;*/
     /*border-bottom: 1px solid black;*/
 }

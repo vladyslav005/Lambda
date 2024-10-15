@@ -1,10 +1,10 @@
 import {useZoomAndDragHook} from "../hook/ZoomAndDragHook";
 import "./Tree.css"
-import {ProofTree} from "./ProofTree";
-import React, {useContext, useState} from "react";
+import React, {useContext} from "react";
 import {EditorContext} from "../../lambdainput/context/EditorContext";
-
-
+import { ProofTreeUsingMathJax} from "./ProofTreeUsingMathJax";
+import {ProofNode} from "../../../../core/tree/TreeGenerator";
+import {ProofTreeComponentUsingCss} from "./ProofTreeComponentUsingCss";
 
 
 const input = `
@@ -22,26 +22,26 @@ S = λ q: ((α -> α) -> α) -> α . (q R) : (((α -> α) -> α) -> α) -> α
 
 (N (M N (P y))) 
 
-
     `;
 
+const DEMO_TREE : ProofNode = {"type":"γ","conclusion":"\\Gamma \\vdash fgh : γ","rule":"(T-app)","root":true,"premises":[{"type":"α->γ","conclusion":"\\Gamma \\vdash fg : α->γ","rule":"(T-app)","root":false,"premises":[{"type":"(α->β)->(α->γ)","conclusion":"\\Gamma \\vdash f : (α->β)->(α->γ)","rule":"(T-var)","root":false,"premises":[{"type":"(α->β)->(α->γ)","conclusion":"f : (α->β)->(α->γ) \\in \\Gamma","rule":"","root":false}]},{"type":"α->β","conclusion":"\\Gamma \\vdash g : α->β","rule":"(T-var)","root":false,"premises":[{"type":"α->β","conclusion":"g : α->β \\in \\Gamma","rule":"","root":false}]}]},{"type":"α","conclusion":"\\Gamma \\vdash h : α","rule":"(T-var)","root":false,"premises":[{"type":"α","conclusion":"h : α \\in \\Gamma","rule":"","root":false}]}]}
 
 
 export function TreeFlat() {
-    const {
-        elementRef,
-        scale,
-        position,
-        dragging,
-        handleWheel,
-        handleMouseDown,
-        handleMouseUp,
-        handleMouseMove,
-        handleMouseLeave
-    } = useZoomAndDragHook();
+  const {
+    elementRef,
+    scale,
+    position,
+    dragging,
+    handleWheel,
+    handleMouseDown,
+    handleMouseUp,
+    handleMouseMove,
+    handleMouseLeave
+  } = useZoomAndDragHook();
 
 
-    const editorContext = useContext(EditorContext);
+  const editorContext = useContext(EditorContext);
 
     return (
         <div
@@ -74,7 +74,9 @@ export function TreeFlat() {
                     position: 'absolute',
                 }}
             >
-                {editorContext.tree  && <ProofTree root={editorContext.tree} />}
+              {editorContext.tree  && <ProofTreeUsingMathJax proofTree={editorContext.tree}/>}
+
+              {/*{editorContext.tree  && <ProofTreeComponentUsingCss  node={editorContext.tree} />}*/}
             </div>
         </div>
     );

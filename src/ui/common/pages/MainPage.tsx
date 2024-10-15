@@ -6,29 +6,29 @@ import {HelpBar} from "../../features/helpbar/component/HelpBar";
 
 export function MainPage() {
 
-    return (
-        <div className="
+  return (
+      <div className="main-page
             h-lvh w-dvw bg-gray-800 flex flex-row
 
             ">
 
-            <div className="flex flex-col"
-                style={{flexGrow: 1}}
-            >
-                <LambdaInput></LambdaInput>
-                <ErrorOutput></ErrorOutput>
-            </div>
-
-            <div className=" flex flex-row"
-                style={{flexGrow: 3}}
-            >
-                <TreeFlat></TreeFlat>
-
-                <HelpBar></HelpBar>
-            </div>
-
-
+        <div className="flex flex-col"
+             style={{flexGrow: 1}}
+        >
+          <LambdaInput></LambdaInput>
+          <ErrorOutput></ErrorOutput>
         </div>
-    )
+
+        <div className="right-side flex flex-row"
+             style={{flexGrow: 3}}
+        >
+          <TreeFlat></TreeFlat>
+
+          <HelpBar></HelpBar>
+        </div>
+
+
+      </div>
+  )
 }
 

@@ -1,4 +1,3 @@
-
 import {InputAnalyzer} from "./AnalyzeInput";
 
 const input = `
@@ -17,7 +16,7 @@ analyzer.analyzeInput(input)
 
 analyzer.checkTypes()
 
-console.log(analyzer.generateProofTree())
+console.log(JSON.stringify(analyzer.generateProofTree(), undefined, 4))
 
 
 

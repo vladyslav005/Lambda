@@ -7,15 +7,15 @@ import {BrowserRouter} from "react-router-dom";
 import {EditorState} from "./ui/features/lambdainput/context/EditorContext";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 
 root.render(
-      <BrowserRouter>
-          <EditorState>
-              <App />
-          </EditorState>
-      </BrowserRouter>
+    <BrowserRouter>
+      <EditorState>
+        <App/>
+      </EditorState>
+    </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

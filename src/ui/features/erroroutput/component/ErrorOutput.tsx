@@ -1,15 +1,13 @@
-
-
 export function ErrorOutput() {
-    return (
-        <div className="error-output bg-amber-600 ui-block"
-            style={{flexGrow: 1}}
-        >
+  return (
+      <div className="error-output bg-amber-600 ui-block"
+           style={{flexGrow: 1}}
+      >
 
-            ERROR OUTPUT
+        ERROR OUTPUT
 
-        </div>
-    )
+      </div>
+  )
 
 
 }
