@@ -17,11 +17,8 @@ M = λ f: α -> α . f : (α -> α) -> (α -> α)
 N = λ x: α . x : α -> α
 P = λ g: α -> α . (g x) : (α -> α) -> α
 Q = λ h: α -> α . (h x) : (α -> α) -> α
-R = λ k: (α -> α) -> α . k (λ p: α -> α . (p x)) : (α -> α) -> α
-S = λ q: ((α -> α) -> α) -> α . (q R) : (((α -> α) -> α) -> α) -> α
 
 (N (M N (P y))) 
-
     `;
 
 const DEMO_TREE : ProofNode = {"type":"γ","conclusion":"\\Gamma \\vdash fgh : γ","rule":"(T-app)","root":true,"premises":[{"type":"α->γ","conclusion":"\\Gamma \\vdash fg : α->γ","rule":"(T-app)","root":false,"premises":[{"type":"(α->β)->(α->γ)","conclusion":"\\Gamma \\vdash f : (α->β)->(α->γ)","rule":"(T-var)","root":false,"premises":[{"type":"(α->β)->(α->γ)","conclusion":"f : (α->β)->(α->γ) \\in \\Gamma","rule":"","root":false}]},{"type":"α->β","conclusion":"\\Gamma \\vdash g : α->β","rule":"(T-var)","root":false,"premises":[{"type":"α->β","conclusion":"g : α->β \\in \\Gamma","rule":"","root":false}]}]},{"type":"α","conclusion":"\\Gamma \\vdash h : α","rule":"(T-var)","root":false,"premises":[{"type":"α","conclusion":"h : α \\in \\Gamma","rule":"","root":false}]}]}
@@ -45,7 +42,7 @@ export function TreeFlat() {
 
     return (
         <div
-            className="tree-flat-container ui-block justify-around ali"
+            className="tree-flat-container ui-block justify-around bg-white"
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
@@ -55,7 +52,6 @@ export function TreeFlat() {
                 flexGrow: 4,
                 overflow: 'hidden',
                 position: 'relative',
-                background: '#f0f0f0',
                 cursor: dragging ? 'grabbing' : 'grab',
                 flexWrap: 'nowrap',
                 display: 'flex',

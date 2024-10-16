@@ -13,12 +13,10 @@
     "@types/react-dom": "^18.3.0",
     "antlr4": "^4.13.2",
     "better-react-mathjax": "^2.0.3",
-    "katex": "^0.16.11",
     "mathjax-react": "^2.0.1",
     "monaco-editor": "^0.52.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-katex": "^3.0.1",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
