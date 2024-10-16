@@ -1,29 +1,23 @@
 import React from 'react';
-import { MathJax, MathJaxContext } from 'better-react-mathjax';
-import { ProofNode } from "../../../../core/tree/TreeGenerator";
+import {ProofNode} from "../../../../core/tree/TreeGenerator";
+import Tex2SVG from "react-hook-mathjax";
 
-export function ProofTreeUsingMathJax({ proofTree }: { proofTree: ProofNode }) {
+export function ProofTreeUsingMathJax({proofTree}: { proofTree: ProofNode }) {
   const proofTreeLatex = `
   \\begin{prooftree}
     ${generateProofTreeLatex(proofTree, undefined)}
   \\end{prooftree}
   `;
 
-  // console.log(proofTreeLatex);
-  // console.log(proofTree);
+  console.log(proofTreeLatex);
+  console.log(proofTree);
 
   return (
-      <MathJaxContext>
-        <div>
-          <MathJax>
-            {`\\[${proofTreeLatex}\\]`}
-          </MathJax>
-        </div>
-      </MathJaxContext>
+      <Tex2SVG latex={proofTreeLatex}/>
   );
 }
 
-function generateProofTreeLatex(node: ProofNode, parent : ProofNode | undefined): string {
+function generateProofTreeLatex(node: ProofNode, parent: ProofNode | undefined): string {
   let latex = '';
   node.conclusion = node.conclusion.replaceAll("->", "\\rightarrow");
   if (node.premises && node.premises.length > 1) {
