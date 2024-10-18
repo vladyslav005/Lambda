@@ -29,6 +29,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   private typeChecker: TypeChecker = new TypeChecker();
   private globalContext: Context | undefined;
 
+  private contextExtension: string | undefined;
+
   constructor() {
     super();
     this._proofTree = undefined;
@@ -84,6 +86,10 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
         this.typeChecker.visit(ctx.type_())
     )
 
+
+    //TODO : IS IT CORRECT???
+    this.contextExtension = `, ${ctx.ID().getText()} :  ${localContext.getType(ctx.ID().getText())}`;
+
     this.typeChecker.localContext = localContext;
 
     const type = this.typeChecker.visit(ctx);
@@ -99,6 +105,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     } as ProofNode;
 
     this.typeChecker.clearLocalContext();
+    this.contextExtension = undefined
 
     return result;
   };
@@ -133,7 +140,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return {
       type: type,
-      conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${type}`,
+      conclusion: `\\Gamma${this.contextExtension ? this.contextExtension : ''} \\vdash ${ctx.getText()} : ${type}`,
       rule: "(T-app)",
       // context: ctx,
       root: false,

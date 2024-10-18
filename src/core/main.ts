@@ -1,10 +1,10 @@
 import {InputAnalyzer} from "./AnalyzeInput";
 
 const input = `
-    f : (α -> β) -> (α -> γ)
-    g : α -> β
-    h : α
-    f g h
+x : α
+z : β
+M = λ y:α.y : α -> α
+(λ y:α->α.(y x)) M 
     `;
 
 // const input = ""

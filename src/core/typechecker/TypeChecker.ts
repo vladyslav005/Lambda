@@ -60,7 +60,7 @@ export class Context {
       }
     }
 
-    throw new Error(`Unexpected type ${name}`);
+    throw new Error(`Variable '${name}' is not in context`);
   }
 
   isVariableInContext(name: string): boolean {
