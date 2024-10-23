@@ -14,7 +14,6 @@ import LambdaCalcParser, {
 } from "../antlr/LambdaCalcParser";
 import {CharStream, CommonTokenStream, ParseTree} from "antlr4";
 import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
-import {Simulate} from "react-dom/test-utils";
 
 
 class ContextElement {

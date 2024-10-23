@@ -10,8 +10,8 @@ export function ProofTreeUsingMathJax({proofTree}: { proofTree: ProofNode }) {
 \\end{prooftree}
   `;
 
-  console.log(proofTreeLatex);
-  console.log(JSON.stringify(proofTree, undefined, 4))
+  // console.log(proofTreeLatex);
+  // console.log(JSON.stringify(proofTree, undefined, 4))
 
   return (
       <Tex2SVG latex={proofTreeLatex}/>

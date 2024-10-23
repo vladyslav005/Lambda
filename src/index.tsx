@@ -5,8 +5,7 @@ import App from './ui/common/component/App';
 import reportWebVitals from './ui/common/reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
 import {EditorState} from "./ui/features/lambdainput/context/EditorContext";
-import {MathJax, MathJaxContext} from "better-react-mathjax";
-import Tex2SVG, { MathJaxProvider } from "react-hook-mathjax";
+
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement

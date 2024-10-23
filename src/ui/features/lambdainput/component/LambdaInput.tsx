@@ -6,7 +6,7 @@ import {useBuildTree} from "../hook/BuildTreeHook";
 
 
 export function LambdaInput() {
-  const monaco = useMonaco(); // Ensures monaco is ready before usage
+  const monaco = useMonaco();
   const editorContext = useContext(EditorContext);
   const {buildTree} = useBuildTree();
 
@@ -16,7 +16,7 @@ export function LambdaInput() {
         setUpMonacoLanguage(monaco);
         monaco.editor.setTheme("lambda-theme");
       } catch (e) {
-        console.log('Error setting up Monaco:', e);
+        console.error('Error setting up Monaco:', e);
       }
     }
   }, [monaco]);
@@ -25,13 +25,12 @@ export function LambdaInput() {
     buildTree()
   }
 
-
   return (
       <div
           className="lambda-input bg-amber-100 ui-block m-0"
           style={{
             position: 'relative',
-            flexGrow: 2,
+            flexGrow: 1,
           }}
       >
         <Editor
@@ -55,12 +54,12 @@ export function LambdaInput() {
         />
 
         <button
-            className="bg-transparent hover:bg-green-500 text-green-700 font-semibold
+            className="build-button bg-transparent hover:bg-green-500 text-green-700 font-semibold
                     hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
             style={{
               position: 'absolute',
               bottom: '10px',
-              right: '20px',
+              left: '20px',
               zIndex: 1
             }}
             onClick={buttonClickHandler}
@@ -70,7 +69,3 @@ export function LambdaInput() {
       </div>
   );
 }
-
-
-
-

@@ -4,20 +4,34 @@
 
 
 @media only screen and (max-width: 1300px) {
+    .ui-block {
+        margin: 2rem !important;
+    }
+
     .main-page {
         flex-direction: column;
     }
 
-    .error-output {
-        margin-right: 3rem !important;
-        margin-bottom: 0 !important;
-
-    }
-
     .lambda-input {
-        margin-right: 3rem !important;
+        margin-top: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .help-bar {
+        margin-right: 2rem !important;
+    }
+
+    .error-output {
+        margin-top: 0 !important;
+        margin-left: 2rem !important;
+    }
+
+    .tree-flat-container {
+        margin-right: 0 !important;
+        margin-top: 0 !important;
 
     }
+
 }
 
 @media only screen and (max-width: 700px) {
@@ -27,39 +41,24 @@
 
     .right-side {
         flex-direction: column;
-        margin-right: 1rem !important;
-
-    }
-
-    .tree-flat-container {
-        margin-right: 0 !important;
-
-    }
-
-    .error-output {
-        margin-right: 1rem !important;
-    }
-
-    .help-bar {
-        margin-left: 1rem !important;
-        margin-right: 0 !important;
-        margin-top: 0 !important;
-
-    }
-
-    .error-output {
-        margin-top: 0 !important;
-        margin-right: 1rem !important;
-        margin-bottom: 0 !important;
-
     }
 
     .lambda-input {
-        margin-right: 1rem !important;
+        flex-grow: 2 !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .error-output {
+        margin-top: 0 !important;
+    }
+
+    .tree-flat-container {
+        flex-grow: 2 !important;
 
     }
-}
 
+}
 
 body {
     margin: 0;
@@ -70,23 +69,32 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+
+.main-page {
+    background-color: #D7D7D9;
+}
+
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
 .ui-block {
-    /*border-radius: 5px;*/
     margin: 3rem;
 }
 
 .lambda-input {
-    margin-right: 0;
     margin-bottom: 0;
 
 }
 
 .error-output {
-    /*margin-top: 0;*/
+
+    margin-left: 0;
+    flex-grow: 1;
+}
+
+.help-bar {
     margin-right: 0;
+    flex-grow: 1;
 }

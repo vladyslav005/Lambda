@@ -1,15 +1,15 @@
 import LambdaCalcVisitor from "../antlr/LambdaCalcVisitor";
 import {
-    ApplicationContext,
-    ExprContext,
-    FunctionTypeContext,
-    GlobalFunctionDeclarationContext,
-    GlobalVariableDeclarationContext,
-    GreekTypeContext,
-    LambdaAbstractionContext,
-    ParenthesesContext,
-    ParenTypeContext,
-    VariableContext
+  ApplicationContext,
+  ExprContext,
+  FunctionTypeContext,
+  GlobalFunctionDeclarationContext,
+  GlobalVariableDeclarationContext,
+  GreekTypeContext,
+  LambdaAbstractionContext,
+  ParenthesesContext,
+  ParenTypeContext,
+  VariableContext
 } from "../antlr/LambdaCalcParser";
 import {Context, TypeChecker} from "../typechecker/TypeChecker";
 import {ParseTree} from "antlr4";
