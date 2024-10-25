@@ -1,6 +1,6 @@
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import {createContext, useState} from 'react';
-
+import {ErrorMessage} from '../../erroroutput/types/error_types'
 
 export interface EditorContextInterface {
   setEditorValue: (value: any) => void,
@@ -20,7 +20,7 @@ export const EditorContext = createContext<EditorContextInterface>({
       },
       editorValue: '',
       tree: undefined,
-      errors: undefined
+      errors: []
     }
 )
 

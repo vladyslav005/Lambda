@@ -81,6 +81,8 @@ code {
 
 .ui-block {
     margin: 3rem;
+    /*flex-wrap: nowrap;*/
+    /*flex-shrink: 1;*/
 }
 
 .lambda-input {
@@ -89,7 +91,6 @@ code {
 }
 
 .error-output {
-
     margin-left: 0;
     flex-grow: 1;
 }

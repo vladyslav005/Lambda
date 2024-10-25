@@ -20,7 +20,10 @@ export function MainPage() {
             <TreeFlat></TreeFlat>
           </div>
 
-          <div className="flex flex-col" style={{flexGrow: 1}}>
+          <div className="flex flex-col"
+               style={{
+                 flexGrow: 0,
+          }}>
             <ErrorOutput></ErrorOutput>
           </div>
 

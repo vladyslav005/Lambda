@@ -7,10 +7,15 @@ const analyzer = new InputAnalyzer();
 export function useBuildTree() {
   const editorContext = useContext(EditorContext);
 
-  function buildTree() {
+  function buildTree(value : string | undefined) {
     try {
       editorContext.setTree(undefined);
-      analyzer.analyzeInput(editorContext.editorValue)
+
+      if (!value) {
+        throw new Error("Input is empty");
+      }
+
+      analyzer.analyzeInput(value)
       analyzer.checkTypes()
 
       const proofTree = analyzer.generateProofTree()
@@ -18,10 +23,12 @@ export function useBuildTree() {
       if (proofTree) {
         editorContext.setTree(proofTree);
       }
+      editorContext.setErrors([]);
 
       analyzer.clearContext()
 
-    } catch (error) {
+    } catch (error : any) {
+      editorContext.setErrors([error.toString()]);
       console.warn(error)
     }
   }

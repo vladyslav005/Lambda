@@ -21,9 +21,6 @@ export function LambdaInput() {
     }
   }, [monaco]);
 
-  function buttonClickHandler(e: any) {
-    buildTree()
-  }
 
   return (
       <div
@@ -41,7 +38,7 @@ export function LambdaInput() {
               automaticLayout: true,
               fontSize: 14,
             }}
-            onChange={(value, event) => editorContext.setEditorValue(value)}
+            onChange={(value, event) => {editorContext.setEditorValue(value); buildTree(value) }}
             wrapperProps={{
               style: {
                 position: 'absolute',
@@ -53,19 +50,6 @@ export function LambdaInput() {
             }}
         />
 
-        <button
-            className="build-button bg-transparent hover:bg-green-500 text-green-700 font-semibold
-                    hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            style={{
-              position: 'absolute',
-              bottom: '10px',
-              left: '20px',
-              zIndex: 1
-            }}
-            onClick={buttonClickHandler}
-        >
-          Build tree
-        </button>
       </div>
   );
 }
