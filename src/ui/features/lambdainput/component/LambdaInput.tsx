@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import Editor, {useMonaco} from '@monaco-editor/react';
 import {setUpMonacoLanguage} from "../hook/SetUpMonacoLanguage";
 import {EditorContext} from "../context/EditorContext";
@@ -9,6 +9,14 @@ export function LambdaInput() {
   const monaco = useMonaco();
   const editorContext = useContext(EditorContext);
   const {buildTree} = useBuildTree();
+
+  const handleEditorDidMount = (editor : any, monaco: any) => {
+
+  };
+
+  const getExpressionTillFirstParen = (lineContent : any, column : any) => {
+
+  };
 
   useEffect(() => {
     if (monaco) {
@@ -39,9 +47,10 @@ export function LambdaInput() {
             options={{
               minimap: {enabled: false},
               automaticLayout: true,
-              fontSize: 14,
+              fontSize: 18,
             }}
             onChange={(value, event) => {editorContext.setEditorValue(value); buildTree(value) }}
+            onMount={handleEditorDidMount}
             wrapperProps={{
               style: {
                 position: 'absolute',

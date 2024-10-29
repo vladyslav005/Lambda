@@ -20,7 +20,7 @@ export function ProofTreeUsingMathJax({proofTree}: { proofTree: ProofNode }) {
 
 function generateProofTreeLatex(node: ProofNode, parent: ProofNode | undefined): string {
   let latex = '';
-  node.conclusion = node.conclusion.replaceAll("->", "\\rightarrow");
+  node.conclusion = node.conclusion.replaceAll("->", " \\rightarrow ");
   if (node.premises && node.premises.length > 1) {
 
     for (const premise of node.premises) {

@@ -6,6 +6,8 @@ import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
 
 const typeChecker = new TypeChecker();
 
+
+// TODO : repair tests
 test('case 1, application and using global variable', () => {
   const tree = parseInput(inputs[0]);
   typeChecker.visit(tree)
@@ -155,5 +157,11 @@ const inputs = [
     g : α -> β
     h : α
     x = f g h : γ
+    `,
+
+    `
+    g : Bool
+    d : Int
+    g d
     `
 ]

@@ -83,7 +83,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const localContext = new Context();
     localContext.addVariable(ctx.ID().getText(),
-        this.typeChecker.visit(ctx.type_())
+        this.typeChecker.visit(ctx.type_(0))
     )
 
 

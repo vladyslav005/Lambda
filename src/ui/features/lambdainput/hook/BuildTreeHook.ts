@@ -11,7 +11,7 @@ export function useBuildTree() {
     try {
       editorContext.setTree(undefined);
 
-      if (!value) {
+      if (!value || (value && value.trim() === "")) {
         throw new Error("Input is empty");
       }
 

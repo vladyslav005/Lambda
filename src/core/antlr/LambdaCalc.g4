@@ -10,14 +10,14 @@ globalDecl
     ;
 
 term
-    : LAMBDA ID COLON type DOT term          # LambdaAbstraction
-    | term term                              # Application
-    | ID                                     # Variable
-    | LPAREN term RPAREN                     # Parentheses
+    : LAMBDA ID COLON type DOT term COLON type          # LambdaAbstraction
+    | term term                                         # Application
+    | ID                                                # Variable
+    | LPAREN term RPAREN                                # Parentheses
     ;
 
 type
-    : GREEK_TYPE                             # GreekType
+    : (GREEK_TYPE | ID)                      # GreekType
     | <assoc=right> type ARROW type          # FunctionType
     | LPAREN type RPAREN                     # ParenType
     ;

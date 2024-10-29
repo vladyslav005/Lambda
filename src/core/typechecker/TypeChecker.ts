@@ -158,7 +158,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
   visitLambdaAbstraction = (ctx: LambdaAbstractionContext): any => {
     const paramName = ctx.ID().getText();
-    const paramTypeNode = ctx.type_();
+    const paramTypeNode = ctx.type_(0);
+    const declaredType = this.visit(ctx.type_(1));
+
     let paramType: string;
 
     paramType = this.visit(paramTypeNode)
@@ -175,15 +177,24 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     this._localContext.deleteVariable(paramName);
 
-    if (this.parseType(paramType) instanceof FunctionTypeContext) {
-      paramType = '(' + paramType + ')';
-    }
 
     if (this.parseType(bodyType) instanceof FunctionTypeContext) {
       bodyType = '(' + bodyType + ')';
     }
 
-    return paramType + "->" + bodyType;
+    if (this.parseType(paramType) instanceof FunctionTypeContext) {
+      paramType = '(' + paramType + ')';
+    }
+
+    const absType=  paramType + "->" + bodyType;
+
+    if (absType !== declaredType) {
+      throw new Error("Abstraction " + ctx.getText() + " has type " +
+          absType + ", that doesn't match declared type " + declaredType);
+    }
+
+
+    return absType
   };
 
   visitVariable = (ctx: VariableContext): any => {
@@ -236,7 +247,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       throw new Error(ctx.getText() + ": cannot define type of function");
     }
 
-    if (argumentType == undefined) {
+    if (argumentType === undefined) {
       throw new Error(ctx.getText() + ": cannot define type of argument");
     }
 
@@ -245,7 +256,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     /* separate input and return types */
     const funcReturnTypeNode = funcTypeTree.getChild(2);
     const argumentExpectedTypeNode = funcTypeTree.getChild(0);
-
     let argumentExpectedType: string = this.eliminateOutParentheses(argumentExpectedTypeNode).getText();
     let funcReturnType: string = this.eliminateOutParentheses(funcReturnTypeNode).getText();
 
