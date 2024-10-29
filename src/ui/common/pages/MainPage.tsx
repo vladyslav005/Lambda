@@ -7,7 +7,7 @@ import {HelpBar} from "../../features/helpbar/component/HelpBar";
 export function MainPage() {
 
   return (
-      <div className="main-page h-lvh w-dvw flex flex-row">
+      <div className="main-page flex flex-row">
 
         <div className="flex flex-col" style={{flexGrow: 1}}>
           <HelpBar></HelpBar>

@@ -39,18 +39,35 @@
         margin: 1rem !important;
     }
 
+    .main-page {
+        flex-direction: column-reverse;
+    }
+
     .right-side {
-        flex-direction: column;
+        flex-direction: column-reverse;
+    }
+
+    .help-bar {
+        margin-top: 0 !important;
+        min-height: 200px;
     }
 
     .lambda-input {
         flex-grow: 2 !important;
         margin-top: 0 !important;
         margin-bottom: 0 !important;
+
+        max-height: 400px !important;
+        min-height: 400px !important;
     }
 
-    .error-output {
-        margin-top: 0 !important;
+    .tree-flat-container {
+        min-height: 200px !important;
+    }
+
+    .error-message {
+        max-width: 85% !important;
+        min-width: 85% !important;
     }
 
     .tree-flat-container {
@@ -98,4 +115,8 @@ code {
 .help-bar {
     margin-right: 0;
     flex-grow: 1;
+}
+
+.main-page {
+    min-height: 100vh;
 }

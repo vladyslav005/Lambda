@@ -10,7 +10,7 @@ export function ErrorMessage(props: ErrorOutputProps) {
 
 
   return (
-      <div className="mx-4 my-4"
+      <div className="mx-4 my-4 error-message"
            style={{
              flex: '0 0 auto',
              backgroundColor: `${getBackgroundColorForError(props.errorType)}`,
