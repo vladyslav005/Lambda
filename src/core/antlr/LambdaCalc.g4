@@ -1,17 +1,17 @@
 grammar LambdaCalc;
 
 expression
-    : ( globalDecl )*  term EOF                # Expr
+    : ( globalDecl )* term EOF                # Expr
     ;
 
 globalDecl
-    : ID COLON type                        # GlobalVariableDeclaration
-    | ID '=' term COLON type               # GlobalFunctionDeclaration
+    : ID COLON type SEMI                       # GlobalVariableDeclaration
+    | ID '=' term (COLON type)? SEMI                         # GlobalFunctionDeclaration
     ;
 
 term
     : LAMBDA ID COLON type DOT term COLON type          # LambdaAbstraction
-    | term term                                         # Application
+    | <assoc=left> term term                            # Application
     | ID                                                # Variable
     | LPAREN term RPAREN                                # Parentheses
     ;

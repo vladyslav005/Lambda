@@ -134,24 +134,24 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   };
 
   visitGlobalFunctionDeclaration = (ctx: GlobalFunctionDeclarationContext): any => {
-    const typeNode = ctx.type_();
+    // const typeNode = ctx.type_();
     let declaredType: string;
     let id: string = ctx.getChild(0).getText();
 
-    declaredType = this.visit(typeNode);
+    // declaredType = this.visit(typeNode);
 
     const body = ctx.term();
     const bodyType = this.visit(body);
 
 
-    if (bodyType !== declaredType) {
-      throw new Error("Function " + id + " returns type " +
-          bodyType + ", that doesn't match declared type " + declaredType);
-    }
+    // if (bodyType !== declaredType) {
+    //   throw new Error("Function " + id + " returns type " +
+    //       bodyType + ", that doesn't match declared type " + declaredType);
+    // }
 
     this._globalContext.addVariable(id, bodyType);
 
-    console.log("Visiting a global function declaration", ctx.getText(), id, declaredType);
+    console.log("Visiting a global function declaration", ctx.getText() /*, id, declaredType*/);
 
     return this.visitChildren(ctx);
   };
