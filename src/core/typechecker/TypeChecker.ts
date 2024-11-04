@@ -14,6 +14,7 @@ import LambdaCalcParser, {
 } from "../antlr/LambdaCalcParser";
 import {CharStream, CommonTokenStream, ParseTree} from "antlr4";
 import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
+import {TypeError} from "../errorhandling/customErrors";
 
 
 class ContextElement {
@@ -197,8 +198,11 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const absType=  paramType + "->" + bodyType;
 
     if (absType !== declaredType) {
-      throw new Error("Abstraction " + ctx.getText() + " has type " +
-          absType + ", that doesn't match declared type " + declaredType);
+      throw new TypeError("Abstraction " + ctx.getText() + " has type " +
+          absType + ", that doesn't match declared type " + declaredType,
+          ctx.start.line, (ctx.stop ? ctx.stop.line : ctx.start.line),
+          ctx.start.column, (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length)
+      );
     }
 
     return absType
@@ -215,7 +219,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       return this._globalContext.getType(name);
     }
 
-    throw Error("Undefined variable : " + name);
+    throw new TypeError("Undefined variable : " + name, ctx.start.line, (ctx.stop ? ctx.stop.line : ctx.start.line),
+        ctx.start.column, (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length));
   };
 
   visitApplication = (ctx: ApplicationContext): any => {
@@ -261,7 +266,11 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     let funcTypeTree = this.parseType(funcType);
 
     if (! (funcTypeTree instanceof FunctionTypeContext)) {
-      throw new Error(ctx.getText() + `: has type ${funcType}, that is not a function type, cant use application there`);
+
+      throw new TypeError(funcName + `: has type ${funcType}, that is not a function type, cant use application there`,
+          ctx.start.line, (ctx.stop ? ctx.stop.line : ctx.start.line),
+          ctx.start.column, (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length)
+      );
     }
 
     /* separate input and return types */
@@ -272,8 +281,12 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     /* checking type of argument */
     if (argumentType !== argumentExpectedType) {
-      throw new Error("Types mismatch: term " + funcName + " expects argument of type "
-          + argumentExpectedType + ", but given argument \'" + argumentName + "\' is of type " + argumentType);
+      throw new TypeError("Types mismatch: term " + funcName + " expects argument of type "
+          + argumentExpectedType + ", but given argument \'" + argumentName + "\' is of type " + argumentType,
+          ctx.start.line, (ctx.stop ? ctx.stop.line : ctx.start.line),
+          ctx.start.column, (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length)
+
+      );
     }
 
     return funcReturnType;

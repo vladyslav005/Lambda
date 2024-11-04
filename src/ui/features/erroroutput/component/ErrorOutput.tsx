@@ -23,10 +23,10 @@ export function ErrorOutput() {
         <ErrorMessage message={'There you\'ll see the error output'} errorType={ErrorType.INFO} ></ErrorMessage>
 
         {editorContext.errors &&
-            editorContext.errors.map((error : string, index) => (
+            editorContext.errors.map((error : Error, index) => (
                 <ErrorMessage
                     key={index}
-                    message={error}
+                    message={error.message}
                     errorType={ErrorType.ERROR}
                 />
             ))

@@ -28,9 +28,14 @@ export function useBuildTree() {
       analyzer.clearContext()
 
     } catch (error : any) {
-      editorContext.setErrors([error.toString()]);
+
+      editorContext.setErrors([error]);
       console.warn(error)
+      return [error];
+
     }
+
+    return undefined;
   }
 
   return {buildTree};

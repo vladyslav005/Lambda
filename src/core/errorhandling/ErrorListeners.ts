@@ -1,4 +1,5 @@
 import {ErrorListener, RecognitionException, Recognizer} from 'antlr4';
+import {SyntaxError} from "./customErrors";
 
 
 export class CustomLexerErrorListener implements ErrorListener<any> {
@@ -24,6 +25,6 @@ export class CustomParserErrorListener implements ErrorListener<any> {
       msg: string,
       e: RecognitionException | undefined
   ): void {
-    throw new Error(`Syntax error at line ${line}:${charPositionInLine} - ${msg}`);
+    throw new SyntaxError(`at line ${line}:${charPositionInLine} - ${msg}`, line, line, 0, charPositionInLine + 1);
   }
 }

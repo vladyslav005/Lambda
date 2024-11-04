@@ -3,6 +3,7 @@ import Editor, {useMonaco} from '@monaco-editor/react';
 import {setUpMonacoLanguage} from "../hook/SetUpMonacoLanguage";
 import {EditorContext} from "../context/EditorContext";
 import {useBuildTree} from "../hook/BuildTreeHook";
+import {SyntaxError, TypeError} from "../../../../core/errorhandling/customErrors";
 
 
 export function LambdaInput() {
@@ -11,6 +12,8 @@ export function LambdaInput() {
   const {buildTree} = useBuildTree();
 
   const handleEditorDidMount = (editor : any, monaco: any) => {
+    editorContext.setEditor(editor);
+    editorContext.setMonaco(monaco);
 
   };
 
@@ -33,6 +36,36 @@ export function LambdaInput() {
     buildTree(editorContext.editorValue)
   }
 
+
+  function editorOnChange(value : any, event : any) {
+    editorContext.setEditorValue(value);
+    const errors = buildTree(value)
+
+    // UNDERLINE ERRORS
+    const model = editorContext.editor.getModel();
+    const markers : any[] = [];
+
+    editorContext.monaco.editor.setModelMarkers(model, 'lambda-errors', []);
+
+    errors?.forEach((error) => {
+
+      if (error instanceof SyntaxError || error instanceof TypeError) {
+
+        markers.push({
+          startLineNumber: error.startLine,
+          startColumn: error.startColumn,
+          endLineNumber: error.endLine,
+          endColumn: error.endColumn + 1,
+          message: error.message,
+          severity: editorContext.monaco.MarkerSeverity.Error,
+        });
+      }
+    });
+
+    editorContext.monaco.editor.setModelMarkers(model, 'lambda-errors', markers);
+  }
+
+
   return (
       <div
           className="lambda-input bg-amber-100 ui-block m-0"
@@ -49,7 +82,7 @@ export function LambdaInput() {
               automaticLayout: true,
               fontSize: 18,
             }}
-            onChange={(value, event) => {editorContext.setEditorValue(value); buildTree(value) }}
+            onChange={editorOnChange}
             onMount={handleEditorDidMount}
             wrapperProps={{
               style: {
@@ -78,3 +111,6 @@ export function LambdaInput() {
       </div>
   );
 }
+
+
+
