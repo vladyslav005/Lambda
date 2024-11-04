@@ -157,6 +157,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   };
 
   visitLambdaAbstraction = (ctx: LambdaAbstractionContext): any => {
+    console.log("Visiting lambda abstraction ", ctx.getText());
     const paramName = ctx.ID().getText();
     const paramTypeNode = ctx.type_(0);
     const declaredType = this.visit(ctx.type_(1));
@@ -171,9 +172,16 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     body = this.eliminateOutParentheses(body);
 
-    let bodyType = this.visit(body); // defines type, that function's body returns
+    let bodyType = undefined;
+    // if (body instanceof LambdaAbstractionContext) {
+    //   bodyType = this.visit(body);
+    //   let bodyTypeNode = this.parseType(bodyType);
+    //   let bodyAbsReturnType = bodyTypeNode.getChild(2);
+    //   bodyAbsReturnType = this.eliminateOutParentheses(bodyAbsReturnType);
+    //   bodyType = bodyAbsReturnType.getText();
+    // } else
+    bodyType = this.visit(body); // defines type, that function's body returns
 
-    console.log("Visiting a lambda abstraction", ctx.getText());
 
     this._localContext.deleteVariable(paramName);
 
@@ -192,7 +200,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       throw new Error("Abstraction " + ctx.getText() + " has type " +
           absType + ", that doesn't match declared type " + declaredType);
     }
-
 
     return absType
   };
@@ -252,6 +259,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     }
 
     let funcTypeTree = this.parseType(funcType);
+
+    if (! (funcTypeTree instanceof FunctionTypeContext)) {
+      throw new Error(ctx.getText() + `: has type ${funcType}, that is not a function type, cant use application there`);
+    }
 
     /* separate input and return types */
     const funcReturnTypeNode = funcTypeTree.getChild(2);

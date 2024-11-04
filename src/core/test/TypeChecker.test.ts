@@ -35,7 +35,7 @@ test('case 4, discarding ?unnecessary? parentheses, ', () => {
 test('case 5, invalid function declaration', () => {
   const tree = parseInput(inputs[4]);
   expect(() => typeChecker.visit(tree)).toThrow(
-      new Error("Function M returns type α->β, that doesn't match declared type α->α")
+      new Error("Abstraction λy:α.z:α->α has type α->β, that doesn't match declared type α->α")
   );
 });
 
@@ -85,37 +85,37 @@ function parseInput(input: string): ExpressionContext {
 
 const inputs = [
   `
-    x : α
-    z : β
-    M = λ y:α.y : α -> α
-    (λ y:α->α.(y x)) M 
+    x : α;
+    z : β;
+    M = λ y:α.y : α -> α;
+    (λ y:α->α.(y x) : (α->α) -> α) M 
     `,
 
   `
-    x : α
-    z : β
+    x : α;
+    z : β;
     M = λ y:α.y : α -> α
-    (λ y:α->α.(y z)) M 
+    (λ y:α->α.(y z) : ( α -> α ) -> α) M 
     `,
 
   `
-    w : α
-    z : β
-    M = λ y:α.y : α -> α
-    (λ y:α->α. λ x:α.(y x)) M w 
+    w : α;
+    z : β;
+    M = λ y:α.y : α -> α;
+    (λ y:α->α.( λ x:α.(y x) : α->α ) : (α->α) -> (α->α)) M w
     `,
 
   `
-    x : α
-    z : β
-    M = λ y:α.y : α -> α
+    x : α;
+    z : β;
+    M = λ y:α.y : α -> α;
     (λ y:α->α.y x) M 
     `,
 
   `
-    x : α
-    z : β
-    M = λ y:α.z : α -> α
+    x : α;
+    z : β;
+    M = λ y:α.z : α -> α;
     (λ y:α->α.y x) M 
     `,
 
@@ -124,39 +124,41 @@ const inputs = [
     z : β
     M = λ y:α.v : α -> α
     (λ y:α->α.y x) M 
-    `,
+  `,
   `
-    x : α
-    z : β
-    M = λ y:α->α.y : (α->α)->(α->α)
-    N = λ x:α.x : α->α
+    x : α;
+    z : β;
+    M = λ y:α->α.y : (α->α)->(α->α);
+    N = λ x:α.x : α->α;
     M N x
     `,
   `
-    w : α
-    z : β
-    M = λ y:α->α.(y w) : (α->α)->α
-    N = λ x:α.x : α->α
+    w : α;
+    z : β;
+    M = λ y:α->α.(y w) : (α->α)->α;
+    N = λ x:α.x : α->α;
     M N
     `,
   `
-    a : α
-    b : β
-    c : γ
-    f = λ x:α.λ y:β.λ z:γ.x : α -> β -> γ -> α
+    a : α;
+    b : β;
+    c : γ;
+    f = λ x:α.(λ y:β.(λ z:γ.x : γ -> α) : β -> γ -> α )  : α -> β -> γ -> α;
     f a b c
-    `,
+  `,
   `
-    f : (α -> β) -> (α -> γ)
-    g : α -> β
-    h : α
+    f : (α -> β) -> (α -> γ);
+    g : α -> β;
+    h : α;
     f g h
     `,
   `
-    f : (α -> β) -> (α -> γ)
-    g : α -> β
-    h : α
-    x = f g h : γ
+    f : (α -> β) -> (α -> γ);
+    g : α -> β;
+    h : α;
+    x = f g h
+    
+    x
     `,
 
     `

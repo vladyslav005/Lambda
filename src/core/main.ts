@@ -1,13 +1,13 @@
 import {InputAnalyzer} from "./AnalyzeInput";
 
 let input = `
-x : A
-y : B
+a : α;
+b : β;
+c : γ;
+f = (λ x:α.(λ y:β.(λ z:γ.x) : γ -> α ) : β -> γ -> α  ) : α -> β -> γ -> α;
 
-f : A -> B
-
-(λ d : A -> B .(x) : A -> B -> A) f
-    `;
+f a b c
+ `;
 
 
 const analyzer = new InputAnalyzer()
