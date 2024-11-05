@@ -12,10 +12,7 @@ export function ErrorMessage(props: ErrorOutputProps) {
   return (
       <div className="mx-4 my-4 error-message"
            style={{
-             flex: '0 0 auto',
              backgroundColor: `${getBackgroundColorForError(props.errorType)}`,
-             maxWidth: '380px',
-             minWidth: '380px',
            }}
       >
         <h1 className="mb-1 mx-4 text-1xl font-bold tracking-tight p-1 text-gray-900 dark:text-white">

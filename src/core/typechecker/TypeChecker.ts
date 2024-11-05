@@ -135,20 +135,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   };
 
   visitGlobalFunctionDeclaration = (ctx: GlobalFunctionDeclarationContext): any => {
-    // const typeNode = ctx.type_();
-    let declaredType: string;
     let id: string = ctx.getChild(0).getText();
-
-    // declaredType = this.visit(typeNode);
 
     const body = ctx.term();
     const bodyType = this.visit(body);
-
-
-    // if (bodyType !== declaredType) {
-    //   throw new Error("Function " + id + " returns type " +
-    //       bodyType + ", that doesn't match declared type " + declaredType);
-    // }
 
     this._globalContext.addVariable(id, bodyType);
 
@@ -173,19 +163,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     body = this.eliminateOutParentheses(body);
 
-    let bodyType = undefined;
-    // if (body instanceof LambdaAbstractionContext) {
-    //   bodyType = this.visit(body);
-    //   let bodyTypeNode = this.parseType(bodyType);
-    //   let bodyAbsReturnType = bodyTypeNode.getChild(2);
-    //   bodyAbsReturnType = this.eliminateOutParentheses(bodyAbsReturnType);
-    //   bodyType = bodyAbsReturnType.getText();
-    // } else
-    bodyType = this.visit(body); // defines type, that function's body returns
-
+    let bodyType = this.visit(body); // defines type, that function's body returns
 
     this._localContext.deleteVariable(paramName);
-
 
     if (this.parseType(bodyType) instanceof FunctionTypeContext) {
       bodyType = '(' + bodyType + ')';
@@ -266,10 +246,11 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     let funcTypeTree = this.parseType(funcType);
 
     if (! (funcTypeTree instanceof FunctionTypeContext)) {
-
-      throw new TypeError(funcName + `: has type ${funcType}, that is not a function type, cant use application there`,
+      throw new TypeError(
+          funcName + `: has type ${funcType}, that is not a function type, cant use application there`,
           ctx.start.line, (ctx.stop ? ctx.stop.line : ctx.start.line),
-          ctx.start.column, (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length)
+          ctx.start.column,
+          (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length)
       );
     }
 
@@ -282,10 +263,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     /* checking type of argument */
     if (argumentType !== argumentExpectedType) {
       throw new TypeError("Types mismatch: term " + funcName + " expects argument of type "
-          + argumentExpectedType + ", but given argument \'" + argumentName + "\' is of type " + argumentType,
+          + argumentExpectedType + ", but given argument '" + argumentName + "' is of type " + argumentType,
           ctx.start.line, (ctx.stop ? ctx.stop.line : ctx.start.line),
-          ctx.start.column, (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length)
-
+          ctx.start.column,
+          (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length)
       );
     }
 
@@ -320,11 +301,11 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   };
 
   visitParenType = (ctx: ParenTypeContext): any => {
-
     let typeTextWithoutBrackets = this.visit(ctx.getChild(1));
     return '(' + typeTextWithoutBrackets + ')';
   };
 
+  // RETURNS AST OF TYPE
   private parseType(input: string): TypeContext {
     const lexer = new LambdaCalcLexer(new CharStream(input));
     const tokens = new CommonTokenStream(lexer);

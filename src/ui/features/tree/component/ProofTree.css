@@ -1,0 +1,11 @@
+.tree-flat-container {
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.tree-component {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}

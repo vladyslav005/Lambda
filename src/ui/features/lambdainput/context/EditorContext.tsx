@@ -1,6 +1,9 @@
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
-import {createContext, useState} from 'react';
+import React, {createContext, useState} from 'react';
 import {ErrorMessage} from '../../erroroutput/types/error_types'
+
+
+// CONTEXT TO STORE EDITOR VALUE AND OTHER SHARED VARIABLES
 
 export interface EditorContextInterface {
   setEditorValue: (value: any) => void,

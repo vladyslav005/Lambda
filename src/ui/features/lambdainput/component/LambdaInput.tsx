@@ -4,6 +4,7 @@ import {setUpMonacoLanguage} from "../hook/SetUpMonacoLanguage";
 import {EditorContext} from "../context/EditorContext";
 import {useBuildTree} from "../hook/BuildTreeHook";
 import {SyntaxError, TypeError} from "../../../../core/errorhandling/customErrors";
+import "./LambdaInput.css"
 
 
 export function LambdaInput() {
@@ -11,20 +12,16 @@ export function LambdaInput() {
   const editorContext = useContext(EditorContext);
   const {buildTree} = useBuildTree();
 
+
   const handleEditorDidMount = (editor : any, monaco: any) => {
     editorContext.setEditor(editor);
     editorContext.setMonaco(monaco);
-
-  };
-
-  const getExpressionTillFirstParen = (lineContent : any, column : any) => {
-
   };
 
   useEffect(() => {
     if (monaco) {
       try {
-        setUpMonacoLanguage(monaco);
+        setUpMonacoLanguage(monaco); // set up language and editor settings
         monaco.editor.setTheme("lambda-theme");
       } catch (e) {
         console.error('Error setting up Monaco:', e);
@@ -32,16 +29,14 @@ export function LambdaInput() {
     }
   }, [monaco]);
 
-  function buttonClickHandler(e: any) {
-    buildTree(editorContext.editorValue)
-  }
-
-
   function editorOnChange(value : any, event : any) {
     editorContext.setEditorValue(value);
-    const errors = buildTree(value)
+    const errors : Error[] | undefined = buildTree(value)
+    setEditorErrors(errors)
+  }
 
-    // UNDERLINE ERRORS
+  // UNDERLINE ERRORS IN EDITOR
+  function setEditorErrors(errors : Error[] | undefined) {
     const model = editorContext.editor.getModel();
     const markers : any[] = [];
 
@@ -65,14 +60,9 @@ export function LambdaInput() {
     editorContext.monaco.editor.setModelMarkers(model, 'lambda-errors', markers);
   }
 
-
   return (
       <div
           className="lambda-input bg-amber-100 ui-block m-0"
-          style={{
-            position: 'relative',
-            flexGrow: 1,
-          }}
       >
         <Editor
             className="h-full"
@@ -95,19 +85,6 @@ export function LambdaInput() {
             }}
         />
 
-        {/*<button*/}
-        {/*    className="build-button bg-transparent hover:bg-green-500 text-green-700 font-semibold*/}
-        {/*            hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"*/}
-        {/*    style={{*/}
-        {/*      position: 'absolute',*/}
-        {/*      bottom: '10px',*/}
-        {/*      left: '20px',*/}
-        {/*      zIndex: 1*/}
-        {/*    }}*/}
-        {/*    onClick={buttonClickHandler}*/}
-        {/*>*/}
-        {/*  Build tree*/}
-        {/*</button>*/}
       </div>
   );
 }

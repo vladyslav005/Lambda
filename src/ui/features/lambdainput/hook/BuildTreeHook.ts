@@ -7,12 +7,12 @@ const analyzer = new InputAnalyzer();
 export function useBuildTree() {
   const editorContext = useContext(EditorContext);
 
-  function buildTree(value : string | undefined) {
+  function buildTree(value : string | undefined) : Error[] | undefined {
     try {
       editorContext.setTree(undefined);
 
       if (!value || (value && value.trim() === "")) {
-        throw new Error("Input is empty");
+        return undefined;
       }
 
       analyzer.analyzeInput(value)
@@ -31,11 +31,11 @@ export function useBuildTree() {
 
       editorContext.setErrors([error]);
       console.warn(error)
-      return [error];
+      return [error]; // return list if errors
 
     }
 
-    return undefined;
+    return undefined; // return undefined if there were no errors
   }
 
   return {buildTree};
