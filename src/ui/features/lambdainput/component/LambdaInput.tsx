@@ -55,9 +55,11 @@ export function LambdaInput() {
           severity: editorContext.monaco.MarkerSeverity.Error,
         });
       }
+
     });
 
     editorContext.monaco.editor.setModelMarkers(model, 'lambda-errors', markers);
+
   }
 
   return (

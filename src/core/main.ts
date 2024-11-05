@@ -1,12 +1,11 @@
 import {InputAnalyzer} from "./AnalyzeInput";
 
 let input = `
-a : α;
-b : β;
-c : γ;
-f = (λ x:α.(λ y:β.(λ z:γ.x) : γ -> α ) : β -> γ -> α  ) : α -> β -> γ -> α;
-
-f a b c
+ a : α;
+ b : β;
+ c : γ;
+ f = λ x:α.(λ y:β.(λ z:γ.x : γ -> α) : β -> γ -> α )  : α -> β -> γ -> α;
+ f a b c 
  `;
 
 
@@ -17,8 +16,9 @@ analyzer.analyzeInput(input)
 
 analyzer.checkTypes()
 
-console.log(JSON.stringify(analyzer.generateProofTree(), undefined, 4))
+// console.log(JSON.stringify(analyzer.generateProofTree(), undefined, 4))
 
+console.log(analyzer.generateProofTree())
 
 input = `
     x : α

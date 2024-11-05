@@ -1,0 +1,117 @@
+.proof-node {
+    display: inline-flex;
+    flex-direction: column;
+
+}
+
+.premises {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    justify-content: center;
+    border-bottom: 1px solid black;
+
+}
+
+.conclusion.not-root {
+
+}
+
+.conclusion-center {
+    padding: 5px;
+    cursor: auto;
+}
+
+.conclusion-center.leaf-node {
+
+}
+
+
+.premises.leaf-node {
+
+}
+
+
+.conclusion {
+    display: inline-flex;
+    margin-top: -1px;
+    position: relative;
+}
+
+.conclusion::after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    position: relative;
+    content: "";
+}
+
+
+.conclusion-left {
+    flex-grow: 1;
+}
+
+.conclusion-center.not-leaf-node {
+
+}
+
+.conclusion-center.root {
+    border-bottom: none;
+}
+
+.conclusion-center.leaf-node {
+}
+
+
+.conclusion-right {
+    flex-grow: 1;
+    display: inline-flex;
+    justify-content: flex-end;
+}
+
+
+.rule-name {
+    display: inline-flex;
+    justify-content: flex-end;
+    position: relative;
+    bottom: 14px;
+    left: 70px;
+    width: 0;
+    height: 0;
+    white-space: nowrap;
+
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 1.2;
+    color: black;
+    font-style: italic;
+
+}
+
+
+.inter-proof {
+
+    width: 8rem;
+}
+
+.premises > .proof-node:not(:first-child) > .conclusion > .conclusion-left {
+
+}
+
+.premises > .proof-node > .conclusion > .conclusion-center {
+
+}
+
+.premises > .proof-node:not(:last-child) > .conclusion > .conclusion-right {
+
+}
+
+.premise mjx-container, .conclusion mjx-container {
+    margin: 0px !important;
+}
+
+.highlighted-code {
+    background-color: rgba(255, 255, 0, 0.3); /* Light yellow background */
+    border-radius: 2px; /* Optional: to soften the edges of the highlight */
+}

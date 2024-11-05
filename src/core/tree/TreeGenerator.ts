@@ -12,13 +12,13 @@ import {
   VariableContext
 } from "../antlr/LambdaCalcParser";
 import {Context, TypeChecker} from "../typechecker/TypeChecker";
-import {ParseTree} from "antlr4";
+import {ParserRuleContext, ParseTree} from "antlr4";
 
 export interface ProofNode {
   type: string;
   conclusion: string;
   rule: string;
-  // context: ParserRuleContext;
+  context: ParserRuleContext;
   premises?: ProofNode[];
   root: boolean;
 }
@@ -104,7 +104,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       type: type,
       conclusion: `\\Gamma \\vdash ${ctx.getText()}`,
       rule: "(T-abs)",
-      // context: ctx,
+      context: ctx,
       root: false,
       premises: [this.visit(body)],
     } as ProofNode;
@@ -126,16 +126,17 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${type}`,
       rule: "(T-var)",
       root: false,
+      context: ctx,
       premises: [
         {
           type: type,
           conclusion: `${ctx.getText()} : ${type} \\in \\Gamma`,
           rule: "",
           root: false,
+          context: ctx
         }
 
       ],
-      // context: ctx,
     } as ProofNode;
   };
 
@@ -148,7 +149,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       type: type,
       conclusion: `\\Gamma${this.contextExtension ? this.contextExtension : ''} \\vdash ${ctx.getText()} : ${type}`,
       rule: "(T-app)",
-      // context: ctx,
+      context: ctx,
       root: false,
       premises: this.visitChildren(ctx),
     } as ProofNode;

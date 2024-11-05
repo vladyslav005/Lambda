@@ -9,3 +9,23 @@
     width: 100%;
     position: absolute;
 }
+
+
+.switch-tree-button {
+    /*background-color: red;*/
+    padding: 8px;
+    cursor: pointer;
+
+    transition: background-color 0.25s ease;
+}
+
+
+.switch-tree-container {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    /*padding: 5px;*/
+    margin: 10px;
+    z-index: 1000;
+    border: 1px solid #ccc;
+}
