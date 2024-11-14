@@ -8,10 +8,13 @@ import { GlobalVariableDeclarationContext } from "./LambdaCalcParser.js";
 import { GlobalFunctionDeclarationContext } from "./LambdaCalcParser.js";
 import { LambdaAbstractionContext } from "./LambdaCalcParser.js";
 import { VariableContext } from "./LambdaCalcParser.js";
+import { TupleProjectionContext } from "./LambdaCalcParser.js";
 import { ApplicationContext } from "./LambdaCalcParser.js";
+import { TupleContext } from "./LambdaCalcParser.js";
 import { ParenthesesContext } from "./LambdaCalcParser.js";
 import { GreekTypeContext } from "./LambdaCalcParser.js";
 import { FunctionTypeContext } from "./LambdaCalcParser.js";
+import { TupleTypeContext } from "./LambdaCalcParser.js";
 import { ParenTypeContext } from "./LambdaCalcParser.js";
 
 
@@ -81,6 +84,18 @@ export default class LambdaCalcListener extends ParseTreeListener {
 	 */
 	exitVariable?: (ctx: VariableContext) => void;
 	/**
+	 * Enter a parse tree produced by the `TupleProjection`
+	 * labeled alternative in `LambdaCalcParser.term`.
+	 * @param ctx the parse tree
+	 */
+	enterTupleProjection?: (ctx: TupleProjectionContext) => void;
+	/**
+	 * Exit a parse tree produced by the `TupleProjection`
+	 * labeled alternative in `LambdaCalcParser.term`.
+	 * @param ctx the parse tree
+	 */
+	exitTupleProjection?: (ctx: TupleProjectionContext) => void;
+	/**
 	 * Enter a parse tree produced by the `Application`
 	 * labeled alternative in `LambdaCalcParser.term`.
 	 * @param ctx the parse tree
@@ -92,6 +107,18 @@ export default class LambdaCalcListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitApplication?: (ctx: ApplicationContext) => void;
+	/**
+	 * Enter a parse tree produced by the `Tuple`
+	 * labeled alternative in `LambdaCalcParser.term`.
+	 * @param ctx the parse tree
+	 */
+	enterTuple?: (ctx: TupleContext) => void;
+	/**
+	 * Exit a parse tree produced by the `Tuple`
+	 * labeled alternative in `LambdaCalcParser.term`.
+	 * @param ctx the parse tree
+	 */
+	exitTuple?: (ctx: TupleContext) => void;
 	/**
 	 * Enter a parse tree produced by the `Parentheses`
 	 * labeled alternative in `LambdaCalcParser.term`.
@@ -128,6 +155,18 @@ export default class LambdaCalcListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitFunctionType?: (ctx: FunctionTypeContext) => void;
+	/**
+	 * Enter a parse tree produced by the `TupleType`
+	 * labeled alternative in `LambdaCalcParser.type`.
+	 * @param ctx the parse tree
+	 */
+	enterTupleType?: (ctx: TupleTypeContext) => void;
+	/**
+	 * Exit a parse tree produced by the `TupleType`
+	 * labeled alternative in `LambdaCalcParser.type`.
+	 * @param ctx the parse tree
+	 */
+	exitTupleType?: (ctx: TupleTypeContext) => void;
 	/**
 	 * Enter a parse tree produced by the `ParenType`
 	 * labeled alternative in `LambdaCalcParser.type`.

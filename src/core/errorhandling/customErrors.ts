@@ -1,4 +1,3 @@
-
 export class SyntaxError extends Error {
   public startLine: number;
   public endLine: number;
@@ -6,7 +5,7 @@ export class SyntaxError extends Error {
   public startColumn: number;
   public endColumn: number;
 
-  constructor(msg: string, startLine: number, endLine: number,  startColumn: number, endColumn: number) {
+  constructor(msg: string, startLine: number, endLine: number, startColumn: number, endColumn: number) {
     super(msg);
     Object.setPrototypeOf(this, SyntaxError.prototype);
 
@@ -27,7 +26,7 @@ export class TypeError extends Error {
   public startColumn: number;
   public endColumn: number;
 
-  constructor(msg: string, startLine: number, endLine: number,  startColumn: number, endColumn: number) {
+  constructor(msg: string, startLine: number, endLine: number, startColumn: number, endColumn: number) {
     super(msg);
     Object.setPrototypeOf(this, SyntaxError.prototype);
 

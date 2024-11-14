@@ -1,6 +1,5 @@
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import React, {createContext, useState} from 'react';
-import {ErrorMessage} from '../../erroroutput/types/error_types'
 
 
 // CONTEXT TO STORE EDITOR VALUE AND OTHER SHARED VARIABLES
@@ -15,21 +14,26 @@ export interface EditorContextInterface {
 
   tree: ProofNode | undefined,
   errors: Error[] | undefined,
-  editor : any,
-  monaco : any
+  editor: any,
+  monaco: any
 }
 
 export const EditorContext = createContext<EditorContextInterface>({
-      setEditorValue: (value: any) => {},
-      setTree: (tree: ProofNode | undefined) => {},
-      setErrors: (errors: Error[]) => {},
-      setEditor: (editor: any) => {},
-      setMonaco: (monaco: any) => {},
+      setEditorValue: (value: any) => {
+      },
+      setTree: (tree: ProofNode | undefined) => {
+      },
+      setErrors: (errors: Error[]) => {
+      },
+      setEditor: (editor: any) => {
+      },
+      setMonaco: (monaco: any) => {
+      },
       editorValue: '',
       tree: undefined,
       errors: [],
-      editor : undefined,
-      monaco : undefined,
+      editor: undefined,
+      monaco: undefined,
     }
 )
 

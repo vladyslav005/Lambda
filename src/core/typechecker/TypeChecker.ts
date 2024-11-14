@@ -8,13 +8,14 @@ import LambdaCalcParser, {
   GreekTypeContext,
   LambdaAbstractionContext,
   ParenthesesContext,
-  ParenTypeContext,
+  ParenTypeContext, TupleContext, TupleProjectionContext, TupleTypeContext,
   TypeContext,
   VariableContext
 } from "../antlr/LambdaCalcParser";
 import {CharStream, CommonTokenStream, ParseTree} from "antlr4";
 import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
 import {TypeError} from "../errorhandling/customErrors";
+import test from "node:test";
 
 
 class ContextElement {
@@ -88,6 +89,8 @@ export class Context {
   }
 }
 
+
+// TODO : add location to errors
 export class TypeChecker extends LambdaCalcVisitor<any> {
 
   private _globalContext: Context = new Context();
@@ -140,6 +143,17 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const body = ctx.term();
     const bodyType = this.visit(body);
 
+    if ( !(body instanceof LambdaAbstractionContext)  ) {
+      if (ctx.getChildCount() !== 6)
+        throw new Error("Provide explicit type declaration")
+
+      const declaredType = ctx.getChild(4).getText();
+
+      if (bodyType !== declaredType)
+        throw new Error(`term ${body.getText()} is of type ${bodyType}, but declared type is ${declaredType}`);
+
+    }
+
     this._globalContext.addVariable(id, bodyType);
 
     console.log("Visiting a global function declaration", ctx.getText() /*, id, declaredType*/);
@@ -147,6 +161,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return this.visitChildren(ctx);
   };
 
+  /* IMPLEMENTS ABS RULE */
   visitLambdaAbstraction = (ctx: LambdaAbstractionContext): any => {
     console.log("Visiting lambda abstraction ", ctx.getText());
     const paramName = ctx.ID().getText();
@@ -175,7 +190,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       paramType = '(' + paramType + ')';
     }
 
-    const absType=  paramType + "->" + bodyType;
+    const absType = paramType + "->" + bodyType;
 
     if (absType !== declaredType) {
       throw new TypeError("Abstraction " + ctx.getText() + " has type " +
@@ -188,6 +203,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return absType
   };
 
+  /* IMPLEMENTS VAR RULE */
   visitVariable = (ctx: VariableContext): any => {
     console.log("Visiting variable", ctx.getText());
 
@@ -203,6 +219,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
         ctx.start.column, (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length));
   };
 
+  /* IMPLEMENTS APP RULE */
   visitApplication = (ctx: ApplicationContext): any => {
     const funcName = ctx.getChild(0).getText();
     let func = ctx.getChild(0);
@@ -214,8 +231,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     func = this.eliminateOutParentheses(func);
     argument = this.eliminateOutParentheses(argument);
 
-    let funcType: string | undefined = undefined;
-    let argumentType: string | undefined = undefined;
+    let funcType: string | undefined ;
+    let argumentType: string | undefined ;
 
     /* defining the type of term which is on the left side of application */
     if (this._localContext.isVariableInContext(funcName)) {
@@ -245,7 +262,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     let funcTypeTree = this.parseType(funcType);
 
-    if (! (funcTypeTree instanceof FunctionTypeContext)) {
+    if (!(funcTypeTree instanceof FunctionTypeContext)) {
       throw new TypeError(
           funcName + `: has type ${funcType}, that is not a function type, cant use application there`,
           ctx.start.line, (ctx.stop ? ctx.stop.line : ctx.start.line),
@@ -273,10 +290,88 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return funcReturnType;
   };
 
+  /* IMPLEMENTS TUPLE RULE */
+  visitTuple = (ctx: TupleContext): any => {
+    console.log(`Visiting a tuple term ${ctx.getText()} ${ctx.getChildCount()}`);
+    let type : string = '';
+
+    for (let i = 1; i < ctx.getChildCount() - 1; i++) {
+      if ( i % 2 !== 0) {
+        let child = ctx.getChild(i);
+        console.log(type);
+        let childType = this.visit(child)
+          if ( this.parseType(childType) instanceof TupleTypeContext ) {
+          childType = '(' + childType + ')'
+        }
+        type = type.concat(childType, '*');
+      }
+    }
+
+    type = type.substring(0, type.lastIndexOf('*'));
+
+    return type;
+
+  }
+
+  visitTupleProjection = (ctx: TupleProjectionContext): any => {
+
+    const tupleName = ctx.getChild(0).getText();
+    const tupleNode = ctx.getChild(0);
+    let tupleType : string | undefined = undefined;
+
+    const projectionIndex = parseInt(ctx.getChild(2).getText());
+
+    if (this._localContext.isVariableInContext(tupleName)) {
+      tupleType = this._localContext.getType(tupleName);
+    } else if (this._globalContext.isVariableInContext(tupleName)) {
+      tupleType = this._globalContext.getType(tupleName);
+    } else {
+      tupleType = this.visit(tupleNode);
+    }
+
+    if (tupleType === undefined) {
+      throw new Error("Unable to define type of tuple: " + tupleName);
+    }
+
+    const tupleTypeNode = this.parseType(tupleType);
+
+    const tupleTypesArray : string[] = [];
+    this.tupleTypeToArray(tupleTypeNode, tupleTypesArray);
+
+    if (projectionIndex - 1 > tupleTypesArray.length - 1) {
+      throw new Error(`Index '${projectionIndex}' is out range for tuple '${tupleName}' of type '${tupleType}'`)
+    }
+
+    const result = tupleTypesArray[projectionIndex - 1];
+    console.log(`Visiting an tuple proj term ${ctx.getText()}`);
+
+    return result;
+  }
+
+  // TODO : may cause errors ?
+  tupleTypeToArray(ctx: TypeContext, output: string[]): any {
+    const left =  ctx.getChild(0);
+    const right = ctx.getChild(2);
+
+    output.push(this.eliminateOutParentheses(left).getText());
+
+    if (right instanceof ParenTypeContext || right instanceof GreekTypeContext) {
+      output.push(this.eliminateOutParentheses(right).getText());
+    } else if (right instanceof TypeContext) {
+      this.tupleTypeToArray(right, output);
+    }
+  }
+
   visitParentheses = (ctx: ParenthesesContext): any => {
-    console.log("Visiting parentheses", ctx.getText());
+    console.log("Visiting parentheses ", ctx.getText());
     return this.visitChildren(ctx);
   };
+
+  visitTupleType = (ctx: TupleTypeContext): any => {
+    console.log("Visiting a tuple type", ctx.getText());
+
+    return ctx.getText();
+  }
 
   visitGreekType = (ctx: GreekTypeContext): any => {
     // console.log("Visiting a Greek type", ctx.getText());
@@ -284,7 +379,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   };
 
   visitFunctionType = (ctx: FunctionTypeContext): any => {
-
     let returnType = ctx.getChild(2);
     let argumentType = ctx.getChild(0)
     // console.log("Visiting a function type", argumentType.getText(), '|', returnType.getText());

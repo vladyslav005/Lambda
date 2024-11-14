@@ -1,5 +1,3 @@
-
-
 export enum ErrorType {
   WARNING = 'WARNING',
   ERROR = 'ERROR',
@@ -13,7 +11,7 @@ export interface ErrorMessage {
   message: string;
 }
 
-export function getBackgroundColorForError(errorType : ErrorType) {
+export function getBackgroundColorForError(errorType: ErrorType) {
   switch (errorType) {
     case ErrorType.WARNING:
       return 'red';

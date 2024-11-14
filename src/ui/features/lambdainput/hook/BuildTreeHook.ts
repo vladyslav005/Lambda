@@ -7,7 +7,7 @@ const analyzer = new InputAnalyzer();
 export function useBuildTree() {
   const editorContext = useContext(EditorContext);
 
-  function buildTree(value : string | undefined) : Error[] | undefined {
+  function buildTree(value: string | undefined): Error[] | undefined {
     try {
       editorContext.setTree(undefined);
 
@@ -27,7 +27,7 @@ export function useBuildTree() {
 
       analyzer.clearContext()
 
-    } catch (error : any) {
+    } catch (error: any) {
 
       editorContext.setErrors([error]);
       console.warn(error)

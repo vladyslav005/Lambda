@@ -2,8 +2,8 @@ import {ErrorType, getBackgroundColorForError} from "../types/error_types";
 
 
 interface ErrorOutputProps {
-  errorType : ErrorType;
-  message : string;
+  errorType: ErrorType;
+  message: string;
 }
 
 export function ErrorMessage(props: ErrorOutputProps) {

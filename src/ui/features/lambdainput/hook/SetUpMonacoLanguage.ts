@@ -31,19 +31,19 @@ export function setUpMonacoLanguage(monaco: any) {
     base: 'vs', // Light base theme
     inherit: true,
     rules: [
-      { token: 'keyword', foreground: '#5b8cff', fontStyle: 'bold' },
-      { token: 'lambda', foreground: '#e06c75', fontStyle: 'bold' },
-      { token: 'arrow', foreground: '#98c379', fontStyle: 'bold' },
-      { token: 'semi', foreground: '#5b8cff', fontStyle: 'bold' },
-      { token: 'variable', foreground: '#333333', fontStyle: 'regular' },
-      { token: 'number', foreground: '#d19a66' },
-      { token: 'string', foreground: '#b5bd68' },
-      { token: 'comment', foreground: '#8b8b8b', fontStyle: 'italic' },
-      { token: 'delimiter', foreground: '#e06c75' },
-      { token: 'type', foreground: '#a5c8ff', fontStyle: 'bold' },
-      { token: 'function', foreground: '#c678dd', fontStyle: 'bold' },
-      { token: 'class', foreground: '#e5c07b', fontStyle: 'bold' },
-      { token: 'property', foreground: '#61afef', fontStyle: 'bold' },
+      {token: 'keyword', foreground: '#5b8cff', fontStyle: 'bold'},
+      {token: 'lambda', foreground: '#e06c75', fontStyle: 'bold'},
+      {token: 'arrow', foreground: '#98c379', fontStyle: 'bold'},
+      {token: 'semi', foreground: '#5b8cff', fontStyle: 'bold'},
+      {token: 'variable', foreground: '#333333', fontStyle: 'regular'},
+      {token: 'number', foreground: '#d19a66'},
+      {token: 'string', foreground: '#b5bd68'},
+      {token: 'comment', foreground: '#8b8b8b', fontStyle: 'italic'},
+      {token: 'delimiter', foreground: '#e06c75'},
+      {token: 'type', foreground: '#a5c8ff', fontStyle: 'bold'},
+      {token: 'function', foreground: '#c678dd', fontStyle: 'bold'},
+      {token: 'class', foreground: '#e5c07b', fontStyle: 'bold'},
+      {token: 'property', foreground: '#61afef', fontStyle: 'bold'},
     ],
     colors: {
       "editor.foreground": "#3c3c3c",
@@ -59,25 +59,23 @@ export function setUpMonacoLanguage(monaco: any) {
   });
 
 
-
-
   monaco.editor.defineTheme("dark-lambda-theme", {
     base: 'vs-dark', // Dark base theme for better contrast
     inherit: true,
     rules: [
-      { token: 'keyword', foreground: '#ffab40', fontStyle: 'bold' },
-      { token: 'lambda', foreground: '#c678dd', fontStyle: 'bold' },
-      { token: 'arrow', foreground: '#56b6c2', fontStyle: 'bold' },
-      { token: 'semi', foreground: '#61afef', fontStyle: 'bold' },
-      { token: 'variable', foreground: '#ffffff', fontStyle: 'regular' },
-      { token: 'number', foreground: '#d19a66' },
-      { token: 'string', foreground: '#98c379' },
-      { token: 'comment', foreground: '#7f848e', fontStyle: 'italic' },
-      { token: 'delimiter', foreground: '#e06c75' },
-      { token: 'type', foreground: '#c678dd', fontStyle: 'bold' },
-      { token: 'function', foreground: '#61afef', fontStyle: 'bold' },
-      { token: 'class', foreground: '#e5c07b', fontStyle: 'bold' },
-      { token: 'property', foreground: '#d19a66', fontStyle: 'bold' },
+      {token: 'keyword', foreground: '#ffab40', fontStyle: 'bold'},
+      {token: 'lambda', foreground: '#c678dd', fontStyle: 'bold'},
+      {token: 'arrow', foreground: '#56b6c2', fontStyle: 'bold'},
+      {token: 'semi', foreground: '#61afef', fontStyle: 'bold'},
+      {token: 'variable', foreground: '#ffffff', fontStyle: 'regular'},
+      {token: 'number', foreground: '#d19a66'},
+      {token: 'string', foreground: '#98c379'},
+      {token: 'comment', foreground: '#7f848e', fontStyle: 'italic'},
+      {token: 'delimiter', foreground: '#e06c75'},
+      {token: 'type', foreground: '#c678dd', fontStyle: 'bold'},
+      {token: 'function', foreground: '#61afef', fontStyle: 'bold'},
+      {token: 'class', foreground: '#e5c07b', fontStyle: 'bold'},
+      {token: 'property', foreground: '#d19a66', fontStyle: 'bold'},
     ],
     colors: {
       "editor.foreground": "#abb2bf",
@@ -91,7 +89,6 @@ export function setUpMonacoLanguage(monaco: any) {
       "editor.wordHighlightStrongBackground": "#4e5562",
     },
   });
-
 
 
   monaco.languages.setLanguageConfiguration("lambda", {
@@ -149,30 +146,174 @@ export function setUpMonacoLanguage(monaco: any) {
       );
 
       const suggestions = [
-        { label: '\\alpha', kind: monaco.languages.CompletionItemKind.Text, insertText: 'α', detail: 'Alpha type', range: slashRange },
-        { label: '\\beta', kind: monaco.languages.CompletionItemKind.Text, insertText: 'β', detail: 'Beta type', range: slashRange },
-        { label: '\\gamma', kind: monaco.languages.CompletionItemKind.Text, insertText: 'γ', detail: 'Gamma type', range: slashRange },
-        { label: '\\delta', kind: monaco.languages.CompletionItemKind.Text, insertText: 'δ', detail: 'Delta type', range: slashRange },
-        { label: '\\epsilon', kind: monaco.languages.CompletionItemKind.Text, insertText: 'ε', detail: 'Epsilon type', range: slashRange },
-        { label: '\\zeta', kind: monaco.languages.CompletionItemKind.Text, insertText: 'ζ', detail: 'Zeta type', range: slashRange },
-        { label: '\\eta', kind: monaco.languages.CompletionItemKind.Text, insertText: 'η', detail: 'Eta type', range: slashRange },
-        { label: '\\theta', kind: monaco.languages.CompletionItemKind.Text, insertText: 'θ', detail: 'Theta type', range: slashRange },
-        { label: '\\iota', kind: monaco.languages.CompletionItemKind.Text, insertText: 'ι', detail: 'Iota type', range: slashRange },
-        { label: '\\kappa', kind: monaco.languages.CompletionItemKind.Text, insertText: 'κ', detail: 'Kappa type', range: slashRange },
-        { label: '\\lambda', kind: monaco.languages.CompletionItemKind.Text, insertText: 'λ', detail: 'Lambda type', range: slashRange },
-        { label: '\\mu', kind: monaco.languages.CompletionItemKind.Text, insertText: 'μ', detail: 'Mu type', range: slashRange },
-        { label: '\\nu', kind: monaco.languages.CompletionItemKind.Text, insertText: 'ν', detail: 'Nu type', range: slashRange },
-        { label: '\\xi', kind: monaco.languages.CompletionItemKind.Text, insertText: 'ξ', detail: 'Xi type', range: slashRange },
-        { label: '\\omicron', kind: monaco.languages.CompletionItemKind.Text, insertText: 'ο', detail: 'Omicron type', range: slashRange },
-        { label: '\\pi', kind: monaco.languages.CompletionItemKind.Text, insertText: 'π', detail: 'Pi type', range: slashRange },
-        { label: '\\rho', kind: monaco.languages.CompletionItemKind.Text, insertText: 'ρ', detail: 'Rho type', range: slashRange },
-        { label: '\\sigma', kind: monaco.languages.CompletionItemKind.Text, insertText: 'σ', detail: 'Sigma type', range: slashRange },
-        { label: '\\tau', kind: monaco.languages.CompletionItemKind.Text, insertText: 'τ', detail: 'Tau type', range: slashRange },
-        { label: '\\upsilon', kind: monaco.languages.CompletionItemKind.Text, insertText: 'υ', detail: 'Upsilon type', range: slashRange },
-        { label: '\\phi', kind: monaco.languages.CompletionItemKind.Text, insertText: 'φ', detail: 'Phi type', range: slashRange },
-        { label: '\\chi', kind: monaco.languages.CompletionItemKind.Text, insertText: 'χ', detail: 'Chi type', range: slashRange },
-        { label: '\\psi', kind: monaco.languages.CompletionItemKind.Text, insertText: 'ψ', detail: 'Psi type', range: slashRange },
-        { label: '\\omega', kind: monaco.languages.CompletionItemKind.Text, insertText: 'ω', detail: 'Omega type', range: slashRange }
+        {
+          label: '\\alpha',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'α',
+          detail: 'Alpha type',
+          range: slashRange
+        },
+        {
+          label: '\\beta',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'β',
+          detail: 'Beta type',
+          range: slashRange
+        },
+        {
+          label: '\\gamma',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'γ',
+          detail: 'Gamma type',
+          range: slashRange
+        },
+        {
+          label: '\\delta',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'δ',
+          detail: 'Delta type',
+          range: slashRange
+        },
+        {
+          label: '\\epsilon',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'ε',
+          detail: 'Epsilon type',
+          range: slashRange
+        },
+        {
+          label: '\\zeta',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'ζ',
+          detail: 'Zeta type',
+          range: slashRange
+        },
+        {
+          label: '\\eta',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'η',
+          detail: 'Eta type',
+          range: slashRange
+        },
+        {
+          label: '\\theta',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'θ',
+          detail: 'Theta type',
+          range: slashRange
+        },
+        {
+          label: '\\iota',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'ι',
+          detail: 'Iota type',
+          range: slashRange
+        },
+        {
+          label: '\\kappa',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'κ',
+          detail: 'Kappa type',
+          range: slashRange
+        },
+        {
+          label: '\\lambda',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'λ',
+          detail: 'Lambda type',
+          range: slashRange
+        },
+        {
+          label: '\\mu',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'μ',
+          detail: 'Mu type',
+          range: slashRange
+        },
+        {
+          label: '\\nu',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'ν',
+          detail: 'Nu type',
+          range: slashRange
+        },
+        {
+          label: '\\xi',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'ξ',
+          detail: 'Xi type',
+          range: slashRange
+        },
+        {
+          label: '\\omicron',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'ο',
+          detail: 'Omicron type',
+          range: slashRange
+        },
+        {
+          label: '\\pi',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'π',
+          detail: 'Pi type',
+          range: slashRange
+        },
+        {
+          label: '\\rho',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'ρ',
+          detail: 'Rho type',
+          range: slashRange
+        },
+        {
+          label: '\\sigma',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'σ',
+          detail: 'Sigma type',
+          range: slashRange
+        },
+        {
+          label: '\\tau',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'τ',
+          detail: 'Tau type',
+          range: slashRange
+        },
+        {
+          label: '\\upsilon',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'υ',
+          detail: 'Upsilon type',
+          range: slashRange
+        },
+        {
+          label: '\\phi',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'φ',
+          detail: 'Phi type',
+          range: slashRange
+        },
+        {
+          label: '\\chi',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'χ',
+          detail: 'Chi type',
+          range: slashRange
+        },
+        {
+          label: '\\psi',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'ψ',
+          detail: 'Psi type',
+          range: slashRange
+        },
+        {
+          label: '\\omega',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'ω',
+          detail: 'Omega type',
+          range: slashRange
+        }
       ];
 
       return {suggestions};

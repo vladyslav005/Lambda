@@ -2,8 +2,8 @@ import React from "react";
 import {TreeView} from "./TreeFlat";
 
 interface SwitchTreeViewProps {
-  setTreeView : (newView: TreeView) => void;
-  treeView : TreeView;
+  setTreeView: (newView: TreeView) => void;
+  treeView: TreeView;
 }
 
 

@@ -23,7 +23,7 @@ export function MainPage() {
           <div className="flex flex-col"
                style={{
                  flexGrow: 0,
-          }}>
+               }}>
             <ErrorOutput></ErrorOutput>
           </div>
 

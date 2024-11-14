@@ -1,5 +1,4 @@
 import {ProofNode} from "../../../../../core/tree/TreeGenerator";
-import {MathComponent} from "mathjax-react";
 import "./ProofTreeUsingCss.css"
 import {ConclusionCenter} from "./ConclusionCenter";
 

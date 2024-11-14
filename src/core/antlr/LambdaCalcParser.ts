@@ -20,34 +20,43 @@ type int = number;
 
 export default class LambdaCalcParser extends Parser {
 	public static readonly T__0 = 1;
-	public static readonly LAMBDA = 2;
-	public static readonly ID = 3;
-	public static readonly GREEK_TYPE = 4;
-	public static readonly ARROW = 5;
-	public static readonly COLON = 6;
-	public static readonly DOT = 7;
-	public static readonly SEMI = 8;
-	public static readonly LPAREN = 9;
-	public static readonly RPAREN = 10;
-	public static readonly WS = 11;
+	public static readonly T__1 = 2;
+	public static readonly T__2 = 3;
+	public static readonly T__3 = 4;
+	public static readonly LAMBDA = 5;
+	public static readonly ID = 6;
+	public static readonly GREEK_TYPE = 7;
+	public static readonly NATURAL_NUMBER = 8;
+	public static readonly COMMA = 9;
+	public static readonly ARROW = 10;
+	public static readonly COLON = 11;
+	public static readonly DOT = 12;
+	public static readonly SEMI = 13;
+	public static readonly LPAREN = 14;
+	public static readonly RPAREN = 15;
+	public static readonly WS = 16;
 	public static override readonly EOF = Token.EOF;
 	public static readonly RULE_expression = 0;
 	public static readonly RULE_globalDecl = 1;
 	public static readonly RULE_term = 2;
 	public static readonly RULE_type = 3;
 	public static readonly literalNames: (string | null)[] = [ null, "'='", 
+                                                            "'<'", "'>'", 
+                                                            "'*'", null, 
                                                             null, null, 
-                                                            null, "'->'", 
-                                                            "':'", "'.'", 
-                                                            "';'", "'('", 
-                                                            "')'" ];
+                                                            null, "','", 
+                                                            "'->'", "':'", 
+                                                            "'.'", "';'", 
+                                                            "'('", "')'" ];
 	public static readonly symbolicNames: (string | null)[] = [ null, null, 
-                                                             "LAMBDA", "ID", 
-                                                             "GREEK_TYPE", 
-                                                             "ARROW", "COLON", 
-                                                             "DOT", "SEMI", 
-                                                             "LPAREN", "RPAREN", 
-                                                             "WS" ];
+                                                             null, null, 
+                                                             null, "LAMBDA", 
+                                                             "ID", "GREEK_TYPE", 
+                                                             "NATURAL_NUMBER", 
+                                                             "COMMA", "ARROW", 
+                                                             "COLON", "DOT", 
+                                                             "SEMI", "LPAREN", 
+                                                             "RPAREN", "WS" ];
 	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
 		"expression", "globalDecl", "term", "type",
@@ -147,7 +156,7 @@ export default class LambdaCalcParser extends Parser {
 				this.state = 27;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if (_la===6) {
+				if (_la===11) {
 					{
 					this.state = 25;
 					this.match(LambdaCalcParser.COLON);
@@ -191,14 +200,15 @@ export default class LambdaCalcParser extends Parser {
 		let _prevctx: TermContext = localctx;
 		let _startState: number = 4;
 		this.enterRecursionRule(localctx, 4, LambdaCalcParser.RULE_term, _p);
+		let _la: number;
 		try {
 			let _alt: number;
 			this.enterOuterAlt(localctx, 1);
 			{
-			this.state = 48;
+			this.state = 58;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case 2:
+			case 5:
 				{
 				localctx = new LambdaAbstractionContext(this, localctx);
 				this._ctx = localctx;
@@ -222,7 +232,7 @@ export default class LambdaCalcParser extends Parser {
 				this.type_(0);
 				}
 				break;
-			case 3:
+			case 6:
 				{
 				localctx = new VariableContext(this, localctx);
 				this._ctx = localctx;
@@ -231,16 +241,45 @@ export default class LambdaCalcParser extends Parser {
 				this.match(LambdaCalcParser.ID);
 				}
 				break;
-			case 9:
+			case 2:
+				{
+				localctx = new TupleContext(this, localctx);
+				this._ctx = localctx;
+				_prevctx = localctx;
+				this.state = 44;
+				this.match(LambdaCalcParser.T__1);
+				this.state = 45;
+				this.term(0);
+				this.state = 48;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				do {
+					{
+					{
+					this.state = 46;
+					this.match(LambdaCalcParser.COMMA);
+					this.state = 47;
+					this.term(0);
+					}
+					}
+					this.state = 50;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				} while (_la===9);
+				this.state = 52;
+				this.match(LambdaCalcParser.T__2);
+				}
+				break;
+			case 14:
 				{
 				localctx = new ParenthesesContext(this, localctx);
 				this._ctx = localctx;
 				_prevctx = localctx;
-				this.state = 44;
+				this.state = 54;
 				this.match(LambdaCalcParser.LPAREN);
-				this.state = 45;
+				this.state = 55;
 				this.term(0);
-				this.state = 46;
+				this.state = 56;
 				this.match(LambdaCalcParser.RPAREN);
 				}
 				break;
@@ -248,9 +287,9 @@ export default class LambdaCalcParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			this._ctx.stop = this._input.LT(-1);
-			this.state = 54;
+			this.state = 67;
 			this._errHandler.sync(this);
-			_alt = this._interp.adaptivePredict(this._input, 4, this._ctx);
+			_alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					if (this._parseListeners != null) {
@@ -258,21 +297,41 @@ export default class LambdaCalcParser extends Parser {
 					}
 					_prevctx = localctx;
 					{
-					{
-					localctx = new ApplicationContext(this, new TermContext(this, _parentctx, _parentState));
-					this.pushNewRecursionContext(localctx, _startState, LambdaCalcParser.RULE_term);
-					this.state = 50;
-					if (!(this.precpred(this._ctx, 3))) {
-						throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
-					}
-					this.state = 51;
-					this.term(4);
+					this.state = 65;
+					this._errHandler.sync(this);
+					switch ( this._interp.adaptivePredict(this._input, 5, this._ctx) ) {
+					case 1:
+						{
+						localctx = new ApplicationContext(this, new TermContext(this, _parentctx, _parentState));
+						this.pushNewRecursionContext(localctx, _startState, LambdaCalcParser.RULE_term);
+						this.state = 60;
+						if (!(this.precpred(this._ctx, 5))) {
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 5)");
+						}
+						this.state = 61;
+						this.term(6);
+						}
+						break;
+					case 2:
+						{
+						localctx = new TupleProjectionContext(this, new TermContext(this, _parentctx, _parentState));
+						this.pushNewRecursionContext(localctx, _startState, LambdaCalcParser.RULE_term);
+						this.state = 62;
+						if (!(this.precpred(this._ctx, 2))) {
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
+						}
+						this.state = 63;
+						this.match(LambdaCalcParser.DOT);
+						this.state = 64;
+						this.match(LambdaCalcParser.NATURAL_NUMBER);
+						}
+						break;
 					}
 					}
 				}
-				this.state = 56;
+				this.state = 69;
 				this._errHandler.sync(this);
-				_alt = this._interp.adaptivePredict(this._input, 4, this._ctx);
+				_alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
 			}
 			}
 		}
@@ -310,19 +369,19 @@ export default class LambdaCalcParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(localctx, 1);
 			{
-			this.state = 63;
+			this.state = 76;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case 3:
-			case 4:
+			case 6:
+			case 7:
 				{
 				localctx = new GreekTypeContext(this, localctx);
 				this._ctx = localctx;
 				_prevctx = localctx;
 
-				this.state = 58;
+				this.state = 71;
 				_la = this._input.LA(1);
-				if(!(_la===3 || _la===4)) {
+				if(!(_la===6 || _la===7)) {
 				this._errHandler.recoverInline(this);
 				}
 				else {
@@ -331,16 +390,16 @@ export default class LambdaCalcParser extends Parser {
 				}
 				}
 				break;
-			case 9:
+			case 14:
 				{
 				localctx = new ParenTypeContext(this, localctx);
 				this._ctx = localctx;
 				_prevctx = localctx;
-				this.state = 59;
+				this.state = 72;
 				this.match(LambdaCalcParser.LPAREN);
-				this.state = 60;
+				this.state = 73;
 				this.type_(0);
-				this.state = 61;
+				this.state = 74;
 				this.match(LambdaCalcParser.RPAREN);
 				}
 				break;
@@ -348,9 +407,9 @@ export default class LambdaCalcParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			this._ctx.stop = this._input.LT(-1);
-			this.state = 70;
+			this.state = 86;
 			this._errHandler.sync(this);
-			_alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
+			_alt = this._interp.adaptivePredict(this._input, 9, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					if (this._parseListeners != null) {
@@ -358,23 +417,43 @@ export default class LambdaCalcParser extends Parser {
 					}
 					_prevctx = localctx;
 					{
-					{
-					localctx = new FunctionTypeContext(this, new TypeContext(this, _parentctx, _parentState));
-					this.pushNewRecursionContext(localctx, _startState, LambdaCalcParser.RULE_type);
-					this.state = 65;
-					if (!(this.precpred(this._ctx, 2))) {
-						throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
-					}
-					this.state = 66;
-					this.match(LambdaCalcParser.ARROW);
-					this.state = 67;
-					this.type_(2);
+					this.state = 84;
+					this._errHandler.sync(this);
+					switch ( this._interp.adaptivePredict(this._input, 8, this._ctx) ) {
+					case 1:
+						{
+						localctx = new TupleTypeContext(this, new TypeContext(this, _parentctx, _parentState));
+						this.pushNewRecursionContext(localctx, _startState, LambdaCalcParser.RULE_type);
+						this.state = 78;
+						if (!(this.precpred(this._ctx, 3))) {
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
+						}
+						this.state = 79;
+						this.match(LambdaCalcParser.T__3);
+						this.state = 80;
+						this.type_(3);
+						}
+						break;
+					case 2:
+						{
+						localctx = new FunctionTypeContext(this, new TypeContext(this, _parentctx, _parentState));
+						this.pushNewRecursionContext(localctx, _startState, LambdaCalcParser.RULE_type);
+						this.state = 81;
+						if (!(this.precpred(this._ctx, 2))) {
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
+						}
+						this.state = 82;
+						this.match(LambdaCalcParser.ARROW);
+						this.state = 83;
+						this.type_(2);
+						}
+						break;
 					}
 					}
 				}
-				this.state = 72;
+				this.state = 88;
 				this._errHandler.sync(this);
-				_alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
+				_alt = this._interp.adaptivePredict(this._input, 9, this._ctx);
 			}
 			}
 		}
@@ -405,40 +484,49 @@ export default class LambdaCalcParser extends Parser {
 	private term_sempred(localctx: TermContext, predIndex: number): boolean {
 		switch (predIndex) {
 		case 0:
-			return this.precpred(this._ctx, 3);
-		}
-		return true;
-	}
-	private type_sempred(localctx: TypeContext, predIndex: number): boolean {
-		switch (predIndex) {
+			return this.precpred(this._ctx, 5);
 		case 1:
 			return this.precpred(this._ctx, 2);
 		}
 		return true;
 	}
+	private type_sempred(localctx: TypeContext, predIndex: number): boolean {
+		switch (predIndex) {
+		case 2:
+			return this.precpred(this._ctx, 3);
+		case 3:
+			return this.precpred(this._ctx, 2);
+		}
+		return true;
+	}
 
-	public static readonly _serializedATN: number[] = [4,1,11,74,2,0,7,0,2,
+	public static readonly _serializedATN: number[] = [4,1,16,90,2,0,7,0,2,
 	1,7,1,2,2,7,2,2,3,7,3,1,0,5,0,10,8,0,10,0,12,0,13,9,0,1,0,1,0,1,0,1,1,1,
 	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,28,8,1,1,1,1,1,3,1,32,8,1,1,2,1,2,
-	1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,49,8,2,1,2,1,2,
-	5,2,53,8,2,10,2,12,2,56,9,2,1,3,1,3,1,3,1,3,1,3,1,3,3,3,64,8,3,1,3,1,3,
-	1,3,5,3,69,8,3,10,3,12,3,72,9,3,1,3,0,2,4,6,4,0,2,4,6,0,1,1,0,3,4,77,0,
-	11,1,0,0,0,2,31,1,0,0,0,4,48,1,0,0,0,6,63,1,0,0,0,8,10,3,2,1,0,9,8,1,0,
+	1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,4,2,49,8,2,11,2,12,
+	2,50,1,2,1,2,1,2,1,2,1,2,1,2,3,2,59,8,2,1,2,1,2,1,2,1,2,1,2,5,2,66,8,2,
+	10,2,12,2,69,9,2,1,3,1,3,1,3,1,3,1,3,1,3,3,3,77,8,3,1,3,1,3,1,3,1,3,1,3,
+	1,3,5,3,85,8,3,10,3,12,3,88,9,3,1,3,0,2,4,6,4,0,2,4,6,0,1,1,0,6,7,97,0,
+	11,1,0,0,0,2,31,1,0,0,0,4,58,1,0,0,0,6,76,1,0,0,0,8,10,3,2,1,0,9,8,1,0,
 	0,0,10,13,1,0,0,0,11,9,1,0,0,0,11,12,1,0,0,0,12,14,1,0,0,0,13,11,1,0,0,
-	0,14,15,3,4,2,0,15,16,5,0,0,1,16,1,1,0,0,0,17,18,5,3,0,0,18,19,5,6,0,0,
-	19,20,3,6,3,0,20,21,5,8,0,0,21,32,1,0,0,0,22,23,5,3,0,0,23,24,5,1,0,0,24,
-	27,3,4,2,0,25,26,5,6,0,0,26,28,3,6,3,0,27,25,1,0,0,0,27,28,1,0,0,0,28,29,
-	1,0,0,0,29,30,5,8,0,0,30,32,1,0,0,0,31,17,1,0,0,0,31,22,1,0,0,0,32,3,1,
-	0,0,0,33,34,6,2,-1,0,34,35,5,2,0,0,35,36,5,3,0,0,36,37,5,6,0,0,37,38,3,
-	6,3,0,38,39,5,7,0,0,39,40,3,4,2,0,40,41,5,6,0,0,41,42,3,6,3,0,42,49,1,0,
-	0,0,43,49,5,3,0,0,44,45,5,9,0,0,45,46,3,4,2,0,46,47,5,10,0,0,47,49,1,0,
-	0,0,48,33,1,0,0,0,48,43,1,0,0,0,48,44,1,0,0,0,49,54,1,0,0,0,50,51,10,3,
-	0,0,51,53,3,4,2,4,52,50,1,0,0,0,53,56,1,0,0,0,54,52,1,0,0,0,54,55,1,0,0,
-	0,55,5,1,0,0,0,56,54,1,0,0,0,57,58,6,3,-1,0,58,64,7,0,0,0,59,60,5,9,0,0,
-	60,61,3,6,3,0,61,62,5,10,0,0,62,64,1,0,0,0,63,57,1,0,0,0,63,59,1,0,0,0,
-	64,70,1,0,0,0,65,66,10,2,0,0,66,67,5,5,0,0,67,69,3,6,3,2,68,65,1,0,0,0,
-	69,72,1,0,0,0,70,68,1,0,0,0,70,71,1,0,0,0,71,7,1,0,0,0,72,70,1,0,0,0,7,
-	11,27,31,48,54,63,70];
+	0,14,15,3,4,2,0,15,16,5,0,0,1,16,1,1,0,0,0,17,18,5,6,0,0,18,19,5,11,0,0,
+	19,20,3,6,3,0,20,21,5,13,0,0,21,32,1,0,0,0,22,23,5,6,0,0,23,24,5,1,0,0,
+	24,27,3,4,2,0,25,26,5,11,0,0,26,28,3,6,3,0,27,25,1,0,0,0,27,28,1,0,0,0,
+	28,29,1,0,0,0,29,30,5,13,0,0,30,32,1,0,0,0,31,17,1,0,0,0,31,22,1,0,0,0,
+	32,3,1,0,0,0,33,34,6,2,-1,0,34,35,5,5,0,0,35,36,5,6,0,0,36,37,5,11,0,0,
+	37,38,3,6,3,0,38,39,5,12,0,0,39,40,3,4,2,0,40,41,5,11,0,0,41,42,3,6,3,0,
+	42,59,1,0,0,0,43,59,5,6,0,0,44,45,5,2,0,0,45,48,3,4,2,0,46,47,5,9,0,0,47,
+	49,3,4,2,0,48,46,1,0,0,0,49,50,1,0,0,0,50,48,1,0,0,0,50,51,1,0,0,0,51,52,
+	1,0,0,0,52,53,5,3,0,0,53,59,1,0,0,0,54,55,5,14,0,0,55,56,3,4,2,0,56,57,
+	5,15,0,0,57,59,1,0,0,0,58,33,1,0,0,0,58,43,1,0,0,0,58,44,1,0,0,0,58,54,
+	1,0,0,0,59,67,1,0,0,0,60,61,10,5,0,0,61,66,3,4,2,6,62,63,10,2,0,0,63,64,
+	5,12,0,0,64,66,5,8,0,0,65,60,1,0,0,0,65,62,1,0,0,0,66,69,1,0,0,0,67,65,
+	1,0,0,0,67,68,1,0,0,0,68,5,1,0,0,0,69,67,1,0,0,0,70,71,6,3,-1,0,71,77,7,
+	0,0,0,72,73,5,14,0,0,73,74,3,6,3,0,74,75,5,15,0,0,75,77,1,0,0,0,76,70,1,
+	0,0,0,76,72,1,0,0,0,77,86,1,0,0,0,78,79,10,3,0,0,79,80,5,4,0,0,80,85,3,
+	6,3,3,81,82,10,2,0,0,82,83,5,10,0,0,83,85,3,6,3,2,84,78,1,0,0,0,84,81,1,
+	0,0,0,85,88,1,0,0,0,86,84,1,0,0,0,86,87,1,0,0,0,87,7,1,0,0,0,88,86,1,0,
+	0,0,10,11,27,31,50,58,65,67,76,84,86];
 
 	private static __ATN: ATN;
 	public static get _ATN(): ATN {
@@ -680,6 +768,39 @@ export class VariableContext extends TermContext {
 		}
 	}
 }
+export class TupleProjectionContext extends TermContext {
+	constructor(parser: LambdaCalcParser, ctx: TermContext) {
+		super(parser, ctx.parentCtx, ctx.invokingState);
+		super.copyFrom(ctx);
+	}
+	public term(): TermContext {
+		return this.getTypedRuleContext(TermContext, 0) as TermContext;
+	}
+	public DOT(): TerminalNode {
+		return this.getToken(LambdaCalcParser.DOT, 0);
+	}
+	public NATURAL_NUMBER(): TerminalNode {
+		return this.getToken(LambdaCalcParser.NATURAL_NUMBER, 0);
+	}
+	public enterRule(listener: LambdaCalcListener): void {
+	    if(listener.enterTupleProjection) {
+	 		listener.enterTupleProjection(this);
+		}
+	}
+	public exitRule(listener: LambdaCalcListener): void {
+	    if(listener.exitTupleProjection) {
+	 		listener.exitTupleProjection(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: LambdaCalcVisitor<Result>): Result {
+		if (visitor.visitTupleProjection) {
+			return visitor.visitTupleProjection(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
 export class ApplicationContext extends TermContext {
 	constructor(parser: LambdaCalcParser, ctx: TermContext) {
 		super(parser, ctx.parentCtx, ctx.invokingState);
@@ -705,6 +826,42 @@ export class ApplicationContext extends TermContext {
 	public accept<Result>(visitor: LambdaCalcVisitor<Result>): Result {
 		if (visitor.visitApplication) {
 			return visitor.visitApplication(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+export class TupleContext extends TermContext {
+	constructor(parser: LambdaCalcParser, ctx: TermContext) {
+		super(parser, ctx.parentCtx, ctx.invokingState);
+		super.copyFrom(ctx);
+	}
+	public term_list(): TermContext[] {
+		return this.getTypedRuleContexts(TermContext) as TermContext[];
+	}
+	public term(i: number): TermContext {
+		return this.getTypedRuleContext(TermContext, i) as TermContext;
+	}
+	public COMMA_list(): TerminalNode[] {
+	    	return this.getTokens(LambdaCalcParser.COMMA);
+	}
+	public COMMA(i: number): TerminalNode {
+		return this.getToken(LambdaCalcParser.COMMA, i);
+	}
+	public enterRule(listener: LambdaCalcListener): void {
+	    if(listener.enterTuple) {
+	 		listener.enterTuple(this);
+		}
+	}
+	public exitRule(listener: LambdaCalcListener): void {
+	    if(listener.exitTuple) {
+	 		listener.exitTuple(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: LambdaCalcVisitor<Result>): Result {
+		if (visitor.visitTuple) {
+			return visitor.visitTuple(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -815,6 +972,36 @@ export class FunctionTypeContext extends TypeContext {
 	public accept<Result>(visitor: LambdaCalcVisitor<Result>): Result {
 		if (visitor.visitFunctionType) {
 			return visitor.visitFunctionType(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+export class TupleTypeContext extends TypeContext {
+	constructor(parser: LambdaCalcParser, ctx: TypeContext) {
+		super(parser, ctx.parentCtx, ctx.invokingState);
+		super.copyFrom(ctx);
+	}
+	public type__list(): TypeContext[] {
+		return this.getTypedRuleContexts(TypeContext) as TypeContext[];
+	}
+	public type_(i: number): TypeContext {
+		return this.getTypedRuleContext(TypeContext, i) as TypeContext;
+	}
+	public enterRule(listener: LambdaCalcListener): void {
+	    if(listener.enterTupleType) {
+	 		listener.enterTupleType(this);
+		}
+	}
+	public exitRule(listener: LambdaCalcListener): void {
+	    if(listener.exitTupleType) {
+	 		listener.exitTupleType(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: LambdaCalcVisitor<Result>): Result {
+		if (visitor.visitTupleType) {
+			return visitor.visitTupleType(this);
 		} else {
 			return visitor.visitChildren(this);
 		}

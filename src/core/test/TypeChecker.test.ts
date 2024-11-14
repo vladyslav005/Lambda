@@ -71,6 +71,41 @@ test('case 11, assigning result of application', () => {
   typeChecker.visit(tree)
 });
 
+test('case 12, bad using of app', () => {
+  const tree = parseInput(inputs[11]);
+  expect(() => typeChecker.visit(tree)).toThrow(
+      new Error("g: has type Bool, that is not a function type, cant use application there")
+  );
+});
+
+
+test('case 13, application using ProductType', () => {
+  const tree = parseInput(inputs[12]);
+  typeChecker.visit(tree)
+});
+
+
+test('case 14, application using projection', () => {
+  const tree = parseInput(inputs[13]);
+  typeChecker.visit(tree)
+});
+
+test('case 15, projection index out of range', () => {
+  const tree = parseInput(inputs[14]);
+  expect(() => typeChecker.visit(tree)).toThrow(
+      new Error("Index '3' is out range for tuple 'x' of type 'A*B'")
+  );
+});
+
+test('case 16, projection index out of range', () => {
+  const tree = parseInput(inputs[15]);
+  expect(() => typeChecker.visit(tree)).toThrow(
+      new Error("Abstraction λx:A*B.x.2:A*B->A has type A*B->B, that doesn't match declared type A*B->A")
+  );
+});
+
+
+
 
 function parseInput(input: string): ExpressionContext {
 
@@ -156,14 +191,39 @@ const inputs = [
     f : (α -> β) -> (α -> γ);
     g : α -> β;
     h : α;
-    x = f g h
+    x = f g h :  γ;
     
     x
     `,
 
-    `
-    g : Bool
-    d : Int
+  `
+    g : Bool ;
+    d : Int ;
     g d
+    `,
     `
+    a : T * T;
+    b = λ x : T * T.x  : T * T -> T * T;
+    
+    b a
+    `,
+    `
+    a : A * B;
+    b = λ x : A * B. x.1  : A * B -> A;
+    
+    b a
+    `,
+    `
+    a : A * B;
+    b = λ x : A * B. x.3  : A * B -> A;
+    
+    b a
+    `,
+    `
+    a : A * B;
+    b = λ x : A * B. x.2  : A * B -> A;
+    
+    b a
+    `
+
 ]

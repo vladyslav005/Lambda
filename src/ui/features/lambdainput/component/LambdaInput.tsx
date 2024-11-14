@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import Editor, {useMonaco} from '@monaco-editor/react';
 import {setUpMonacoLanguage} from "../hook/SetUpMonacoLanguage";
 import {EditorContext} from "../context/EditorContext";
@@ -13,7 +13,7 @@ export function LambdaInput() {
   const {buildTree} = useBuildTree();
 
 
-  const handleEditorDidMount = (editor : any, monaco: any) => {
+  const handleEditorDidMount = (editor: any, monaco: any) => {
     editorContext.setEditor(editor);
     editorContext.setMonaco(monaco);
   };
@@ -29,16 +29,16 @@ export function LambdaInput() {
     }
   }, [monaco]);
 
-  function editorOnChange(value : any, event : any) {
+  function editorOnChange(value: any, event: any) {
     editorContext.setEditorValue(value);
-    const errors : Error[] | undefined = buildTree(value)
+    const errors: Error[] | undefined = buildTree(value)
     setEditorErrors(errors)
   }
 
   // UNDERLINE ERRORS IN EDITOR
-  function setEditorErrors(errors : Error[] | undefined) {
+  function setEditorErrors(errors: Error[] | undefined) {
     const model = editorContext.editor.getModel();
-    const markers : any[] = [];
+    const markers: any[] = [];
 
     editorContext.monaco.editor.setModelMarkers(model, 'lambda-errors', []);
 

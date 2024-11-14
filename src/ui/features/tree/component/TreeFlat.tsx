@@ -26,8 +26,10 @@ export function TreeFlat() {
         <div className="tree-component">
           <MapInteractionCSS>
 
-            {treeView === TreeView.LATEX && editorContext.tree && <ProofTreeUsingMathJax proofTree={editorContext.tree}/>}
-            {treeView === TreeView.INTERACTIVE &&editorContext.tree && <ProofTreeComponentUsingCss node={editorContext.tree}/>}
+            {treeView === TreeView.LATEX && editorContext.tree &&
+                <ProofTreeUsingMathJax proofTree={editorContext.tree}/>}
+            {treeView === TreeView.INTERACTIVE && editorContext.tree &&
+                <ProofTreeComponentUsingCss node={editorContext.tree}/>}
 
           </MapInteractionCSS>
         </div>

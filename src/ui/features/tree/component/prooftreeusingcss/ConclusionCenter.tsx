@@ -11,7 +11,7 @@ interface ConclusionCenterProps {
 
 
 //TODO : support for mobile
-export function ConclusionCenter(props : ConclusionCenterProps): JSX.Element {
+export function ConclusionCenter(props: ConclusionCenterProps): JSX.Element {
 
   const editorContext = useContext(EditorContext);
   const [isHovered, setIsHovered] = useState(false)
@@ -36,7 +36,7 @@ export function ConclusionCenter(props : ConclusionCenterProps): JSX.Element {
     }];
 
     setIsHovered(true)
-     setDecorations(editorContext.editor.deltaDecorations(decorations, newDecorations));
+    setDecorations(editorContext.editor.deltaDecorations(decorations, newDecorations));
   }
 
   function handleMouseLeave() {
@@ -47,12 +47,12 @@ export function ConclusionCenter(props : ConclusionCenterProps): JSX.Element {
 
   return (
       <div className={`conclusion-center ${props.isItLeaf} ${props.isItRoot}`}
-         onMouseEnter={handleMouseEnter}
-         onMouseLeave={handleMouseLeave}
-         style={{
-           backgroundColor: isHovered ? "rgba(255, 255, 0, 0.3)" : "", // Highlight the div when hovered
-           borderRadius: '10px'
-         }}
+           onMouseEnter={handleMouseEnter}
+           onMouseLeave={handleMouseLeave}
+           style={{
+             backgroundColor: isHovered ? "rgba(255, 255, 0, 0.3)" : "", // Highlight the div when hovered
+             borderRadius: '10px'
+           }}
       >
         <MathComponent tex={props.node.conclusion.replaceAll("->", " \\rightarrow ")}/>
       </div>
