@@ -17,6 +17,8 @@ import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
 import {IndexError, TypeError} from "../errorhandling/customErrors";
 
 // TODO : refactor: split file, split type checker class
+// TODO : types priority
+
 class ContextElement {
 
   public declarationLocation : number[] | undefined;
@@ -228,7 +230,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       return this._globalContext.getType(name);
     }
 
-    throw new TypeError("Undefined variable : ", this.getTokenLocation(ctx));
+    throw new TypeError(`Undefined variable : '${name}'`, this.getTokenLocation(ctx));
   };
 
   /* IMPLEMENTS APP RULE */
@@ -308,7 +310,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
         let child = ctx.getChild(i);
         console.log(type);
         let childType = this.visit(child)
-          if ( this.parseType(childType) instanceof TupleTypeContext ) {
+        let childTypeNode = this.parseType(childType);
+        if ( childTypeNode instanceof TupleTypeContext ||
+            childTypeNode instanceof FunctionTypeContext ) {
           childType = '(' + childType + ')'
         }
         type = type.concat(childType, '*');

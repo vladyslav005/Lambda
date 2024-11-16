@@ -220,9 +220,10 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const result = {
       type: tupleTypesArray[projectionIndex - 1],
       conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${tupleTypesArray[projectionIndex - 1]}`,
-      rule: "(T-prj)",
+      rule: "(T-proj)",
       context: ctx,
       tokenLocation: this.typeChecker.getTokenLocation(ctx),
+      declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(tuple.getText()),
       root: false,
       premises:
       [
@@ -233,6 +234,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           root: false,
           context: ctx,
           tokenLocation: this.typeChecker.getTokenLocation(ctx),
+          declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(tuple.getText()),
         }
       ],
 

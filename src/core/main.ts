@@ -9,12 +9,13 @@ import {generateProofTreeLatexBussproof} from "../ui/features/tree/component/Pro
 
 
 let input = `
-x : T;
+y : α -> α;
+b = < y,y > : (α->α)*(α->α);
 
-y : T1 * T2 * T3;
 
 
-y.1
+
+b.1 
 
 `;
 
@@ -33,8 +34,6 @@ typeChecker.visit(ast)
 const treeGenerator = new TreeGenerator()
 
 const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext)
-if (proofTree)
- console.log(generateProofTreeLatexBussproof(proofTree, undefined));
 
 // console.log(ast.toStringTree(parser.ruleNames, parser))
 
@@ -49,21 +48,22 @@ if (proofTree)
 // console.log(analyzer.generateProofTree())
 
 input = `
-x : α
-y : α -> α
-z : (α -> α) -> α
-w : ((α -> α) -> α) -> α
+x : α;
+y : α -> α;
+z : (α -> α) -> α;
+w : ((α -> α) -> α) -> α;
 
-M = λ f: α -> α . f : (α -> α) -> (α -> α)
-N = λ x: α . x : α -> α
-P = λ g: α -> α . (g x) : (α -> α) -> α
-Q = λ h: α -> α . (h x) : (α -> α) -> α
+b = < y, y> : (α->α)*(α->α);
 
-(N (M N (P y))) 
+M = λ f: α -> α . f : (α -> α) -> (α -> α);
+N = λ x: α . x : α -> α;
+P = λ g: α -> α . (g x) : (α -> α) -> α;
+Q = λ h: α -> α . (h x) : (α -> α) -> α;a : T;
+a : T;
+
+(N (M N (P (b.1)))) 
  `;
 
-
-/* container */
 
 
 
