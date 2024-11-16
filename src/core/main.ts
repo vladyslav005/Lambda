@@ -7,7 +7,6 @@ import {TypeChecker} from "./typechecker/TypeChecker";
 import {TreeGenerator} from "./tree/TreeGenerator";
 import {generateProofTreeLatexBussproof} from "../ui/features/tree/component/ProofTreeUsingMathJax";
 
-//TODO : update tree generation
 
 let input = `
 x : T;

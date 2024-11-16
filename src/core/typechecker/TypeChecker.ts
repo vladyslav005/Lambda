@@ -16,11 +16,15 @@ import {CharStream, CommonTokenStream, ParserRuleContext, ParseTree} from "antlr
 import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
 import {IndexError, TypeError} from "../errorhandling/customErrors";
 
-
+// TODO : refactor: split file, split type checker class
 class ContextElement {
-  constructor(name: string, type: string) {
+
+  public declarationLocation : number[] | undefined;
+
+  constructor(name: string, type: string, declarationLocation: number[] | undefined ) {
     this._name = name;
     this._type = type;
+    this.declarationLocation = declarationLocation;
   }
 
   private _name: string;
@@ -47,8 +51,8 @@ class ContextElement {
 export class Context {
   private types: Array<ContextElement> = new Array<ContextElement>();
 
-  addVariable(name: string, type: string): void {
-    this.types.push(new ContextElement(name, type));
+  addVariable(name: string, type: string, location : number[] | undefined): void {
+    this.types.push(new ContextElement(name, type, location));
   }
 
   /* returns type of first occurrence of the variable */
@@ -61,6 +65,15 @@ export class Context {
     }
 
     throw new Error(`Variable '${name}' is not in context`);
+  }
+
+  getDeclarationLocation(name: string): number[] | undefined {
+    for (let i = this.types.length - 1; i >= 0; i--) {
+      let element = this.types[i];
+      if (element.name === name) {
+        return element.declarationLocation;
+      }
+    }
   }
 
   isVariableInContext(name: string): boolean {
@@ -130,7 +143,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     let typeNode = ctx.getChild(2);
     let id: string = ctx.getChild(0).getText();
 
-    this._globalContext.addVariable(id, this.visit(typeNode));
+    this._globalContext.addVariable(id, this.visit(typeNode), this.getTokenLocation(ctx));
 
     return this.visitChildren(ctx);
   };
@@ -155,7 +168,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     }
 
-    this._globalContext.addVariable(id, bodyType);
+    this._globalContext.addVariable(id, bodyType, this.getTokenLocation(ctx));
 
     console.log("Visiting a global function declaration", ctx.getText() /*, id, declaredType*/);
 
@@ -175,7 +188,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     let body: ParseTree = ctx.term();
 
-    this._localContext.addVariable(paramName, paramType);
+    this._localContext.addVariable(paramName, paramType, undefined);
 
     body = this.eliminateOutParentheses(body);
 
@@ -411,7 +424,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return ctx;
   }
 
-  private getTokenLocation(ctx: ParserRuleContext) {
+  public getTokenLocation(ctx: ParserRuleContext) {
     return [
         ctx.start.line,
         (ctx.stop ? ctx.stop.line : ctx.start.line),

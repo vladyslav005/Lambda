@@ -19,6 +19,8 @@ export interface ProofNode {
   conclusion: string;
   rule: string;
   context: ParserRuleContext;
+  tokenLocation: number[],
+  declarationLocation?: number[];
   premises?: ProofNode[];
   root: boolean;
 }
@@ -88,7 +90,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     console.log("T-abs: " + ctx.getText())
 
     this.localContext.addVariable(ctx.ID().getText(),
-        this.typeChecker.visit(ctx.type_(0))
+        this.typeChecker.visit(ctx.type_(0)), undefined
     )
 
     //TODO : IS IT CORRECT???
@@ -107,6 +109,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       conclusion: `\\Gamma${contextExtensionTmp ? contextExtensionTmp : ''} \\vdash ${ctx.getText()}`,
       rule: "(T-abs)",
       context: ctx,
+      tokenLocation: this.typeChecker.getTokenLocation(ctx),
       root: false,
       premises: [this.visit(body)],
     } as ProofNode;
@@ -129,13 +132,18 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       rule: "(T-var)",
       root: false,
       context: ctx,
+      tokenLocation: this.typeChecker.getTokenLocation(ctx),
+      declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(ctx.getText()),
       premises: [
         {
           type: type,
           conclusion: `${ctx.getText()} : ${type} \\in \\Gamma`,
           rule: "",
           root: false,
-          context: ctx
+          context: ctx,
+          tokenLocation: this.typeChecker.getTokenLocation(ctx),
+          declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(ctx.getText()),
+
         }
 
       ],
@@ -152,6 +160,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       conclusion: `\\Gamma${this.contextExtension ? this.contextExtension : ''} \\vdash ${ctx.getText()} : ${type}`,
       rule: "(T-app)",
       context: ctx,
+      tokenLocation: this.typeChecker.getTokenLocation(ctx),
       root: false,
       premises: this.visitChildren(ctx),
     } as ProofNode;
@@ -185,19 +194,11 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const result = {
       type: type,
       conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${type.replaceAll("*", " \\times  ")}`,
-      rule: "(T-tpl)",
+      rule: "(T-tuple)",
       context: ctx,
+      tokenLocation: this.typeChecker.getTokenLocation(ctx),
       root: false,
       premises: premises,
-      // [
-      //   {
-      //     type: type,
-      //     conclusion: `\\Gamma \\vdash  ${premisesStr.join(", ")}`,
-      //     rule: "",
-      //     root: false,
-      //     context: ctx
-      //   }
-      // ],
     } as ProofNode;
 
     console.log("Tuple: " + ctx.getText())
@@ -221,6 +222,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${tupleTypesArray[projectionIndex - 1]}`,
       rule: "(T-prj)",
       context: ctx,
+      tokenLocation: this.typeChecker.getTokenLocation(ctx),
       root: false,
       premises:
       [
@@ -229,7 +231,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           conclusion: `\\Gamma \\vdash  ${tuple.getText()} : ${tupleType.replaceAll("*", " \\times  ")}`,
           rule: "",
           root: false,
-          context: ctx
+          context: ctx,
+          tokenLocation: this.typeChecker.getTokenLocation(ctx),
         }
       ],
 

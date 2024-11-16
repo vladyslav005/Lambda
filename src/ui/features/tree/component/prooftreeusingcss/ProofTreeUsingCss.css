@@ -72,13 +72,13 @@
 
 .rule-name {
     display: inline-flex;
-    justify-content: flex-end;
+    justify-content: start;
     position: relative;
     bottom: 14px;
-    left: 70px;
     width: 0;
     height: 0;
     white-space: nowrap;
+    left: 5px;
 
     font-family: 'Times New Roman', Times, serif;
     font-size: 20px;
