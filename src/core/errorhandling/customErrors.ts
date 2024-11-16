@@ -1,40 +1,31 @@
-export class SyntaxError extends Error {
+export class ErrorWithLocation extends Error {
   public startLine: number;
   public endLine: number;
 
   public startColumn: number;
   public endColumn: number;
 
-  constructor(msg: string, startLine: number, endLine: number, startColumn: number, endColumn: number) {
+  constructor(msg: string, location: number[]) {
     super(msg);
     Object.setPrototypeOf(this, SyntaxError.prototype);
 
-    this.startLine = startLine;
-    this.startColumn = startColumn;
+    this.startLine = location[0];
+    this.startColumn = location[1];
 
-    this.endLine = endLine;
-    this.endColumn = endColumn;
+    this.endLine = location[2];
+    this.endColumn = location[3];
   }
 }
 
 
-export class TypeError extends Error {
+export class SyntaxError extends ErrorWithLocation {
 
-  public startLine: number;
-  public endLine: number;
+}
 
-  public startColumn: number;
-  public endColumn: number;
+export class TypeError extends ErrorWithLocation {
 
-  constructor(msg: string, startLine: number, endLine: number, startColumn: number, endColumn: number) {
-    super(msg);
-    Object.setPrototypeOf(this, SyntaxError.prototype);
+}
 
-    this.startLine = startLine;
-    this.startColumn = startColumn;
+export class IndexError extends ErrorWithLocation {
 
-    this.endLine = endLine;
-    this.endColumn = endColumn;
-
-  }
 }

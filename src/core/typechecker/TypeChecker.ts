@@ -12,10 +12,9 @@ import LambdaCalcParser, {
   TypeContext,
   VariableContext
 } from "../antlr/LambdaCalcParser";
-import {CharStream, CommonTokenStream, ParseTree} from "antlr4";
+import {CharStream, CommonTokenStream, ParserRuleContext, ParseTree} from "antlr4";
 import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
-import {TypeError} from "../errorhandling/customErrors";
-import test from "node:test";
+import {IndexError, TypeError} from "../errorhandling/customErrors";
 
 
 class ContextElement {
@@ -90,7 +89,6 @@ export class Context {
 }
 
 
-// TODO : add location to errors
 export class TypeChecker extends LambdaCalcVisitor<any> {
 
   private _globalContext: Context = new Context();
@@ -145,12 +143,15 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     if ( !(body instanceof LambdaAbstractionContext)  ) {
       if (ctx.getChildCount() !== 6)
-        throw new Error("Provide explicit type declaration")
+        throw new TypeError("Provide explicit type declaration", this.getTokenLocation(ctx))
 
       const declaredType = ctx.getChild(4).getText();
 
       if (bodyType !== declaredType)
-        throw new Error(`term ${body.getText()} is of type ${bodyType}, but declared type is ${declaredType}`);
+        throw new TypeError(
+            `term ${body.getText()} is of type ${bodyType}, but declared type is ${declaredType}`,
+            this.getTokenLocation(ctx)
+            );
 
     }
 
@@ -193,10 +194,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const absType = paramType + "->" + bodyType;
 
     if (absType !== declaredType) {
-      throw new TypeError("Abstraction " + ctx.getText() + " has type " +
-          absType + ", that doesn't match declared type " + declaredType,
-          ctx.start.line, (ctx.stop ? ctx.stop.line : ctx.start.line),
-          ctx.start.column, (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length)
+      throw new TypeError(`Abstraction '${ctx.getText()}' has type
+          '${absType}', that doesn't match declared type '${declaredType}'`,
+          this.getTokenLocation(ctx)
       );
     }
 
@@ -215,8 +215,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       return this._globalContext.getType(name);
     }
 
-    throw new TypeError("Undefined variable : " + name, ctx.start.line, (ctx.stop ? ctx.stop.line : ctx.start.line),
-        ctx.start.column, (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length));
+    throw new TypeError("Undefined variable : ", this.getTokenLocation(ctx));
   };
 
   /* IMPLEMENTS APP RULE */
@@ -264,10 +263,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     if (!(funcTypeTree instanceof FunctionTypeContext)) {
       throw new TypeError(
-          funcName + `: has type ${funcType}, that is not a function type, cant use application there`,
-          ctx.start.line, (ctx.stop ? ctx.stop.line : ctx.start.line),
-          ctx.start.column,
-          (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length)
+          `'${funcName}' : has type '${funcType}', that is not a function type, cant use application there`,
+         this.getTokenLocation(ctx)
       );
     }
 
@@ -279,11 +276,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     /* checking type of argument */
     if (argumentType !== argumentExpectedType) {
-      throw new TypeError("Types mismatch: term " + funcName + " expects argument of type "
-          + argumentExpectedType + ", but given argument '" + argumentName + "' is of type " + argumentType,
-          ctx.start.line, (ctx.stop ? ctx.stop.line : ctx.start.line),
-          ctx.start.column,
-          (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length)
+      throw new TypeError(`Types mismatch: term  '${funcName}' expects argument of type
+            '${argumentExpectedType}', but given argument argumentName is of type '${argumentType}'`,
+          this.getTokenLocation(ctx)
       );
     }
 
@@ -313,8 +308,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
   }
 
+  /* IMPLEMENTS PROJECTION RULE */
   visitTupleProjection = (ctx: TupleProjectionContext): any => {
-
     const tupleName = ctx.getChild(0).getText();
     const tupleNode = ctx.getChild(0);
     let tupleType : string | undefined = undefined;
@@ -339,7 +334,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     this.tupleTypeToArray(tupleTypeNode, tupleTypesArray);
 
     if (projectionIndex - 1 > tupleTypesArray.length - 1) {
-      throw new Error(`Index '${projectionIndex}' is out range for tuple '${tupleName}' of type '${tupleType}'`)
+      throw new IndexError(
+          `Index '${projectionIndex}' is out range for tuple '${tupleName}' of type '${tupleType}'`,
+          this.getTokenLocation(ctx))
     }
 
     const result = tupleTypesArray[projectionIndex - 1];
@@ -349,7 +346,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   }
 
   // TODO : may cause errors ?
-  tupleTypeToArray(ctx: TypeContext, output: string[]): any {
+  public tupleTypeToArray(ctx: TypeContext, output: string[]): any {
     const left =  ctx.getChild(0);
     const right = ctx.getChild(2);
 
@@ -400,7 +397,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   };
 
   // RETURNS AST OF TYPE
-  private parseType(input: string): TypeContext {
+  public parseType(input: string): TypeContext {
     const lexer = new LambdaCalcLexer(new CharStream(input));
     const tokens = new CommonTokenStream(lexer);
     const parser = new LambdaCalcParser(tokens);
@@ -412,5 +409,14 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       return ctx.getChild(1)
     }
     return ctx;
+  }
+
+  private getTokenLocation(ctx: ParserRuleContext) {
+    return [
+        ctx.start.line,
+        (ctx.stop ? ctx.stop.line : ctx.start.line),
+        ctx.start.column,
+        (ctx.stop ? ctx.stop.column + ctx.stop.text.length : ctx.start.column + ctx.start.text.length)
+    ]
   }
 }

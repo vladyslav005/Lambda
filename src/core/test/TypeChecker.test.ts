@@ -195,8 +195,7 @@ const inputs = [
     
     x
     `,
-
-  `
+    `
     g : Bool ;
     d : Int ;
     g d
