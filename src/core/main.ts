@@ -4,13 +4,21 @@ import {CharStream, CommonTokenStream} from "antlr4";
 import {CustomLexerErrorListener, CustomParserErrorListener} from "./errorhandling/ErrorListeners";
 import LambdaCalcParser from "./antlr/LambdaCalcParser";
 import {TypeChecker} from "./typechecker/TypeChecker";
+import {TreeGenerator} from "./tree/TreeGenerator";
+import {generateProofTreeLatexBussproof} from "../ui/features/tree/component/ProofTreeUsingMathJax";
+
+//TODO : update tree generation
 
 let input = `
-a : A * B;
-b = λ x : A * B. x.3  : A * B -> A;
+x : T;
 
-b a
+y : T1 * T2 * T3;
+
+
+y.1
+
 `;
+
 const lexer = new LambdaCalcLexer(new CharStream(input))
 
 const tokens = new CommonTokenStream(lexer);
@@ -22,6 +30,13 @@ const ast = parser.expression()
 const typeChecker = new TypeChecker();
 
 typeChecker.visit(ast)
+
+const treeGenerator = new TreeGenerator()
+
+const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext)
+if (proofTree)
+ console.log(generateProofTreeLatexBussproof(proofTree, undefined));
+
 // console.log(ast.toStringTree(parser.ruleNames, parser))
 
 // const analyzer = new InputAnalyzer()

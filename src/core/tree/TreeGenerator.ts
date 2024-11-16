@@ -8,7 +8,7 @@ import {
   GreekTypeContext,
   LambdaAbstractionContext,
   ParenthesesContext,
-  ParenTypeContext,
+  ParenTypeContext, TupleContext, TupleProjectionContext,
   VariableContext
 } from "../antlr/LambdaCalcParser";
 import {Context, TypeChecker} from "../typechecker/TypeChecker";
@@ -160,6 +160,84 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     return returnNode;
   };
 
+  visitTuple = (ctx: TupleContext): any => {
+    const type = this.typeChecker.visit(ctx);
+
+    const tupleTypesArray : string[] = []
+    const tupleTypeNode = this.typeChecker.parseType(type)
+    this.typeChecker.tupleTypeToArray(tupleTypeNode, tupleTypesArray)
+
+    const nodeList = []
+    const premises : ProofNode[] = []
+    const premisesStr : string[] = []
+
+    for (let i = 0; i < ctx.getChildCount(); i++) {
+      if (i % 2 !== 0) {
+        nodeList.push(ctx.getChild(i));
+        premises.push(this.visit(ctx.getChild(i)));
+      }
+    }
+
+    nodeList.map((node, index) => {
+      premisesStr.push(node.getText() + ':'+ tupleTypesArray[index]);
+    })
+
+    const result = {
+      type: type,
+      conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${type.replaceAll("*", " \\times  ")}`,
+      rule: "(T-tpl)",
+      context: ctx,
+      root: false,
+      premises: premises,
+      // [
+      //   {
+      //     type: type,
+      //     conclusion: `\\Gamma \\vdash  ${premisesStr.join(", ")}`,
+      //     rule: "",
+      //     root: false,
+      //     context: ctx
+      //   }
+      // ],
+    } as ProofNode;
+
+    console.log("Tuple: " + ctx.getText())
+
+    return result;
+  }
+
+  visitTupleProjection = (ctx: TupleProjectionContext): any => {
+    const tuple = ctx.getChild(0);
+    const tupleType = this.typeChecker.visit(tuple);
+
+    const projectionIndex = parseInt(ctx.getChild(2).getText());
+
+
+    const tupleTypesArray : string[] = []
+    const tupleTypeNode = this.typeChecker.parseType(tupleType)
+    this.typeChecker.tupleTypeToArray(tupleTypeNode, tupleTypesArray)
+
+    const result = {
+      type: tupleTypesArray[projectionIndex - 1],
+      conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${tupleTypesArray[projectionIndex - 1]}`,
+      rule: "(T-prj)",
+      context: ctx,
+      root: false,
+      premises:
+      [
+        {
+          type: tupleType,
+          conclusion: `\\Gamma \\vdash  ${tuple.getText()} : ${tupleType.replaceAll("*", " \\times  ")}`,
+          rule: "",
+          root: false,
+          context: ctx
+        }
+      ],
+
+    } as ProofNode;
+
+
+    return result;
+  }
 
   visitParentheses = (ctx: ParenthesesContext): any => {
     const tmp = this.visit(ctx.getChild(1))
