@@ -9,25 +9,25 @@ export function MainPage() {
   return (
       <div className="main-page flex flex-row">
 
-        <div className="flex flex-col" style={{flexGrow: 1}}>
-          <HelpBar></HelpBar>
-        </div>
 
-        <div className="right-side flex flex-row" style={{flexGrow: 3}}>
 
-          <div className="flex flex-col" style={{flexGrow: 4}}>
+        {/*<div className="right-side flex flex-row" style={{flexGrow: 4}}>*/}
+
+          <div className="flex flex-col" style={{flexGrow: 10}}>
             <LambdaInput></LambdaInput>
             <TreeFlat></TreeFlat>
           </div>
 
-          <div className="flex flex-col"
-               style={{
-                 flexGrow: 0,
-               }}>
+          <div className="flex flex-col sidebar"
+            style={{flexGrow: 1}}
+          >
             <ErrorOutput></ErrorOutput>
+
+            <HelpBar></HelpBar>
+
           </div>
 
-        </div>
+        {/*</div>*/}
 
       </div>
   )
