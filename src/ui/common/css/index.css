@@ -49,6 +49,9 @@
         margin-right: 0 !important;
         margin-top: 0 !important;
         gap: 1rem !important;
+
+        max-width: none !important;
+
     }
 
     .help-bar {
@@ -133,13 +136,26 @@ code {
 .error-output {
 
     min-height: calc((100% - 2rem) / 2);
-    flex-grow: 1 ;
+    flex-grow: 0;
+}
+
+.sidebar {
+    max-width: 400px;
+    min-width: 400px;
 }
 
 .error-message {
-    max-width: 85% !important;
-    min-width: 85% !important;
+    width: 90%;
+
 }
+
+.error-message p {
+    text-wrap: pretty ;
+
+}
+
+
+
 
 .help-bar {
     min-height: calc((100% - 2rem) / 2);

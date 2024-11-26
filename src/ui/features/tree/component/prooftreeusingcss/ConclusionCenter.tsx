@@ -10,7 +10,6 @@ interface ConclusionCenterProps {
 }
 
 
-//TODO : support for mobile
 export function ConclusionCenter(props: ConclusionCenterProps): JSX.Element {
 
   const editorContext = useContext(EditorContext);

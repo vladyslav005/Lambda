@@ -3,11 +3,5 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-
-.error-message {
-    flex: 0 0 auto;
-    max-width: 380px;
-    min-width: 380px;
+    justify-content: flex-start;
 }

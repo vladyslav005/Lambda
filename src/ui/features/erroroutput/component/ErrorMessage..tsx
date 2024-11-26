@@ -10,7 +10,7 @@ export function ErrorMessage(props: ErrorOutputProps) {
 
 
   return (
-      <div className="mx-4 my-4 error-message"
+      <div className="my-4 error-message"
            style={{
              backgroundColor: `${getBackgroundColorForError(props.errorType)}`,
            }}

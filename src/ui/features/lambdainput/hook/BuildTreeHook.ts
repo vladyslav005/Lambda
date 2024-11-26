@@ -1,8 +1,6 @@
 import {useContext} from "react";
 import {EditorContext} from "../context/EditorContext";
 import {InputAnalyzer} from "../../../../core/AnalyzeInput";
-import {ConfigurationHandler} from "react-native-mathjax-html-to-svg/mathjax/input/tex/Configuration";
-import set = ConfigurationHandler.set;
 
 const analyzer = new InputAnalyzer();
 

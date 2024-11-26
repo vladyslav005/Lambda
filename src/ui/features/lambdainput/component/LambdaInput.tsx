@@ -30,6 +30,7 @@ export function LambdaInput() {
   }, [monaco]);
 
   function editorOnChange(value: any, event: any) {
+
     value = value.replaceAll(/^\s*\/\/.*$/gm, "")
     editorContext.setEditorValue(value);
 

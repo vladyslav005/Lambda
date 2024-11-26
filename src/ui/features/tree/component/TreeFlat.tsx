@@ -23,7 +23,11 @@ export function TreeFlat() {
       >
         <SwitchTreeView setTreeView={setTreeView} treeView={treeView}/>
 
-        <div className="tree-component">
+        <div className="tree-component"
+          style={{
+            backgroundColor: "#f3edf7"
+          }}
+        >
           <MapInteractionCSS>
 
             {treeView === TreeView.LATEX && editorContext.tree &&
