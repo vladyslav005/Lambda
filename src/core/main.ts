@@ -9,13 +9,13 @@ import {generateProofTreeLatexBussproof} from "../features/tree/component/ProofT
 
 
 let input = `
+x : α;
 y : α -> α;
-b = < y,y > : (α->α)*(α->α);
+z : (α -> α) -> α;
+w : ((α -> α) -> α) -> α;
 
 
-
-
-b.1 
+λ a : α -> α . (λ b : α . (a b) ): (α -> α) -> (α -> α)
 
 `;
 

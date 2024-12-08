@@ -14,7 +14,7 @@ import LambdaCalcParser, {
 } from "../antlr/LambdaCalcParser";
 import {CharStream, CommonTokenStream, ParserRuleContext, ParseTree} from "antlr4";
 import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
-import {IndexError, TypeError} from "../errorhandling/customErrors";
+import {IndexError, SyntaxError, TypeError} from "../errorhandling/customErrors";
 import {Context} from "../context/Context";
 
 // TODO : refactor: split file, split type checker class
@@ -99,7 +99,20 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     console.log("Visiting lambda abstraction ", ctx.getText());
     const paramName = ctx.ID().getText();
     const paramTypeNode = ctx.type_(0);
-    const declaredType = this.visit(ctx.type_(1));
+
+    let declaredType = undefined;
+    try {
+      declaredType = this.visit(ctx.type_(1));
+    } catch (e) {
+
+    }
+
+
+    if (!declaredType && ctx.parentCtx && !(this.eliminateOutParentheses(ctx.parentCtx) instanceof LambdaAbstractionContext)) {
+      throw new SyntaxError(`Provide explicit type declaration for term ${ctx.getText()}`,
+          this.getTokenLocation(ctx)
+      )
+    }
 
     let paramType: string;
 
@@ -125,7 +138,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     const absType = paramType + "->" + bodyType;
 
-    if (absType !== declaredType) {
+    if (declaredType && absType !== declaredType) {
       throw new TypeError(`Abstraction '${ctx.getText()}' has type
           '${absType}', that doesn't match declared type '${declaredType}'`,
           this.getTokenLocation(ctx)

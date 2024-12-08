@@ -205,7 +205,7 @@ export default class LambdaCalcParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(localctx, 1);
 			{
-			this.state = 58;
+			this.state = 59;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case 5:
@@ -226,10 +226,18 @@ export default class LambdaCalcParser extends Parser {
 				this.match(LambdaCalcParser.DOT);
 				this.state = 39;
 				this.term(0);
-				this.state = 40;
-				this.match(LambdaCalcParser.COLON);
-				this.state = 41;
-				this.type_(0);
+				this.state = 42;
+				this._errHandler.sync(this);
+				switch ( this._interp.adaptivePredict(this._input, 3, this._ctx) ) {
+				case 1:
+					{
+					this.state = 40;
+					this.match(LambdaCalcParser.COLON);
+					this.state = 41;
+					this.type_(0);
+					}
+					break;
+				}
 				}
 				break;
 			case 6:
@@ -237,7 +245,7 @@ export default class LambdaCalcParser extends Parser {
 				localctx = new VariableContext(this, localctx);
 				this._ctx = localctx;
 				_prevctx = localctx;
-				this.state = 43;
+				this.state = 44;
 				this.match(LambdaCalcParser.ID);
 				}
 				break;
@@ -246,27 +254,27 @@ export default class LambdaCalcParser extends Parser {
 				localctx = new TupleContext(this, localctx);
 				this._ctx = localctx;
 				_prevctx = localctx;
-				this.state = 44;
-				this.match(LambdaCalcParser.T__1);
 				this.state = 45;
+				this.match(LambdaCalcParser.T__1);
+				this.state = 46;
 				this.term(0);
-				this.state = 48;
+				this.state = 49;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				do {
 					{
 					{
-					this.state = 46;
-					this.match(LambdaCalcParser.COMMA);
 					this.state = 47;
+					this.match(LambdaCalcParser.COMMA);
+					this.state = 48;
 					this.term(0);
 					}
 					}
-					this.state = 50;
+					this.state = 51;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 				} while (_la===9);
-				this.state = 52;
+				this.state = 53;
 				this.match(LambdaCalcParser.T__2);
 				}
 				break;
@@ -275,11 +283,11 @@ export default class LambdaCalcParser extends Parser {
 				localctx = new ParenthesesContext(this, localctx);
 				this._ctx = localctx;
 				_prevctx = localctx;
-				this.state = 54;
-				this.match(LambdaCalcParser.LPAREN);
 				this.state = 55;
-				this.term(0);
+				this.match(LambdaCalcParser.LPAREN);
 				this.state = 56;
+				this.term(0);
+				this.state = 57;
 				this.match(LambdaCalcParser.RPAREN);
 				}
 				break;
@@ -287,9 +295,9 @@ export default class LambdaCalcParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			this._ctx.stop = this._input.LT(-1);
-			this.state = 67;
+			this.state = 68;
 			this._errHandler.sync(this);
-			_alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
+			_alt = this._interp.adaptivePredict(this._input, 7, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					if (this._parseListeners != null) {
@@ -297,18 +305,18 @@ export default class LambdaCalcParser extends Parser {
 					}
 					_prevctx = localctx;
 					{
-					this.state = 65;
+					this.state = 66;
 					this._errHandler.sync(this);
-					switch ( this._interp.adaptivePredict(this._input, 5, this._ctx) ) {
+					switch ( this._interp.adaptivePredict(this._input, 6, this._ctx) ) {
 					case 1:
 						{
 						localctx = new ApplicationContext(this, new TermContext(this, _parentctx, _parentState));
 						this.pushNewRecursionContext(localctx, _startState, LambdaCalcParser.RULE_term);
-						this.state = 60;
+						this.state = 61;
 						if (!(this.precpred(this._ctx, 5))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 5)");
 						}
-						this.state = 61;
+						this.state = 62;
 						this.term(6);
 						}
 						break;
@@ -316,22 +324,22 @@ export default class LambdaCalcParser extends Parser {
 						{
 						localctx = new TupleProjectionContext(this, new TermContext(this, _parentctx, _parentState));
 						this.pushNewRecursionContext(localctx, _startState, LambdaCalcParser.RULE_term);
-						this.state = 62;
+						this.state = 63;
 						if (!(this.precpred(this._ctx, 2))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
-						this.state = 63;
-						this.match(LambdaCalcParser.DOT);
 						this.state = 64;
+						this.match(LambdaCalcParser.DOT);
+						this.state = 65;
 						this.match(LambdaCalcParser.NATURAL_NUMBER);
 						}
 						break;
 					}
 					}
 				}
-				this.state = 69;
+				this.state = 70;
 				this._errHandler.sync(this);
-				_alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
+				_alt = this._interp.adaptivePredict(this._input, 7, this._ctx);
 			}
 			}
 		}
@@ -369,7 +377,7 @@ export default class LambdaCalcParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(localctx, 1);
 			{
-			this.state = 76;
+			this.state = 77;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case 6:
@@ -379,7 +387,7 @@ export default class LambdaCalcParser extends Parser {
 				this._ctx = localctx;
 				_prevctx = localctx;
 
-				this.state = 71;
+				this.state = 72;
 				_la = this._input.LA(1);
 				if(!(_la===6 || _la===7)) {
 				this._errHandler.recoverInline(this);
@@ -395,11 +403,11 @@ export default class LambdaCalcParser extends Parser {
 				localctx = new ParenTypeContext(this, localctx);
 				this._ctx = localctx;
 				_prevctx = localctx;
-				this.state = 72;
-				this.match(LambdaCalcParser.LPAREN);
 				this.state = 73;
-				this.type_(0);
+				this.match(LambdaCalcParser.LPAREN);
 				this.state = 74;
+				this.type_(0);
+				this.state = 75;
 				this.match(LambdaCalcParser.RPAREN);
 				}
 				break;
@@ -407,9 +415,9 @@ export default class LambdaCalcParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			this._ctx.stop = this._input.LT(-1);
-			this.state = 86;
+			this.state = 87;
 			this._errHandler.sync(this);
-			_alt = this._interp.adaptivePredict(this._input, 9, this._ctx);
+			_alt = this._interp.adaptivePredict(this._input, 10, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					if (this._parseListeners != null) {
@@ -417,20 +425,20 @@ export default class LambdaCalcParser extends Parser {
 					}
 					_prevctx = localctx;
 					{
-					this.state = 84;
+					this.state = 85;
 					this._errHandler.sync(this);
-					switch ( this._interp.adaptivePredict(this._input, 8, this._ctx) ) {
+					switch ( this._interp.adaptivePredict(this._input, 9, this._ctx) ) {
 					case 1:
 						{
 						localctx = new TupleTypeContext(this, new TypeContext(this, _parentctx, _parentState));
 						this.pushNewRecursionContext(localctx, _startState, LambdaCalcParser.RULE_type);
-						this.state = 78;
+						this.state = 79;
 						if (!(this.precpred(this._ctx, 3))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
 						}
-						this.state = 79;
-						this.match(LambdaCalcParser.T__3);
 						this.state = 80;
+						this.match(LambdaCalcParser.T__3);
+						this.state = 81;
 						this.type_(3);
 						}
 						break;
@@ -438,22 +446,22 @@ export default class LambdaCalcParser extends Parser {
 						{
 						localctx = new FunctionTypeContext(this, new TypeContext(this, _parentctx, _parentState));
 						this.pushNewRecursionContext(localctx, _startState, LambdaCalcParser.RULE_type);
-						this.state = 81;
+						this.state = 82;
 						if (!(this.precpred(this._ctx, 2))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
-						this.state = 82;
-						this.match(LambdaCalcParser.ARROW);
 						this.state = 83;
+						this.match(LambdaCalcParser.ARROW);
+						this.state = 84;
 						this.type_(2);
 						}
 						break;
 					}
 					}
 				}
-				this.state = 88;
+				this.state = 89;
 				this._errHandler.sync(this);
-				_alt = this._interp.adaptivePredict(this._input, 9, this._ctx);
+				_alt = this._interp.adaptivePredict(this._input, 10, this._ctx);
 			}
 			}
 		}
@@ -500,33 +508,33 @@ export default class LambdaCalcParser extends Parser {
 		return true;
 	}
 
-	public static readonly _serializedATN: number[] = [4,1,16,90,2,0,7,0,2,
+	public static readonly _serializedATN: number[] = [4,1,16,91,2,0,7,0,2,
 	1,7,1,2,2,7,2,2,3,7,3,1,0,5,0,10,8,0,10,0,12,0,13,9,0,1,0,1,0,1,0,1,1,1,
 	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,28,8,1,1,1,1,1,3,1,32,8,1,1,2,1,2,
-	1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,4,2,49,8,2,11,2,12,
-	2,50,1,2,1,2,1,2,1,2,1,2,1,2,3,2,59,8,2,1,2,1,2,1,2,1,2,1,2,5,2,66,8,2,
-	10,2,12,2,69,9,2,1,3,1,3,1,3,1,3,1,3,1,3,3,3,77,8,3,1,3,1,3,1,3,1,3,1,3,
-	1,3,5,3,85,8,3,10,3,12,3,88,9,3,1,3,0,2,4,6,4,0,2,4,6,0,1,1,0,6,7,97,0,
-	11,1,0,0,0,2,31,1,0,0,0,4,58,1,0,0,0,6,76,1,0,0,0,8,10,3,2,1,0,9,8,1,0,
-	0,0,10,13,1,0,0,0,11,9,1,0,0,0,11,12,1,0,0,0,12,14,1,0,0,0,13,11,1,0,0,
-	0,14,15,3,4,2,0,15,16,5,0,0,1,16,1,1,0,0,0,17,18,5,6,0,0,18,19,5,11,0,0,
-	19,20,3,6,3,0,20,21,5,13,0,0,21,32,1,0,0,0,22,23,5,6,0,0,23,24,5,1,0,0,
-	24,27,3,4,2,0,25,26,5,11,0,0,26,28,3,6,3,0,27,25,1,0,0,0,27,28,1,0,0,0,
-	28,29,1,0,0,0,29,30,5,13,0,0,30,32,1,0,0,0,31,17,1,0,0,0,31,22,1,0,0,0,
-	32,3,1,0,0,0,33,34,6,2,-1,0,34,35,5,5,0,0,35,36,5,6,0,0,36,37,5,11,0,0,
-	37,38,3,6,3,0,38,39,5,12,0,0,39,40,3,4,2,0,40,41,5,11,0,0,41,42,3,6,3,0,
-	42,59,1,0,0,0,43,59,5,6,0,0,44,45,5,2,0,0,45,48,3,4,2,0,46,47,5,9,0,0,47,
-	49,3,4,2,0,48,46,1,0,0,0,49,50,1,0,0,0,50,48,1,0,0,0,50,51,1,0,0,0,51,52,
-	1,0,0,0,52,53,5,3,0,0,53,59,1,0,0,0,54,55,5,14,0,0,55,56,3,4,2,0,56,57,
-	5,15,0,0,57,59,1,0,0,0,58,33,1,0,0,0,58,43,1,0,0,0,58,44,1,0,0,0,58,54,
-	1,0,0,0,59,67,1,0,0,0,60,61,10,5,0,0,61,66,3,4,2,6,62,63,10,2,0,0,63,64,
-	5,12,0,0,64,66,5,8,0,0,65,60,1,0,0,0,65,62,1,0,0,0,66,69,1,0,0,0,67,65,
-	1,0,0,0,67,68,1,0,0,0,68,5,1,0,0,0,69,67,1,0,0,0,70,71,6,3,-1,0,71,77,7,
-	0,0,0,72,73,5,14,0,0,73,74,3,6,3,0,74,75,5,15,0,0,75,77,1,0,0,0,76,70,1,
-	0,0,0,76,72,1,0,0,0,77,86,1,0,0,0,78,79,10,3,0,0,79,80,5,4,0,0,80,85,3,
-	6,3,3,81,82,10,2,0,0,82,83,5,10,0,0,83,85,3,6,3,2,84,78,1,0,0,0,84,81,1,
-	0,0,0,85,88,1,0,0,0,86,84,1,0,0,0,86,87,1,0,0,0,87,7,1,0,0,0,88,86,1,0,
-	0,0,10,11,27,31,50,58,65,67,76,84,86];
+	1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,43,8,2,1,2,1,2,1,2,1,2,1,2,4,2,50,8,2,11,
+	2,12,2,51,1,2,1,2,1,2,1,2,1,2,1,2,3,2,60,8,2,1,2,1,2,1,2,1,2,1,2,5,2,67,
+	8,2,10,2,12,2,70,9,2,1,3,1,3,1,3,1,3,1,3,1,3,3,3,78,8,3,1,3,1,3,1,3,1,3,
+	1,3,1,3,5,3,86,8,3,10,3,12,3,89,9,3,1,3,0,2,4,6,4,0,2,4,6,0,1,1,0,6,7,99,
+	0,11,1,0,0,0,2,31,1,0,0,0,4,59,1,0,0,0,6,77,1,0,0,0,8,10,3,2,1,0,9,8,1,
+	0,0,0,10,13,1,0,0,0,11,9,1,0,0,0,11,12,1,0,0,0,12,14,1,0,0,0,13,11,1,0,
+	0,0,14,15,3,4,2,0,15,16,5,0,0,1,16,1,1,0,0,0,17,18,5,6,0,0,18,19,5,11,0,
+	0,19,20,3,6,3,0,20,21,5,13,0,0,21,32,1,0,0,0,22,23,5,6,0,0,23,24,5,1,0,
+	0,24,27,3,4,2,0,25,26,5,11,0,0,26,28,3,6,3,0,27,25,1,0,0,0,27,28,1,0,0,
+	0,28,29,1,0,0,0,29,30,5,13,0,0,30,32,1,0,0,0,31,17,1,0,0,0,31,22,1,0,0,
+	0,32,3,1,0,0,0,33,34,6,2,-1,0,34,35,5,5,0,0,35,36,5,6,0,0,36,37,5,11,0,
+	0,37,38,3,6,3,0,38,39,5,12,0,0,39,42,3,4,2,0,40,41,5,11,0,0,41,43,3,6,3,
+	0,42,40,1,0,0,0,42,43,1,0,0,0,43,60,1,0,0,0,44,60,5,6,0,0,45,46,5,2,0,0,
+	46,49,3,4,2,0,47,48,5,9,0,0,48,50,3,4,2,0,49,47,1,0,0,0,50,51,1,0,0,0,51,
+	49,1,0,0,0,51,52,1,0,0,0,52,53,1,0,0,0,53,54,5,3,0,0,54,60,1,0,0,0,55,56,
+	5,14,0,0,56,57,3,4,2,0,57,58,5,15,0,0,58,60,1,0,0,0,59,33,1,0,0,0,59,44,
+	1,0,0,0,59,45,1,0,0,0,59,55,1,0,0,0,60,68,1,0,0,0,61,62,10,5,0,0,62,67,
+	3,4,2,6,63,64,10,2,0,0,64,65,5,12,0,0,65,67,5,8,0,0,66,61,1,0,0,0,66,63,
+	1,0,0,0,67,70,1,0,0,0,68,66,1,0,0,0,68,69,1,0,0,0,69,5,1,0,0,0,70,68,1,
+	0,0,0,71,72,6,3,-1,0,72,78,7,0,0,0,73,74,5,14,0,0,74,75,3,6,3,0,75,76,5,
+	15,0,0,76,78,1,0,0,0,77,71,1,0,0,0,77,73,1,0,0,0,78,87,1,0,0,0,79,80,10,
+	3,0,0,80,81,5,4,0,0,81,86,3,6,3,3,82,83,10,2,0,0,83,84,5,10,0,0,84,86,3,
+	6,3,2,85,79,1,0,0,0,85,82,1,0,0,0,86,89,1,0,0,0,87,85,1,0,0,0,87,88,1,0,
+	0,0,88,7,1,0,0,0,89,87,1,0,0,0,11,11,27,31,42,51,59,66,68,77,85,87];
 
 	private static __ATN: ATN;
 	public static get _ATN(): ATN {
