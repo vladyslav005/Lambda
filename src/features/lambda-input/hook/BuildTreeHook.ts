@@ -1,6 +1,6 @@
 import {useContext} from "react";
 import {EditorContext} from "../context/EditorContext";
-import {InputAnalyzer} from "../../../../core/AnalyzeInput";
+import {InputAnalyzer} from "../../../core/AnalyzeInput";
 
 const analyzer = new InputAnalyzer();
 

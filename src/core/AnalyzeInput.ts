@@ -1,9 +1,10 @@
 import {CharStream, CommonTokenStream, ParseTree} from "antlr4";
 import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
 import LambdaCalcParser from "./antlr/LambdaCalcParser";
-import {Context, TypeChecker} from "./typechecker/TypeChecker";
+import {TypeChecker} from "./typechecker/TypeChecker";
 import {ProofNode, TreeGenerator} from "./tree/TreeGenerator";
 import {CustomLexerErrorListener, CustomParserErrorListener} from "./errorhandling/ErrorListeners";
+import {Context} from "./context/Context";
 
 
 export class InputAnalyzer {

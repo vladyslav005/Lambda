@@ -1,5 +1,5 @@
 import React from 'react';
-import {ProofNode} from "../../../../core/tree/TreeGenerator";
+import {ProofNode} from "../../../core/tree/TreeGenerator";
 import Tex2SVG from "react-hook-mathjax";
 
 export function ProofTreeUsingMathJax({proofTree}: { proofTree: ProofNode }) {

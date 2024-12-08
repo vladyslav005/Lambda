@@ -1,7 +1,7 @@
 import {MathComponent} from "mathjax-react";
-import {ProofNode} from "../../../../../core/tree/TreeGenerator";
+import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import {useContext, useState} from "react";
-import {EditorContext} from "../../../lambdainput/context/EditorContext";
+import {EditorContext} from "../../../lambda-input/context/EditorContext";
 
 interface ConclusionCenterProps {
   isItLeaf: string;

@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {EditorContext} from "../../lambdainput/context/EditorContext";
+import {EditorContext} from "../../lambda-input/context/EditorContext";
 import {ProofTreeUsingMathJax} from "./ProofTreeUsingMathJax";
 
 import {MapInteractionCSS} from 'react-map-interaction';

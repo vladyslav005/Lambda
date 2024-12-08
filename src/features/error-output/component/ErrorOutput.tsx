@@ -1,7 +1,7 @@
 import {ErrorMessage} from "./ErrorMessage.";
 import {ErrorType} from "../types/error_types";
 import {useContext} from "react";
-import {EditorContext} from "../../lambdainput/context/EditorContext";
+import {EditorContext} from "../../lambda-input/context/EditorContext";
 import './ErrorOutput.css'
 
 export function ErrorOutput() {

@@ -10,7 +10,7 @@ globalDecl
     ;
 
 term
-    : LAMBDA ID COLON type DOT term COLON type          # LambdaAbstraction
+    : LAMBDA ID COLON type DOT term (COLON type)?       # LambdaAbstraction
     | <assoc=left> term term                            # Application
     | ID                                                # Variable
     | '<'term (COMMA term)+ '>'                         # Tuple

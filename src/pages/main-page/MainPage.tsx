@@ -1,5 +1,5 @@
-import {LambdaInput} from "../../features/lambdainput/component/LambdaInput";
-import {ErrorOutput} from "../../features/erroroutput/component/ErrorOutput";
+import {LambdaInput} from "../../features/lambda-input/component/LambdaInput";
+import {ErrorOutput} from "../../features/error-output/component/ErrorOutput";
 import {TreeFlat} from "../../features/tree/component/TreeFlat";
 import {HelpBar} from "../../features/helpbar/component/HelpBar";
 

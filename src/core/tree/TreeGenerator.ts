@@ -11,8 +11,9 @@ import {
   ParenTypeContext, TupleContext, TupleProjectionContext,
   VariableContext
 } from "../antlr/LambdaCalcParser";
-import {Context, TypeChecker} from "../typechecker/TypeChecker";
+import {TypeChecker} from "../typechecker/TypeChecker";
 import {ParserRuleContext, ParseTree} from "antlr4";
+import {Context} from "../context/Context";
 
 export interface ProofNode {
   type: string;

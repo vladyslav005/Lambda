@@ -1,4 +1,4 @@
-import {ProofNode} from "../../../../core/tree/TreeGenerator";
+import {ProofNode} from "../../../core/tree/TreeGenerator";
 import React, {createContext, useState} from 'react';
 
 

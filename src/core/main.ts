@@ -5,7 +5,7 @@ import {CustomLexerErrorListener, CustomParserErrorListener} from "./errorhandli
 import LambdaCalcParser from "./antlr/LambdaCalcParser";
 import {TypeChecker} from "./typechecker/TypeChecker";
 import {TreeGenerator} from "./tree/TreeGenerator";
-import {generateProofTreeLatexBussproof} from "../ui/features/tree/component/ProofTreeUsingMathJax";
+import {generateProofTreeLatexBussproof} from "../features/tree/component/ProofTreeUsingMathJax";
 
 
 let input = `
