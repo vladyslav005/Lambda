@@ -12,7 +12,7 @@ import LambdaCalcParser, {
   TypeContext,
   VariableContext
 } from "../antlr/LambdaCalcParser";
-import {CharStream, CommonTokenStream, ParserRuleContext, ParseTree} from "antlr4";
+import {CharStream, CommonTokenStream, Parser, ParserRuleContext, ParseTree} from "antlr4";
 import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
 import {IndexError, SyntaxError, TypeError} from "../errorhandling/customErrors";
 import {Context} from "../context/Context";
@@ -107,8 +107,15 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     }
 
+    let parentCtx = ctx.parentCtx;
+    while (parentCtx instanceof ParenthesesContext) {
+      parentCtx = parentCtx.parentCtx;
+      if (parentCtx === undefined)
+        break;
+    }
 
-    if (!declaredType && ctx.parentCtx && !(this.eliminateOutParentheses(ctx.parentCtx) instanceof LambdaAbstractionContext)) {
+
+    if (!declaredType && ctx.parentCtx && !(parentCtx instanceof LambdaAbstractionContext)) {
       throw new SyntaxError(`Provide explicit type declaration for term ${ctx.getText()}`,
           this.getTokenLocation(ctx)
       )
@@ -139,8 +146,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const absType = paramType + "->" + bodyType;
 
     if (declaredType && absType !== declaredType) {
-      throw new TypeError(`Abstraction '${ctx.getText()}' has type
-          '${absType}', that doesn't match declared type '${declaredType}'`,
+      throw new TypeError(
+          `Abstraction '${ctx.getText()}' has type '${absType}', that doesn't match declared type '${declaredType}'`,
           this.getTokenLocation(ctx)
       );
     }
@@ -221,8 +228,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     /* checking type of argument */
     if (argumentType !== argumentExpectedType) {
-      throw new TypeError(`Types mismatch: term  '${funcName}' expects argument of type
-            '${argumentExpectedType}', but given argument argumentName is of type '${argumentType}'`,
+      throw new TypeError(
+          `Types mismatch: term '${funcName}' expects argument of type '${argumentExpectedType}', but given argument '${argumentName}' is of type '${argumentType}'`,
           this.getTokenLocation(ctx)
       );
     }

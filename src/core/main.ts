@@ -9,21 +9,21 @@ import {generateProofTreeLatexBussproof} from "../features/tree/component/ProofT
 
 
 let input = `
-x : α;
-y : α -> α;
-z : (α -> α) -> α;
-w : ((α -> α) -> α) -> α;
-
-
-λ a : α -> α . (λ b : α . (a b) ): (α -> α) -> (α -> α)
-
+   x : α;
+   z : β;
+   M = λ y:α.y : α -> α;
+   
+   (λ y:α->α.( λ x:α.(y x) : α ) : (α->α)->(α->α) ) M 
 `;
 
 const lexer = new LambdaCalcLexer(new CharStream(input))
 
+
 const tokens = new CommonTokenStream(lexer);
 
+
 const parser = new LambdaCalcParser(tokens);
+
 
 const ast = parser.expression()
 
@@ -35,17 +35,17 @@ const treeGenerator = new TreeGenerator()
 
 const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext)
 
-// console.log(ast.toStringTree(parser.ruleNames, parser))
+console.log(ast.toStringTree(parser.ruleNames, parser))
 
-// const analyzer = new InputAnalyzer()
-//
-// analyzer.analyzeInput(input)
-//
-// analyzer.checkTypes()
+const analyzer = new InputAnalyzer()
+
+analyzer.analyzeInput(input)
+
+analyzer.checkTypes()
 
 // console.log(JSON.stringify(analyzer.generateProofTree(), undefined, 4))
 
-// console.log(analyzer.generateProofTree())
+console.log(analyzer.generateProofTree())
 
 input = `
 x : α;

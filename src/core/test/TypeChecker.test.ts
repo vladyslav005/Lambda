@@ -15,7 +15,7 @@ test('case 1, application and using global variable', () => {
 test('case 2, application using wrong types', () => {
   const tree = parseInput(inputs[1]);
   expect(() => typeChecker.visit(tree)).toThrow(
-      new Error("Types mismatch: term y expects argument of type α, but given argument 'z' is of type β")
+      new Error("Types mismatch: term 'y' expects argument of type 'α', but given argument 'z' is of type 'β'")
   );
 });
 
@@ -34,14 +34,14 @@ test('case 4, discarding ?unnecessary? parentheses, ', () => {
 test('case 5, invalid function declaration', () => {
   const tree = parseInput(inputs[4]);
   expect(() => typeChecker.visit(tree)).toThrow(
-      new Error("Abstraction λy:α.z:α->α has type α->β, that doesn't match declared type α->α")
+      new Error("Abstraction 'λy:α.z:α->α' has type 'α->β', that doesn't match declared type 'α->α'")
   );
 });
 
 test('case 6, using undefined variable', () => {
   const tree = parseInput(inputs[5]);
   expect(() => typeChecker.visit(tree)).toThrow(
-      new Error("Undefined variable : v")
+      new Error("Undefined variable : 'v'")
   );
 });
 
@@ -73,7 +73,7 @@ test('case 11, assigning result of application', () => {
 test('case 12, bad using of app', () => {
   const tree = parseInput(inputs[11]);
   expect(() => typeChecker.visit(tree)).toThrow(
-      new Error("g: has type Bool, that is not a function type, cant use application there")
+      new Error("'g' : has type 'Bool', that is not a function type, cant use application there")
   );
 });
 
@@ -99,7 +99,7 @@ test('case 15, projection index out of range', () => {
 test('case 16, projection index out of range', () => {
   const tree = parseInput(inputs[15]);
   expect(() => typeChecker.visit(tree)).toThrow(
-      new Error("Abstraction λx:A*B.x.2:A*B->A has type A*B->B, that doesn't match declared type A*B->A")
+      new Error("Abstraction 'λx:A*B.x.2:A*B->A' has type 'A*B->B', that doesn't match declared type 'A*B->A'")
   );
 });
 

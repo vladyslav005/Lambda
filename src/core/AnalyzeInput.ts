@@ -32,8 +32,8 @@ export class InputAnalyzer {
   public analyzeInput(input: string) {
     this.input = input;
     this.lexer = new LambdaCalcLexer(new CharStream(input))
-    this.lexer.removeErrorListeners()
-    this.lexer.addErrorListener(new CustomLexerErrorListener())
+    // this.lexer.removeErrorListeners()
+    // this.lexer.addErrorListener(new CustomLexerErrorListener())
 
     this.tokens = new CommonTokenStream(this.lexer);
 
