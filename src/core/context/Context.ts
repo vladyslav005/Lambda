@@ -1,4 +1,4 @@
-export class ContextElement {
+export class ContextElement  {
 
   public declarationLocation : number[] | undefined;
 
@@ -77,7 +77,16 @@ export class Context {
         return element;
       }
     }
-
     return null;
   }
+
+  getAllElements() : ContextElement[] {
+    return this.types;
+  }
+
+  isEmpty(): boolean {
+    return this.types.length === 0;
+  }
+
+
 }

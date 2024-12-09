@@ -34,13 +34,14 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
   private localContext: Context;
 
-  private contextExtension: string | undefined;
+  private contextExtension: string;
 
   constructor() {
     super();
     this._proofTree = undefined;
     this.globalContext = undefined;
     this.localContext = new Context();
+    this.contextExtension = "";
 
 
   }
@@ -90,24 +91,20 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   visitLambdaAbstraction = (ctx: LambdaAbstractionContext): any => {
     console.log("T-abs: " + ctx.getText())
 
+    const ctxExtensionTmp = this.contextExtension
     this.localContext.addVariable(ctx.ID().getText(),
-        this.typeChecker.visit(ctx.type_(0)), undefined
-    )
-
-    //TODO : IS IT CORRECT???
-    // TODO : КОСТИЛЬ
-    const contextExtensionTmp = this.contextExtension;
-
-    this.contextExtension = `, ${ctx.ID().getText()} :  ${this.localContext.getType(ctx.ID().getText())}`;
-
+        this.typeChecker.visit(ctx.type_(0)), undefined)
     this.typeChecker.localContext = this.localContext;
+
+    this.updateContextExtension()
+
 
     const type = this.typeChecker.visit(ctx);
     const body = ctx.term();
 
     const result = {
       type: type,
-      conclusion: `\\Gamma${contextExtensionTmp ? contextExtensionTmp : ''} \\vdash ${ctx.getText()}`,
+      conclusion: `\\Gamma ${ctxExtensionTmp} \\vdash ${ctx.getText()}`,
       rule: "(T-abs)",
       context: ctx,
       tokenLocation: this.typeChecker.getTokenLocation(ctx),
@@ -117,7 +114,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     this.localContext.deleteVariable(ctx.ID().getText())
     this.typeChecker.clearLocalContext();
-    this.contextExtension = undefined
+
+    this.updateContextExtension()
 
     return result;
   };
@@ -129,7 +127,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return {
       type: type,
-      conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${type}`,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${type}`,
       rule: "(T-var)",
       root: false,
       context: ctx,
@@ -138,7 +136,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       premises: [
         {
           type: type,
-          conclusion: `${ctx.getText()} : ${type} \\in \\Gamma`,
+          conclusion: `${ctx.getText()} : ${type} \\in \\Gamma ${this.contextExtension}`,
           rule: "",
           root: false,
           context: ctx,
@@ -158,7 +156,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const returnNode = {
       type: type,
-      conclusion: `\\Gamma${this.contextExtension ? this.contextExtension : ''} \\vdash ${ctx.getText()} : ${type}`,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${type}`,
       rule: "(T-app)",
       context: ctx,
       tokenLocation: this.typeChecker.getTokenLocation(ctx),
@@ -262,5 +260,20 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   visitParenType = (ctx: ParenTypeContext): any => {
 
   };
+
+  updateContextExtension() {
+    this.contextExtension = "";
+
+    if (this.localContext.isEmpty()) return;
+
+    const ctxElements = this.localContext.getAllElements()
+    this.contextExtension = ",";
+
+    for (const element of ctxElements) {
+      this.contextExtension += element.name + ':' + element.type + ', ';
+    }
+
+    this.contextExtension = this.contextExtension.substring(0, this.contextExtension.lastIndexOf(','));
+  }
 
 }
