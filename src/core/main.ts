@@ -13,7 +13,7 @@ let input = `
    z : β;
    M = λ y:α.y : α -> α;
    
-   (λ y:α->α.( λ x:α.(y x) : α ) : (α->α)->(α->α) ) M 
+   (λ y:α->α.( λ x:α.(y x)) : (α->α)->(α->α) ) M 
 `;
 
 const lexer = new LambdaCalcLexer(new CharStream(input))

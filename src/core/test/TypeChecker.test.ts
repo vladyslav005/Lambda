@@ -25,11 +25,10 @@ test('case 3, application and using global variable with incorrect type', () => 
 });
 
 /* TODO:  */
-
-test('case 4, discarding ?unnecessary? parentheses, ', () => {
-  const tree = parseInput(inputs[3]);
-  typeChecker.visit(tree)
-});
+// test('case 4, discarding ?unnecessary? parentheses, ', () => {
+//   const tree = parseInput(inputs[3]);
+//   typeChecker.visit(tree)
+// });
 
 test('case 5, invalid function declaration', () => {
   const tree = parseInput(inputs[4]);

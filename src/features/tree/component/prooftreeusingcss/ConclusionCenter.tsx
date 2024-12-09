@@ -7,10 +7,12 @@ interface ConclusionCenterProps {
   isItLeaf: string;
   isItRoot: string;
   node: ProofNode;
+  isExpanded: boolean;
+  setIsExpanded: (expanded: boolean) => void;
 }
 
 
-export function ConclusionCenter(props: ConclusionCenterProps): JSX.Element {
+export const ConclusionCenter = (props: ConclusionCenterProps) => {
 
   const editorContext = useContext(EditorContext);
   const [isHovered, setIsHovered] = useState(false)
@@ -52,16 +54,25 @@ export function ConclusionCenter(props: ConclusionCenterProps): JSX.Element {
     setDecorations(editorContext.editor.deltaDecorations(decorations, newDecorations));
   }
 
-  function handleMouseLeave() {
+  const handleMouseLeave = ()=>  {
     // Clear the decorations when the mouse leaves
     setDecorations(editorContext.editor.deltaDecorations(decorations, []));
     setIsHovered(false)
   }
 
+  // Expand feature
+  const handleClick = () => {
+    if (props.node.isExpandable)
+      props.setIsExpanded(!props.isExpanded);
+  }
+
+
+
   return (
       <div className={`conclusion-center ${props.isItLeaf} ${props.isItRoot}`}
            onMouseEnter={handleMouseEnter}
            onMouseLeave={handleMouseLeave}
+           onClick={handleClick}
            style={{
              backgroundColor: isHovered ? "rgba(255, 255, 0, 0.3)" : "", // Highlight the div when hovered
              borderRadius: '10px'

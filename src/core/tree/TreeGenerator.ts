@@ -8,12 +8,15 @@ import {
   GreekTypeContext,
   LambdaAbstractionContext,
   ParenthesesContext,
-  ParenTypeContext, TupleContext, TupleProjectionContext,
+  ParenTypeContext,
+  TupleContext,
+  TupleProjectionContext,
   VariableContext
 } from "../antlr/LambdaCalcParser";
 import {TypeChecker} from "../typechecker/TypeChecker";
 import {ParserRuleContext, ParseTree} from "antlr4";
-import {Context} from "../context/Context";
+import {Context, ContextElement} from "../context/Context";
+import {getTokenLocation, parseType} from "../utils";
 
 export interface ProofNode {
   type: string;
@@ -23,7 +26,10 @@ export interface ProofNode {
   tokenLocation: number[],
   declarationLocation?: number[];
   premises?: ProofNode[];
+  expandedPremises?: ProofNode[];
   root: boolean;
+  isExpandable: boolean;
+  isExpanded?: boolean;
 }
 
 
@@ -42,8 +48,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     this.globalContext = undefined;
     this.localContext = new Context();
     this.contextExtension = "";
-
-
   }
 
   private _proofTree: ProofNode | undefined;
@@ -98,7 +102,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     this.updateContextExtension()
 
-
     const type = this.typeChecker.visit(ctx);
     const body = ctx.term();
 
@@ -107,9 +110,10 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       conclusion: `\\Gamma ${ctxExtensionTmp} \\vdash ${ctx.getText()}`,
       rule: "(T-abs)",
       context: ctx,
-      tokenLocation: this.typeChecker.getTokenLocation(ctx),
+      tokenLocation: getTokenLocation(ctx),
       root: false,
       premises: [this.visit(body)],
+      isExpandable: false
     } as ProofNode;
 
     this.localContext.deleteVariable(ctx.ID().getText())
@@ -125,14 +129,20 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const type = this.typeChecker.visit(ctx);
 
+    let ctxInfo = this.getContextInfo(ctx.getText())
+
     return {
       type: type,
       conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${type}`,
       rule: "(T-var)",
       root: false,
       context: ctx,
-      tokenLocation: this.typeChecker.getTokenLocation(ctx),
-      declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(ctx.getText()),
+      tokenLocation: getTokenLocation(ctx),
+      declarationLocation: ctxInfo.declarationLocation,
+      isExpandable: ctxInfo.isExpandable,
+      expandedPremises: ctxInfo.declarationNode ? [
+          this.visit(ctxInfo.declarationNode.getChild(2))
+      ] : undefined,
       premises: [
         {
           type: type,
@@ -140,11 +150,10 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           rule: "",
           root: false,
           context: ctx,
-          tokenLocation: this.typeChecker.getTokenLocation(ctx),
-          declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(ctx.getText()),
-
+          tokenLocation: getTokenLocation(ctx),
+          declarationLocation: ctxInfo.declarationLocation,
+          isExpandable: ctxInfo.isExpandable,
         }
-
       ],
     } as ProofNode;
   };
@@ -154,30 +163,27 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const type = this.typeChecker.visit(ctx);
 
-    const returnNode = {
+    return {
       type: type,
       conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${type}`,
       rule: "(T-app)",
       context: ctx,
-      tokenLocation: this.typeChecker.getTokenLocation(ctx),
+      tokenLocation: getTokenLocation(ctx),
       root: false,
+      isExpandable: false,
       premises: this.visitChildren(ctx),
     } as ProofNode;
-
-
-    return returnNode;
   };
 
   visitTuple = (ctx: TupleContext): any => {
     const type = this.typeChecker.visit(ctx);
 
     const tupleTypesArray : string[] = []
-    const tupleTypeNode = this.typeChecker.parseType(type)
+    const tupleTypeNode = parseType(type)
     this.typeChecker.tupleTypeToArray(tupleTypeNode, tupleTypesArray)
 
     const nodeList = []
     const premises : ProofNode[] = []
-    const premisesStr : string[] = []
 
     for (let i = 0; i < ctx.getChildCount(); i++) {
       if (i % 2 !== 0) {
@@ -186,18 +192,15 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       }
     }
 
-    nodeList.map((node, index) => {
-      premisesStr.push(node.getText() + ':'+ tupleTypesArray[index]);
-    })
-
     const result = {
       type: type,
-      conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${type.replaceAll("*", " \\times  ")}`,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${type.replaceAll("*", " \\times  ")}`,
       rule: "(T-tuple)",
       context: ctx,
-      tokenLocation: this.typeChecker.getTokenLocation(ctx),
+      tokenLocation: getTokenLocation(ctx),
       root: false,
       premises: premises,
+      isExpandable: false
     } as ProofNode;
 
     console.log("Tuple: " + ctx.getText())
@@ -211,36 +214,34 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const projectionIndex = parseInt(ctx.getChild(2).getText());
 
-
     const tupleTypesArray : string[] = []
-    const tupleTypeNode = this.typeChecker.parseType(tupleType)
+    const tupleTypeNode = parseType(tupleType)
     this.typeChecker.tupleTypeToArray(tupleTypeNode, tupleTypesArray)
 
-    const result = {
+    return {
       type: tupleTypesArray[projectionIndex - 1],
-      conclusion: `\\Gamma \\vdash ${ctx.getText()} : ${tupleTypesArray[projectionIndex - 1]}`,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${tupleTypesArray[projectionIndex - 1]}`,
       rule: "(T-proj)",
       context: ctx,
-      tokenLocation: this.typeChecker.getTokenLocation(ctx),
+      tokenLocation: getTokenLocation(ctx),
       declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(tuple.getText()),
       root: false,
+      isExpandable: false,
       premises:
-      [
-        {
-          type: tupleType,
-          conclusion: `\\Gamma \\vdash  ${tuple.getText()} : ${tupleType.replaceAll("*", " \\times  ")}`,
-          rule: "",
-          root: false,
-          context: ctx,
-          tokenLocation: this.typeChecker.getTokenLocation(ctx),
-          declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(tuple.getText()),
-        }
-      ],
+          [
+            {
+              type: tupleType,
+              conclusion: `\\Gamma \\vdash  ${tuple.getText()} : ${tupleType.replaceAll("*", " \\times  ")}`,
+              rule: "",
+              root: false,
+              context: ctx,
+              tokenLocation: getTokenLocation(ctx),
+              declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(tuple.getText()),
+              isExpandable: false
+            }
+          ],
 
     } as ProofNode;
-
-
-    return result;
   }
 
   visitParentheses = (ctx: ParenthesesContext): any => {
@@ -274,6 +275,14 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     }
 
     this.contextExtension = this.contextExtension.substring(0, this.contextExtension.lastIndexOf(','));
+  }
+
+  getContextInfo (name: string): ContextElement {
+    let ctxInfo = this.typeChecker.globalContext.getContextInfo(name)
+    if (!ctxInfo) ctxInfo = this.typeChecker.localContext.getContextInfo(name)
+    if (!ctxInfo) throw new Error("Unrecognized variable: " + name)
+
+    return ctxInfo
   }
 
 }

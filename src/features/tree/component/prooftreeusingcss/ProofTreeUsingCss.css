@@ -108,7 +108,7 @@
 }
 
 .premise mjx-container, .conclusion mjx-container {
-    margin: 0px !important;
+    margin: 0 !important;
 }
 
 .highlighted-code {
