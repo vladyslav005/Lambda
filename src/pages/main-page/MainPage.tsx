@@ -1,8 +1,10 @@
 import {LambdaInput} from "../../features/lambda-input/component/LambdaInput";
 import {ErrorOutput} from "../../features/error-output/component/ErrorOutput";
-import {TreeFlat} from "../../features/tree/component/TreeFlat";
 import {HelpBar} from "../../features/helpbar/component/HelpBar";
+import {lazy, Suspense} from "react";
 
+
+const TreeFlat = lazy(() => import('../../features/tree/component/TreeFlat'))
 
 export function MainPage() {
 
@@ -15,7 +17,10 @@ export function MainPage() {
 
           <div className="flex flex-col" style={{flexGrow: 10}}>
             <LambdaInput></LambdaInput>
-            <TreeFlat></TreeFlat>
+
+            <Suspense fallback={<div className="tree-flat-container ui-block">Loading...</div>}>
+              <TreeFlat></TreeFlat>
+            </Suspense>
           </div>
 
           <div className="flex flex-col sidebar"

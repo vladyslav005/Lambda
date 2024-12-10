@@ -24,3 +24,6 @@ yarn-error.log*
 
 /src/core/antlr/*
 !/src/core/antlr/LambdaCalc.g4
+package-lock.json
+coverage/*
+coverage

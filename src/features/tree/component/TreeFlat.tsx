@@ -1,25 +1,22 @@
-import React, {useContext, useState} from "react";
+import React, {useContext} from "react";
 import {EditorContext} from "../../lambda-input/context/EditorContext";
-import {ProofTreeUsingMathJax} from "./ProofTreeUsingMathJax";
 
 import {MapInteractionCSS} from 'react-map-interaction';
 import "./ProofTree.css"
 import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTreeUsingCss";
-import {SwitchTreeView} from "./SwitchTreeView";
 
 export enum TreeView {
   INTERACTIVE = 0,
   LATEX = 1
 }
 
-export function TreeFlat() {
+export default function TreeFlat() {
 
   const editorContext = useContext(EditorContext);
-  const [treeView, setTreeView] = useState(TreeView.LATEX);
 
   return (
       <div
-          className="tree-flat-container ui-block bg-white"
+          className="tree-flat-container ui-block "
       >
         {/*<SwitchTreeView setTreeView={setTreeView} treeView={treeView}/>*/}
 
