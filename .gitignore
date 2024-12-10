@@ -22,4 +22,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/src/core/antlr*
+/src/core/antlr/*
+!/src/core/antlr/LambdaCalc.g4
