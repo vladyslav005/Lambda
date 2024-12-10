@@ -1,25 +1,32 @@
-import {ErrorType, getBackgroundColorForError} from "../types/error_types";
+import {ErrorMessageType} from "../types/error_types";
 
 
 interface ErrorOutputProps {
-  errorType: ErrorType;
-  message: string;
+  error: ErrorMessageType;
 }
 
 export function ErrorMessage(props: ErrorOutputProps) {
 
-
   return (
-      <div className="my-4 error-message"
+      <div className="error-message"
            style={{
-             backgroundColor: `${getBackgroundColorForError(props.errorType)}`,
+             backgroundColor: `${props.error.background}`,
            }}
       >
-        <h1 className="mb-1 mx-4 text-1xl font-bold tracking-tight p-1 text-gray-900 dark:text-white">
-          {props.errorType}
+        <h1 className="mb-1 mx-4 tracking-tight p-1"
+          style={{
+            fontWeight: "bold",
+            color: `${props.error.color}`,
+          }}
+        >
+          {props.error.type}
         </h1>
-        <p className="mb-3 mx-4 font-normal text-gray-700 dark:text-gray-500">
-          {props.message}
+        <p className="mb-3 mx-4"
+          style={{
+            color: `${props.error.color}`,
+          }}
+        >
+          {props.error.message}
         </p>
 
       </div>

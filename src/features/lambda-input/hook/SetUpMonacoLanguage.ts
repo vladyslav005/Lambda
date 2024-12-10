@@ -49,7 +49,9 @@ export function setUpMonacoLanguage(monaco: any) {
       "editor.foreground": "#3c3c3c",
       "editor.background": "#f3edf7",
       "editorCursor.foreground": "#333333",
-      "editor.lineHighlightBackground": "#f3edf7",
+
+      "editor.lineHighlightBackground": "#E7E0EC",
+
       "editorLineNumber.foreground": "#7a7a7a",
       "editor.selectionBackground": "#c6d5ff",
       "editor.selectionHighlightBackground": "#d7e3fc",

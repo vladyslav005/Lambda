@@ -4,4 +4,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    background: var(--Schemes-Surface-Container, #F3EDF7);
+    gap: 1rem;
+    padding-top: 2rem;
+}
+
+
+.error-message {
+    border-radius: var(--Corner-Extra-small, 4px);
+    padding: .6rem 0;
+
 }

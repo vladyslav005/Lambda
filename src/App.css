@@ -1,0 +1,141 @@
+@media only screen and (max-width: 1300px) {
+    /*.ui-block {*/
+    /*    margin: 2rem !important;*/
+    /*}*/
+
+    /*.main-page {*/
+    /*    flex-direction: column;*/
+    /*}*/
+
+    /*.lambda-input {*/
+    /*    margin-top: 0 !important;*/
+    /*    margin-right: 0 !important;*/
+    /*}*/
+
+    /*.help-bar {*/
+    /*    margin-right: 2rem !important;*/
+    /*}*/
+
+    /*.error-output {*/
+    /*    margin-top: 0 !important;*/
+    /*    margin-left: 2rem !important;*/
+    /*}*/
+
+    /*.tree-flat-container {*/
+    /*    margin-right: 0 !important;*/
+    /*    margin-top: 0 !important;*/
+
+    /*}*/
+
+}
+
+@media only screen and (max-width: 1000px) {
+    .ui-block {
+        margin: 1rem !important;
+    }
+
+    .main-page {
+        flex-direction: column-reverse;
+    }
+
+    .sidebar {
+        flex-direction: column-reverse;
+        margin-bottom: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        gap: 1rem !important;
+
+        max-width: none !important;
+
+    }
+
+    .help-bar {
+        /*margin-top: 0 !important;*/
+        margin-bottom: 0 !important;
+        min-height: 100px !important;
+    }
+
+    .error-output {
+        margin-top: 0 !important;
+    }
+
+    .lambda-input {
+        flex-grow: 2 !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+
+        max-height: 400px !important;
+        min-height: 400px !important;
+    }
+
+    .tree-flat-container {
+        min-height: 400px !important;
+    }
+
+
+    .tree-flat-container {
+        /*flex-grow: 2 !important;*/
+
+    }
+
+    .switch-tree-container {
+        /*display: none;*/
+    }
+}
+
+
+.ui-block {
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    border-radius: var(--Corner-Medium, 12px);
+
+}
+
+.lambda-input {
+    margin: 2rem 2rem 1rem;
+    overflow: hidden;
+}
+
+.tree-flat-container {
+    margin: 1rem 2rem 2rem;
+}
+
+.sidebar {
+    gap: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    margin-right: 2rem;
+}
+
+.error-output {
+
+    min-height: calc((100% - 2rem) / 2);
+    flex-grow: 0;
+}
+
+.sidebar {
+    max-width: 400px;
+    min-width: 400px;
+}
+
+.error-message {
+    width: 90%;
+
+}
+
+.error-message p {
+    text-wrap: pretty ;
+
+}
+
+.help-bar {
+    min-height: calc((100% - 2rem) / 2);
+
+    flex-grow: 1;
+}
+
+.main-page {
+    min-height: 100vh;
+    background: var(--Schemes-Surface, #FEF7FF);
+
+}

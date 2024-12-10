@@ -1,6 +1,7 @@
+import './HelpBar.css'
 export function HelpBar() {
   return (
-      <div className="help-bar bg-gray-600 ui-block ml-0">
+      <div className="help-bar ui-block ml-0">
         {/*HELP BAR*/}
       </div>
   )

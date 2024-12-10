@@ -9,17 +9,27 @@ export function ErrorOutput() {
 
 
   return (
-      <div className="error-output ui-block bg-white">
-        ERRORS
+      <div className="error-output ui-block">
 
-        <ErrorMessage message={'There you\'ll see the errors'} errorType={ErrorType.INFO}></ErrorMessage>
+        <ErrorMessage
+            error={{
+              type: ErrorType.INFO,
+              color: "#226303",
+              background: "#e6f9dc",
+              message:'There you\'ll see the errors'
+            }}/>
+
 
         {editorContext.errors &&
             editorContext.errors.map((error: Error, index) => (
                 <ErrorMessage
                     key={index}
-                    message={error.message}
-                    errorType={ErrorType.ERROR}
+                    error={{
+                      type: ErrorType.ERROR,
+                      color: "#852221",
+                      background: "#F9DEDC",
+                      message: error.message
+                    }}
                 />
             ))
         }

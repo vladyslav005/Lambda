@@ -1,16 +1,15 @@
 import {InputAnalyzer} from "./AnalyzeInput";
 import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
 import {CharStream, CommonTokenStream} from "antlr4";
-import {CustomLexerErrorListener, CustomParserErrorListener} from "./errorhandling/ErrorListeners";
 import LambdaCalcParser from "./antlr/LambdaCalcParser";
 import {TypeChecker} from "./typechecker/TypeChecker";
 import {TreeGenerator} from "./tree/TreeGenerator";
-import {generateProofTreeLatexBussproof} from "../features/tree/component/ProofTreeUsingMathJax";
 
 
 let input = `
    x : α;
    z : β;
+   X  = <x> : T 
    M = λ y:α.y : α -> α;
    
    (λ y:α->α.( λ x:α.(y x)) : (α->α)->(α->α) ) M 

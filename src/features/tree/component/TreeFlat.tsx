@@ -21,21 +21,22 @@ export function TreeFlat() {
       <div
           className="tree-flat-container ui-block bg-white"
       >
-        <SwitchTreeView setTreeView={setTreeView} treeView={treeView}/>
+        {/*<SwitchTreeView setTreeView={setTreeView} treeView={treeView}/>*/}
 
-        <div className="tree-component"
-          style={{
-            backgroundColor: "#f3edf7"
-          }}
+        <div className="tree-bx"
         >
-          <MapInteractionCSS>
 
-            {treeView === TreeView.LATEX && editorContext.tree &&
-                <ProofTreeUsingMathJax proofTree={editorContext.tree}/>}
-            {treeView === TreeView.INTERACTIVE && editorContext.tree &&
-                <ProofTreeComponentUsingCss node={editorContext.tree}/>}
+            <MapInteractionCSS>
+              {editorContext.tree && <ProofTreeComponentUsingCss node={editorContext.tree}/>}
+            </MapInteractionCSS>
 
-          </MapInteractionCSS>
+          {!editorContext.tree &&
+             <div className="tree-info-bx">
+                <h1>
+                    Tree will be displayed here
+                </h1>
+             </div>
+           }
         </div>
       </div>
   );

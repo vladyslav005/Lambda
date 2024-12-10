@@ -4,10 +4,11 @@
     position: relative;
 }
 
-.tree-component {
+.tree-bx {
     height: 100%;
     width: 100%;
     position: absolute;
+    background: var(--Schemes-Surface-Container, #F3EDF7);
 }
 
 
@@ -28,4 +29,20 @@
     margin: 10px;
     z-index: 1000;
     border: 1px solid #ccc;
+}
+
+.tree-info-bx {
+    top: 0;
+    left: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.tree-info-bx h1 {
+    font-size: 1.5rem;
+    color: #4A4459;
 }
