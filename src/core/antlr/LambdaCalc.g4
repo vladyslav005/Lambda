@@ -13,15 +13,15 @@ term
     : LAMBDA ID COLON type DOT term (COLON type)?           # LambdaAbstraction
     | <assoc=left> term term                                # Application
     | ID                                                    # Variable
-    | '<'term (COMMA term)+ '>'                             # Tuple
+    | '<'term (COMMA term)* '>'                             # Tuple
     | term DOT NATURAL_NUMBER                               # TupleProjection
     | LPAREN term RPAREN                                    # Parentheses
     ;
 
 type
     : (GREEK_TYPE | ID)                      # GreekType
-    | <assoc=right> type '*' type            # TupleType
     | <assoc=right> type ARROW type          # FunctionType
+    | <assoc=right> type '*' type            # TupleType
     | LPAREN type RPAREN                     # ParenType
     ;
 

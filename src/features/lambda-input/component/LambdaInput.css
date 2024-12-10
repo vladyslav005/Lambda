@@ -1,4 +1,5 @@
 .lambda-input {
     position: relative;
     flex-grow: 1;
+    background: var(--Schemes-Surface-Container, #F3EDF7);
 }

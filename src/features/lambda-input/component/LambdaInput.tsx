@@ -31,7 +31,7 @@ export function LambdaInput() {
 
   function editorOnChange(value: any, event: any) {
 
-    value = value.replaceAll(/^\s*\/\/.*$/gm, "")
+    value = value.replaceAll(/^\s*\/\/.*$/gm, "") // process comments
     editorContext.setEditorValue(value);
 
     console.log(value);
@@ -68,8 +68,10 @@ export function LambdaInput() {
 
   return (
       <div
-          className="lambda-input bg-amber-100 ui-block m-0"
+          className="lambda-input ui-block "
       >
+
+
         <Editor
             className="h-full"
             language="lambda"
@@ -83,7 +85,7 @@ export function LambdaInput() {
             wrapperProps={{
               style: {
                 position: 'absolute',
-                top: 0,
+                top: 16,
                 left: 0,
                 right: 0,
                 bottom: 0,
