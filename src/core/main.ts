@@ -7,12 +7,10 @@ import {TreeGenerator} from "./tree/TreeGenerator";
 
 
 let input = `
-   x : α;
-   z : β;
-   X  = <x> : T 
-   M = λ y:α.y : α -> α;
-   
-   (λ y:α->α.( λ x:α.(y x)) : (α->α)->(α->α) ) M 
+    a : <v : A, u : T, u : b>;
+    
+    a
+
 `;
 
 const lexer = new LambdaCalcLexer(new CharStream(input))
@@ -30,21 +28,21 @@ const typeChecker = new TypeChecker();
 
 typeChecker.visit(ast)
 
-const treeGenerator = new TreeGenerator()
-
-const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext)
-
-console.log(ast.toStringTree(parser.ruleNames, parser))
-
-const analyzer = new InputAnalyzer()
-
-analyzer.analyzeInput(input)
-
-analyzer.checkTypes()
-
-// console.log(JSON.stringify(analyzer.generateProofTree(), undefined, 4))
-
-console.log(analyzer.generateProofTree())
+// const treeGenerator = new TreeGenerator()
+//
+// const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext)
+//
+// console.log(ast.toStringTree(parser.ruleNames, parser))
+//
+// const analyzer = new InputAnalyzer()
+//
+// analyzer.analyzeInput(input)
+//
+// analyzer.checkTypes()
+//
+// // console.log(JSON.stringify(analyzer.generateProofTree(), undefined, 4))
+//
+// console.log(analyzer.generateProofTree())
 
 input = `
 x : α;

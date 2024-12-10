@@ -98,12 +98,33 @@ test('case 15, projection index out of range', () => {
 test('case 16, projection index out of range', () => {
   const tree = parseInput(inputs[15]);
   expect(() => typeChecker.visit(tree)).toThrow(
-      new Error("Abstraction 'λx:A*B.x.2:A*B->A' has type 'A*B->B', that doesn't match declared type 'A*B->A'")
+      new Error("Abstraction 'λx:A*B.x.2:(A*B)->A' has type '(A*B)->B', that doesn't match declared type '(A*B)->A'")
   );
 });
 
+test('case 17, abs using records', () => {
+  const tree = parseInput(inputs[16]);
+  typeChecker.visit(tree)
+});
 
+test('case 18, abs using record projection', () => {
+  const tree = parseInput(inputs[17]);
+  typeChecker.visit(tree)
+});
 
+test('case 19, duplicate label', () => {
+  const tree = parseInput(inputs[18]);
+  expect(() => typeChecker.visit(tree)).toThrow(
+      new Error("Duplicate key 'u' in record")
+  );
+});
+
+test('case 20, record has not key', () => {
+  const tree = parseInput(inputs[19]);
+  expect(() => typeChecker.visit(tree)).toThrow(
+      new Error("Record 'a' has not key 'n'")
+  );
+});
 
 function parseInput(input: string): ExpressionContext {
 
@@ -200,27 +221,51 @@ const inputs = [
     `,
     `
     a : T * T;
-    b = λ x : T * T.x  : T * T -> T * T;
+    b = λ x : T * T.x  : (T * T) -> (T * T);
     
     b a
     `,
     `
     a : A * B;
-    b = λ x : A * B. x.1  : A * B -> A;
+    b = λ x : A * B. x.1  : (A * B) -> A;
     
     b a
     `,
     `
     a : A * B;
-    b = λ x : A * B. x.3  : A * B -> A;
+    b = λ x : A * B. x.3  : (A * B) -> A;
     
     b a
     `,
     `
     a : A * B;
-    b = λ x : A * B. x.2  : A * B -> A;
+    b = λ x : A * B. x.2  : (A * B) -> A;
     
     b a
-    `
+    `,
 
+
+    `
+    a : <v : A, u : T>;
+    b = λ x : <v : A, u : T>.x  : <v : A, u : T> -> <v : A, u : T>;
+    
+    b a
+    `,
+
+  `
+    a : <v : A, u : T>;
+    b = λ x : <v : A, u : T>. x.v  : <v : A, u : T> -> A;
+    
+    b a
+    `,
+  `
+    a : <v : A, u : T, u: B>;
+    
+    a
+    `,
+  `
+    a : <v : A, u : T>;
+    
+    a.n
+    `,
 ]

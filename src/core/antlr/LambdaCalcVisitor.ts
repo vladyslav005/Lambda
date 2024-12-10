@@ -8,11 +8,14 @@ import { GlobalVariableDeclarationContext } from "./LambdaCalcParser.js";
 import { GlobalFunctionDeclarationContext } from "./LambdaCalcParser.js";
 import { LambdaAbstractionContext } from "./LambdaCalcParser.js";
 import { VariableContext } from "./LambdaCalcParser.js";
+import { RecordProjectionContext } from "./LambdaCalcParser.js";
 import { TupleProjectionContext } from "./LambdaCalcParser.js";
+import { RecordContext } from "./LambdaCalcParser.js";
 import { ApplicationContext } from "./LambdaCalcParser.js";
 import { TupleContext } from "./LambdaCalcParser.js";
 import { ParenthesesContext } from "./LambdaCalcParser.js";
 import { GreekTypeContext } from "./LambdaCalcParser.js";
+import { RecordTypeContext } from "./LambdaCalcParser.js";
 import { FunctionTypeContext } from "./LambdaCalcParser.js";
 import { TupleTypeContext } from "./LambdaCalcParser.js";
 import { ParenTypeContext } from "./LambdaCalcParser.js";
@@ -62,12 +65,26 @@ export default class LambdaCalcVisitor<Result> extends ParseTreeVisitor<Result> 
 	 */
 	visitVariable?: (ctx: VariableContext) => Result;
 	/**
+	 * Visit a parse tree produced by the `RecordProjection`
+	 * labeled alternative in `LambdaCalcParser.term`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitRecordProjection?: (ctx: RecordProjectionContext) => Result;
+	/**
 	 * Visit a parse tree produced by the `TupleProjection`
 	 * labeled alternative in `LambdaCalcParser.term`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitTupleProjection?: (ctx: TupleProjectionContext) => Result;
+	/**
+	 * Visit a parse tree produced by the `Record`
+	 * labeled alternative in `LambdaCalcParser.term`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitRecord?: (ctx: RecordContext) => Result;
 	/**
 	 * Visit a parse tree produced by the `Application`
 	 * labeled alternative in `LambdaCalcParser.term`.
@@ -96,6 +113,13 @@ export default class LambdaCalcVisitor<Result> extends ParseTreeVisitor<Result> 
 	 * @return the visitor result
 	 */
 	visitGreekType?: (ctx: GreekTypeContext) => Result;
+	/**
+	 * Visit a parse tree produced by the `RecordType`
+	 * labeled alternative in `LambdaCalcParser.type`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitRecordType?: (ctx: RecordTypeContext) => Result;
 	/**
 	 * Visit a parse tree produced by the `FunctionType`
 	 * labeled alternative in `LambdaCalcParser.type`.

@@ -13,16 +13,19 @@ term
     : LAMBDA ID COLON type DOT term (COLON type)?           # LambdaAbstraction
     | <assoc=left> term term                                # Application
     | ID                                                    # Variable
+    | '<' ID'='term (COMMA ID'='term)*'>'                   # Record
+    | term DOT ID                                           # RecordProjection
     | '<'term (COMMA term)* '>'                             # Tuple
     | term DOT NATURAL_NUMBER                               # TupleProjection
     | LPAREN term RPAREN                                    # Parentheses
     ;
 
 type
-    : (GREEK_TYPE | ID)                      # GreekType
-    | <assoc=right> type ARROW type          # FunctionType
-    | <assoc=right> type '*' type            # TupleType
-    | LPAREN type RPAREN                     # ParenType
+    : (GREEK_TYPE | ID)                                          # GreekType
+    | <assoc=right> type ARROW type                              # FunctionType
+    | '<' ID COLON type (COMMA ID COLON type)* '>'               # RecordType
+    | <assoc=right> type '*' type                                # TupleType
+    | LPAREN type RPAREN                                         # ParenType
     ;
 
 // Lexer rules

@@ -8,7 +8,13 @@ import LambdaCalcParser, {
   GreekTypeContext,
   LambdaAbstractionContext,
   ParenthesesContext,
-  ParenTypeContext, TupleContext, TupleProjectionContext, TupleTypeContext,
+  ParenTypeContext,
+  RecordContext,
+  RecordProjectionContext,
+  RecordTypeContext,
+  TupleContext,
+  TupleProjectionContext,
+  TupleTypeContext,
   TypeContext,
   VariableContext
 } from "../antlr/LambdaCalcParser";
@@ -16,7 +22,7 @@ import {CharStream, CommonTokenStream, Parser, ParserRuleContext, ParseTree} fro
 import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
 import {IndexError, SyntaxError, TypeError} from "../errorhandling/customErrors";
 import {Context} from "../context/Context";
-import {eliminateOutParentheses, getTokenLocation, parseType} from "../utils";
+import {eliminateOutParentheses, getTokenLocation, parseType, tupleTypeToArray} from "../utils";
 
 // TODO : refactor: split file, split type checker class
 // TODO : types priority
@@ -138,11 +144,15 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     this._localContext.deleteVariable(paramName);
 
-    if (parseType(bodyType) instanceof FunctionTypeContext) {
+    if (parseType(bodyType) instanceof FunctionTypeContext ||
+      parseType(bodyType) instanceof TupleTypeContext
+    ) {
       bodyType = '(' + bodyType + ')';
     }
 
-    if (parseType(paramType) instanceof FunctionTypeContext) {
+    if (parseType(paramType) instanceof FunctionTypeContext ||
+        parseType(paramType) instanceof TupleTypeContext
+    ) {
       paramType = '(' + paramType + ')';
     }
 
@@ -248,7 +258,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     for (let i = 1; i < ctx.getChildCount() - 1; i++) {
       if ( i % 2 !== 0) {
         let child = ctx.getChild(i);
-        console.log(type);
         let childType = this.visit(child)
         let childTypeNode = parseType(childType);
         if ( childTypeNode instanceof TupleTypeContext ||
@@ -288,7 +297,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const tupleTypeNode = parseType(tupleType);
 
     const tupleTypesArray : string[] = [];
-    this.tupleTypeToArray(tupleTypeNode, tupleTypesArray);
+    tupleTypeToArray(tupleTypeNode, tupleTypesArray);
 
     if (projectionIndex - 1 > tupleTypesArray.length - 1) {
       throw new IndexError(
@@ -302,23 +311,92 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return result;
   }
 
-  // TODO : may cause errors ?
-  public tupleTypeToArray(ctx: TypeContext, output: string[]): any {
-    const left =  ctx.getChild(0);
-    const right = ctx.getChild(2);
+  /* RECORDS RULE */
+  visitRecord = (ctx: RecordContext): any => {
+    console.log(`Visiting a record ${ctx.getText()} ${ctx.getChildCount()}`);
 
-    output.push(eliminateOutParentheses(left).getText());
+    const childCount = ctx.getChildCount();
 
-    if (right instanceof ParenTypeContext || right instanceof GreekTypeContext) {
-      output.push(eliminateOutParentheses(right).getText());
-    } else if (right instanceof TypeContext) {
-      this.tupleTypeToArray(right, output);
+    const labelsSet = new Set<string>();
+
+    let recordType : string = '';
+    for (let i = 1; i < childCount; i += 4) {
+      const labelNode = ctx.getChild(i);
+      const valueNode = ctx.getChild(i+2);
+
+      let valueType = this.visit(valueNode)
+      let valueTypeNode = parseType(valueType);
+
+      if (labelsSet.has(labelNode.getText())) {
+        throw new SyntaxError(`Duplicate key '${labelNode.getText()}' in record`,
+          getTokenLocation(ctx))
+      }
+
+      labelsSet.add(labelNode.getText());
+      recordType += `${labelNode.getText()}:${valueType},`
     }
-  }
+
+    recordType = '<' + recordType.substring(0, recordType.lastIndexOf(',')) + '>';
+
+    return recordType;
+  };
+
+  /* RECORD PROJ RULE */
+  visitRecordProjection = (ctx: RecordProjectionContext): any => {
+    console.log("Visiting a record projection: " + ctx.getText());
+
+    const recordName = ctx.getChild(0).getText();
+    const recordNode = ctx.getChild(0);
+    const label = ctx.ID().getText()
+
+    let recordType : string | undefined;
+
+    if (this._localContext.isVariableInContext(recordName)) {
+      recordType = this._localContext.getType(recordName);
+    } else if (this._globalContext.isVariableInContext(recordName)) {
+      recordType = this._globalContext.getType(recordName);
+    } else {
+      recordType = this.visit(recordNode);
+    }
+
+    if (recordType === undefined) {
+      throw new Error(`Unable to find type of '${recordName}'`);
+    }
+
+    const recordTypeNode = parseType(recordType);
+
+    for (let i = 1; i < recordTypeNode.getChildCount(); i += 4) {
+      const labelNode = recordTypeNode.getChild(i);
+      const typeNode = recordTypeNode.getChild(i+2);
+
+      if (labelNode.getText() === label) {
+        return typeNode.getText();
+      }
+    }
+
+    throw new IndexError(`Record '${recordName}' has not key '${label}'`,
+        getTokenLocation(ctx))
+  };
+
 
   visitParentheses = (ctx: ParenthesesContext): any => {
     console.log("Visiting parentheses ", ctx.getText());
     return this.visitChildren(ctx);
+  };
+
+  visitRecordType = (ctx: RecordTypeContext): any => {
+    console.log("Visiting a record type", ctx.getText());
+    const labelsSet = new Set<string>();
+    for (let i = 1; i < ctx.getChildCount(); i += 4) {
+      const labelNode = ctx.getChild(i);
+      if (labelsSet.has(labelNode.getText())) {
+        throw new SyntaxError(`Duplicate key '${labelNode.getText()}' in record`,
+            getTokenLocation(ctx))
+      }
+      labelsSet.add(labelNode.getText());
+    }
+
+    return ctx.getText();
   };
 
   visitTupleType = (ctx: TupleTypeContext): any => {

@@ -8,7 +8,7 @@ import {
   GreekTypeContext,
   LambdaAbstractionContext,
   ParenthesesContext,
-  ParenTypeContext,
+  ParenTypeContext, RecordContext, RecordProjectionContext,
   TupleContext,
   TupleProjectionContext,
   VariableContext
@@ -16,7 +16,7 @@ import {
 import {TypeChecker} from "../typechecker/TypeChecker";
 import {ParserRuleContext, ParseTree} from "antlr4";
 import {Context, ContextElement} from "../context/Context";
-import {getTokenLocation, parseType} from "../utils";
+import {getTokenLocation, parseType, tupleTypeToArray} from "../utils";
 
 export interface ProofNode {
   type: string;
@@ -180,7 +180,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const tupleTypesArray : string[] = []
     const tupleTypeNode = parseType(type)
-    this.typeChecker.tupleTypeToArray(tupleTypeNode, tupleTypesArray)
+    tupleTypeToArray(tupleTypeNode, tupleTypesArray)
 
     const nodeList = []
     const premises : ProofNode[] = []
@@ -212,15 +212,12 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const tuple = ctx.getChild(0);
     const tupleType = this.typeChecker.visit(tuple);
 
-    const projectionIndex = parseInt(ctx.getChild(2).getText());
 
-    const tupleTypesArray : string[] = []
-    const tupleTypeNode = parseType(tupleType)
-    this.typeChecker.tupleTypeToArray(tupleTypeNode, tupleTypesArray)
+    const tupleProjType = this.typeChecker.visit(tuple);
 
     return {
-      type: tupleTypesArray[projectionIndex - 1],
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${tupleTypesArray[projectionIndex - 1]}`,
+      type: tupleProjType,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${tupleProjType}`,
       rule: "(T-proj)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -243,6 +240,65 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     } as ProofNode;
   }
+
+  visitRecord = (ctx: RecordContext): any => {
+    const type = this.typeChecker.visit(ctx);
+    const typeNode = parseType(type)
+
+    const premises: ProofNode[] = []
+    for (let i = 1; i < typeNode.getChildCount(); i += 4) {
+      premises.push(this.visit(ctx.getChild(i+2)));
+    }
+
+    const result = {
+      type: type,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${type}`,
+      rule: "(T-record)",
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      premises: premises,
+      isExpandable: false
+    } as ProofNode;
+
+    console.log("Tuple: ")
+
+    return result;
+  }
+
+  visitRecordProjection = (ctx: RecordProjectionContext): any => {
+    const record = ctx.getChild(0);
+    const recordType = this.typeChecker.visit(record);
+
+    const projectionType = this.typeChecker.visit(ctx)
+
+    return {
+      type: projectionType,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${projectionType}`,
+      rule: "(T-proj)",
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(record.getText()),
+      root: false,
+      isExpandable: false,
+      premises:
+          [
+            {
+              type: projectionType,
+              conclusion: `\\Gamma \\vdash  ${record.getText()} : ${recordType}`,
+              rule: "",
+              root: false,
+              context: ctx,
+              tokenLocation: getTokenLocation(ctx),
+              declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(record.getText()),
+              isExpandable: false
+            }
+          ],
+
+    } as ProofNode;
+
+  }
+
 
   visitParentheses = (ctx: ParenthesesContext): any => {
     const tmp = this.visit(ctx.getChild(1))

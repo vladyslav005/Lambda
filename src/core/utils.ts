@@ -1,5 +1,10 @@
 import {CharStream, CommonTokenStream, ParserRuleContext, ParseTree} from "antlr4";
-import LambdaCalcParser, {ParenthesesContext, ParenTypeContext, TypeContext} from "./antlr/LambdaCalcParser";
+import LambdaCalcParser, {
+  GreekTypeContext,
+  ParenthesesContext,
+  ParenTypeContext,
+  TypeContext
+} from "./antlr/LambdaCalcParser";
 import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
 
 export function getTokenLocation(ctx: ParserRuleContext) {
@@ -25,4 +30,17 @@ export function eliminateOutParentheses(ctx: ParseTree): any {
     return ctx.getChild(1)
   }
   return ctx;
+}
+
+export function tupleTypeToArray(ctx: TypeContext, output: string[]): any {
+  const left =  ctx.getChild(0);
+  const right = ctx.getChild(2);
+
+  output.push(eliminateOutParentheses(left).getText());
+
+  if (right instanceof ParenTypeContext || right instanceof GreekTypeContext) {
+    output.push(eliminateOutParentheses(right).getText());
+  } else if (right instanceof TypeContext) {
+    tupleTypeToArray(right, output);
+  }
 }

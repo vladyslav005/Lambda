@@ -8,11 +8,14 @@ import { GlobalVariableDeclarationContext } from "./LambdaCalcParser.js";
 import { GlobalFunctionDeclarationContext } from "./LambdaCalcParser.js";
 import { LambdaAbstractionContext } from "./LambdaCalcParser.js";
 import { VariableContext } from "./LambdaCalcParser.js";
+import { RecordProjectionContext } from "./LambdaCalcParser.js";
 import { TupleProjectionContext } from "./LambdaCalcParser.js";
+import { RecordContext } from "./LambdaCalcParser.js";
 import { ApplicationContext } from "./LambdaCalcParser.js";
 import { TupleContext } from "./LambdaCalcParser.js";
 import { ParenthesesContext } from "./LambdaCalcParser.js";
 import { GreekTypeContext } from "./LambdaCalcParser.js";
+import { RecordTypeContext } from "./LambdaCalcParser.js";
 import { FunctionTypeContext } from "./LambdaCalcParser.js";
 import { TupleTypeContext } from "./LambdaCalcParser.js";
 import { ParenTypeContext } from "./LambdaCalcParser.js";
@@ -84,6 +87,18 @@ export default class LambdaCalcListener extends ParseTreeListener {
 	 */
 	exitVariable?: (ctx: VariableContext) => void;
 	/**
+	 * Enter a parse tree produced by the `RecordProjection`
+	 * labeled alternative in `LambdaCalcParser.term`.
+	 * @param ctx the parse tree
+	 */
+	enterRecordProjection?: (ctx: RecordProjectionContext) => void;
+	/**
+	 * Exit a parse tree produced by the `RecordProjection`
+	 * labeled alternative in `LambdaCalcParser.term`.
+	 * @param ctx the parse tree
+	 */
+	exitRecordProjection?: (ctx: RecordProjectionContext) => void;
+	/**
 	 * Enter a parse tree produced by the `TupleProjection`
 	 * labeled alternative in `LambdaCalcParser.term`.
 	 * @param ctx the parse tree
@@ -95,6 +110,18 @@ export default class LambdaCalcListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitTupleProjection?: (ctx: TupleProjectionContext) => void;
+	/**
+	 * Enter a parse tree produced by the `Record`
+	 * labeled alternative in `LambdaCalcParser.term`.
+	 * @param ctx the parse tree
+	 */
+	enterRecord?: (ctx: RecordContext) => void;
+	/**
+	 * Exit a parse tree produced by the `Record`
+	 * labeled alternative in `LambdaCalcParser.term`.
+	 * @param ctx the parse tree
+	 */
+	exitRecord?: (ctx: RecordContext) => void;
 	/**
 	 * Enter a parse tree produced by the `Application`
 	 * labeled alternative in `LambdaCalcParser.term`.
@@ -143,6 +170,18 @@ export default class LambdaCalcListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitGreekType?: (ctx: GreekTypeContext) => void;
+	/**
+	 * Enter a parse tree produced by the `RecordType`
+	 * labeled alternative in `LambdaCalcParser.type`.
+	 * @param ctx the parse tree
+	 */
+	enterRecordType?: (ctx: RecordTypeContext) => void;
+	/**
+	 * Exit a parse tree produced by the `RecordType`
+	 * labeled alternative in `LambdaCalcParser.type`.
+	 * @param ctx the parse tree
+	 */
+	exitRecordType?: (ctx: RecordTypeContext) => void;
 	/**
 	 * Enter a parse tree produced by the `FunctionType`
 	 * labeled alternative in `LambdaCalcParser.type`.
