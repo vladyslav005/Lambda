@@ -1,8 +1,14 @@
 grammar LambdaCalc;
 
 expression
-    : ( globalDecl )* term EOF                # Expr
+    : ( globalDecl )* terms  EOF                # Expr
     ;
+
+terms
+    : (term SEMI (term SEMI)* (globalDecl)*)+ # Sequence
+    ;
+
+
 
 globalDecl
     : ID COLON type SEMI                       # GlobalVariableDeclaration
@@ -17,6 +23,7 @@ term
     | term DOT ID                                           # RecordProjection
     | '<'term (COMMA term)* '>'                             # Tuple
     | term DOT NATURAL_NUMBER                               # TupleProjection
+//    | term SEMI term                                        # Sequence
     | LPAREN term RPAREN                                    # Parentheses
     ;
 

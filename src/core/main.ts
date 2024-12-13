@@ -7,9 +7,25 @@ import {TreeGenerator} from "./tree/TreeGenerator";
 
 
 let input = `
-    a : <v : A, u : T, u : b>;
-    
-    a
+x : α;
+y : α -> α;
+z : (α -> α) -> α;
+w : ((α -> α) -> α) -> α;
+
+b = < y, y> : (α->α)*(α->α);
+
+
+M = λ f: α -> α . f : (α -> α) -> (α -> α);
+N = λ x: α . x : α -> α;
+P = λ g: α -> α . (g x) : (α -> α) -> α;
+Q = λ h: α -> α . (h x) : (α -> α) -> α;a : T;
+a : T;
+
+
+(N (M N (P (b.1))));
+a;
+z : T;
+Q;
 
 `;
 
@@ -28,11 +44,11 @@ const typeChecker = new TypeChecker();
 
 typeChecker.visit(ast)
 
-// const treeGenerator = new TreeGenerator()
+const treeGenerator = new TreeGenerator()
+
+const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext)
 //
-// const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext)
-//
-// console.log(ast.toStringTree(parser.ruleNames, parser))
+console.log(ast.toStringTree(parser.ruleNames, parser))
 //
 // const analyzer = new InputAnalyzer()
 //

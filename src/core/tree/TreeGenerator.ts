@@ -8,7 +8,7 @@ import {
   GreekTypeContext,
   LambdaAbstractionContext,
   ParenthesesContext,
-  ParenTypeContext, RecordContext, RecordProjectionContext,
+  ParenTypeContext, RecordContext, RecordProjectionContext, SequenceContext,
   TupleContext,
   TupleProjectionContext,
   VariableContext
@@ -80,7 +80,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   }
 
   visitExpr = (ctx: ExprContext): any => {
-    this._proofTree = this.visit(ctx.term());
+    this._proofTree = this.visit(ctx.terms());
 
   };
 
@@ -174,6 +174,45 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       premises: this.visitChildren(ctx),
     } as ProofNode;
   };
+
+  visitSequence = (ctx: SequenceContext): any => {
+    console.log("Seq " + ctx.getText())
+    const type = this.typeChecker.visit(ctx);
+
+    const seqTerms: {
+      ctx: ParseTree;
+      type: string;
+    }[] = []
+
+    for (let i = 0; i < ctx.getChildCount(); i++) {
+      const child = ctx.getChild(i);
+      const childType = this.typeChecker.visit(child);
+      if (typeof childType  === "string") {
+        seqTerms.push({
+          ctx: child,
+          type: childType
+        })
+      }
+    }
+
+    const premises = seqTerms.map(c => this.visit(c.ctx));
+
+    if (seqTerms.length === 1)
+      return this.visit(seqTerms[0].ctx)
+    else
+      return  {
+        type: type,
+        conclusion: `\\Gamma ${this.contextExtension} 
+                      \\vdash ${seqTerms.map(c=>c.ctx.getText()).join(';')} : ${type}`,
+        rule: "(T-seq)",
+        context: ctx,
+        tokenLocation: getTokenLocation(ctx),
+        root: false,
+        premises: premises,
+        isExpandable: false
+      } as ProofNode;
+
+  }
 
   visitTuple = (ctx: TupleContext): any => {
     const type = this.typeChecker.visit(ctx);
@@ -298,7 +337,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     } as ProofNode;
 
   }
-
 
   visitParentheses = (ctx: ParenthesesContext): any => {
     const tmp = this.visit(ctx.getChild(1))

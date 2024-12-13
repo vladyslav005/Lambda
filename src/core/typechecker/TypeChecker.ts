@@ -11,7 +11,7 @@ import LambdaCalcParser, {
   ParenTypeContext,
   RecordContext,
   RecordProjectionContext,
-  RecordTypeContext,
+  RecordTypeContext, SequenceContext,
   TupleContext,
   TupleProjectionContext,
   TupleTypeContext,
@@ -250,6 +250,21 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return funcReturnType;
   };
 
+  visitSequence =  (ctx: SequenceContext) => {
+    console.log("Visiting sequence", ctx.getText(), ctx.getChildCount());
+
+    let returnType: string = '';
+    for (let i = 0; i < ctx.getChildCount(); i++) {
+      let childType = this.visit(ctx.getChild(i));
+      returnType = childType ? childType : returnType;
+    }
+
+    return returnType;
+  };
+
+
+
+
   /* IMPLEMENTS TUPLE RULE */
   visitTuple = (ctx: TupleContext): any => {
     console.log(`Visiting a tuple term ${ctx.getText()} ${ctx.getChildCount()}`);
@@ -381,7 +396,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
   visitParentheses = (ctx: ParenthesesContext): any => {
     console.log("Visiting parentheses ", ctx.getText());
-    return this.visitChildren(ctx);
+
+    // return this.visitChildren(ctx);
+    return this.visit(ctx.getChild(1));
   };
 
   visitRecordType = (ctx: RecordTypeContext): any => {
