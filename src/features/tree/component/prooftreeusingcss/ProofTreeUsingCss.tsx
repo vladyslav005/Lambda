@@ -13,8 +13,6 @@ export function ProofTreeComponentUsingCss({node}: { node: ProofNode }) {
   return (
       <div className="proof-node">
 
-        {/* Recursively render premises horizontally */}
-
         {node.premises && !isExpanded && (
             <div className={`premises`}>
               {node.premises.map((premise, index) => (
@@ -41,8 +39,6 @@ export function ProofTreeComponentUsingCss({node}: { node: ProofNode }) {
             </div>
         )}
 
-
-        {/* Render conclusion and rule */}
         <div className={`conclusion ${isItRoot} ${isItLeaf}`}>
           <div className="conclusion-left">
           </div>

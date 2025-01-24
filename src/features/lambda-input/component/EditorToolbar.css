@@ -1,0 +1,71 @@
+.toolbar-wrapper {
+    z-index: 1000;
+    top: 1rem;
+    right: 0rem;
+    position: absolute;
+    display: flex;
+
+}
+
+.toolbar-button {
+    border-radius: var(--Corner-Extra-large, 28px);
+    background: var(--Schemes-Primary-Container, #EADDFF);
+    width:fit-content;
+    flex-shrink: 0;
+
+    padding: 1rem 1.3rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    outline: none;
+}
+
+.editor-toolbar {
+    border-radius: 28px 0 0 28px ;
+    background: var(--Schemes-Primary-Container, #EADDFF);
+    width:fit-content;
+    flex-shrink: 0;
+
+    padding: 1rem 2rem 1rem 1rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+
+
+}
+
+.editor-toolbar > .react-aria-Group {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+.text-input {
+    width: 2rem;
+    background: rgba(254, 247, 255, 1);
+    border-radius: 4px;
+    border: 2px solid var(--Schemes-Outline, #79747E);
+
+    padding: 0 0 0 .3rem;
+
+    color: var(--M3-sys-light-on-surface-variant, var(--Schemes-On-Surface-Variant, #49454F));
+
+    outline: none;
+    /* M3/body/large */
+    font-family: var(--Body-Large-Font, Roboto);
+    font-size: var(--Body-Large-Size, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Body-Large-Line-Height, 24px); /* 150% */
+    letter-spacing: var(--Body-Large-Tracking, 0.5px);
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

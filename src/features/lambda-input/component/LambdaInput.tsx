@@ -5,6 +5,7 @@ import {EditorContext} from "../context/EditorContext";
 import {useBuildTree} from "../hook/BuildTreeHook";
 import {SyntaxError, TypeError} from "../../../core/errorhandling/customErrors";
 import "./LambdaInput.css"
+import {EditorToolbar} from "./EditorToolbar";
 
 
 export function LambdaInput() {
@@ -70,7 +71,7 @@ export function LambdaInput() {
       <div
           className="lambda-input ui-block "
       >
-
+        <EditorToolbar></EditorToolbar>
 
         <Editor
             className="h-full"

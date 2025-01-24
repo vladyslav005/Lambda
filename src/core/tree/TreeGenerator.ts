@@ -211,7 +211,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
         premises: premises,
         isExpandable: false
       } as ProofNode;
-
   }
 
   visitTuple = (ctx: TupleContext): any => {

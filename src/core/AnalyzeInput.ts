@@ -3,7 +3,7 @@ import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
 import LambdaCalcParser from "./antlr/LambdaCalcParser";
 import {TypeChecker} from "./typechecker/TypeChecker";
 import {ProofNode, TreeGenerator} from "./tree/TreeGenerator";
-import {CustomLexerErrorListener, CustomParserErrorListener} from "./errorhandling/ErrorListeners";
+import {CustomParserErrorListener} from "./errorhandling/ErrorListeners";
 import {Context} from "./context/Context";
 
 
@@ -43,7 +43,6 @@ export class InputAnalyzer {
 
     this.AST = this.parser.expression();
   }
-
 
   // CHECK type and throw exceptions
   public checkTypes() {
