@@ -15,16 +15,17 @@ globalDecl
     ;
 
 term
-    : LAMBDA ID COLON type DOT term (COLON type)?           # LambdaAbstraction
-    | <assoc=left> term term                                # Application
-    | ID                                                    # Variable
-    | '['ID EQ term']' 'as' type                            # Injection
-    | '<' ID EQ term (COMMA ID EQ term)*'>'                 # Record
-    | term DOT ID                                           # RecordProjection
-    | '<'term (COMMA term)* '>'                             # Tuple
-    | term DOT NATURAL_NUMBER                               # TupleProjection
-//    | term SEMI term                                        # Sequence
-    | LPAREN term RPAREN                                    # Parentheses
+    : LAMBDA ID COLON type DOT term (COLON type)?                                    # LambdaAbstraction
+    | <assoc=left> term term                                                         # Application
+    | ID                                                                             # Variable
+    | '['ID EQ term']' 'as' type                                                     # Injection
+    | 'case' term 'of' '['ID EQ ID ']' '=>' term ('||' '['ID EQ ID ']' '=>' term)*   # CaseOf
+    | '<' ID EQ term (COMMA ID EQ term)*'>'                                          # Record
+    | term DOT ID                                                                    # RecordProjection
+    | '<'term (COMMA term)* '>'                                                      # Tuple
+    | term DOT NATURAL_NUMBER                                                        # TupleProjection
+//    | term SEMI term                                                                # Sequence
+    | LPAREN term RPAREN                                                             # Parentheses
     ;
 
 type

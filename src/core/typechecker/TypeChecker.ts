@@ -1,6 +1,6 @@
 import LambdaCalcVisitor from "../antlr/LambdaCalcVisitor";
 import LambdaCalcParser, {
-  ApplicationContext,
+  ApplicationContext, CaseOfContext,
   ExprContext,
   FunctionTypeContext,
   GlobalFunctionDeclarationContext,
@@ -16,7 +16,7 @@ import LambdaCalcParser, {
   TupleProjectionContext,
   TupleTypeContext, TypeAliasContext,
   TypeContext,
-  VariableContext
+  VariableContext, VariantTypeContext
 } from "../antlr/LambdaCalcParser";
 import {CharStream, CommonTokenStream, Parser, ParserRuleContext, ParseTree} from "antlr4";
 import LambdaCalcLexer from "../antlr/LambdaCalcLexer";
@@ -97,7 +97,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const body = ctx.term();
     const bodyType = this.visit(body);
 
-    if ( !(body instanceof LambdaAbstractionContext)  ) {
+    if ( !(body instanceof LambdaAbstractionContext || body instanceof InjectionContext)  ) {
       if (ctx.getChildCount() !== 6)
         throw new TypeError("Provide explicit type declaration", getTokenLocation(ctx))
 
@@ -256,22 +256,11 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     let argumentType: string | undefined ;
 
     /* defining the type of term which is on the left side of application */
-    if (this._localContext.isVariableInContext(funcName)) {
-      funcType = this._localContext.getType(funcName);
-    } else if (this._globalContext.isVariableInContext(funcName)) {
-      funcType = this._globalContext.getType(funcName);
-    } else {
-      funcType = this.visit(func);
-    }
+    funcType = this.findType(funcName, func)
 
     /* defining the type of term which is on the right side of application */
-    if (this._localContext.isVariableInContext(argumentName)) {
-      argumentType = this._localContext.getType(argumentName);
-    } else if (this._globalContext.isVariableInContext(argumentName)) {
-      argumentType = this._globalContext.getType(argumentName);
-    } else {
-      argumentType = this.visit(argument);
-    }
+    argumentType = this.findType(argumentName, argument)
+
 
     if (funcType === undefined) {
       throw new Error(ctx.getText() + ": cannot define type of function");
@@ -351,13 +340,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     const projectionIndex = parseInt(ctx.getChild(2).getText());
 
-    if (this._localContext.isVariableInContext(tupleName)) {
-      tupleType = this._localContext.getType(tupleName);
-    } else if (this._globalContext.isVariableInContext(tupleName)) {
-      tupleType = this._globalContext.getType(tupleName);
-    } else {
-      tupleType = this.visit(tupleNode);
-    }
+
+    tupleType = this.findType(tupleName, tupleNode);
 
     if (tupleType === undefined) {
       throw new Error("Unable to define type of tuple: " + tupleName);
@@ -420,13 +404,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     let recordType : string | undefined;
 
-    if (this._localContext.isVariableInContext(recordName)) {
-      recordType = this._localContext.getType(recordName);
-    } else if (this._globalContext.isVariableInContext(recordName)) {
-      recordType = this._globalContext.getType(recordName);
-    } else {
-      recordType = this.visit(recordNode);
-    }
+    recordType = this.findType(recordName, recordNode);
 
     if (recordType === undefined) {
       throw new Error(`Unable to find type of '${recordName}'`);
@@ -448,9 +426,38 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   };
 
 
-  visitInjection =  (ctx: InjectionContext): any => {
+  visitInjection =  (ctx: InjectionContext): string => {
     console.log("Visiting injection ", ctx.getText());
 
+    const variantTypeNode = parseType(this.decodeAlias(ctx.type_().getText()));
+
+    const labelNode = ctx.ID();
+    const label = ctx.ID().getText();
+
+    const bodyNode = ctx.term();
+    const body = ctx.term().getText();
+
+    const bodyType = this.visit(bodyNode)
+
+    let injectionDeclaredLabelType: string | undefined;
+
+    for (let i = 1; i < variantTypeNode.getChildCount() - 1; i+=4) {
+      let injLabel = variantTypeNode.getChild(i);
+      if (injLabel.getText() === label) {
+        injectionDeclaredLabelType = variantTypeNode.getChild(i + 2).getText()
+      }
+    }
+
+    if (injectionDeclaredLabelType === undefined) {
+      throw new TypeError(`Variant type '${variantTypeNode}' has no label ${label}`,
+          getTokenLocation(ctx))
+    } else if (injectionDeclaredLabelType !== bodyType) {
+      throw new TypeError(`Label '${label}' has type ${injectionDeclaredLabelType} but provided term has type: ${bodyType}`,
+          getTokenLocation(ctx))
+    }
+
+
+    return variantTypeNode.getText();
   };
 
 
@@ -476,6 +483,79 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return ctx.getText();
   };
 
+  visitCaseOf = (ctx: CaseOfContext)=> {
+    console.log("Visiting a case of ", ctx.getText());
+
+    const varNode = ctx.term(0);
+    const varName = varNode.getText();
+
+    const variantType = this.findType(varName, varNode);
+    const variantTypeNode = parseType(variantType);
+    if (variantType === undefined)
+      throw new TypeError(`Cant define type of '${varName}'`, getTokenLocation(ctx));
+
+    if (!(variantTypeNode instanceof VariantTypeContext))
+      throw new TypeError(`'${varName}' should have an variant type to be used in case of`, getTokenLocation(ctx));
+
+
+    const variantLabels = this.extractLabels(variantTypeNode);
+
+    let caseType : string | undefined;
+
+    for (let i = 4; i < ctx.getChildCount(); i += 8) {
+      const labelNode = ctx.getChild(i);
+      const label = labelNode.getText();
+      const variableNode = ctx.getChild(i+2);
+      const variable = variableNode.getText();
+      const variableType = variantLabels
+          .find(e => e.name === label)?.type;
+
+      const term = ctx.getChild(i+5);
+
+      if (variableType === undefined)
+        throw new TypeError(`Type '${variantType}' does not contain label '${label}'`, getTokenLocation(ctx))
+
+      this.localContext.addVariable(variable, variableType, undefined)
+
+      const termType = this.visit(term)
+
+      this.localContext.deleteVariable(variable)
+
+      if (caseType === undefined)
+        caseType = termType
+
+      if (caseType !== termType) {
+        throw new TypeError(`All cases should have the same type, but case '${label}' has type '${termType}', while other's type is '${caseType}'`,
+            getTokenLocation(ctx))
+      }
+
+      const  x = 0
+    }
+
+
+    return caseType;
+  };
+
+
+  extractLabels = (typeNode : TypeContext) => {
+    const variantLabels = new Array<{name: string, type: string}>();
+    for (let i = 1; i < typeNode.getChildCount() - 1; i+=4) {
+      let lbl = typeNode.getChild(i);
+      let type =  typeNode.getChild(i + 2).getText()
+      variantLabels.push({name: lbl.getText(), type: type });
+    }
+
+    return variantLabels;
+  }
+
+  visitVariantType =  (ctx: VariantTypeContext) => {
+    console.log("Visiting a variant type", ctx.getText());
+
+
+    return ctx.getText()
+  };
+
+
   visitTupleType = (ctx: TupleTypeContext): any => {
     console.log("Visiting a tuple type", ctx.getText());
 
@@ -486,6 +566,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     // console.log("Visiting a Greek type", ctx.getText());
     return ctx.getText();
   };
+
+
+
 
   visitFunctionType = (ctx: FunctionTypeContext): any => {
     let returnType = ctx.getChild(2);
@@ -507,5 +590,23 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     let typeTextWithoutBrackets = this.visit(ctx.getChild(1));
     return '(' + typeTextWithoutBrackets + ')';
   };
+
+
+  findType = (name: string, node : ParseTree): any => {
+    let type : string | undefined;
+    if (this._localContext.isVariableInContext(name)) {
+      type = this._localContext.getType(name);
+    } else if (this._globalContext.isVariableInContext(name)) {
+      type = this._globalContext.getType(name);
+    } else {
+      type = this.visit(node);
+    }
+
+    if (type) {
+      type = this.decodeAlias(type);
+    }
+
+    return type;
+  }
 
 }

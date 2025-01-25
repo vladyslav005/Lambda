@@ -2,6 +2,7 @@ import {MathComponent} from "mathjax-react";
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import {useContext, useState} from "react";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
+import {preprocessString} from "../../../../core/utils";
 
 interface ConclusionCenterProps {
   isItLeaf: string;
@@ -78,7 +79,7 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
              borderRadius: '10px'
            }}
       >
-        <MathComponent tex={props.node.conclusion.replaceAll("->", " \\rightarrow ")}/>
+        <MathComponent tex={preprocessString(props.node.conclusion)}/>
       </div>
 
   )

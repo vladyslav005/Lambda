@@ -1,11 +1,11 @@
 import LambdaCalcVisitor from "../antlr/LambdaCalcVisitor";
 import {
-  ApplicationContext,
+  ApplicationContext, CaseOfContext,
   ExprContext,
   FunctionTypeContext,
   GlobalFunctionDeclarationContext,
   GlobalVariableDeclarationContext,
-  GreekTypeContext,
+  GreekTypeContext, InjectionContext,
   LambdaAbstractionContext,
   ParenthesesContext,
   ParenTypeContext, RecordContext, RecordProjectionContext, SequenceContext,
@@ -17,6 +17,7 @@ import {TypeChecker} from "../typechecker/TypeChecker";
 import {ParserRuleContext, ParseTree} from "antlr4";
 import {Context, ContextElement} from "../context/Context";
 import {getTokenLocation, parseType, preprocessString, tupleTypeToArray} from "../utils";
+import {TypeError} from "../errorhandling/customErrors";
 
 export interface ProofNode {
   type: string;
@@ -255,7 +256,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const tupleType = this.typeChecker.visit(tuple);
 
 
-    const tupleProjType = this.typeChecker.visit(tuple);
+    const tupleProjType = this.typeChecker.visit(ctx);
 
     return {
       type: tupleProjType,
@@ -340,6 +341,117 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     } as ProofNode;
 
   }
+
+  visitInjection =  (ctx: InjectionContext): ProofNode => {
+    console.log("Inj " + ctx.getText())
+
+    const variantType = this.typeChecker.visit(ctx);
+    const body = ctx.term()
+
+    const bodyType = this.typeChecker.visit(body)
+
+
+    return {
+      type: variantType,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${preprocessString(ctx.getText().replace("]as", "] as "))} : ${variantType}`,
+      rule: "(T-variant)",
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      // declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(record.getText()),
+      root: false,
+      isExpandable: false,
+      premises:
+          [
+            {
+              type: variantType,
+              conclusion: `\\Gamma \\vdash  ${body.getText()} : ${bodyType}`,
+              rule: "",
+              root: false,
+              context: ctx,
+              tokenLocation: getTokenLocation(ctx),
+              // declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(record.getText()),
+              isExpandable: false
+            }
+          ],
+
+    } as ProofNode;
+
+  }
+
+  visitCaseOf = (ctx: CaseOfContext): any => {
+    console.log("Cas " + ctx.getText())
+
+    const varNode = ctx.term(0);
+    const varName = varNode.getText();
+    const caseType = this.typeChecker.visit(ctx);
+
+
+    const variantType = this.typeChecker.findType(varName, varNode);
+    const variantTypeNode = parseType(variantType);
+    const variantLabels = this.typeChecker.extractLabels(variantTypeNode);
+
+    const premises: ProofNode[] = [
+      // {
+      //   type: variantType,
+      //   conclusion: `\\Gamma \\vdash  ${varName} : ${preprocessString(variantType)}`,
+      //   rule: "",
+      //   root: false,
+      //   context: ctx,
+      //   tokenLocation: getTokenLocation(ctx),
+      //   // declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(record.getText()),
+      //   isExpandable: false
+      // }
+      this.visit(varNode)
+
+    ]
+    for (let i = 4; i < ctx.getChildCount(); i += 8) {
+      const labelNode = ctx.getChild(i);
+      const label = labelNode.getText();
+      const variableNode = ctx.getChild(i+2);
+      const variable = variableNode.getText();
+      const variableType = variantLabels
+          .find(e => e.name === label)?.type;
+
+      const term = ctx.getChild(i+5);
+
+      if (variableType === undefined)
+        throw new TypeError(`Type '${variantType}' does not contain label '${label}'`, getTokenLocation(ctx))
+
+      this.localContext.addVariable(variable, variableType, undefined)
+      this.typeChecker.localContext.addVariable(variable, variableType, undefined)
+      this.updateContextExtension()
+
+      const termProofNode = this.visit(term)
+      premises.push(termProofNode);
+
+      this.typeChecker.localContext.deleteVariable(variable)
+      this.localContext.deleteVariable(variable)
+      this.updateContextExtension()
+
+      const  x = 0
+    }
+
+    const caseStr = ctx.children?.map((child, i) => {
+      return (child.getText() + (i < 2 ? "\\hspace{0.2cm}" : ""))
+    }).join("")
+
+    const result = {
+      type: caseType,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${caseStr} : ${preprocessString(caseType)}`,
+      rule: "(T-case)",
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      premises: premises,
+      isExpandable: false
+    } as ProofNode;
+
+    console.log("Tuple: ")
+
+    return result;
+  };
+
+
 
   visitParentheses = (ctx: ParenthesesContext): any => {
     const tmp = this.visit(ctx.getChild(1))

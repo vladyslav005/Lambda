@@ -7,20 +7,21 @@ import {TreeGenerator} from "./tree/TreeGenerator";
 
 
 let input = `
+
 PhysicalAddr = < firstlast : String, addr : String> ;
 VirtualAddr = <name : String, email : String>;
-Addr = PhysicalAddr * VirtualAddr;
 
-str1 : String;
-str2 : String;
-
-a = <<firstlast = str1, addr = str2>, <name = str1, email = str2>> : Add;
+Addr = [physical : PhysicalAddr, virtual : VirtualAddr];
 
 
-func = λ x : Addr. x.1 : Addr -> PhysicalAddr; 
+pa : PhysicalAddr;
 
-func a;
+a = [physical = pa] as Addr;
 
+case a of
+     [physical = x] => x.firstlast
+  || [virtual = y] => y.name;
+  
 `;
 
 const lexer = new LambdaCalcLexer(new CharStream(input))
@@ -60,7 +61,9 @@ y : α -> α;
 z : (α -> α) -> α;
 w : ((α -> α) -> α) -> α;
 
-b = < y, y> : (α->α)*(α->α);
+newType = (α->α)*(α->α);
+
+b = < y, y> : newType;
 
 M = λ f: α -> α . f : (α -> α) -> (α -> α);
 N = λ x: α . x : α -> α;
@@ -68,7 +71,7 @@ P = λ g: α -> α . (g x) : (α -> α) -> α;
 Q = λ h: α -> α . (h x) : (α -> α) -> α;a : T;
 a : T;
 
-(N (M N (P (b.1)))) 
+(N (M N (P (b.1))));
  `;
 
 
