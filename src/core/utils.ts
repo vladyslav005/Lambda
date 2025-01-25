@@ -44,3 +44,16 @@ export function tupleTypeToArray(ctx: TypeContext, output: string[]): any {
     tupleTypeToArray(right, output);
   }
 }
+
+
+
+export function preprocessString(str : string) : string {
+
+
+  return str.replaceAll("*", " \\times  ")
+      .replaceAll("->", "\\rightarrow " )
+      .replaceAll("<", "\\langle " )
+      .replaceAll(">", "\\rangle " )
+
+
+}

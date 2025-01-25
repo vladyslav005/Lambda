@@ -1,26 +1,25 @@
 grammar LambdaCalc;
 
 expression
-    : ( globalDecl )* terms  EOF                # Expr
+    : ( globalDecl )* terms  EOF              # Expr
     ;
 
 terms
     : (term SEMI (term SEMI)* (globalDecl)*)+ # Sequence
     ;
 
-
-
 globalDecl
-    : ID COLON type SEMI                       # GlobalVariableDeclaration
-    | ID '=' term (COLON type)? SEMI           # GlobalFunctionDeclaration
-    | type '=
+    : ID COLON type SEMI                      # GlobalVariableDeclaration
+    | ID EQ term (COLON type)? SEMI           # GlobalFunctionDeclaration
+    | type EQ type SEMI                       # TypeAlias
     ;
 
 term
     : LAMBDA ID COLON type DOT term (COLON type)?           # LambdaAbstraction
     | <assoc=left> term term                                # Application
     | ID                                                    # Variable
-    | '<' ID'='term (COMMA ID'='term)*'>'                   # Record
+    | '['ID EQ term']' 'as' type                            # Injection
+    | '<' ID EQ term (COMMA ID EQ term)*'>'                 # Record
     | term DOT ID                                           # RecordProjection
     | '<'term (COMMA term)* '>'                             # Tuple
     | term DOT NATURAL_NUMBER                               # TupleProjection
@@ -31,13 +30,14 @@ term
 type
     : (GREEK_TYPE | ID)                                          # GreekType
     | <assoc=right> type ARROW type                              # FunctionType
+    | '[' ID COLON type (COMMA ID COLON type)* ']'               # VariantType
     | '<' ID COLON type (COMMA ID COLON type)* '>'               # RecordType
     | <assoc=right> type '*' type                                # TupleType
     | LPAREN type RPAREN                                         # ParenType
     ;
 
 // Lexer rules
-LAMBDA         : 'λ' | '\\' ;
+LAMBDA         : 'λ' | '\\y' ;
 EQ             : '=';
 ID             : [a-zA-Z_][a-zA-Z0-9_]* ;
 GREEK_TYPE     : [\u03B1-\u03C9] ;                 // Matches Greek lowercase letters: α (U+03B1) to ω (U+03C9)

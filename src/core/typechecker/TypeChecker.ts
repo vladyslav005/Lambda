@@ -5,7 +5,7 @@ import LambdaCalcParser, {
   FunctionTypeContext,
   GlobalFunctionDeclarationContext,
   GlobalVariableDeclarationContext,
-  GreekTypeContext,
+  GreekTypeContext, InjectionContext,
   LambdaAbstractionContext,
   ParenthesesContext,
   ParenTypeContext,
@@ -14,7 +14,7 @@ import LambdaCalcParser, {
   RecordTypeContext, SequenceContext,
   TupleContext,
   TupleProjectionContext,
-  TupleTypeContext,
+  TupleTypeContext, TypeAliasContext,
   TypeContext,
   VariableContext
 } from "../antlr/LambdaCalcParser";
@@ -24,13 +24,23 @@ import {IndexError, SyntaxError, TypeError} from "../errorhandling/customErrors"
 import {Context} from "../context/Context";
 import {eliminateOutParentheses, getTokenLocation, parseType, tupleTypeToArray} from "../utils";
 
+
 // TODO : refactor: split file, split type checker class
 // TODO : types priority
 
 
 export class TypeChecker extends LambdaCalcVisitor<any> {
+  get aliasContext(): Context {
+    return this._aliasContext;
+  }
+
+  set aliasContext(value: Context) {
+    this._aliasContext = value;
+  }
 
   private _globalContext: Context = new Context();
+
+  private _aliasContext: Context = new Context();
 
   get globalContext(): Context {
     return this._globalContext;
@@ -56,6 +66,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
   clearGlobalContext() {
     this._globalContext = new Context();
+  }
+
+  clearAliasContext() {
+    this._aliasContext = new Context();
   }
 
   visitExpr = (ctx: ExprContext): any => {
@@ -87,7 +101,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       if (ctx.getChildCount() !== 6)
         throw new TypeError("Provide explicit type declaration", getTokenLocation(ctx))
 
-      const declaredType = ctx.getChild(4).getText();
+      const declaredType = this.decodeAlias(ctx.getChild(4).getText());
 
       if (bodyType !== declaredType)
         throw new TypeError(
@@ -104,6 +118,12 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return this.visitChildren(ctx);
   };
 
+  visitTypeAlias = (ctx: TypeAliasContext): any => {
+    console.log("Visiting an alias", ctx.getText());
+
+    this._aliasContext.addVariable(ctx.type_(0).getText(), ctx.type_(1).getText(), getTokenLocation(ctx));
+  };
+
   /* IMPLEMENTS ABS RULE */
   visitLambdaAbstraction = (ctx: LambdaAbstractionContext): any => {
     console.log("Visiting lambda abstraction ", ctx.getText());
@@ -112,7 +132,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     let declaredType = undefined;
     try {
-      declaredType = this.visit(ctx.type_(1));
+      declaredType = this.visit(ctx.type_(1))
+      declaredType = this.decodeAlias(declaredType);
     } catch (e) {
 
     }
@@ -132,7 +153,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     let paramType: string;
 
-    paramType = this.visit(paramTypeNode)
+    paramType = this.decodeAlias(this.visit(paramTypeNode))
 
     let body: ParseTree = ctx.term();
 
@@ -147,6 +168,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     if (parseType(bodyType) instanceof FunctionTypeContext ||
       parseType(bodyType) instanceof TupleTypeContext
     ) {
+
       bodyType = '(' + bodyType + ')';
     }
 
@@ -173,15 +195,50 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     console.log("Visiting variable", ctx.getText());
 
     const name: string = ctx.getText();
+    let type;
 
     if (this._localContext.isVariableInContext((name))) {
-      return this._localContext.getType(name);
+      type = this._localContext.getType(name);
     } else if (this._globalContext.isVariableInContext((name))) {
-      return this._globalContext.getType(name);
+      type = this._globalContext.getType(name);
     }
 
-    throw new TypeError(`Undefined variable : '${name}'`, getTokenLocation(ctx));
+    if (!type)
+      throw new TypeError(`Undefined variable : '${name}'`, getTokenLocation(ctx));
+
+    if (this._aliasContext.isVariableInContext(type)) {
+      type = this.decodeAlias(type);
+    }
+
+    return type;
   };
+
+  decodeAlias = (typeAlias: string): string => {
+    const context = this._aliasContext.getAllElements()
+    let typeAliasNode = parseType(typeAlias)
+
+    for (let i = 0; i < context.length; i++) {
+      if (typeAlias.match(new RegExp(`\\b${context[i].name}\\b`, 'g')) !== null) {
+        let aliasNode = parseType(context[i].type)
+        console.log(`${typeAlias} ${context[i].name} {}`)
+        if (typeAliasNode instanceof FunctionTypeContext &&
+            aliasNode instanceof TupleTypeContext
+        ) {
+          typeAlias = typeAlias.replaceAll(new RegExp(`\\b${context[i].name}\\b`, 'g'), '(' + context[i].type + ')');
+
+        } else
+          typeAlias = typeAlias.replaceAll(new RegExp(`\\b${context[i].name}\\b`, 'g'), context[i].type);
+
+
+        typeAliasNode = parseType(typeAlias)
+        i = -1;
+      }
+    }
+
+    return typeAlias;
+  };
+
+
 
   /* IMPLEMENTS APP RULE */
   visitApplication = (ctx: ApplicationContext): any => {
@@ -261,9 +318,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     return returnType;
   };
-
-
-
 
   /* IMPLEMENTS TUPLE RULE */
   visitTuple = (ctx: TupleContext): any => {
@@ -391,6 +445,12 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     throw new IndexError(`Record '${recordName}' has not key '${label}'`,
         getTokenLocation(ctx))
+  };
+
+
+  visitInjection =  (ctx: InjectionContext): any => {
+    console.log("Visiting injection ", ctx.getText());
+
   };
 
 

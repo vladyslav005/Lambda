@@ -6,6 +6,7 @@ export interface ContextElement  {
   declarationLocation?: number[] | undefined;
   isExpandable?: boolean;
   declarationNode?: ParserRuleContext
+  subtype?: string
 }
 
 export class Context {
@@ -13,14 +14,15 @@ export class Context {
 
   addVariable(
       name: string, type: string, location : number[] | undefined,
-      isExpandable? : boolean, declarationNode? : ParserRuleContext): void {
+      isExpandable? : boolean, declarationNode? : ParserRuleContext, subtype? : string): void {
 
     this.types.push({
       name: name,
       type: type,
       declarationLocation: location,
       isExpandable: isExpandable,
-      declarationNode: declarationNode
+      declarationNode: declarationNode,
+      subtype: subtype
     })
   }
 

@@ -7,25 +7,19 @@ import {TreeGenerator} from "./tree/TreeGenerator";
 
 
 let input = `
-x : α;
-y : α -> α;
-z : (α -> α) -> α;
-w : ((α -> α) -> α) -> α;
+PhysicalAddr = < firstlast : String, addr : String> ;
+VirtualAddr = <name : String, email : String>;
+Addr = PhysicalAddr * VirtualAddr;
 
-b = < y, y> : (α->α)*(α->α);
+str1 : String;
+str2 : String;
 
-
-M = λ f: α -> α . f : (α -> α) -> (α -> α);
-N = λ x: α . x : α -> α;
-P = λ g: α -> α . (g x) : (α -> α) -> α;
-Q = λ h: α -> α . (h x) : (α -> α) -> α;a : T;
-a : T;
+a = <<firstlast = str1, addr = str2>, <name = str1, email = str2>> : Add;
 
 
-(N (M N (P (b.1))));
-a;
-z : T;
-Q;
+func = λ x : Addr. x.1 : Addr -> PhysicalAddr; 
+
+func a;
 
 `;
 
@@ -46,7 +40,7 @@ typeChecker.visit(ast)
 
 const treeGenerator = new TreeGenerator()
 
-const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext)
+const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext, typeChecker.aliasContext)
 //
 console.log(ast.toStringTree(parser.ruleNames, parser))
 //
@@ -56,7 +50,7 @@ console.log(ast.toStringTree(parser.ruleNames, parser))
 //
 // analyzer.checkTypes()
 //
-// // console.log(JSON.stringify(analyzer.generateProofTree(), undefined, 4))
+// console.log(JSON.stringify(analyzer.generateProofTree(), undefined, 4))
 //
 // console.log(analyzer.generateProofTree())
 
@@ -79,7 +73,17 @@ a : T;
 
 
 
+input = `
+PhysicalAddr = < firstlast : String, addr : String> ;
+VirtualAddr = <name : String, email : String>;
 
+Addr = PhysicalAddr * VirtualAddr;
+
+a : Addr;
+
+a;
+
+`;
 
 
 

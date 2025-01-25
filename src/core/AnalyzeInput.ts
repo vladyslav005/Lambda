@@ -22,6 +22,8 @@ export class InputAnalyzer {
   private treeGenerator: TreeGenerator;
 
   private globalContext: Context | undefined;
+  private aliasContext: Context | undefined;
+
 
   constructor() {
     this.typeChecker = new TypeChecker();
@@ -52,11 +54,12 @@ export class InputAnalyzer {
 
     this.typeChecker.visit(this.AST)
     this.globalContext = this.typeChecker.globalContext;
+    this.aliasContext = this.typeChecker.aliasContext;
   }
 
   public generateProofTree(): ProofNode | undefined {
 
-    if (!this.globalContext) {
+    if (!this.globalContext || !this.aliasContext) {
       throw new Error("Error: Can't generate tree, global context is empty");
     }
 
@@ -64,12 +67,13 @@ export class InputAnalyzer {
       throw new Error("Error: Can't generate tree, AST is undefined");
     }
 
-    return this.treeGenerator.generateTree(this.AST, this.globalContext);
+    return this.treeGenerator.generateTree(this.AST, this.globalContext, this.aliasContext);
   }
 
   public clearContext() {
     this.typeChecker.clearLocalContext()
     this.typeChecker.clearGlobalContext()
+    this.typeChecker.clearAliasContext()
 
     this.globalContext = undefined;
   }
