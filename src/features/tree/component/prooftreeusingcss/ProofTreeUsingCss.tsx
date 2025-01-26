@@ -17,7 +17,7 @@ export function ProofTreeComponentUsingCss({node}: { node: ProofNode }) {
             <div className={`premises`}>
               {node.premises.map((premise, index) => (
                   <>
-                    <ProofTreeComponentUsingCss node={premise} />
+                    <ProofTreeComponentUsingCss node={premise}/>
                     {node.premises !== undefined && index !== node.premises.length - 1 && (
                         <div className="inter-proof"></div>
                     )}
@@ -30,7 +30,7 @@ export function ProofTreeComponentUsingCss({node}: { node: ProofNode }) {
             <div className={`premises`}>
               {node.expandedPremises.map((premise, index) => (
                   <>
-                    <ProofTreeComponentUsingCss node={premise} />
+                    <ProofTreeComponentUsingCss node={premise}/>
                     {node.expandedPremises !== undefined && index !== node.expandedPremises.length - 1 && (
                         <div className="inter-proof"></div>
                     )}

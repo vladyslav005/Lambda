@@ -214,30 +214,30 @@ const inputs = [
     
     x
     `,
-    `
+  `
     g : Bool ;
     d : Int ;
     g d
     `,
-    `
+  `
     a : T * T;
     b = λ x : T * T.x  : (T * T) -> (T * T);
     
     b a
     `,
-    `
+  `
     a : A * B;
     b = λ x : A * B. x.1  : (A * B) -> A;
     
     b a
     `,
-    `
+  `
     a : A * B;
     b = λ x : A * B. x.3  : (A * B) -> A;
     
     b a
     `,
-    `
+  `
     a : A * B;
     b = λ x : A * B. x.2  : (A * B) -> A;
     
@@ -245,7 +245,7 @@ const inputs = [
     `,
 
 
-    `
+  `
     a : <v : A, u : T>;
     b = λ x : <v : A, u : T>.x  : <v : A, u : T> -> <v : A, u : T>;
     

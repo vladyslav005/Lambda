@@ -111,7 +111,7 @@ export function setUpMonacoLanguage(monaco: any) {
 
   // Register the completion provider for vars, based on regex
   monaco.languages.registerCompletionItemProvider("lambda", {
-    provideCompletionItems: (model : any, position : any) => {
+    provideCompletionItems: (model: any, position: any) => {
       try {
         const textUntilPosition = model.getValueInRange({
           startLineNumber: 1,
@@ -135,10 +135,10 @@ export function setUpMonacoLanguage(monaco: any) {
           detail: "Variable auto-completion",
         }));
 
-        return { suggestions };
+        return {suggestions};
       } catch (error) {
         console.error("Error in provideCompletionItems:", error);
-        return { suggestions: [] };
+        return {suggestions: []};
       }
     },
   });

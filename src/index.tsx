@@ -1,9 +1,11 @@
 import React from 'react';
+
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
 import {EditorState} from "./features/lambda-input/context/EditorContext";
+import {Toaster} from "react-hot-toast";
 
 
 const root = ReactDOM.createRoot(
@@ -12,11 +14,24 @@ const root = ReactDOM.createRoot(
 
 
 root.render(
-
     <BrowserRouter>
-        <EditorState>
-          <App/>
-        </EditorState>
+      <EditorState>
+        <Toaster
+            toastOptions={{
+              position: "top-center",
+              style: {
+                color: "#49454F",
+                fontFamily: "Roboto",
+                fontSize: "var(--Body-Medium-Size, 14px)", // Correcting font-size property
+                fontStyle: "normal",
+                fontWeight: "400",
+                lineHeight: "var(--Body-Medium-Line-Height, 20px)", // Correcting line-height
+                letterSpacing: "var(--Body-Medium-Tracking, 0.25px)", // Correcting letter-spacing
+              }
+            }}
+        />
+        <App/>
+      </EditorState>
     </BrowserRouter>
 );
 

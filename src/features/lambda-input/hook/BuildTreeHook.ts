@@ -15,6 +15,7 @@ export function useBuildTree() {
         editorContext.setErrors([])
         return undefined;
       }
+      analyzer.clearContext()
 
       analyzer.analyzeInput(value)
       analyzer.checkTypes()

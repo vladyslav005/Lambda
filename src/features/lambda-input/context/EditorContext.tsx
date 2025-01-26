@@ -11,7 +11,9 @@ export interface EditorContextInterface {
   editorValue: string,
   setEditor: (editor: any) => void,
   setMonaco: (monaco: any) => void,
+  setFontSize: (fontSize: any) => void,
 
+  fontSize: number,
   tree: ProofNode | undefined,
   errors: Error[] | undefined,
   editor: any,
@@ -29,6 +31,11 @@ export const EditorContext = createContext<EditorContextInterface>({
       },
       setMonaco: (monaco: any) => {
       },
+      setFontSize: (newSize: number) => {
+
+      },
+
+      fontSize: 18,
       editorValue: '',
       tree: undefined,
       errors: [],
@@ -47,6 +54,7 @@ export const EditorState = (props: EditorProviderProps) => {
   const [errors, setErrors] = useState<Error[] | undefined>(undefined);
   const [monaco, setMonaco] = useState<any>();
   const [editor, setEditor] = useState<any>();
+  const [fontSize, setFontSize] = useState(18)
 
 
   const contextValue: EditorContextInterface = {
@@ -55,6 +63,8 @@ export const EditorState = (props: EditorProviderProps) => {
     setErrors,
     setEditor,
     setMonaco,
+    setFontSize,
+    fontSize,
     editorValue,
     tree,
     errors,

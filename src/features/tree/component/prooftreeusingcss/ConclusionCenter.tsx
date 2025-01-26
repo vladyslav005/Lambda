@@ -53,7 +53,7 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
     setDecorations(editorContext.editor.deltaDecorations(decorations, newDecorations));
   }
 
-  const handleMouseLeave = ()=>  {
+  const handleMouseLeave = () => {
     // Clear the decorations when the mouse leaves
     setDecorations(editorContext.editor.deltaDecorations(decorations, []));
     setIsHovered(false)
@@ -66,7 +66,6 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
   }
 
 
-
   return (
       <div className={`conclusion-center ${props.isItLeaf} ${props.isItRoot}`}
            onMouseEnter={handleMouseEnter}
@@ -75,7 +74,7 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
            style={{
              backgroundColor: isHovered ? "rgba(255, 255, 0, 0.3)" : "", // Highlight the div when hovered
              borderRadius: '10px',
-             cursor:  props.node.isExpandable ? 'pointer' :  'default',
+             cursor: props.node.isExpandable ? 'pointer' : 'default',
            }}
       >
         <MathComponent tex={preprocessString(props.node.conclusion)}/>

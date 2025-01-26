@@ -79,8 +79,9 @@ export function LambdaInput() {
             options={{
               minimap: {enabled: false},
               automaticLayout: true,
-              fontSize: 18,
+              fontSize: editorContext.fontSize,
             }}
+            value={editorContext.editorValue}
             onChange={editorOnChange}
             onMount={handleEditorDidMount}
             wrapperProps={{

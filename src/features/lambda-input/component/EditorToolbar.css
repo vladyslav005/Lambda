@@ -10,7 +10,7 @@
 .toolbar-button {
     border-radius: var(--Corner-Extra-large, 28px);
     background: var(--Schemes-Primary-Container, #EADDFF);
-    width:fit-content;
+    width: fit-content;
     flex-shrink: 0;
 
     padding: 1rem 1.3rem;
@@ -21,9 +21,9 @@
 }
 
 .editor-toolbar {
-    border-radius: 28px 0 0 28px ;
+    border-radius: 28px 0 0 28px;
     background: var(--Schemes-Primary-Container, #EADDFF);
-    width:fit-content;
+    width: fit-content;
     flex-shrink: 0;
 
     padding: 1rem 2rem 1rem 1rem;
@@ -59,6 +59,7 @@
     line-height: var(--Body-Large-Line-Height, 24px); /* 150% */
     letter-spacing: var(--Body-Large-Tracking, 0.5px);
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;

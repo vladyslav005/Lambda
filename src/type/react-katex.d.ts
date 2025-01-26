@@ -8,6 +8,9 @@ declare module "react-katex" {
     math?: string;
   }
 
-  export class InlineMath extends React.Component<KatexProps, any> {}
-  export class BlockMath extends React.Component<KatexProps, any> {}
+  export class InlineMath extends React.Component<KatexProps, any> {
+  }
+
+  export class BlockMath extends React.Component<KatexProps, any> {
+  }
 }

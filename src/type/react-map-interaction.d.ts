@@ -1,5 +1,5 @@
 declare module 'react-map-interaction' {
-  import { Component, ReactNode } from 'react';
+  import {Component, ReactNode} from 'react';
 
   interface MapInteractionProps {
     value?: { scale: number; translation: { x: number; y: number } };
@@ -12,5 +12,6 @@ declare module 'react-map-interaction' {
     children?: ReactNode;  // <-- Add this line to allow children prop
   }
 
-  export class MapInteractionCSS extends Component<MapInteractionProps, any> {}
+  export class MapInteractionCSS extends Component<MapInteractionProps, any> {
+  }
 }

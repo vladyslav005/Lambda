@@ -16,7 +16,7 @@ export function ErrorOutput() {
               type: ErrorType.INFO,
               color: "#226303",
               background: "#e6f9dc",
-              message:'There you\'ll see the errors'
+              message: 'There you\'ll see the errors'
             }}/>
 
 

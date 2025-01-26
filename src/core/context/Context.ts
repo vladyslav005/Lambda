@@ -1,8 +1,8 @@
 import {ParserRuleContext} from "antlr4";
 
-export interface ContextElement  {
-  name : string;
-  type : string;
+export interface ContextElement {
+  name: string;
+  type: string;
   declarationLocation?: number[] | undefined;
   isExpandable?: boolean;
   declarationNode?: ParserRuleContext
@@ -13,8 +13,8 @@ export class Context {
   private types: Array<ContextElement> = new Array<ContextElement>();
 
   addVariable(
-      name: string, type: string, location : number[] | undefined,
-      isExpandable? : boolean, declarationNode? : ParserRuleContext, subtype? : string): void {
+      name: string, type: string, location: number[] | undefined,
+      isExpandable?: boolean, declarationNode?: ParserRuleContext, subtype?: string): void {
 
     this.types.push({
       name: name,
@@ -70,11 +70,11 @@ export class Context {
     return null;
   }
 
-  getAllElements() : ContextElement[] {
+  getAllElements(): ContextElement[] {
     return this.types;
   }
 
-  getContextInfo(name: string) : ContextElement | undefined {
+  getContextInfo(name: string): ContextElement | undefined {
     for (let i = this.types.length - 1; i >= 0; i--) {
       let element = this.types[i];
       if (element.name === name) {

@@ -12,25 +12,24 @@ export function MainPage() {
       <div className="main-page flex flex-row">
 
 
-
         {/*<div className="right-side flex flex-row" style={{flexGrow: 4}}>*/}
 
-          <div className="flex flex-col" style={{flexGrow: 10}}>
-            <LambdaInput></LambdaInput>
+        <div className="flex flex-col" style={{flexGrow: 10}}>
+          <LambdaInput></LambdaInput>
 
-            <Suspense fallback={<div className="tree-flat-container ui-block">Loading...</div>}>
-              <TreeFlat></TreeFlat>
-            </Suspense>
-          </div>
+          <Suspense fallback={<div className="tree-flat-container ui-block">Loading...</div>}>
+            <TreeFlat></TreeFlat>
+          </Suspense>
+        </div>
 
-          <div className="flex flex-col sidebar"
-            style={{flexGrow: 1}}
-          >
-            <ErrorOutput></ErrorOutput>
+        <div className="flex flex-col sidebar"
+             style={{flexGrow: 1}}
+        >
+          <ErrorOutput></ErrorOutput>
 
-            <HelpBar></HelpBar>
+          <HelpBar></HelpBar>
 
-          </div>
+        </div>
 
         {/*</div>*/}
 

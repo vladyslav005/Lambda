@@ -76,6 +76,7 @@ export class InputAnalyzer {
     this.typeChecker.clearAliasContext()
 
     this.globalContext = undefined;
+    this.aliasContext = undefined;
   }
 
 }

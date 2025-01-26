@@ -81,7 +81,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     this._proofTree = undefined;
     this.typeChecker.clearGlobalContext();
-    this.typeChecker.clearLocalContext()
+    this.typeChecker.clearLocalContext();
+    this.typeChecker.clearAliasContext();
 
     return result;
   }

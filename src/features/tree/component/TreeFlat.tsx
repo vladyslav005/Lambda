@@ -4,7 +4,7 @@ import {EditorContext} from "../../lambda-input/context/EditorContext";
 import {MapInteractionCSS} from 'react-map-interaction';
 import "./ProofTree.css"
 import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTreeUsingCss";
-import { MdFullscreen, MdFullscreenExit } from "react-icons/md";
+import {MdFullscreen, MdFullscreenExit} from "react-icons/md";
 import {Button} from "react-aria-components";
 
 export enum TreeView {
@@ -31,17 +31,17 @@ export default function TreeFlat() {
         <div className="tree-bx"
         >
 
-            <MapInteractionCSS>
-              {editorContext.tree && <ProofTreeComponentUsingCss node={editorContext.tree}/>}
-            </MapInteractionCSS>
+          <MapInteractionCSS>
+            {editorContext.tree && <ProofTreeComponentUsingCss node={editorContext.tree}/>}
+          </MapInteractionCSS>
 
           {!editorContext.tree &&
-             <div className="tree-info-bx">
-                <h1>
-                    Tree will be displayed here
-                </h1>
-             </div>
-           }
+              <div className="tree-info-bx">
+                  <h1>
+                      Tree will be displayed here
+                  </h1>
+              </div>
+          }
         </div>
 
         <Button style={{
