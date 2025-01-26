@@ -1,4 +1,3 @@
-import {InputAnalyzer} from "./AnalyzeInput";
 import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
 import {CharStream, CommonTokenStream} from "antlr4";
 import LambdaCalcParser from "./antlr/LambdaCalcParser";
@@ -73,7 +72,6 @@ a : T;
 
 (N (M N (P (b.1))));
  `;
-
 
 
 input = `

@@ -1,14 +1,19 @@
 import LambdaCalcVisitor from "../antlr/LambdaCalcVisitor";
 import {
-  ApplicationContext, CaseOfContext,
+  ApplicationContext,
+  CaseOfContext,
   ExprContext,
   FunctionTypeContext,
   GlobalFunctionDeclarationContext,
   GlobalVariableDeclarationContext,
-  GreekTypeContext, InjectionContext,
+  GreekTypeContext,
+  InjectionContext,
   LambdaAbstractionContext,
   ParenthesesContext,
-  ParenTypeContext, RecordContext, RecordProjectionContext, SequenceContext,
+  ParenTypeContext,
+  RecordContext,
+  RecordProjectionContext,
+  SequenceContext,
   TupleContext,
   TupleProjectionContext,
   VariableContext
@@ -144,7 +149,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       declarationLocation: ctxInfo.declarationLocation,
       isExpandable: ctxInfo.isExpandable,
       expandedPremises: ctxInfo.declarationNode ? [
-          this.visit(ctxInfo.declarationNode.getChild(2))
+        this.visit(ctxInfo.declarationNode.getChild(2))
       ] : undefined,
       premises: [
         {
@@ -192,7 +197,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     for (let i = 0; i < ctx.getChildCount(); i++) {
       const child = ctx.getChild(i);
       const childType = this.typeChecker.visit(child);
-      if (typeof childType  === "string") {
+      if (typeof childType === "string") {
         seqTerms.push({
           ctx: child,
           type: childType
@@ -205,10 +210,10 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     if (seqTerms.length === 1)
       return this.visit(seqTerms[0].ctx)
     else
-      return  {
+      return {
         type: type,
         conclusion: `\\Gamma ${this.contextExtension} 
-                      \\vdash ${seqTerms.map(c=>c.ctx.getText()).join(';')} : ${type}`,
+                      \\vdash ${seqTerms.map(c => c.ctx.getText()).join(';')} : ${type}`,
         rule: "(T-seq)",
         context: ctx,
         tokenLocation: getTokenLocation(ctx),
@@ -221,12 +226,12 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   visitTuple = (ctx: TupleContext): any => {
     const type = this.typeChecker.visit(ctx);
 
-    const tupleTypesArray : string[] = []
+    const tupleTypesArray: string[] = []
     const tupleTypeNode = parseType(type)
     tupleTypeToArray(tupleTypeNode, tupleTypesArray)
 
     const nodeList = []
-    const premises : ProofNode[] = []
+    const premises: ProofNode[] = []
 
     for (let i = 0; i < ctx.getChildCount(); i++) {
       if (i % 2 !== 0) {
@@ -290,7 +295,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const premises: ProofNode[] = []
     for (let i = 1; i < typeNode.getChildCount(); i += 4) {
-      premises.push(this.visit(ctx.getChild(i+2)));
+      premises.push(this.visit(ctx.getChild(i + 2)));
     }
 
     const result = {
@@ -342,7 +347,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
   }
 
-  visitInjection =  (ctx: InjectionContext): ProofNode => {
+  visitInjection = (ctx: InjectionContext): ProofNode => {
     console.log("Inj " + ctx.getText())
 
     const variantType = this.typeChecker.visit(ctx);
@@ -407,12 +412,12 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     for (let i = 4; i < ctx.getChildCount(); i += 8) {
       const labelNode = ctx.getChild(i);
       const label = labelNode.getText();
-      const variableNode = ctx.getChild(i+2);
+      const variableNode = ctx.getChild(i + 2);
       const variable = variableNode.getText();
       const variableType = variantLabels
           .find(e => e.name === label)?.type;
 
-      const term = ctx.getChild(i+5);
+      const term = ctx.getChild(i + 5);
 
       if (variableType === undefined)
         throw new TypeError(`Type '${variantType}' does not contain label '${label}'`, getTokenLocation(ctx))
@@ -428,7 +433,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       this.localContext.deleteVariable(variable)
       this.updateContextExtension()
 
-      const  x = 0
+      const x = 0
     }
 
     const caseStr = ctx.children?.map((child, i) => {
@@ -450,7 +455,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return result;
   };
-
 
 
   visitParentheses = (ctx: ParenthesesContext): any => {
@@ -486,7 +490,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     this.contextExtension = this.contextExtension.substring(0, this.contextExtension.lastIndexOf(','));
   }
 
-  getContextInfo (name: string): ContextElement {
+  getContextInfo(name: string): ContextElement {
     let ctxInfo = this.typeChecker.globalContext.getContextInfo(name)
     if (!ctxInfo) ctxInfo = this.typeChecker.localContext.getContextInfo(name)
     if (!ctxInfo) throw new Error("Unrecognized variable: " + name)

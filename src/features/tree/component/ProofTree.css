@@ -4,32 +4,24 @@
     position: relative;
 }
 
+
+.tree-flat-container-full-screen {
+    position: absolute;
+    width: 97vw;
+    height: 96vh;
+    z-index: 9999;
+    margin-left: calc(3vw / 2);
+    margin-top: calc(4vh / 2);
+    border-radius: var(--Corner-Medium, 12px);
+}
 .tree-bx {
     height: 100%;
     width: 100%;
     position: absolute;
     background: var(--Schemes-Surface-Container, #F3EDF7);
+    border-radius: var(--Corner-Medium, 12px);
 }
 
-
-.switch-tree-button {
-    /*background-color: red;*/
-    padding: 8px;
-    cursor: pointer;
-
-    transition: background-color 0.25s ease;
-}
-
-
-.switch-tree-container {
-    position: absolute;
-    display: flex;
-    flex-direction: row;
-    /*padding: 5px;*/
-    margin: 10px;
-    z-index: 1000;
-    border: 1px solid #ccc;
-}
 
 .tree-info-bx {
     top: 0;

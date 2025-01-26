@@ -27,6 +27,12 @@ import {eliminateOutParentheses, getTokenLocation, parseType, tupleTypeToArray} 
 
 // TODO : refactor: split file, split type checker class
 // TODO : types priority
+// TODO : showing aliases in tree ?
+// TODO : showing aliases in tree ?
+// TODO : flexible frame's size
+// TODO : full screen mode for tree
+
+// TODO : cover all errors for case
 
 
 export class TypeChecker extends LambdaCalcVisitor<any> {

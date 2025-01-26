@@ -1,9 +1,11 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import {EditorContext} from "../../lambda-input/context/EditorContext";
 
 import {MapInteractionCSS} from 'react-map-interaction';
 import "./ProofTree.css"
 import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTreeUsingCss";
+import { MdFullscreen, MdFullscreenExit } from "react-icons/md";
+import {Button} from "react-aria-components";
 
 export enum TreeView {
   INTERACTIVE = 0,
@@ -13,12 +15,18 @@ export enum TreeView {
 export default function TreeFlat() {
 
   const editorContext = useContext(EditorContext);
+  const [fullScreen, setFullScreen] = useState(false);
+
+  const handleFullScreenClick = () => {
+    setFullScreen(!fullScreen);
+    console.log("fullScreen", fullScreen);
+  }
+
 
   return (
       <div
-          className="tree-flat-container ui-block "
+          className={`${fullScreen ? 'tree-flat-container-full-screen' : 'tree-flat-container'} ui-block `}
       >
-        {/*<SwitchTreeView setTreeView={setTreeView} treeView={treeView}/>*/}
 
         <div className="tree-bx"
         >
@@ -35,6 +43,18 @@ export default function TreeFlat() {
              </div>
            }
         </div>
+
+        <Button style={{
+          position: "absolute",
+          zIndex: 9999,
+          bottom: '1rem',
+          right: '1rem',
+
+        }} onPress={handleFullScreenClick}>
+          {fullScreen && <MdFullscreenExit size={48}/>}
+          {!fullScreen && <MdFullscreen size={48}/>}
+        </Button>
+
       </div>
   );
 }

@@ -1,12 +1,9 @@
-import {Button, Checkbox, Group, Input, Separator, TextField, ToggleButton, Toolbar} from 'react-aria-components';
+import {Button, Group, Input, TextField, Toolbar} from 'react-aria-components';
 import "./EditorToolbar.css"
-import { MdContentCopy } from "react-icons/md";
-import { MdContentCut } from "react-icons/md";
-import { MdAdd } from "react-icons/md";
-import { MdRemove } from "react-icons/md";
-import {useEffect, useRef, useState} from "react";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import {AnimatePresence, motion, useAnimationControls} from "framer-motion";
+import {MdAdd, MdContentCopy, MdContentCut, MdRemove} from "react-icons/md";
+import {useState} from "react";
+import {HiOutlineDotsHorizontal} from "react-icons/hi";
+import {motion, useAnimationControls} from "framer-motion";
 
 
 interface EditorToolbarProps {
@@ -48,11 +45,7 @@ export const EditorToolbar = () => {
             times: [0, 1]
           }}
 
-          style={{
-
-          }}
           animate={controls}
-
       >
         <Toolbar className="editor-toolbar" aria-label="Text formatting">
             <Button className={"toolbar-button"}
@@ -71,8 +64,6 @@ export const EditorToolbar = () => {
             </Group>
         </Toolbar>
       </motion.div>
-
-
     </div>
   )
 }

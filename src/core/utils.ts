@@ -17,7 +17,6 @@ export function getTokenLocation(ctx: ParserRuleContext) {
 }
 
 
-
 export function parseType(input: string): TypeContext {
   const lexer = new LambdaCalcLexer(new CharStream(input));
   const tokens = new CommonTokenStream(lexer);
@@ -33,7 +32,7 @@ export function eliminateOutParentheses(ctx: ParseTree): any {
 }
 
 export function tupleTypeToArray(ctx: TypeContext, output: string[]): any {
-  const left =  ctx.getChild(0);
+  const left = ctx.getChild(0);
   const right = ctx.getChild(2);
 
   output.push(eliminateOutParentheses(left).getText());
@@ -46,15 +45,14 @@ export function tupleTypeToArray(ctx: TypeContext, output: string[]): any {
 }
 
 
-
-export function preprocessString(str : string) : string {
+export function preprocessString(str: string): string {
 
   return str//.replaceAll(" ", "\\hspace{0.2cm}")
       .replaceAll("=>", " \\Rightarrow ")
       .replaceAll("*", " \\times ")
-      .replaceAll("->", "\\rightarrow " )
-      .replaceAll("<", "\\langle " )
-      .replaceAll(">", "\\rangle " )
+      .replaceAll("->", "\\rightarrow ")
+      .replaceAll("<", "\\langle ")
+      .replaceAll(">", "\\rangle ")
 
 
 }

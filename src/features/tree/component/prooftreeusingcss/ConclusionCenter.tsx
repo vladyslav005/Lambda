@@ -20,8 +20,6 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
   const [decorations, setDecorations] = useState([])
 
   function handleMouseEnter() {
-    const ctx = props.node.context;
-
     const startLine = props.node.tokenLocation[0];
     const endLine = props.node.tokenLocation[1];
     const startColumn = props.node.tokenLocation[2];
@@ -76,7 +74,8 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
            onClick={handleClick}
            style={{
              backgroundColor: isHovered ? "rgba(255, 255, 0, 0.3)" : "", // Highlight the div when hovered
-             borderRadius: '10px'
+             borderRadius: '10px',
+             cursor:  props.node.isExpandable ? 'pointer' :  'default',
            }}
       >
         <MathComponent tex={preprocessString(props.node.conclusion)}/>
