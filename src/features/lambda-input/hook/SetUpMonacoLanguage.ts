@@ -2,19 +2,20 @@ export function setUpMonacoLanguage(monaco: any) {
 
   monaco.languages.register({id: "lambda"});
 
-  let keywords: string[] = ["serhii"];
+  let keywords: string[] = ["serhii", "as", "case", "of"];
   monaco.languages.setMonarchTokensProvider("lambda", {
     keywords,
     tokenizer: {
       root: [
-        [/[a-zA-z]\w*/, {
+        [/\b[a-zA-z]*\b/, {
           cases: {
             '@keywords': 'keyword',
             '@default': 'variable',
           }
         }],
         // [/[A-Z][\w$]*/, "type.identifier"],
-        [/[=]/, "delimiter"],
+        [/=>/, "doubleArrow"],
+        [/=/, "delimiter"],
         [/λ/, "lambda"],
         [/->/, "arrow"],
         [/:/, "semi"],
@@ -34,6 +35,7 @@ export function setUpMonacoLanguage(monaco: any) {
       {token: 'keyword', foreground: '#5b8cff', fontStyle: 'bold'},
       {token: 'lambda', foreground: '#e06c75', fontStyle: 'bold'},
       {token: 'arrow', foreground: '#98c379', fontStyle: 'bold'},
+      {token: 'doubleArrow', foreground: '#6ae40d', fontStyle: 'bold'},
       {token: 'semi', foreground: '#5b8cff', fontStyle: 'bold'},
       {token: 'variable', foreground: '#333333', fontStyle: 'regular'},
       {token: 'number', foreground: '#d19a66'},
@@ -68,6 +70,7 @@ export function setUpMonacoLanguage(monaco: any) {
       {token: 'keyword', foreground: '#ffab40', fontStyle: 'bold'},
       {token: 'lambda', foreground: '#c678dd', fontStyle: 'bold'},
       {token: 'arrow', foreground: '#56b6c2', fontStyle: 'bold'},
+      {token: 'doubleArrow', foreground: '#3e8309', fontStyle: 'bold'},
       {token: 'semi', foreground: '#61afef', fontStyle: 'bold'},
       {token: 'variable', foreground: '#ffffff', fontStyle: 'regular'},
       {token: 'number', foreground: '#d19a66'},
@@ -101,9 +104,45 @@ export function setUpMonacoLanguage(monaco: any) {
     autoClosingPairs: [
       {open: "(", close: ")"},
       {open: "-", close: ">"},
-
+      {open: "<", close: ">"},
+      {open: "[", close: "]"},
     ],
   });
+
+  // Register the completion provider for vars, based on regex
+  monaco.languages.registerCompletionItemProvider("lambda", {
+    provideCompletionItems: (model : any, position : any) => {
+      try {
+        const textUntilPosition = model.getValueInRange({
+          startLineNumber: 1,
+          startColumn: 1,
+          endLineNumber: position.lineNumber,
+          endColumn: position.column,
+        });
+
+        const variableRegex = /\b([a-zA-Z_]\w*)\b/g;
+        const matches = new Set();
+        let match;
+
+        while ((match = variableRegex.exec(textUntilPosition)) !== null) {
+          matches.add(match[1]);
+        }
+
+        const suggestions = Array.from(matches).map(variable => ({
+          label: variable,
+          kind: monaco.languages.CompletionItemKind.Variable,
+          insertText: variable,
+          detail: "Variable auto-completion",
+        }));
+
+        return { suggestions };
+      } catch (error) {
+        console.error("Error in provideCompletionItems:", error);
+        return { suggestions: [] };
+      }
+    },
+  });
+
 
   monaco.languages.registerCompletionItemProvider("lambda", {
     provideCompletionItems: (model: any, position: any) => {
@@ -128,6 +167,12 @@ export function setUpMonacoLanguage(monaco: any) {
           kind: monaco.languages.CompletionItemKind.Snippet,
           insertText: '->',
           detail: 'Arrow',
+        },
+        {
+          label: '\\Rightarrow',
+          kind: monaco.languages.CompletionItemKind.Snippet,
+          insertText: '=>',
+          detail: 'DoubleArrow',
         },
 
       ];
