@@ -1,3 +1,10 @@
 .help-bar {
     background: var(--Schemes-Surface-Container, #F3EDF7);
+
+    overflow: hidden;
+}
+
+.help-bar .list {
+    height: 90%;
+    overflow-y: auto;
 }

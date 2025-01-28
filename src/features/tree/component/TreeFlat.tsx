@@ -6,6 +6,7 @@ import "./ProofTree.css"
 import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTreeUsingCss";
 import {MdFullscreen, MdFullscreenExit} from "react-icons/md";
 import {Button} from "react-aria-components";
+import {IconButton} from "../../../common/components/button/IconButton";
 
 export enum TreeView {
   INTERACTIVE = 0,
@@ -27,14 +28,24 @@ export default function TreeFlat() {
       <div
           className={`${fullScreen ? 'tree-flat-container-full-screen' : 'tree-flat-container'} ui-block `}
       >
-
         <div className="tree-bx"
         >
+          {editorContext.tree &&
+            <>
+              <MapInteractionCSS>
+                {editorContext.tree && <ProofTreeComponentUsingCss node={editorContext.tree}/>}
+              </MapInteractionCSS>
+              <IconButton style={{
+                position: "absolute",
+                zIndex: 9999,
+                bottom: '1rem',
+                right: '1rem',
 
-          <MapInteractionCSS>
-            {editorContext.tree && <ProofTreeComponentUsingCss node={editorContext.tree}/>}
-          </MapInteractionCSS>
-
+              }} onClick={handleFullScreenClick}>
+                {fullScreen && <MdFullscreenExit size={48}/>}
+                {!fullScreen && <MdFullscreen size={48}/>}
+              </IconButton>
+            </>}
           {!editorContext.tree &&
               <div className="tree-info-bx">
                   <h1>
@@ -43,17 +54,6 @@ export default function TreeFlat() {
               </div>
           }
         </div>
-
-        <Button style={{
-          position: "absolute",
-          zIndex: 9999,
-          bottom: '1rem',
-          right: '1rem',
-
-        }} onPress={handleFullScreenClick}>
-          {fullScreen && <MdFullscreenExit size={48}/>}
-          {!fullScreen && <MdFullscreen size={48}/>}
-        </Button>
 
       </div>
   );

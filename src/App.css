@@ -24,6 +24,13 @@
 }
 
 @media only screen and (max-width: 1000px) {
+
+    .help-modal-content {
+        max-height: 90vh !important;
+        max-width: 90vw !important;
+    }
+
+
     .ui-block {
         margin: 1rem !important;
     }
@@ -125,11 +132,12 @@
 .help-bar {
     min-height: calc((100% - 2rem) / 2);
 
+    max-height: calc((100% - 2rem) / 2);
+
     flex-grow: 1;
 }
 
 .main-page {
     min-height: 100vh;
     background: var(--Schemes-Surface, #FEF7FF);
-
 }

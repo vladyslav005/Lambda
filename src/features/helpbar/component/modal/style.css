@@ -1,0 +1,72 @@
+.react-aria-ModalOverlay  {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: var(--visual-viewport-height);
+    background: rgba(0, 0, 0, 0.26);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+
+    inset: 0;
+    backdrop-filter: blur(1px);
+
+    &[data-entering] {
+        animation: modal-fade 200ms;
+    }
+
+    &[data-exiting] {
+        animation: modal-fade 150ms reverse ease-in;
+    }
+}
+
+.react-aria-Modal {
+    box-shadow: 0 8px 20px rgba(0 0 0 / 0.1);
+    border-radius: 6px;
+    background: var(--overlay-background);
+    color: var(--text-color);
+    border: 1px solid var(--gray-400);
+    outline: none;
+
+    z-index: 1000;
+
+    &[data-entering] {
+        animation: modal-zoom 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .react-aria-TextField {
+        margin-bottom: 8px;
+    }
+}
+
+.help-modal-content {
+    max-height: 80vh;
+    overflow-y: scroll;
+    max-width: 60vw;
+
+    outline: none;
+    padding: 1.5rem;
+    margin: 1rem 0.5rem;
+}
+
+@keyframes modal-fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modal-zoom {
+    from {
+        transform: scale(0.8);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}

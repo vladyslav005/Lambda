@@ -1,0 +1,55 @@
+.list-item-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 5px;
+    background: var(--Schemes-Surface, #FEF7FF);
+
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+}
+
+.list-item-container:hover {
+    background: var(--Schemes-Surface-Variant, #E7E0EC);
+}
+
+.list-item-container img {
+    width: 56px;
+    height: 56px;
+}
+
+.list-item-content h3 {
+    color: var(--M3-sys-light-on-surface, var(--Schemes-On-Surface, #1D1B20));
+
+    /* M3/body/large */
+    font-family: var(--Body-Large-Font, Roboto);
+    font-size: var(--Body-Large-Size, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Body-Large-Line-Height, 24px); /* 150% */
+    letter-spacing: var(--Body-Large-Tracking, 0.5px);
+}
+
+.list-item-content p {
+    color: var(--M3-sys-light-on-surface-variant, var(--Schemes-On-Surface-Variant, #49454F));
+    display: block;
+
+    /* M3/body/medium */
+    font-family: var(--Body-Medium-Font, Roboto);
+    font-size: var(--Body-Medium-Size, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Body-Medium-Line-Height, 20px); /* 142.857% */
+    letter-spacing: var(--Body-Medium-Tracking, 0.25px);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+.list-item-content {
+    overflow: hidden;
+}
+

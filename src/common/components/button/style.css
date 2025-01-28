@@ -1,0 +1,13 @@
+.my-button {
+    padding: .7rem;
+    border-radius: 16px;
+    outline: none;
+
+
+    transition: 0.3s;
+}
+
+.my-button:hover {
+    background: var(--State-Layers-On-Secondary-Container-Opacity-12, rgba(74, 68, 89, 0.12));
+
+}

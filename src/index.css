@@ -15,43 +15,27 @@ code {
     monospace;
 }
 
-.toast-region {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+section {
+    height: 100%;
+    border-radius: var(--Corner-Medium, 12px);
+    background: var(--Schemes-Surface-Container, #F3EDF7);
 }
 
-.toast {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: slateblue;
-    color: white;
-    padding: 12px 16px;
-    border-radius: 8px;
+
+*::-webkit-scrollbar {
+    width: 12px; /* width of the entire scrollbar */
 }
 
-.toast button {
-    background: none;
-    border: none;
-    appearance: none;
-    border-radius: 50%;
-    height: 32px;
-    width: 32px;
-    font-size: 16px;
-    border: 1px solid white;
-    color: white;
-    padding: 0;
+*::-webkit-scrollbar-track {
+    background: transparent; /* color of the tracking area */
 }
 
-.toast button:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px slateblue, 0 0 0 4px white;
+*::-webkit-scrollbar-thumb {
+    background: #AEAEB2;
+    border-radius: 20px; /* roundness of the scroll thumb */
 }
 
-.toast button:active {
-    background: rgba(255, 255, 255, 0.2);
+::selection {
+    /*color: red;*/
+    background: var(--State-Layers-On-Surface-Opacity-08, rgba(29, 27, 32, 0.08));;
 }

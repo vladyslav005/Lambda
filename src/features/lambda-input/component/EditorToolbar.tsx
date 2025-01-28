@@ -6,6 +6,7 @@ import {HiOutlineDotsHorizontal} from "react-icons/hi";
 import {motion, useAnimationControls} from "framer-motion";
 import {EditorContext} from "../context/EditorContext";
 import toast from 'react-hot-toast';
+import {IconButton} from "../../../common/components/button/IconButton";
 
 interface EditorToolbarProps {
 
@@ -51,22 +52,23 @@ export const EditorToolbar = () => {
         >
 
           <Toolbar className="editor-toolbar" aria-label="Text formatting">
-            <Button className={"toolbar-button"}
-                    onPress={handleClick}
+            <IconButton className={"toolbar-button"}
+                    onClick={handleClick}
             >
               <HiOutlineDotsHorizontal></HiOutlineDotsHorizontal>
-            </Button>
-            <Button
-                onPress={() => {
+            </IconButton>
+            <IconButton
+                onClick={() => {
                   navigator.clipboard.writeText(editorContext.editorValue)
                   toast('Editor content copied to clipboard', {duration: 1000,})
                 }}
             >
-              <MdContentCopy size={iconSize}/>
-            </Button>
+              <MdContentCopy size={iconSize} />
 
-            <Button
-                onPress={() => {
+            </IconButton>
+
+            <IconButton
+                onClick={() => {
                   navigator.clipboard.writeText(editorContext.editorValue)
                   editorContext.setEditorValue("")
                   editorContext.setTree(undefined)
@@ -75,25 +77,27 @@ export const EditorToolbar = () => {
                 }}
             >
               <MdContentCut size={iconSize}/>
-            </Button>
+            </IconButton>
             <Group aria-label="Font size">
-              <Button
-                  onPress={() => {
-                    editorContext.setFontSize(editorContext.fontSize - 2)
+              <IconButton
+                  onClick={() => {
+                    if (editorContext.fontSize > 2)
+                      editorContext.setFontSize( editorContext.fontSize - 2)
                   }}
               >
-                <MdRemove size={iconSize + 5}/>
-              </Button>
+                <MdRemove size={iconSize }/>
+              </IconButton>
               <TextField className="font-size-field">
                 <Input value={editorContext.fontSize} type={"number"} className={"text-input"}/>
               </TextField>
-              <Button
-                  onPress={() => {
-                    editorContext.setFontSize(editorContext.fontSize + 2)
+              <IconButton
+                  onClick={() => {
+                    if (editorContext.fontSize < 100)
+                      editorContext.setFontSize(editorContext.fontSize + 2)
                   }}
               >
-                <MdAdd size={iconSize + 5}/>
-              </Button>
+                <MdAdd size={iconSize }/>
+              </IconButton>
             </Group>
           </Toolbar>
         </motion.div>
