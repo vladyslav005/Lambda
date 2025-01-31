@@ -43,8 +43,11 @@
 
 .help-modal-content {
     max-height: 80vh;
-    overflow-y: scroll;
     max-width: 60vw;
+
+    min-width: 60vw;
+    min-height: 80vh;
+    overflow-y: scroll;
 
     outline: none;
     padding: 1.5rem;
