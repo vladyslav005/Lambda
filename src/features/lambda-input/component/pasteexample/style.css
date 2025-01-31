@@ -1,0 +1,63 @@
+.menu-button {
+    color: var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459));
+    text-align: center;
+
+    /* M3/label/large */
+    font-family: var(--Label-Large-Font, Roboto);
+    font-size: var(--Label-Large-Size, 14px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--Label-Large-Line-Height, 20px); /* 142.857% */
+    letter-spacing: var(--Label-Large-Tracking, 0.1px);
+
+    border-radius: 16px;
+    background: var(--Schemes-Secondary-Container, #E8DEF8);
+
+    /* M3/Elevation Light/3 */
+    box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.30);
+
+    outline: none;
+}
+
+.menu-bx {
+    z-index: 10000;
+    border-radius: 4px;
+    background: var(--Schemes-Surface-Container, #F3EDF7);
+
+    min-width: 150px;
+    /* M3/Elevation Light/2 */
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+
+    color: var(--M3-sys-light-on-surface, var(--Schemes-On-Surface, #1D1B20));
+    /* M3/body/large */
+    font-family: var(--Body-Large-Font, Roboto);
+    font-size: var(--Body-Large-Size, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Body-Large-Line-Height, 24px); /* 150% */
+    letter-spacing: var(--Body-Large-Tracking, 0.5px);
+    outline: none;
+}
+
+.menu-item {
+    padding: 1rem 1rem;
+    position: relative;
+    z-index: 1000;
+    overflow: auto;
+    outline: none;
+
+}
+
+.menu-item:hover {
+    background: var(--Schemes-Secondary-Container, #E8DEF8);
+    color: var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459));
+
+    /* M3/body/large */
+    font-family: var(--Body-Large-Font, Roboto);
+    font-size: var(--Body-Large-Size, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Body-Large-Line-Height, 24px); /* 150% */
+    letter-spacing: var(--Body-Large-Tracking, 0.5px);
+    padding: 1rem 1rem;
+}

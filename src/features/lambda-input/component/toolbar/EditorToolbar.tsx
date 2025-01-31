@@ -4,9 +4,9 @@ import {MdAdd, MdContentCopy, MdContentCut, MdRemove} from "react-icons/md";
 import React, {useContext, useState} from "react";
 import {HiOutlineDotsHorizontal} from "react-icons/hi";
 import {motion, useAnimationControls} from "framer-motion";
-import {EditorContext} from "../context/EditorContext";
+import {EditorContext} from "../../context/EditorContext";
 import toast from 'react-hot-toast';
-import {IconButton} from "../../../common/components/button/IconButton";
+import {IconButton} from "../../../../common/components/button/IconButton";
 
 interface EditorToolbarProps {
 

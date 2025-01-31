@@ -5,13 +5,17 @@ import {EditorContext} from "../context/EditorContext";
 import {useBuildTree} from "../hook/BuildTreeHook";
 import {SyntaxError, TypeError} from "../../../core/errorhandling/customErrors";
 import "./LambdaInput.css"
-import {EditorToolbar} from "./EditorToolbar";
+import {EditorToolbar} from "./toolbar/EditorToolbar";
+import {PasteExampleMenu} from "./pasteexample/PasteExampleMenu";
+import {useEditorErrorsHook} from "../hook/EditorErrorsHook";
 
 
-export function LambdaInput() {
+export default function LambdaInput() {
   const monaco = useMonaco();
   const editorContext = useContext(EditorContext);
   const {buildTree} = useBuildTree();
+
+  const {setEditorErrors} = useEditorErrorsHook()
 
 
   const handleEditorDidMount = (editor: any, monaco: any) => {
@@ -40,38 +44,20 @@ export function LambdaInput() {
     setEditorErrors(errors)
   }
 
-  // UNDERLINE ERRORS IN EDITOR
-  function setEditorErrors(errors: Error[] | undefined) {
-    const model = editorContext.editor.getModel();
-    const markers: any[] = [];
-
-    editorContext.monaco.editor.setModelMarkers(model, 'lambda-errors', []);
-
-    errors?.forEach((error) => {
-
-      if (error instanceof SyntaxError || error instanceof TypeError) {
-
-        markers.push({
-          startLineNumber: error.startLine,
-          startColumn: error.startColumn,
-          endLineNumber: error.endLine,
-          endColumn: error.endColumn + 1,
-          message: error.message,
-          severity: editorContext.monaco.MarkerSeverity.Error,
-        });
-      }
-
-    });
-
-    editorContext.monaco.editor.setModelMarkers(model, 'lambda-errors', markers);
-
-  }
-
   return (
       <div
           className="lambda-input ui-block "
       >
         <EditorToolbar></EditorToolbar>
+
+        <PasteExampleMenu
+            style={{
+              position: "absolute",
+              zIndex: 1000,
+              bottom: "1rem",
+              right: "1rem",
+            }}
+        />
 
         <Editor
             className="h-full"
@@ -84,6 +70,7 @@ export function LambdaInput() {
             value={editorContext.editorValue}
             onChange={editorOnChange}
             onMount={handleEditorDidMount}
+            loading={""}
             wrapperProps={{
               style: {
                 position: 'absolute',

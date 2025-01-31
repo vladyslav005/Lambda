@@ -4,21 +4,8 @@ import {HelpModal} from "./modal/HelpModal";
 import {useState} from "react";
 import {Input} from "react-aria-components";
 import { IoMdSearch } from "react-icons/io";
+import topics from "../data/infoTopics";
 
-const topics = [
-  <HelpListItem title={'Grammar'} description={'Grammar of languge and structure of expressions'}>
-    Grammar
-  </HelpListItem>,
-  <HelpListItem title={'Application rule'} description={'Short description  of topic'}>
-    Application
-  </HelpListItem>,
-  <HelpListItem title={'Tuples and records'} description={'Short description  of topic'}>
-    Application
-  </HelpListItem>,
-  <HelpListItem title={'Variants'} description={'Short description  of topic'}>
-    Application
-  </HelpListItem>
-]
 
 
 export function HelpBar() {
