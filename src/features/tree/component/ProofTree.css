@@ -6,13 +6,17 @@
 
 
 .tree-flat-container-full-screen {
-    position: absolute;
-    width: 97vw;
-    height: 96vh;
-    z-index: 9999;
-    margin-left: calc(3vw / 2);
-    margin-top: calc(4vh / 2);
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10000;
+
+    min-width: 400px;
+
+    margin: 0 !important;
     border-radius: var(--Corner-Medium, 12px);
+    top: 0;
+    left: 0;
 }
 
 .tree-bx {

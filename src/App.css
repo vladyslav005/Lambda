@@ -30,6 +30,16 @@
         max-width: 90vw !important;
     }
 
+    .help-bar {
+        min-height: 300px !important;
+
+        max-height: 300px !important;
+    }
+
+    .error-output {
+        padding-bottom: 1rem;
+    }
+
 
     .ui-block {
         margin: 1rem !important;
@@ -37,6 +47,7 @@
 
     .main-page {
         flex-direction: column-reverse;
+        gap: 0 !important;
     }
 
     .sidebar {
@@ -50,8 +61,14 @@
 
     }
 
+    .main-pane {
+        margin-bottom: 0 !important;
+        margin-top: 0 !important;
+        gap: 1rem !important;
+        max-width: none !important;
+    }
+
     .help-bar {
-        /*margin-top: 0 !important;*/
         margin-bottom: 0 !important;
         min-height: 100px !important;
     }
@@ -71,17 +88,21 @@
 
     .tree-flat-container {
         min-height: 400px !important;
+        margin-top: 0 !important;
+        /*margin-bottom: 0 !important;*/
     }
 
 
     .tree-flat-container {
         /*flex-grow: 2 !important;*/
-
+        /*margin-right: 1rem !important;*/
     }
 
-    .switch-tree-container {
-        /*display: none;*/
+    .tree-full-screen-btn {
+        bottom: 1rem !important;
+        right: 1rem !important;
     }
+
 }
 
 
@@ -117,6 +138,11 @@
 .sidebar {
     max-width: 400px;
     min-width: 400px;
+}
+
+.main-pane {
+    min-width: 400px;
+
 }
 
 .error-message {

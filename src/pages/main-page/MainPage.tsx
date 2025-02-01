@@ -14,7 +14,7 @@ export function MainPage() {
 
         {/*<div className="right-side flex flex-row" style={{flexGrow: 4}}>*/}
 
-        <div className="flex flex-col" style={{flexGrow: 10}}>
+        <div className="main-pane flex flex-col" style={{flexGrow: 10}}>
 
           <Suspense fallback={<div className="lambda-input ui-block flex-row justify-center items-center"><LoadingIndicator/></div>}>
             <LambdaInput></LambdaInput>

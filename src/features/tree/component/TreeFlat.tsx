@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {EditorContext} from "../../lambda-input/context/EditorContext";
 
 import {MapInteractionCSS} from 'react-map-interaction';
@@ -20,7 +20,8 @@ export default function TreeFlat() {
 
   const handleFullScreenClick = () => {
     setFullScreen(!fullScreen);
-    console.log("fullScreen", fullScreen);
+    // @ts-ignore
+
   }
 
 
@@ -35,8 +36,8 @@ export default function TreeFlat() {
               <MapInteractionCSS>
                 {editorContext.tree && <ProofTreeComponentUsingCss node={editorContext.tree}/>}
               </MapInteractionCSS>
-              <IconButton style={{
-                position: "absolute",
+              <IconButton className={"tree-full-screen-btn"} style={{
+                position: fullScreen ? "fixed" : "absolute",
                 zIndex: 9999,
                 bottom: '1rem',
                 right: '1rem',

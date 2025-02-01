@@ -19,6 +19,18 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
   const [isHovered, setIsHovered] = useState(false)
   const [decorations, setDecorations] = useState([])
 
+  const [isTouched, setIsTouched] = useState(false)
+
+  function handleTouch() {
+    if (isTouched) {
+      setIsTouched(false)
+      handleMouseLeave()
+    } else {
+      setIsTouched(true)
+      handleMouseEnter()
+    }
+  }
+
   function handleMouseEnter() {
     const startLine = props.node.tokenLocation[0];
     const endLine = props.node.tokenLocation[1];
@@ -61,8 +73,15 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
 
   // Expand feature
   const handleClick = () => {
-    if (props.node.isExpandable)
+    if (props.node.isExpandable) {
       props.setIsExpanded(!props.isExpanded);
+
+      editorContext.editor.deltaDecorations(editorContext.editor.getModel().getAllDecorations()
+          .filter((decorator: any) => decorator.options.className === "highlighted-code")
+          .map((decorator: any) => decorator.id), [])
+    }
+    console.log(editorContext.editor.getModel().getAllDecorations()
+        .filter((decorator : any)  => decorator.options.className === "highlighted-code"))
   }
 
 
@@ -71,6 +90,8 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
            onMouseEnter={handleMouseEnter}
            onMouseLeave={handleMouseLeave}
            onClick={handleClick}
+           onTouchStart={props.node.isExpandable ? handleClick : handleTouch}
+
            style={{
              backgroundColor: isHovered ? "rgba(255, 255, 0, 0.3)" : "", // Highlight the div when hovered
              borderRadius: '10px',

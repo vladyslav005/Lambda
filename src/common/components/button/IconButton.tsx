@@ -27,12 +27,13 @@ export const IconButton = (props : IconButtonProps) => {
         <Button
             style={{
               outline: 'none',
-              ...props.style
+              ...props.style,
             }}
+
+            onPress={props.onClick}
         >
           <MyRipples during={500} color={'rgba(251,246,246,0.63)'}
                      className={[props.className, "my-button"].join(" ")}
-                     onClick={props.onClick}
 
           >
               {props.children}

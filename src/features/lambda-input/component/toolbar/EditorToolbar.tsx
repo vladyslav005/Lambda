@@ -30,8 +30,8 @@ export const EditorToolbar = () => {
   }
   const [isExpanded, setIsExpanded] = useState(false)
   return (
-      <div className="toolbar-wrapper">
-        <motion.div
+      <div >
+        <motion.div className={"toolbar-wrapper"}
             variants={{
               initial: {
                 x: "80%"
