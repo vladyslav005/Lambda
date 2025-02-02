@@ -1,11 +1,8 @@
 import './HelpBar.css'
-import {HelpListItem} from "./ListItem/HelpListItem";
-import {HelpModal} from "./modal/HelpModal";
 import {useState} from "react";
 import {Input} from "react-aria-components";
-import { IoMdSearch } from "react-icons/io";
+import {IoMdSearch} from "react-icons/io";
 import topics from "../data/infoTopics";
-
 
 
 export function HelpBar() {

@@ -34,5 +34,5 @@ export function useEditorErrorsHook() {
   }
 
 
-    return {setEditorErrors};
+  return {setEditorErrors};
 }

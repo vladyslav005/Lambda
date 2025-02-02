@@ -11,13 +11,15 @@ export function ErrorOutput() {
   return (
       <div className="error-output ui-block">
 
-        <ErrorMessage
-            error={{
-              type: ErrorType.INFO,
-              color: "#226303",
-              background: "#e6f9dc",
-              message: 'There you\'ll see the errors'
-            }}/>
+        {(!editorContext.errors || (editorContext.errors?.length === 0)) &&
+            <ErrorMessage
+                error={{
+                  type: ErrorType.INFO,
+                  color: "#226303",
+                  background: "#e6f9dc",
+                  message: 'There you\'ll see the errors'
+                }}/>
+        }
 
 
         {editorContext.errors &&

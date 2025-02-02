@@ -1,4 +1,4 @@
-import {Button, Group, Input, TextField, Toolbar} from 'react-aria-components';
+import {Group, Input, TextField, Toolbar} from 'react-aria-components';
 import "./EditorToolbar.css"
 import {MdAdd, MdContentCopy, MdContentCut, MdRemove} from "react-icons/md";
 import React, {useContext, useState} from "react";
@@ -30,30 +30,30 @@ export const EditorToolbar = () => {
   }
   const [isExpanded, setIsExpanded] = useState(false)
   return (
-      <div >
+      <div>
         <motion.div className={"toolbar-wrapper"}
-            variants={{
-              initial: {
-                x: "80%"
-              },
-              show: {
-                x: 0
-              }
-            }}
+                    variants={{
+                      initial: {
+                        x: "80%"
+                      },
+                      show: {
+                        x: 0
+                      }
+                    }}
 
-            initial="initial"
-            transition={{
-              duration: .5,
-              ease: "easeInOut",
-              times: [0, 1]
-            }}
+                    initial="initial"
+                    transition={{
+                      duration: .5,
+                      ease: "easeInOut",
+                      times: [0, 1]
+                    }}
 
-            animate={controls}
+                    animate={controls}
         >
 
           <Toolbar className="editor-toolbar" aria-label="Text formatting">
             <IconButton className={"toolbar-button"}
-                    onClick={handleClick}
+                        onClick={handleClick}
             >
               <HiOutlineDotsHorizontal></HiOutlineDotsHorizontal>
             </IconButton>
@@ -63,7 +63,7 @@ export const EditorToolbar = () => {
                   toast('Editor content copied to clipboard', {duration: 1000,})
                 }}
             >
-              <MdContentCopy size={iconSize} />
+              <MdContentCopy size={iconSize}/>
 
             </IconButton>
 
@@ -82,10 +82,10 @@ export const EditorToolbar = () => {
               <IconButton
                   onClick={() => {
                     if (editorContext.fontSize > 2)
-                      editorContext.setFontSize( editorContext.fontSize - 2)
+                      editorContext.setFontSize(editorContext.fontSize - 2)
                   }}
               >
-                <MdRemove size={iconSize }/>
+                <MdRemove size={iconSize}/>
               </IconButton>
               <TextField className="font-size-field">
                 <Input value={editorContext.fontSize} type={"number"} className={"text-input"}/>
@@ -96,7 +96,7 @@ export const EditorToolbar = () => {
                       editorContext.setFontSize(editorContext.fontSize + 2)
                   }}
               >
-                <MdAdd size={iconSize }/>
+                <MdAdd size={iconSize}/>
               </IconButton>
             </Group>
           </Toolbar>

@@ -3,7 +3,6 @@ import Editor, {useMonaco} from '@monaco-editor/react';
 import {setUpMonacoLanguage} from "../hook/SetUpMonacoLanguage";
 import {EditorContext} from "../context/EditorContext";
 import {useBuildTree} from "../hook/BuildTreeHook";
-import {SyntaxError, TypeError} from "../../../core/errorhandling/customErrors";
 import "./LambdaInput.css"
 import {EditorToolbar} from "./toolbar/EditorToolbar";
 import {PasteExampleMenu} from "./pasteexample/PasteExampleMenu";

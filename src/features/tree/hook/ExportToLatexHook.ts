@@ -11,7 +11,7 @@ export function useExportToLatex() {
 
       const premisesCount = node.premises ? node.premises.length : 0;
 
-      if (node.premises ) {
+      if (node.premises) {
         for (let premise of node.premises)
           nodeLatex += traverseTree(premise, level + 1);
         nodeLatex += `  \\infer${premisesCount}[${node.rule}]{${node.conclusion} }\n`;
@@ -28,7 +28,7 @@ export function useExportToLatex() {
     return preprocessString(latex);
   }
 
-  const exportToBussproofs = (tree: ProofNode): string  => {
+  const exportToBussproofs = (tree: ProofNode): string => {
     let latex = '\\begin{prooftree} \n';
 
     const traverseTree = (node: ProofNode, level: number = 0): void => {
@@ -74,8 +74,8 @@ export function useExportToLatex() {
   const isTreeExportableToBussproofs = (tree: ProofNode): boolean => {
     let isExportable = true;
 
-    const traverseTree = (node: ProofNode): void  => {
-      if (node.premises ) {
+    const traverseTree = (node: ProofNode): void => {
+      if (node.premises) {
         if (node.premises.length > 5)
           isExportable = false;
 
@@ -92,6 +92,7 @@ export function useExportToLatex() {
   return {
     exportToLatex,
     isTreeExportableToBussproofs,
-    exportToBussproofs};
+    exportToBussproofs
+  };
 
 }

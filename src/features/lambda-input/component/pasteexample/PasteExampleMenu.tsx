@@ -1,6 +1,6 @@
 import {Button, Menu, MenuItem, MenuTrigger, Popover} from 'react-aria-components';
 import "./style.css"
-import { IoMdArrowDropdown } from "react-icons/io";
+import {IoMdArrowDropdown} from "react-icons/io";
 import {MyRipples} from "../../../../common/components/button/IconButton";
 import {useContext} from "react";
 import {EditorContext} from "../../context/EditorContext";
@@ -12,7 +12,7 @@ interface PasteExampleMenuProps {
   style?: React.CSSProperties;
 }
 
-export const PasteExampleMenu = (props : PasteExampleMenuProps) => {
+export const PasteExampleMenu = (props: PasteExampleMenuProps) => {
 
   const editorContext = useContext(EditorContext);
   const {buildTree} = useBuildTree();
@@ -20,14 +20,14 @@ export const PasteExampleMenu = (props : PasteExampleMenuProps) => {
 
 
   return (
-      <MenuTrigger >
+      <MenuTrigger>
         <Button className="menu-button flex gap-2" aria-label="Menu" style={props.style}>
           <MyRipples during={500} color={'rgba(251,246,246,0.63)'}
                      className={["my-button"].join(" ")}
 
           >
             Paste example
-            <IoMdArrowDropdown size={18} />
+            <IoMdArrowDropdown size={18}/>
           </MyRipples>
         </Button>
         <Popover>

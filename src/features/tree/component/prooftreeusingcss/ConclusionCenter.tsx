@@ -81,7 +81,7 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
           .map((decorator: any) => decorator.id), [])
     }
     console.log(editorContext.editor.getModel().getAllDecorations()
-        .filter((decorator : any)  => decorator.options.className === "highlighted-code"))
+        .filter((decorator: any) => decorator.options.className === "highlighted-code"))
   }
 
 

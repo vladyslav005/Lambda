@@ -48,10 +48,6 @@
     cursor: pointer;
 }
 
-.export-modal-content {
-    min-height: fit-content;
-    max-height: 50vh;
-}
 
 .menu-item:hover {
     background: var(--Schemes-Secondary-Container, #E8DEF8);
