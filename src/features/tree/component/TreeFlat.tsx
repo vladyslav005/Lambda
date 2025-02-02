@@ -7,6 +7,7 @@ import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTreeUsingCss"
 import {MdFullscreen, MdFullscreenExit} from "react-icons/md";
 import {Button} from "react-aria-components";
 import {IconButton} from "../../../common/components/button/IconButton";
+import {ExportButton} from "./exportbutton/ExportButton";
 
 export enum TreeView {
   INTERACTIVE = 0,
@@ -46,7 +47,20 @@ export default function TreeFlat() {
                 {fullScreen && <MdFullscreenExit size={48}/>}
                 {!fullScreen && <MdFullscreen size={48}/>}
               </IconButton>
-            </>}
+
+              <ExportButton
+                  style={{
+                    position: 'absolute',
+                    right: '1rem',
+                    top: '1rem',
+                    zIndex: 9999,
+                  }}
+              />
+
+            </>
+          }
+
+
           {!editorContext.tree &&
               <div className="tree-info-bx">
                   <h1>

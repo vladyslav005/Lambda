@@ -1,0 +1,26 @@
+
+.modal-title {
+    color: var(--M3-sys-light-on-surface, var(--Schemes-On-Surface, #1D1B20));
+
+    /* M3/title/medium */
+    font-family: var(--Title-Medium-Font, Roboto);
+    font-size: var(--Title-Medium-Size, 16px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--Title-Medium-Line-Height, 24px); /* 150% */
+    letter-spacing: var(--Title-Medium-Tracking, 0.15px);
+    margin: 1rem;
+}
+
+.latex-code {
+    border: 1px #000000 solid ;
+    padding: 2rem;
+    border-radius: 0.4rem;
+    color: #000000;
+    background: var(--Schemes-Surface, #FEF7FF);
+
+    max-height: 600px;
+
+    overflow: auto;
+
+}

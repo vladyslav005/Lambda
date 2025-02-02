@@ -3,23 +3,14 @@ import {CharStream, CommonTokenStream} from "antlr4";
 import LambdaCalcParser from "./antlr/LambdaCalcParser";
 import {TypeChecker} from "./typechecker/TypeChecker";
 import {TreeGenerator} from "./tree/TreeGenerator";
+import {InputAnalyzer} from "./AnalyzeInput";
 
 
 let input = `
+a : A * B;
+b = λ x : A * B. x.1  : (A * B) -> A;
 
-PhysicalAddr = < firstlast : String, addr : String> ;
-VirtualAddr = <name : String, email : String>;
-
-Addr = [physical : PhysicalAddr, virtual : VirtualAddr];
-
-
-pa : PhysicalAddr;
-
-a = [physical = pa] as Addr;
-
-case a of
-     [physical = x] => x.firstlast
-  || [virtual = y] => y.name;
+b a;
   
 `;
 
@@ -40,18 +31,18 @@ typeChecker.visit(ast)
 
 const treeGenerator = new TreeGenerator()
 
-const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext, typeChecker.aliasContext)
+// const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext, typeChecker.aliasContext)
 //
-console.log(ast.toStringTree(parser.ruleNames, parser))
+// console.log(ast.toStringTree(parser.ruleNames, parser))
 //
-// const analyzer = new InputAnalyzer()
-//
-// analyzer.analyzeInput(input)
-//
-// analyzer.checkTypes()
-//
-// console.log(JSON.stringify(analyzer.generateProofTree(), undefined, 4))
-//
+const analyzer = new InputAnalyzer()
+
+analyzer.analyzeInput(input)
+
+analyzer.checkTypes()
+
+console.log(analyzer.generateProofTree())
+
 // console.log(analyzer.generateProofTree())
 
 input = `

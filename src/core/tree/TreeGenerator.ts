@@ -213,8 +213,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     else
       return {
         type: type,
-        conclusion: `\\Gamma ${this.contextExtension} 
-                      \\vdash ${seqTerms.map(c => c.ctx.getText()).join(';')} : ${type}`,
+        conclusion: `\\Gamma ${this.contextExtension} \\vdash ${seqTerms.map(c => c.ctx.getText()).join(';')} : ${type}`,
         rule: "(T-seq)",
         context: ctx,
         tokenLocation: getTokenLocation(ctx),

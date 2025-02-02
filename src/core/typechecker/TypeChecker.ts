@@ -32,7 +32,6 @@ import {eliminateOutParentheses, getTokenLocation, parseType, tupleTypeToArray} 
 // TODO : refactor: split file, split type checker class
 // TODO : types priority
 // TODO : showing aliases in tree ?
-// TODO : showing aliases in tree ?
 // TODO : flexible frame's size
 // TODO : full screen mode for tree
 
@@ -506,8 +505,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     if (!(variantTypeNode instanceof VariantTypeContext))
       throw new TypeError(`'${varName}' should have an variant type to be used in case of`, getTokenLocation(ctx));
 
-
     const variantLabels = this.extractLabels(variantTypeNode);
+    const coveredLabels = new Set<string>();
+
 
     let caseType: string | undefined;
 
@@ -539,9 +539,15 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
             getTokenLocation(ctx))
       }
 
-      const x = 0
+      coveredLabels.add(labelNode.getText());
     }
 
+    for (const el of variantLabels) {
+      if (!coveredLabels.has(el.name)) {
+        throw new TypeError(`Label '${el.name}' with '${el.type}', not covered in case of construction`,
+            getTokenLocation(ctx));
+      }
+    }
 
     return caseType;
   };

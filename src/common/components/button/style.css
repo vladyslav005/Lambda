@@ -5,6 +5,11 @@
 
 
     transition: 0.3s;
+
+    display: flex;
+    flex-direction: row;
+    gap: .6rem;
+    align-items: center;
 }
 
 .my-button:hover {

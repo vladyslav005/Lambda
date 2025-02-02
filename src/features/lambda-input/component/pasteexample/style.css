@@ -45,7 +45,12 @@
     z-index: 1000;
     overflow: auto;
     outline: none;
+    cursor: pointer;
+}
 
+.export-modal-content {
+    min-height: fit-content;
+    max-height: 50vh;
 }
 
 .menu-item:hover {

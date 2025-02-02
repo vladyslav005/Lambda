@@ -7,7 +7,7 @@ export function setUpMonacoLanguage(monaco: any) {
     keywords,
     tokenizer: {
       root: [
-        [/\b[a-zA-z]*\b/, {
+        [/\b[a-zA-z]+\b/, {
           cases: {
             '@keywords': 'keyword',
             '@default': 'variable',

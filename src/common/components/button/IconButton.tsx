@@ -34,7 +34,6 @@ export const IconButton = (props : IconButtonProps) => {
         >
           <MyRipples during={500} color={'rgba(251,246,246,0.63)'}
                      className={[props.className, "my-button"].join(" ")}
-
           >
               {props.children}
           </MyRipples>
