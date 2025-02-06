@@ -9,7 +9,7 @@ interface IconButtonProps {
   onClick?: () => void;
   children?: React.ReactNode;
   className?: string;
-
+  id?: string;
   style?: React.CSSProperties;
 
 }
@@ -29,7 +29,7 @@ export const IconButton = (props : IconButtonProps) => {
               outline: 'none',
               ...props.style,
             }}
-
+            id={props.id}
             onPress={props.onClick}
         >
           <MyRipples during={500} color={'rgba(251,246,246,0.63)'}

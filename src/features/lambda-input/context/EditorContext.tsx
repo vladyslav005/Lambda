@@ -50,7 +50,7 @@ interface EditorProviderProps {
 
 export const EditorState = (props: EditorProviderProps) => {
   const [editorValue, setEditorValue] = useState<string>('');
-  const [tree, setTree] = useState<ProofNode | undefined>(undefined);  // Replace 'any' with your actual type
+  const [tree, setTree] = useState<ProofNode | undefined>(undefined);
   const [errors, setErrors] = useState<Error[] | undefined>(undefined);
   const [monaco, setMonaco] = useState<any>();
   const [editor, setEditor] = useState<any>();
