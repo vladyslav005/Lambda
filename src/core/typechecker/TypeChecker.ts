@@ -230,14 +230,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       if (typeAlias.match(new RegExp(`\\b${context[i].name}\\b`, 'g')) !== null) {
         let aliasNode = parseType(context[i].type)
         console.log(`${typeAlias} ${context[i].name} {}`)
-        if (typeAliasNode instanceof FunctionTypeContext &&
-            aliasNode instanceof TupleTypeContext
-        ) {
+        if (typeAliasNode instanceof FunctionTypeContext && aliasNode instanceof TupleTypeContext)
           typeAlias = typeAlias.replaceAll(new RegExp(`\\b${context[i].name}\\b`, 'g'), '(' + context[i].type + ')');
-
-        } else
+        else
           typeAlias = typeAlias.replaceAll(new RegExp(`\\b${context[i].name}\\b`, 'g'), context[i].type);
-
 
         typeAliasNode = parseType(typeAlias)
         i = -1;
@@ -246,6 +242,36 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     return typeAlias;
   };
+
+  public encodeToAlias(typeAlias: string): string {
+
+    const context = this._aliasContext.getAllElements()
+    let typeAliasNode = parseType(typeAlias)
+
+    for (let i = 0; i < context.length; i++) {
+      if (typeAlias.includes(`${context[i].type}`)) {
+
+        let aliasNode = parseType(context[i].type)
+
+        if (typeAliasNode instanceof FunctionTypeContext && aliasNode instanceof TupleTypeContext)
+          typeAlias = typeAlias.replaceAll(`(${context[i].type})`, context[i].name);
+        else
+          typeAlias = typeAlias.replaceAll(`${context[i].type}`, context[i].name);
+
+        typeAliasNode = parseType(typeAlias)
+
+        i = -1;
+
+      }
+    }
+
+    return typeAlias;
+  }
+
+  private escapeRegExp(string: string): string {
+    // Escape special characters for use in a regular expression
+    return string.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
 
 
   /* IMPLEMENTS APP RULE */

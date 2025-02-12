@@ -1,4 +1,5 @@
 import {
+  Checkbox,
   Color,
   Dialog,
   Label,
@@ -33,6 +34,7 @@ interface ExportButtonProps {
 export const ExportButton = (props: ExportButtonProps) => {
   const editorContext = useContext(EditorContext);
 
+
   const [bussproofsModal, setBussproofsModal] = useState(false)
   const [ebproofModal, setEbproofModal] = useState(false)
   const bussproofsLatex = useRef("");
@@ -45,6 +47,7 @@ export const ExportButton = (props: ExportButtonProps) => {
   } = useExportToLatex();
 
 
+  const [showAliases, setShowAliases] = useState(false)
   const pngDivRef = useRef(null);
   const [pngModal, setPngModal] = useState(false)
   const [pngWidth, setPngWidth] = useState(500)
@@ -148,7 +151,8 @@ export const ExportButton = (props: ExportButtonProps) => {
                      }}
                 >
                   <MapInteractionCSS>
-                    {editorContext.tree && <ProofTreeComponentUsingCss color={pngFontColor} node={editorContext.tree}/>}
+                    {editorContext.tree && <ProofTreeComponentUsingCss showAliases={showAliases} color={pngFontColor}
+                                                                       node={editorContext.tree}/>}
                   </MapInteractionCSS>
 
                 </div>
@@ -178,6 +182,19 @@ export const ExportButton = (props: ExportButtonProps) => {
                       <SliderThumb/>
                     </SliderTrack>
                   </Slider>
+
+                  <Checkbox
+                      style={{}}
+                      onChange={(isChecked) => setShowAliases(isChecked)}
+                  >
+                    <div className="checkbox">
+                      <svg viewBox="0 0 18 18" aria-hidden="true">
+                        <polyline points="1 9 7 14 15 4"/>
+                      </svg>
+                    </div>
+                    Show aliases
+                  </Checkbox>
+
                 </div>
 
                 <div className="flex flex-col justify-evenly ">

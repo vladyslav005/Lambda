@@ -4,7 +4,8 @@ import {ConclusionCenter} from "./ConclusionCenter";
 import {useState} from "react";
 
 
-export function ProofTreeComponentUsingCss({node, color}: { node: ProofNode, color?: string }) {
+export function ProofTreeComponentUsingCss(
+    {node, color, showAliases}: { node: ProofNode, color?: string, showAliases: boolean }) {
   const isItRoot = node.root ? "root" : "not-root";
   const isItLeaf = node.premises === undefined ? 'leaf-node' : 'not-leaf-node';
 
@@ -19,7 +20,7 @@ export function ProofTreeComponentUsingCss({node, color}: { node: ProofNode, col
             >
               {node.premises.map((premise, index) => (
                   <>
-                    <ProofTreeComponentUsingCss color={color} node={premise}/>
+                    <ProofTreeComponentUsingCss showAliases={showAliases} color={color} node={premise}/>
                     {node.premises !== undefined && index !== node.premises.length - 1 && (
                         <div className="inter-proof"></div>
                     )}
@@ -34,7 +35,7 @@ export function ProofTreeComponentUsingCss({node, color}: { node: ProofNode, col
             >
               {node.expandedPremises.map((premise, index) => (
                   <>
-                    <ProofTreeComponentUsingCss color={color} node={premise}/>
+                    <ProofTreeComponentUsingCss showAliases={showAliases} color={color} node={premise}/>
                     {node.expandedPremises !== undefined && index !== node.expandedPremises.length - 1 && (
                         <div className="inter-proof"></div>
                     )}
@@ -53,6 +54,7 @@ export function ProofTreeComponentUsingCss({node, color}: { node: ProofNode, col
               isItLeaf={isItLeaf}
               isItRoot={isItRoot}
               node={node}
+              showAliases={showAliases}
           ></ConclusionCenter>
 
           <div className="conclusion-right">

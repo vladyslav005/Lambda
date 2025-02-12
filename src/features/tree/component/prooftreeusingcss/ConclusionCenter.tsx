@@ -10,6 +10,7 @@ interface ConclusionCenterProps {
   node: ProofNode;
   isExpanded: boolean;
   setIsExpanded: (expanded: boolean) => void;
+  showAliases: boolean;
 }
 
 
@@ -98,7 +99,8 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
              cursor: props.node.isExpandable ? 'pointer' : 'default',
            }}
       >
-        <MathComponent tex={preprocessString(props.node.conclusion)}/>
+        <MathComponent
+            tex={preprocessString(props.showAliases ? props.node.conclusionWithAlias : props.node.conclusion)}/>
       </div>
 
   )

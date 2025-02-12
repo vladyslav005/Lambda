@@ -36,6 +36,7 @@ export interface ProofNode {
   root: boolean;
   isExpandable: boolean;
   isExpanded?: boolean;
+  conclusionWithAlias: string;
 }
 
 
@@ -47,6 +48,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   private localContext: Context;
 
   private contextExtension: string;
+  private contextExtensionWithAlies: string;
+
 
   constructor() {
     super();
@@ -54,6 +57,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     this.globalContext = undefined;
     this.localContext = new Context();
     this.contextExtension = "";
+    this.contextExtensionWithAlies = "";
+
   }
 
   private _proofTree: ProofNode | undefined;
@@ -111,11 +116,13 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     this.updateContextExtension()
 
     const type = this.typeChecker.visit(ctx);
+    const typeWithAlias = this.typeChecker.encodeToAlias(type)
     const body = ctx.term();
 
     const result = {
       type: type,
       conclusion: `\\Gamma ${ctxExtensionTmp} \\vdash ${ctx.getText()}`,
+      conclusionWithAlias: `\\Gamma ${this.typeChecker.encodeToAlias(ctxExtensionTmp)} \\vdash ${ctx.getText()}`,
       rule: "(T-abs)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -135,14 +142,15 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   visitVariable = (ctx: VariableContext): any => {
     console.log("Var: " + ctx.getText())
 
-    const type = preprocessString(this.typeChecker.visit(ctx));
+    const type = (this.typeChecker.visit(ctx));
+    const typeWithAlias = this.typeChecker.encodeToAlias(type);
 
     let ctxInfo = this.getContextInfo(ctx.getText())
 
-
     return {
       type: type,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${type}`,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(type)}`,
+      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(typeWithAlias)}`,
       rule: "(T-var)",
       root: false,
       context: ctx,
@@ -156,6 +164,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
         {
           type: type,
           conclusion: `${ctx.getText()} : ${type} \\in \\Gamma ${this.contextExtension}`,
+          conclusionWithAlias: `${ctx.getText()} : ${typeWithAlias} \\in \\Gamma ${this.contextExtensionWithAlies}`,
           rule: "",
           root: false,
           context: ctx,
@@ -171,12 +180,14 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     console.log("App: " + ctx.getText())
 
     const type = this.typeChecker.visit(ctx);
+    const typeWithAlias = this.typeChecker.encodeToAlias(type);
 
     const appStr = ctx.children?.map(child => child.getText()).join("\\hspace{0.2cm}");
 
     return {
       type: type,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${appStr} : ${type}`,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${appStr} : ${preprocessString(type)}`,
+      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${appStr} : ${preprocessString(typeWithAlias)}`,
       rule: "(T-app)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -189,6 +200,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   visitSequence = (ctx: SequenceContext): any => {
     console.log("Seq " + ctx.getText())
     const type = this.typeChecker.visit(ctx);
+    const typeWithAlias = this.typeChecker.encodeToAlias(type);
 
     const seqTerms: {
       ctx: ParseTree;
@@ -213,7 +225,9 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     else
       return {
         type: type,
-        conclusion: `\\Gamma ${this.contextExtension} \\vdash ${seqTerms.map(c => c.ctx.getText()).join(';')} : ${type}`,
+        conclusion: `\\Gamma ${this.contextExtension} \\vdash ${seqTerms.map(c => c.ctx.getText()).join(';')} : ${preprocessString(type)}`,
+        conclusionWithAlias:
+            `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${seqTerms.map(c => c.ctx.getText()).join(';')} : ${preprocessString(typeWithAlias)}`,
         rule: "(T-seq)",
         context: ctx,
         tokenLocation: getTokenLocation(ctx),
@@ -225,7 +239,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
   visitTuple = (ctx: TupleContext): any => {
     const type = this.typeChecker.visit(ctx);
-
+    const typeWithAlias = this.typeChecker.encodeToAlias(type);
     const tupleTypesArray: string[] = []
     const tupleTypeNode = parseType(type)
     tupleTypeToArray(tupleTypeNode, tupleTypesArray)
@@ -243,6 +257,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const result = {
       type: type,
       conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(type)}`,
+      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(typeWithAlias)}`,
       rule: "(T-tuple)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -259,13 +274,16 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   visitTupleProjection = (ctx: TupleProjectionContext): any => {
     const tuple = ctx.getChild(0);
     const tupleType = this.typeChecker.visit(tuple);
+    const tupleTypeWithAlias = this.typeChecker.encodeToAlias(tupleType);
 
 
     const tupleProjType = this.typeChecker.visit(ctx);
+    const tupleProjTypeWithAlias = this.typeChecker.encodeToAlias(tupleProjType);
 
     return {
       type: tupleProjType,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${tupleProjType}`,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(tupleProjType)}`,
+      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(tupleProjTypeWithAlias)}`,
       rule: "(T-proj)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -277,6 +295,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
             {
               type: tupleType,
               conclusion: `\\Gamma \\vdash  ${tuple.getText()} : ${preprocessString(tupleType)}`,
+              conclusionWithAlias: `\\Gamma \\vdash  ${tuple.getText()} : ${preprocessString(tupleTypeWithAlias)}`,
               rule: "",
               root: false,
               context: ctx,
@@ -291,6 +310,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
   visitRecord = (ctx: RecordContext): any => {
     const type = this.typeChecker.visit(ctx);
+    const typeWithAlias = this.typeChecker.encodeToAlias(type);
+
     const typeNode = parseType(type)
 
     const premises: ProofNode[] = []
@@ -300,7 +321,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const result = {
       type: type,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${type}`,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(type)}`,
+      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(typeWithAlias)}`,
       rule: "(T-record)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -316,13 +338,17 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
   visitRecordProjection = (ctx: RecordProjectionContext): any => {
     const record = ctx.getChild(0);
-    const recordType = this.typeChecker.visit(record);
 
+    const recordType = this.typeChecker.visit(record);
     const projectionType = this.typeChecker.visit(ctx)
+
+    const recordTypeWithAlias = this.typeChecker.encodeToAlias(recordType);
+    const projectionTypeWithAlias = this.typeChecker.encodeToAlias(projectionType);
 
     return {
       type: projectionType,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${projectionType}`,
+      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(projectionType)}`,
+      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(projectionTypeWithAlias)}`,
       rule: "(T-proj)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -333,7 +359,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           [
             {
               type: projectionType,
-              conclusion: `\\Gamma \\vdash  ${record.getText()} : ${recordType}`,
+              conclusion: `\\Gamma \\vdash  ${record.getText()} : ${preprocessString(recordType)}`,
+              conclusionWithAlias: `\\Gamma \\vdash  ${record.getText()} : ${preprocessString(recordTypeWithAlias)}`,
               rule: "",
               root: false,
               context: ctx,
@@ -351,14 +378,19 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     console.log("Inj " + ctx.getText())
 
     const variantType = this.typeChecker.visit(ctx);
+    const variantTypeWithAlias = this.typeChecker.encodeToAlias(variantType);
+
     const body = ctx.term()
 
     const bodyType = this.typeChecker.visit(body)
-
+    const bodyTypeWithAlias = this.typeChecker.encodeToAlias(bodyType);
 
     return {
       type: variantType,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${preprocessString(ctx.getText().replace("]as", "] as "))} : ${variantType}`,
+      conclusion:
+          `\\Gamma ${this.contextExtension} \\vdash ${preprocessString(ctx.getText().replace("]as", "] as "))} : ${preprocessString(variantType)}`,
+      conclusionWithAlias:
+          `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${preprocessString(ctx.getText().replace("]as", "] as "))} : ${preprocessString(variantTypeWithAlias)}`,
       rule: "(T-variant)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -369,7 +401,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           [
             {
               type: variantType,
-              conclusion: `\\Gamma \\vdash  ${body.getText()} : ${bodyType}`,
+              conclusion: `\\Gamma \\vdash  ${body.getText()} : ${preprocessString(bodyType)}`,
+              conclusionWithAlias: `\\Gamma \\vdash  ${body.getText()} : ${preprocessString(bodyTypeWithAlias)}`,
               rule: "",
               root: false,
               context: ctx,
@@ -389,6 +422,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const varNode = ctx.term(0);
     const varName = varNode.getText();
     const caseType = this.typeChecker.visit(ctx);
+    const caseTypeWithAlias = this.typeChecker.encodeToAlias(caseType);
 
 
     const variantType = this.typeChecker.findType(varName, varNode);
@@ -396,16 +430,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const variantLabels = this.typeChecker.extractLabels(variantTypeNode);
 
     const premises: ProofNode[] = [
-      // {
-      //   type: variantType,
-      //   conclusion: `\\Gamma \\vdash  ${varName} : ${preprocessString(variantType)}`,
-      //   rule: "",
-      //   root: false,
-      //   context: ctx,
-      //   tokenLocation: getTokenLocation(ctx),
-      //   // declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(record.getText()),
-      //   isExpandable: false
-      // }
       this.visit(varNode)
 
     ]
@@ -443,6 +467,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const result = {
       type: caseType,
       conclusion: `\\Gamma ${this.contextExtension} \\vdash ${caseStr} : ${preprocessString(caseType)}`,
+      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${caseStr} : ${preprocessString(caseTypeWithAlias)}`,
       rule: "(T-case)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -477,6 +502,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
   updateContextExtension() {
     this.contextExtension = "";
+    this.contextExtensionWithAlies = "";
 
     if (this.localContext.isEmpty()) return;
 
@@ -485,9 +511,11 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     for (const element of ctxElements) {
       this.contextExtension += element.name + ':' + element.type + ', ';
+      this.contextExtension += element.name + ':' + this.typeChecker.encodeToAlias(element.type) + ', ';
     }
 
     this.contextExtension = this.contextExtension.substring(0, this.contextExtension.lastIndexOf(','));
+    this.contextExtensionWithAlies = this.contextExtensionWithAlies.substring(0, this.contextExtensionWithAlies.lastIndexOf(','));
   }
 
   getContextInfo(name: string): ContextElement {

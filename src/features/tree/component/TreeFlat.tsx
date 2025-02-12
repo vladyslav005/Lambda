@@ -7,6 +7,7 @@ import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTreeUsingCss"
 import {MdFullscreen, MdFullscreenExit} from "react-icons/md";
 import {IconButton} from "../../../common/components/button/IconButton";
 import {ExportButton} from "./exportbutton/ExportButton";
+import {Checkbox} from "react-aria-components";
 
 export enum TreeView {
   INTERACTIVE = 0,
@@ -17,6 +18,8 @@ export default function TreeFlat() {
 
   const editorContext = useContext(EditorContext);
   const [fullScreen, setFullScreen] = useState(false);
+
+  const [showAliases, setShowAliases] = useState(false)
 
   const handleFullScreenClick = () => {
     setFullScreen(!fullScreen);
@@ -34,7 +37,8 @@ export default function TreeFlat() {
           {editorContext.tree &&
               <>
                   <MapInteractionCSS>
-                    {editorContext.tree && <ProofTreeComponentUsingCss node={editorContext.tree}/>}
+                    {editorContext.tree &&
+                        <ProofTreeComponentUsingCss showAliases={showAliases} node={editorContext.tree}/>}
                   </MapInteractionCSS>
                   <IconButton className={"tree-full-screen-btn"} style={{
                     position: fullScreen ? "fixed" : "absolute",
@@ -57,6 +61,23 @@ export default function TreeFlat() {
                         }}
                     />
                 }
+
+                  <Checkbox
+                      style={{
+                        position: 'absolute',
+                        left: '1rem',
+                        top: '1rem',
+                        zIndex: 9999,
+                      }}
+                      onChange={(isChecked) => setShowAliases(isChecked)}
+                  >
+                      <div className="checkbox">
+                          <svg viewBox="0 0 18 18" aria-hidden="true">
+                              <polyline points="1 9 7 14 15 4"/>
+                          </svg>
+                      </div>
+                      Show aliases
+                  </Checkbox>
 
               </>
           }
