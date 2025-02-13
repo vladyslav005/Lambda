@@ -29,6 +29,7 @@ import {Context} from "../context/Context";
 import {eliminateOutParentheses, getTokenLocation, parseType, tupleTypeToArray} from "../utils";
 
 
+
 // TODO : refactor: split file, split type checker class
 // TODO : types priority
 // TODO : showing aliases in tree ?
@@ -40,6 +41,21 @@ import {eliminateOutParentheses, getTokenLocation, parseType, tupleTypeToArray} 
 
 export class TypeChecker extends LambdaCalcVisitor<any> {
   private _globalContext: Context = new Context();
+  private _localContext: Context = new Context();
+  private _aliasContext: Context = new Context();
+
+
+  constructor() {
+    super();
+    this.initBuiltInFunctions()
+  }
+
+  initBuiltInFunctions() {
+    this.globalContext.addVariable("iszero", "Nat -> Bool", undefined)
+    this.globalContext.addVariable("pred", "Nat -> Nat", undefined)
+    this.globalContext.addVariable("succ", "Nat -> Nat", undefined)
+
+  }
 
   get globalContext(): Context {
     return this._globalContext;
@@ -49,7 +65,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     this._globalContext = value;
   }
 
-  private _aliasContext: Context = new Context();
 
   get aliasContext(): Context {
     return this._aliasContext;
@@ -59,7 +74,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     this._aliasContext = value;
   }
 
-  private _localContext: Context = new Context();
 
   get localContext(): Context {
     return this._localContext;
@@ -75,6 +89,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
   clearGlobalContext() {
     this._globalContext = new Context();
+
+    // set built-in functions
+    this.initBuiltInFunctions()
+
   }
 
   clearAliasContext() {

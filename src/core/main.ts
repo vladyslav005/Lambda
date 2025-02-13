@@ -7,27 +7,25 @@ import {InputAnalyzer} from "./AnalyzeInput";
 
 
 let input = `
-
-a : Bool -> Bool;
-a true;
+iszero 0;
 `;
 
-const lexer = new LambdaCalcLexer(new CharStream(input))
-
-
-const tokens = new CommonTokenStream(lexer);
-
-
-const parser = new LambdaCalcParser(tokens);
-
-
-const ast = parser.expression()
-
-const typeChecker = new TypeChecker();
-
-typeChecker.visit(ast)
-
-const treeGenerator = new TreeGenerator()
+// const lexer = new LambdaCalcLexer(new CharStream(input))
+//
+//
+// const tokens = new CommonTokenStream(lexer);
+//
+//
+// const parser = new LambdaCalcParser(tokens);
+//
+//
+// const ast = parser.expression()
+//
+// const typeChecker = new TypeChecker();
+//
+// typeChecker.visit(ast)
+//
+// const treeGenerator = new TreeGenerator()
 
 // const proofTree = treeGenerator.generateTree(ast, typeChecker.globalContext, typeChecker.aliasContext)
 //
