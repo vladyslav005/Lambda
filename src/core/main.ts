@@ -7,10 +7,12 @@ import {InputAnalyzer} from "./AnalyzeInput";
 
 
 let input = `
-a : A * B;
-b = λ x : A * B. x.1  : (A * B) -> A;
 
-b a;
+type = A -> (A -> A);
+
+v : type -> type;
+
+v;
   
 `;
 

@@ -11,6 +11,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: var(--Schemes-Surface, #FEF7FF);
+    overflow-x: hidden;
 }
 
 html {

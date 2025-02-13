@@ -215,9 +215,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     if (!type)
       throw new TypeError(`Undefined variable : '${name}'`, getTokenLocation(ctx));
 
-    if (this._aliasContext.isVariableInContext(type)) {
+    // if (this._aliasContext.isVariableInContext(type)) {
       type = this.decodeAlias(type);
-    }
+    // }
 
     return type;
   };
@@ -230,7 +230,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       if (typeAlias.match(new RegExp(`\\b${context[i].name}\\b`, 'g')) !== null) {
         let aliasNode = parseType(context[i].type)
         console.log(`${typeAlias} ${context[i].name} {}`)
-        if (typeAliasNode instanceof FunctionTypeContext && aliasNode instanceof TupleTypeContext)
+        if (aliasNode instanceof FunctionTypeContext || aliasNode instanceof TupleTypeContext)
           typeAlias = typeAlias.replaceAll(new RegExp(`\\b${context[i].name}\\b`, 'g'), '(' + context[i].type + ')');
         else
           typeAlias = typeAlias.replaceAll(new RegExp(`\\b${context[i].name}\\b`, 'g'), context[i].type);
@@ -253,7 +253,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
         let aliasNode = parseType(context[i].type)
 
-        if (typeAliasNode instanceof FunctionTypeContext && aliasNode instanceof TupleTypeContext)
+        // TODO : more types should be packed in parentheses
+        if (aliasNode instanceof FunctionTypeContext || aliasNode instanceof TupleTypeContext)
           typeAlias = typeAlias.replaceAll(`(${context[i].type})`, context[i].name);
         else
           typeAlias = typeAlias.replaceAll(`${context[i].type}`, context[i].name);
