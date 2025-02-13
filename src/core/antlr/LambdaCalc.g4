@@ -18,18 +18,18 @@ term
     : LAMBDA ID COLON type DOT term (COLON type)?                                    # LambdaAbstraction
     | <assoc=left> term term                                                         # Application
     | ID                                                                             # Variable
+    | constant                                                                       # Literal
     | '['ID EQ term']' 'as' type                                                     # Injection
     | 'case' term 'of' '['ID EQ ID ']' '=>' term ('||' '['ID EQ ID ']' '=>' term)*   # CaseOf
     | '<' ID EQ term (COMMA ID EQ term)*'>'                                          # Record
     | term DOT ID                                                                    # RecordProjection
     | '<'term (COMMA term)* '>'                                                      # Tuple
     | term DOT NATURAL_NUMBER                                                        # TupleProjection
-//    | term SEMI term                                                                # Sequence
     | LPAREN term RPAREN                                                             # Parentheses
     ;
 
 type
-    : (GREEK_TYPE | ID)                                          # GreekType
+    : (GREEK_TYPE | ID | 'Nat' | 'Bool' )                        # GreekType
     | <assoc=right> type ARROW type                              # FunctionType
     | '[' ID COLON type (COMMA ID COLON type)* ']'               # VariantType
     | '<' ID COLON type (COMMA ID COLON type)* '>'               # RecordType
@@ -37,12 +37,23 @@ type
     | LPAREN type RPAREN                                         # ParenType
     ;
 
+constant
+    : NATURAL_NUMBER | '0'
+    | 'TRUE'
+    | 'true'
+    | 'True'
+    | 'FALSE'
+    | 'false'
+    | 'False'
+    ;
+
+
 // Lexer rules
 LAMBDA         : 'λ' | '\\y' ;
 EQ             : '=';
 ID             : [a-zA-Z_][a-zA-Z0-9_]* ;
 GREEK_TYPE     : [\u03B1-\u03C9] ;                 // Matches Greek lowercase letters: α (U+03B1) to ω (U+03C9)
-NATURAL_NUMBER :  [1-9] [0-9]*;
+NATURAL_NUMBER : [1-9] [0-9]*;
 COMMA          : ',';
 ARROW          : '->' ;
 COLON          : ':' ;

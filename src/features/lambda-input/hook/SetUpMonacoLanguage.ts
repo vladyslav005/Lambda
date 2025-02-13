@@ -7,13 +7,16 @@ export function setUpMonacoLanguage(monaco: any) {
     keywords,
     tokenizer: {
       root: [
+        [/Nat|Bool/, "builtInType"],
+        [/iszero|succ|pred/, "builtInFunction"],
+        [/true|false|True|False/, "constant"],
+
         [/\b[a-zA-z]+\b/, {
           cases: {
             '@keywords': 'keyword',
             '@default': 'variable',
           }
         }],
-        // [/[A-Z][\w$]*/, "type.identifier"],
         [/=>/, "doubleArrow"],
         [/=/, "delimiter"],
         [/λ/, "lambda"],
@@ -34,6 +37,9 @@ export function setUpMonacoLanguage(monaco: any) {
     rules: [
       {token: 'keyword', foreground: '#5b8cff', fontStyle: 'bold'},
       {token: 'lambda', foreground: '#e06c75', fontStyle: 'bold'},
+      {token: 'constant', foreground: '#ef9105', fontStyle: 'regular'},
+      {token: 'builtInFunction', foreground: '#2ba6d3', fontStyle: 'regular'},
+      {token: 'builtInType', foreground: '#f6ac1e', fontStyle: 'regular'},
       {token: 'arrow', foreground: '#98c379', fontStyle: 'bold'},
       {token: 'doubleArrow', foreground: '#6ae40d', fontStyle: 'bold'},
       {token: 'semi', foreground: '#5b8cff', fontStyle: 'bold'},

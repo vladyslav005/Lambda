@@ -8,12 +8,8 @@ import {InputAnalyzer} from "./AnalyzeInput";
 
 let input = `
 
-type = A -> (A -> A);
-
-v : type -> type;
-
-v;
-  
+a : Bool -> Bool;
+a true;
 `;
 
 const lexer = new LambdaCalcLexer(new CharStream(input))

@@ -8,7 +8,7 @@ import {
   GlobalVariableDeclarationContext,
   GreekTypeContext,
   InjectionContext,
-  LambdaAbstractionContext,
+  LambdaAbstractionContext, LiteralContext,
   ParenthesesContext,
   ParenTypeContext,
   RecordContext,
@@ -215,16 +215,14 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     if (!type)
       throw new TypeError(`Undefined variable : '${name}'`, getTokenLocation(ctx));
 
-    // if (this._aliasContext.isVariableInContext(type)) {
-      type = this.decodeAlias(type);
-    // }
+    type = this.decodeAlias(type);
+
 
     return type;
   };
 
   decodeAlias = (typeAlias: string): string => {
     const context = this._aliasContext.getAllElements()
-    let typeAliasNode = parseType(typeAlias)
 
     for (let i = 0; i < context.length; i++) {
       if (typeAlias.match(new RegExp(`\\b${context[i].name}\\b`, 'g')) !== null) {
@@ -235,7 +233,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
         else
           typeAlias = typeAlias.replaceAll(new RegExp(`\\b${context[i].name}\\b`, 'g'), context[i].type);
 
-        typeAliasNode = parseType(typeAlias)
         i = -1;
       }
     }
@@ -246,7 +243,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   public encodeToAlias(typeAlias: string): string {
 
     const context = this._aliasContext.getAllElements()
-    let typeAliasNode = parseType(typeAlias)
 
     for (let i = 0; i < context.length; i++) {
       if (typeAlias.includes(`${context[i].type}`)) {
@@ -259,7 +255,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
         else
           typeAlias = typeAlias.replaceAll(`${context[i].type}`, context[i].name);
 
-        typeAliasNode = parseType(typeAlias)
 
         i = -1;
 
@@ -267,11 +262,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     }
 
     return typeAlias;
-  }
-
-  private escapeRegExp(string: string): string {
-    // Escape special characters for use in a regular expression
-    return string.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
 
@@ -577,6 +567,19 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     }
 
     return caseType;
+  };
+
+  visitLiteral = (ctx: LiteralContext) => {
+    console.log("Visiting a literal", ctx.getText());
+    const literal = ctx.getText().toLowerCase();
+    if (literal === "true" || literal === "false") {
+      return "Bool"
+    } else if (!/[a-zA-Z]/.test(literal) && !isNaN(parseInt(literal))) {
+      return "Nat"
+    }
+
+    throw new TypeError(`Can't define type of : '${literal}'`, getTokenLocation(ctx));
+
   };
 
 

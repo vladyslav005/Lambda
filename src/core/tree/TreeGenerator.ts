@@ -8,7 +8,7 @@ import {
   GlobalVariableDeclarationContext,
   GreekTypeContext,
   InjectionContext,
-  LambdaAbstractionContext,
+  LambdaAbstractionContext, LiteralContext,
   ParenthesesContext,
   ParenTypeContext,
   RecordContext,
@@ -276,7 +276,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const tupleType = this.typeChecker.visit(tuple);
     const tupleTypeWithAlias = this.typeChecker.encodeToAlias(tupleType);
 
-
     const tupleProjType = this.typeChecker.visit(ctx);
     const tupleProjTypeWithAlias = this.typeChecker.encodeToAlias(tupleProjType);
 
@@ -424,7 +423,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const caseType = this.typeChecker.visit(ctx);
     const caseTypeWithAlias = this.typeChecker.encodeToAlias(caseType);
 
-
     const variantType = this.typeChecker.findType(varName, varNode);
     const variantTypeNode = parseType(variantType);
     const variantLabels = this.typeChecker.extractLabels(variantTypeNode);
@@ -481,6 +479,44 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     return result;
   };
 
+  visitLiteral = (ctx: LiteralContext) : any => {
+    console.log("Lit", ctx.getText());
+
+    const literal = ctx.getText();
+    const type = this.typeChecker.visit(ctx);
+
+    let ruleName;
+    if (type === 'Bool') {
+      ruleName = ctx.getText();
+    } else if (literal === '0') {
+      ruleName = 'zero';
+    } else {
+      ruleName = "nat";
+    }
+
+    return {
+        type: type,
+        conclusion: `${literal} : ${type}`,
+        conclusionWithAlias: `${ctx.getText()} : ${type}`,
+        rule: `(T-${ruleName})`,
+        context: ctx,
+        tokenLocation: getTokenLocation(ctx),
+        root: false,
+        isExpandable: false,
+        premises: [
+          {
+            type: type,
+            conclusion: "",
+            conclusionWithAlias: "",
+            rule: "",
+            context: ctx,
+            tokenLocation: getTokenLocation(ctx),
+            root: false,
+            isExpandable: false,
+          }
+        ]
+    } as ProofNode;
+  };
 
   visitParentheses = (ctx: ParenthesesContext): any => {
     const tmp = this.visit(ctx.getChild(1))
@@ -525,5 +561,4 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return ctxInfo
   }
-
 }

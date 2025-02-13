@@ -55,6 +55,7 @@ export function ProofTreeComponentUsingCss(
               isItRoot={isItRoot}
               node={node}
               showAliases={showAliases}
+              color={color}
           ></ConclusionCenter>
 
           <div className="conclusion-right">
