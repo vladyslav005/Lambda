@@ -23,10 +23,7 @@ export default function TreeFlat() {
 
   const handleFullScreenClick = () => {
     setFullScreen(!fullScreen);
-    // @ts-ignore
-
   }
-
 
   return (
       <div
@@ -59,6 +56,7 @@ export default function TreeFlat() {
                           top: '1rem',
                           zIndex: 9999,
                         }}
+                        useAliases={showAliases}
                     />
                 }
 
