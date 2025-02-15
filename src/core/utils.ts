@@ -50,11 +50,12 @@ export function tupleTypeToArray(ctx: TypeContext, output: string[]): any {
 export function preprocessString(str: string): string {
 
   return str//.replaceAll(" ", "\\hspace{0.2cm}")
-      .replaceAll("=>", " \\Rightarrow ")
-      .replaceAll("*", " \\times ")
-      .replaceAll("->", "\\rightarrow ")
-      .replaceAll("<", "\\langle ")
-      .replaceAll(">", "\\rangle ")
+      .replaceAll("=>", "{ \\Rightarrow }")
+      .replaceAll("*", "{\\times}")
+      .replaceAll("->", "{ \\rightarrow }")
+      .replaceAll("<", "{\\langle}")
+      .replaceAll(">", "{\\rangle}")
+      .replaceAll(" ", "{\\ }")
 
 
 }

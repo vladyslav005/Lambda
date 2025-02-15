@@ -14,9 +14,9 @@ export function useExportToLatex() {
       if (node.premises) {
         for (let premise of node.premises)
           nodeLatex += traverseTree(premise, level + 1);
-        nodeLatex += `  \\infer${premisesCount}[${node.rule}]{${node.conclusion} }\n`;
+        nodeLatex += `  \\infer${premisesCount}[${node.rule}]{${node.wrappedConclusion} }\n`;
       } else
-        nodeLatex += `  \\hypo{${node.conclusion}}\n`;
+        nodeLatex += `  \\hypo{${node.wrappedConclusion}}\n`;
 
       return nodeLatex;
     };
@@ -28,6 +28,7 @@ export function useExportToLatex() {
     return preprocessString(latex);
   }
 
+  //todo : aliases show
   const exportToBussproofs = (tree: ProofNode): string => {
     let latex = '\\begin{prooftree} \n';
 
@@ -43,24 +44,24 @@ export function useExportToLatex() {
         latex += '  \\RightLabel{$' + node.rule + '$}\n';
         switch (premisesCount) {
           case 1:
-            latex += '  \\UnaryInfC{$' + node.conclusion + '$}\n';
+            latex += '  \\UnaryInfC{$' + node.wrappedConclusion + '$}\n';
             break;
           case 2:
-            latex += '  \\BinaryInfC{$' + node.conclusion + '$}\n';
+            latex += '  \\BinaryInfC{$' + node.wrappedConclusion + '$}\n';
             break;
           case 3:
-            latex += '  \\TrinaryInfC{$' + node.conclusion + '$}\n';
+            latex += '  \\TrinaryInfC{$' + node.wrappedConclusion + '$}\n';
             break;
           case 4:
-            latex += '  \\QuaternaryInfC{$' + node.conclusion + '$}\n';
+            latex += '  \\QuaternaryInfC{$' + node.wrappedConclusion + '$}\n';
             break;
           case 5:
-            latex += '  \\QuinaryInfC{$' + node.conclusion + '$}\n';
+            latex += '  \\QuinaryInfC{$' + node.wrappedConclusion + '$}\n';
             break;
         }
 
       } else {
-        latex += '  \\AxiomC{$' + node.conclusion + '$}\n';
+        latex += '  \\AxiomC{$' + node.wrappedConclusion + '$}\n';
       }
     }
 

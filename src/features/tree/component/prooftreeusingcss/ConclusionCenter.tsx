@@ -101,7 +101,7 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
            }}
       >
         <MathComponent
-            tex={preprocessString(props.showAliases ? props.node.wrappedConclusionWithAlias : props.node.conclusion)}/>
+            tex={preprocessString(props.showAliases ? props.node.wrappedConclusionWithAlias : props.node.wrappedConclusion)}/>
       </div>
 
   )

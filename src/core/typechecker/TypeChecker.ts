@@ -51,9 +51,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   }
 
   initBuiltInFunctions() {
-    this.globalContext.addVariable("iszero", "Nat -> Bool", undefined)
-    this.globalContext.addVariable("pred", "Nat -> Nat", undefined)
-    this.globalContext.addVariable("succ", "Nat -> Nat", undefined)
+    this.globalContext.addVariable("iszero", "Nat->Bool", undefined)
+    this.globalContext.addVariable("pred", "Nat->Nat", undefined)
+    this.globalContext.addVariable("succ", "Nat->Nat", undefined)
 
   }
 
