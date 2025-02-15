@@ -6,7 +6,7 @@ import {
   FunctionTypeContext,
   GlobalFunctionDeclarationContext,
   GlobalVariableDeclarationContext,
-  GreekTypeContext,
+  GreekTypeContext, IfElseContext,
   InjectionContext,
   LambdaAbstractionContext, LiteralContext,
   ParenthesesContext,
@@ -246,7 +246,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       if (typeAlias.match(new RegExp(`\\b${context[i].name}\\b`, 'g')) !== null) {
         let aliasNode = parseType(context[i].type)
         console.log(`${typeAlias} ${context[i].name} {}`)
-        if (aliasNode instanceof FunctionTypeContext || aliasNode instanceof TupleTypeContext)
+        if ((aliasNode instanceof FunctionTypeContext || aliasNode instanceof TupleTypeContext) && context[i].name !== typeAlias)
           typeAlias = typeAlias.replaceAll(new RegExp(`\\b${context[i].name}\\b`, 'g'), '(' + context[i].type + ')');
         else
           typeAlias = typeAlias.replaceAll(new RegExp(`\\b${context[i].name}\\b`, 'g'), context[i].type);
@@ -268,10 +268,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
         let aliasNode = parseType(context[i].type)
 
         // TODO : more types should be packed in parentheses
-        if (aliasNode instanceof FunctionTypeContext || aliasNode instanceof TupleTypeContext)
+        if ((aliasNode instanceof FunctionTypeContext || aliasNode instanceof TupleTypeContext) && context[i].name !== typeAlias)
           typeAlias = typeAlias.replaceAll(`(${context[i].type})`, context[i].name);
-        else
-          typeAlias = typeAlias.replaceAll(`${context[i].type}`, context[i].name);
+
+        typeAlias = typeAlias.replaceAll(`${context[i].type}`, context[i].name);
 
 
         i = -1;
@@ -600,6 +600,29 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
   };
 
+  visitIfElse = (ctx: IfElseContext) => {
+    console.log("Visiting a condition", ctx.getText());
+    const childCount = ctx.getChildCount();
+    const condition = ctx.term(0);
+
+    const conditionType = this.visit(condition);
+    const ifTermType = this.visit(ctx.term(1));
+
+    if (conditionType !== "Bool" )
+        throw new TypeError(`Contition mus have type 'Bool', but got '${conditionType}'`,
+            getTokenLocation(ctx))
+
+    if (childCount === 6) {
+      const elseTermType = this.visit(ctx.term(2));
+
+      if (ifTermType !== elseTermType)
+        throw new TypeError(
+            `All branches of if condition must return the same type, but got '${ifTermType}' and '${elseTermType}'`,
+            getTokenLocation(ctx));
+    }
+
+    return ifTermType
+  };
 
   extractLabels = (typeNode: TypeContext) => {
     const variantLabels = new Array<{ name: string, type: string }>();

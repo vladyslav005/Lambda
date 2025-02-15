@@ -62,22 +62,22 @@ export default function TreeFlat() {
                     />
                 }
 
-                  <Checkbox
-                      style={{
-                        position: 'absolute',
-                        left: '1rem',
-                        top: '1rem',
-                        zIndex: 9999,
-                      }}
-                      onChange={(isChecked) => setShowAliases(isChecked)}
-                  >
-                      <div className="checkbox">
-                          <svg viewBox="0 0 18 18" aria-hidden="true">
-                              <polyline points="1 9 7 14 15 4"/>
-                          </svg>
-                      </div>
-                      Show aliases
-                  </Checkbox>
+                {editorContext.aliasesPresent && <Checkbox
+                    style={{
+                      position: 'absolute',
+                      left: '1rem',
+                      top: '1rem',
+                      zIndex: 9999,
+                    }}
+                    onChange={(isChecked) => setShowAliases(isChecked)}
+                >
+                  <div className="checkbox">
+                    <svg viewBox="0 0 18 18" aria-hidden="true">
+                      <polyline points="1 9 7 14 15 4"/>
+                    </svg>
+                  </div>
+                  Show aliases
+                </Checkbox>}
 
               </>
           }

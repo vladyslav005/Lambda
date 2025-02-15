@@ -34,8 +34,6 @@ export default function LambdaInput() {
   }, [monaco]);
 
   function editorOnChange(value: any, event: any) {
-
-    value = value.replaceAll(/^\s*\/\/.*$/gm, "") // process comments
     editorContext.setEditorValue(value);
 
     console.log(value);

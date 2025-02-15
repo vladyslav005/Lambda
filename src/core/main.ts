@@ -7,7 +7,10 @@ import {InputAnalyzer} from "./AnalyzeInput";
 
 
 let input = `
-iszero 0;
+get = Nat -> Bool;
+
+λ x : Nat . iszero 2 :  get; 
+
 `;
 
 // const lexer = new LambdaCalcLexer(new CharStream(input))

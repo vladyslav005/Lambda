@@ -183,7 +183,7 @@ export const ExportButton = (props: ExportButtonProps) => {
                     </SliderTrack>
                   </Slider>
 
-                  <Checkbox
+                  {editorContext.aliasesPresent && <Checkbox
                       style={{}}
                       onChange={(isChecked) => setShowAliases(isChecked)}
                   >
@@ -193,7 +193,7 @@ export const ExportButton = (props: ExportButtonProps) => {
                       </svg>
                     </div>
                     Show aliases
-                  </Checkbox>
+                  </Checkbox>}
 
                 </div>
 

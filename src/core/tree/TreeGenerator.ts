@@ -7,8 +7,10 @@ import {
   GlobalFunctionDeclarationContext,
   GlobalVariableDeclarationContext,
   GreekTypeContext,
+  IfElseContext,
   InjectionContext,
-  LambdaAbstractionContext, LiteralContext,
+  LambdaAbstractionContext,
+  LiteralContext,
   ParenthesesContext,
   ParenTypeContext,
   RecordContext,
@@ -26,7 +28,10 @@ import {TypeError} from "../errorhandling/customErrors";
 
 export interface ProofNode {
   type: string;
-  conclusion: string;
+  wrappedConclusion: string;
+  wrappedConclusionWithAlias: string;
+  // unwrappedConclusion: string;
+  // unwrappedConclusionWithAlias: string;
   rule: string;
   context: ParserRuleContext;
   tokenLocation: number[],
@@ -36,7 +41,7 @@ export interface ProofNode {
   root: boolean;
   isExpandable: boolean;
   isExpanded?: boolean;
-  conclusionWithAlias: string;
+  aliasesPresent?: boolean;
 }
 
 
@@ -79,6 +84,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     if (this._proofTree !== undefined) {
       this._proofTree.root = true;
+      this._proofTree.aliasesPresent = !aliasContext.isEmpty()
       return this._proofTree;
     }
 
@@ -119,10 +125,21 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const typeWithAlias = this.typeChecker.encodeToAlias(type)
     const body = ctx.term();
 
+    const argumentType = ctx.type_(0).getText()
+    const argumentTypeWithAlias = this.typeChecker.encodeToAlias(argumentType)
+
+    let bodyStr  = this.preprocessConclusion(body)
+
+    const premises = [this.visit(body)]
+
     const result = {
       type: type,
-      conclusion: `\\Gamma ${ctxExtensionTmp} \\vdash ${ctx.getText()}`,
-      conclusionWithAlias: `\\Gamma ${this.typeChecker.encodeToAlias(ctxExtensionTmp)} \\vdash ${ctx.getText()}`,
+      wrappedConclusion: `\\Gamma ${ctxExtensionTmp} \\vdash  λ ${ctx.ID().getText()} : ${argumentType} . ${bodyStr} : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma ${this.typeChecker.encodeToAlias(ctxExtensionTmp)}` +
+          ` \\vdash λ ${ctx.ID().getText()} : ${argumentTypeWithAlias} . ${bodyStr} : ${typeWithAlias}`,
+      // unwrappedConclusion: ``;
+      // unwrappedConclusionWithAlias: ``;
       rule: "(T-abs)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -149,8 +166,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return {
       type: type,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(type)}`,
-      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(typeWithAlias)}`,
+      wrappedConclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(type)}`,
+      wrappedConclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(typeWithAlias)}`,
       rule: "(T-var)",
       root: false,
       context: ctx,
@@ -163,8 +180,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       premises: [
         {
           type: type,
-          conclusion: `${ctx.getText()} : ${type} \\in \\Gamma ${this.contextExtension}`,
-          conclusionWithAlias: `${ctx.getText()} : ${typeWithAlias} \\in \\Gamma ${this.contextExtensionWithAlies}`,
+          wrappedConclusion: `${ctx.getText()} : ${type} \\in \\Gamma ${this.contextExtension}`,
+          wrappedConclusionWithAlias: `${ctx.getText()} : ${typeWithAlias} \\in \\Gamma ${this.contextExtensionWithAlies}`,
           rule: "",
           root: false,
           context: ctx,
@@ -182,12 +199,14 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const type = this.typeChecker.visit(ctx);
     const typeWithAlias = this.typeChecker.encodeToAlias(type);
 
-    const appStr = ctx.children?.map(child => child.getText()).join("\\hspace{0.2cm}");
+    // const appStr = ctx.children?.map(child => child.getText()).join("\\hspace{0.2cm}");
+    const appStr = this.preprocessConclusion(ctx);
+
 
     return {
       type: type,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${appStr} : ${preprocessString(type)}`,
-      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${appStr} : ${preprocessString(typeWithAlias)}`,
+      wrappedConclusion: `\\Gamma ${this.contextExtension} \\vdash ${appStr} : ${preprocessString(type)}`,
+      wrappedConclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${appStr} : ${preprocessString(typeWithAlias)}`,
       rule: "(T-app)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -225,9 +244,9 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     else
       return {
         type: type,
-        conclusion: `\\Gamma ${this.contextExtension} \\vdash ${seqTerms.map(c => c.ctx.getText()).join(';')} : ${preprocessString(type)}`,
-        conclusionWithAlias:
-            `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${seqTerms.map(c => c.ctx.getText()).join(';')} : ${preprocessString(typeWithAlias)}`,
+        wrappedConclusion: `\\Gamma ${this.contextExtension} \\vdash ${this.preprocessConclusion(ctx)} : ${preprocessString(type)}`,
+        wrappedConclusionWithAlias:
+            `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${this.preprocessConclusion(ctx)} : ${preprocessString(typeWithAlias)}`,
         rule: "(T-seq)",
         context: ctx,
         tokenLocation: getTokenLocation(ctx),
@@ -256,8 +275,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const result = {
       type: type,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(type)}`,
-      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(typeWithAlias)}`,
+      wrappedConclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(type)}`,
+      wrappedConclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(typeWithAlias)}`,
       rule: "(T-tuple)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -281,8 +300,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return {
       type: tupleProjType,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(tupleProjType)}`,
-      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(tupleProjTypeWithAlias)}`,
+      wrappedConclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(tupleProjType)}`,
+      wrappedConclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(tupleProjTypeWithAlias)}`,
       rule: "(T-proj)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -293,8 +312,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           [
             {
               type: tupleType,
-              conclusion: `\\Gamma \\vdash  ${tuple.getText()} : ${preprocessString(tupleType)}`,
-              conclusionWithAlias: `\\Gamma \\vdash  ${tuple.getText()} : ${preprocessString(tupleTypeWithAlias)}`,
+              wrappedConclusion: `\\Gamma \\vdash  ${tuple.getText()} : ${preprocessString(tupleType)}`,
+              wrappedConclusionWithAlias: `\\Gamma \\vdash  ${tuple.getText()} : ${preprocessString(tupleTypeWithAlias)}`,
               rule: "",
               root: false,
               context: ctx,
@@ -320,8 +339,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const result = {
       type: type,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(type)}`,
-      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(typeWithAlias)}`,
+      wrappedConclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(type)}`,
+      wrappedConclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(typeWithAlias)}`,
       rule: "(T-record)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -346,8 +365,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return {
       type: projectionType,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(projectionType)}`,
-      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(projectionTypeWithAlias)}`,
+      wrappedConclusion: `\\Gamma ${this.contextExtension} \\vdash ${ctx.getText()} : ${preprocessString(projectionType)}`,
+      wrappedConclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ctx.getText()} : ${preprocessString(projectionTypeWithAlias)}`,
       rule: "(T-proj)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -358,8 +377,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           [
             {
               type: projectionType,
-              conclusion: `\\Gamma \\vdash  ${record.getText()} : ${preprocessString(recordType)}`,
-              conclusionWithAlias: `\\Gamma \\vdash  ${record.getText()} : ${preprocessString(recordTypeWithAlias)}`,
+              wrappedConclusion: `\\Gamma \\vdash  ${record.getText()} : ${preprocessString(recordType)}`,
+              wrappedConclusionWithAlias: `\\Gamma \\vdash  ${record.getText()} : ${preprocessString(recordTypeWithAlias)}`,
               rule: "",
               root: false,
               context: ctx,
@@ -386,9 +405,9 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return {
       type: variantType,
-      conclusion:
+      wrappedConclusion:
           `\\Gamma ${this.contextExtension} \\vdash ${preprocessString(ctx.getText().replace("]as", "] as "))} : ${preprocessString(variantType)}`,
-      conclusionWithAlias:
+      wrappedConclusionWithAlias:
           `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${preprocessString(ctx.getText().replace("]as", "] as "))} : ${preprocessString(variantTypeWithAlias)}`,
       rule: "(T-variant)",
       context: ctx,
@@ -400,8 +419,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           [
             {
               type: variantType,
-              conclusion: `\\Gamma \\vdash  ${body.getText()} : ${preprocessString(bodyType)}`,
-              conclusionWithAlias: `\\Gamma \\vdash  ${body.getText()} : ${preprocessString(bodyTypeWithAlias)}`,
+              wrappedConclusion: `\\Gamma \\vdash  ${body.getText()} : ${preprocessString(bodyType)}`,
+              wrappedConclusionWithAlias: `\\Gamma \\vdash  ${body.getText()} : ${preprocessString(bodyTypeWithAlias)}`,
               rule: "",
               root: false,
               context: ctx,
@@ -464,8 +483,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const result = {
       type: caseType,
-      conclusion: `\\Gamma ${this.contextExtension} \\vdash ${caseStr} : ${preprocessString(caseType)}`,
-      conclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${caseStr} : ${preprocessString(caseTypeWithAlias)}`,
+      wrappedConclusion: `\\Gamma ${this.contextExtension} \\vdash ${caseStr} : ${preprocessString(caseType)}`,
+      wrappedConclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${caseStr} : ${preprocessString(caseTypeWithAlias)}`,
       rule: "(T-case)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -496,8 +515,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return {
         type: type,
-        conclusion: `${literal} : ${type}`,
-        conclusionWithAlias: `${ctx.getText()} : ${type}`,
+        wrappedConclusion: `${literal} : ${type}`,
+        wrappedConclusionWithAlias: `${ctx.getText()} : ${type}`,
         rule: `(T-${ruleName})`,
         context: ctx,
         tokenLocation: getTokenLocation(ctx),
@@ -506,8 +525,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
         premises: [
           {
             type: type,
-            conclusion: "",
-            conclusionWithAlias: "",
+            wrappedConclusion: "",
+            wrappedConclusionWithAlias: "",
             rule: "",
             context: ctx,
             tokenLocation: getTokenLocation(ctx),
@@ -517,6 +536,38 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
         ]
     } as ProofNode;
   };
+
+  visitIfElse = (ctx: IfElseContext) => {
+    console.log("Visiting a condition", ctx.getText());
+
+    const ifType = this.typeChecker.visit(ctx);
+    const ifTypeWithAlias = this.typeChecker.encodeToAlias(ifType);
+
+
+    let ifStr = ctx.children
+        ?ctx.children
+          .map(c => c as ParserRuleContext)
+          .flatMap(c  => c.children ? c.children : c)
+          .map(c => c ? c.getText() : "")
+          .join(" ")
+        : ' ';
+    let ifStrWithAlias = this.typeChecker.encodeToAlias(ifStr);
+
+    ifStr = ifStr.replaceAll(" ", "\\hspace{0.2cm}");
+    ifStrWithAlias = ifStrWithAlias.replaceAll(" ", "\\hspace{0.2cm}");
+
+    return {
+      type: ifType,
+      wrappedConclusion: `\\Gamma ${this.contextExtension} \\vdash ${ifStr} : ${ifType}`,
+      wrappedConclusionWithAlias: `\\Gamma ${this.contextExtensionWithAlies} \\vdash ${ifStrWithAlias} : ${ifTypeWithAlias}`,
+      rule: "(T-if)",
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      premises: ctx.term_list().map(t => this.visit(t)),
+      isExpandable: false
+    } as ProofNode;
+  }
 
   visitParentheses = (ctx: ParenthesesContext): any => {
     const tmp = this.visit(ctx.getChild(1))
@@ -544,10 +595,11 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const ctxElements = this.localContext.getAllElements()
     this.contextExtension = ",";
+    this.contextExtensionWithAlies = ",";
 
     for (const element of ctxElements) {
       this.contextExtension += element.name + ':' + element.type + ', ';
-      this.contextExtension += element.name + ':' + this.typeChecker.encodeToAlias(element.type) + ', ';
+      this.contextExtensionWithAlies += element.name + ':' + this.typeChecker.encodeToAlias(element.type) + ', ';
     }
 
     this.contextExtension = this.contextExtension.substring(0, this.contextExtension.lastIndexOf(','));
@@ -561,4 +613,55 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return ctxInfo
   }
+
+  preprocessConclusion(ctx: ParserRuleContext): string {
+    // Function to deep clone a ParserRuleContext
+    function deepCloneContext(node: ParserRuleContext): ParserRuleContext {
+      const clone = Object.assign(
+          Object.create(Object.getPrototypeOf(node)),
+          node
+      ) as ParserRuleContext;
+
+      if (node.children) {
+        clone.children = node.children.map(child => {
+          if (child instanceof ParserRuleContext) {
+            return deepCloneContext(child);
+          }
+          return child;
+        });
+      }
+      return clone;
+    }
+
+    // Create a deep copy of the original context
+    const ctxCopy = deepCloneContext(ctx);
+
+    // Function to flatten the children of a context
+    function flattenChildren(node: ParserRuleContext): ParseTree[] {
+      const result: ParseTree[] = [];
+      for (const child of node.children ?? []) {
+        if (child instanceof ParserRuleContext && child.children && child.children.length > 0) {
+          result.push(...flattenChildren(child));
+        } else {
+          result.push(child);
+        }
+      }
+      return result;
+    }
+
+    const flattenedChildren = flattenChildren(ctxCopy);
+
+    return flattenedChildren
+        .map(child => child.getText())
+        .join(' ')
+        .replace(/;$/, '')
+        .replace(/ \. /g, '.')
+        .replace(/ ; /g, '; ')
+        .replace(/ ;/g, '; ')
+        .replace(/ : /g, ':')
+        .replace(/\( | \( | \(/g, '(')
+        .replace(/\) | \) | \)/g, ')')
+        .replace(/ /g, '\\hspace{0.2cm}');
+  }
 }
+

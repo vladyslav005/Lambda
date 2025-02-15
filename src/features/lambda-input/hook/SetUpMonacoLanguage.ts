@@ -1,8 +1,7 @@
 export function setUpMonacoLanguage(monaco: any) {
-
   monaco.languages.register({id: "lambda"});
 
-  let keywords: string[] = ["serhii", "as", "case", "of"];
+  let keywords: string[] = ["as", "case", "of", "if", "then", "else"];
   monaco.languages.setMonarchTokensProvider("lambda", {
     keywords,
     tokenizer: {
@@ -68,7 +67,6 @@ export function setUpMonacoLanguage(monaco: any) {
     },
   });
 
-
   monaco.editor.defineTheme("dark-lambda-theme", {
     base: 'vs-dark', // Dark base theme for better contrast
     inherit: true,
@@ -100,7 +98,6 @@ export function setUpMonacoLanguage(monaco: any) {
       "editor.wordHighlightStrongBackground": "#4e5562",
     },
   });
-
 
   monaco.languages.setLanguageConfiguration("lambda", {
     comments: {
@@ -149,7 +146,6 @@ export function setUpMonacoLanguage(monaco: any) {
     },
   });
 
-
   monaco.languages.registerCompletionItemProvider("lambda", {
     provideCompletionItems: (model: any, position: any) => {
       const word = model.getWordUntilPosition(position);
@@ -184,7 +180,6 @@ export function setUpMonacoLanguage(monaco: any) {
       ];
       return {suggestions};
     }
-
   });
 
   monaco.languages.registerCompletionItemProvider("lambda", {
@@ -371,7 +366,5 @@ export function setUpMonacoLanguage(monaco: any) {
 
       return {suggestions};
     }
-
   });
-
 }

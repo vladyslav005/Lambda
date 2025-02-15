@@ -24,12 +24,14 @@ export function parseType(input: string): TypeContext {
   return parser.type_();
 }
 
+
 export function eliminateOutParentheses(ctx: ParseTree): any {
   if (ctx instanceof ParenthesesContext || ctx instanceof ParenTypeContext) {
     return ctx.getChild(1)
   }
   return ctx;
 }
+
 
 export function tupleTypeToArray(ctx: TypeContext, output: string[]): any {
   const left = ctx.getChild(0);

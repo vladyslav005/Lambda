@@ -12,7 +12,9 @@ export interface EditorContextInterface {
   setEditor: (editor: any) => void,
   setMonaco: (monaco: any) => void,
   setFontSize: (fontSize: any) => void,
+  setAliasesPresent: (value: boolean) => void,
 
+  aliasesPresent: boolean
   fontSize: number,
   tree: ProofNode | undefined,
   errors: Error[] | undefined,
@@ -21,20 +23,15 @@ export interface EditorContextInterface {
 }
 
 export const EditorContext = createContext<EditorContextInterface>({
-      setEditorValue: (value: any) => {
-      },
-      setTree: (tree: ProofNode | undefined) => {
-      },
-      setErrors: (errors: Error[]) => {
-      },
-      setEditor: (editor: any) => {
-      },
-      setMonaco: (monaco: any) => {
-      },
-      setFontSize: (newSize: number) => {
+      setEditorValue: (value: any) => {},
+      setTree: (tree: ProofNode | undefined) => {},
+      setErrors: (errors: Error[]) => {},
+      setEditor: (editor: any) => {},
+      setMonaco: (monaco: any) => {},
+      setFontSize: (newSize: number) => {},
+      setAliasesPresent: (value: boolean) => {},
 
-      },
-
+      aliasesPresent: false,
       fontSize: 18,
       editorValue: '',
       tree: undefined,
@@ -55,6 +52,7 @@ export const EditorState = (props: EditorProviderProps) => {
   const [monaco, setMonaco] = useState<any>();
   const [editor, setEditor] = useState<any>();
   const [fontSize, setFontSize] = useState(18)
+  const [aliasesPresent, setAliasesPresent] = useState(false)
 
 
   const contextValue: EditorContextInterface = {
@@ -64,6 +62,8 @@ export const EditorState = (props: EditorProviderProps) => {
     setEditor,
     setMonaco,
     setFontSize,
+    setAliasesPresent,
+    aliasesPresent,
     fontSize,
     editorValue,
     tree,

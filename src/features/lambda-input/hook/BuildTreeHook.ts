@@ -24,6 +24,7 @@ export function useBuildTree() {
 
       if (proofTree) {
         editorContext.setTree(proofTree);
+        editorContext.setAliasesPresent(proofTree.aliasesPresent ? proofTree.aliasesPresent : false);
       }
       editorContext.setErrors([]);
 
