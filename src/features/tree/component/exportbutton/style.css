@@ -126,3 +126,26 @@
         }
     }
 }
+
+.loading-overlay {
+    cursor: wait !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.17);
+    backdrop-filter: blur(1px);
+
+}
+
+.loading-overlay img {
+    user-drag: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+}

@@ -61,10 +61,6 @@ export const ExportButton = (props: ExportButtonProps) => {
     setEbproofLatex(`${editorContext.tree ? exportToLatex(editorContext.tree, showAliases) : " "}`)
   }, [showAliases]);
 
-  // useEffect(() => {
-  //   setShowAliases(props.useAliases)
-  // }, [props.useAliases]);
-
   return (
       <>
         <MenuTrigger>

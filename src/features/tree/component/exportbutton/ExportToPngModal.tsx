@@ -19,6 +19,8 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import {useExportToImage} from "../../hook/ExportToImageHook";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
 
+// @ts-ignore
+import rollingGif from "../../../../assets/rolling.gif"
 
 interface ExportToEbpModalProps {
   isOpen: boolean;
@@ -39,17 +41,15 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
   const {handleDownloadPng} = useExportToImage();
 
 
-  useEffect(() => {
-    document.body.style.cursor = isImageLoading ? "wait" : "default";
-    return () => {
-      document.body.style.cursor = "default";
-    };
-  }, [isImageLoading]);
-
-
   return (
       <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
         <Dialog className="outline-0" style={{position: "relative"}}>
+
+
+          {isImageLoading &&<div className={"loading-overlay"}>
+            <img src={rollingGif}/>
+          </div>}
+
           <Toaster
               toastOptions={{
                 position: "top-center",
