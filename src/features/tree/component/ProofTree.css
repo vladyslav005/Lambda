@@ -37,6 +37,8 @@
     align-items: center;
     height: 100%;
     width: 100%;
+    background: var(--Schemes-Surface-Container, #F3EDF7);
+    z-index: 10000;
 }
 
 .tree-info-bx h1 {

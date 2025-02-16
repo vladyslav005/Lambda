@@ -34,6 +34,9 @@ export default function LambdaInput() {
   }, [monaco]);
 
   function editorOnChange(value: any, event: any) {
+    if (editorContext.editorValue.trim() === value.trim())
+      return;
+
     editorContext.setEditorValue(value);
 
     console.log(value);

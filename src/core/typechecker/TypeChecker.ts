@@ -13,10 +13,13 @@ import {
   InjectionContext,
   LambdaAbstractionContext,
   LeftRightInjContext,
-  ListConsContext, ListHeadContext,
+  ListConsContext,
+  ListContext,
+  ListHeadContext,
   ListIsNilContext,
   ListNilContext,
   ListTailContext,
+  ListTypeContext,
   LiteralContext,
   ParenthesesContext,
   ParenTypeContext,
@@ -31,7 +34,7 @@ import {
   TypeContext,
   VariableContext,
   VariantTypeContext,
-  ListContext, ListTypeContext, WildCardContext
+  WildCardContext
 } from "../antlr/LambdaCalcParser";
 import {ParseTree} from "antlr4";
 import {IndexError, SyntaxError, TypeError} from "../errorhandling/customErrors";
@@ -45,20 +48,12 @@ import {eliminateOutParentheses, getTokenLocation, parseTypeAndElimParentheses, 
 // TODO : cover all errors for case
 
 export class TypeChecker extends LambdaCalcVisitor<any> {
-  private _globalContext: Context = new Context();
-  private _localContext: Context = new Context();
-  private _aliasContext: Context = new Context();
-
   constructor() {
     super();
     this.initBuiltInFunctions()
   }
 
-  initBuiltInFunctions() {
-    this.globalContext.addVariable("iszero", "Nat->Bool", undefined)
-    this.globalContext.addVariable("pred", "Nat->Nat", undefined)
-    this.globalContext.addVariable("succ", "Nat->Nat", undefined)
-  }
+  private _globalContext: Context = new Context();
 
   get globalContext(): Context {
     return this._globalContext;
@@ -68,6 +63,18 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     this._globalContext = value;
   }
 
+  private _localContext: Context = new Context();
+
+  get localContext(): Context {
+    return this._localContext;
+  }
+
+  set localContext(value: Context) {
+    this._localContext = value;
+  }
+
+  private _aliasContext: Context = new Context();
+
   get aliasContext(): Context {
     return this._aliasContext;
   }
@@ -76,13 +83,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     this._aliasContext = value;
   }
 
-
-  get localContext(): Context {
-    return this._localContext;
-  }
-
-  set localContext(value: Context) {
-    this._localContext = value;
+  initBuiltInFunctions() {
+    this.globalContext.addVariable("iszero", "Nat->Bool", undefined)
+    this.globalContext.addVariable("pred", "Nat->Nat", undefined)
+    this.globalContext.addVariable("succ", "Nat->Nat", undefined)
   }
 
   clearLocalContext() {
@@ -124,7 +128,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const body = ctx.term();
     const bodyType = this.visit(body);
 
-    if (!(body instanceof LambdaAbstractionContext || body instanceof InjectionContext || body instanceof  LeftRightInjContext)) {
+    if (!(body instanceof LambdaAbstractionContext || body instanceof InjectionContext || body instanceof LeftRightInjContext)) {
       if (ctx.getChildCount() !== 6)
         throw new TypeError("Provide explicit type declaration", getTokenLocation(ctx))
 
@@ -568,14 +572,14 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const injType = ctx.getChild(0).getText();
 
     if (injType === "inl" && termType !== leftType) {
-        throw new TypeError(
-            `Term '${termNode.getText()}' should have type '${leftType}' to perform left injection with ${variantTypeNode.getText()}, but got ${termType}`,
-            getTokenLocation(ctx));
+      throw new TypeError(
+          `Term '${termNode.getText()}' should have type '${leftType}' to perform left injection with ${variantTypeNode.getText()}, but got ${termType}`,
+          getTokenLocation(ctx));
 
     } else if (injType === "inr" && termType !== rightType) {
-        throw new TypeError(
-            `Term '${termNode.getText()}' should have type '${rightType}' to perform right injection with ${variantTypeNode.getText()}, but got ${termType}`,
-            getTokenLocation(ctx));
+      throw new TypeError(
+          `Term '${termNode.getText()}' should have type '${rightType}' to perform right injection with ${variantTypeNode.getText()}, but got ${termType}`,
+          getTokenLocation(ctx));
     }
 
     return variantTypeNode.getText();
@@ -720,8 +724,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const rightType = variantTypeNode.getChild(2).getText();
 
     const variantLabels = [
-        { name: 'inl', type: leftType },
-        { name: 'inr', type: rightType },
+      {name: 'inl', type: leftType},
+      {name: 'inr', type: rightType},
     ];
     const coveredLabels = new Set<string>();
 
@@ -778,6 +782,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const literal = ctx.getText().toLowerCase();
     if (literal === "true" || literal === "false") {
       return "Bool"
+    } else if (literal === "unit") {
+      return "Unit"
     } else if (!/[a-zA-Z]/.test(literal) && !isNaN(parseInt(literal))) {
       return "Nat"
     }
@@ -790,7 +796,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     console.log("Visiting a condition", ctx.getText());
 
     const termList = ctx.term_list();
-    const ifTermType : string = this.visit(ctx.term(1));
+    const ifTermType: string = this.visit(ctx.term(1));
 
     for (let i = 0; i < termList.length; i++) {
       const child = termList[i];
@@ -802,9 +808,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
               `All branches of if condition must return the same type, but got '${ifTermType}' and '${childType}'`,
               getTokenLocation(child));
       } else {
-          if (childType !== "Bool" )
-            throw new TypeError(`Contition mus have type 'Bool', but got '${childType}'`,
-                getTokenLocation(child))
+        if (childType !== "Bool")
+          throw new TypeError(`Contition mus have type 'Bool', but got '${childType}'`,
+              getTokenLocation(child))
       }
     }
 
@@ -842,7 +848,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return ctx.getText();
   }
 
-  visitListType = (ctx: ListTypeContext)=> {
+  visitListType = (ctx: ListTypeContext) => {
     return ctx.getText()
   }
 
@@ -980,7 +986,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return elType;
   };
 
-  visitList = (ctx : ListContext): any => {
+  visitList = (ctx: ListContext): any => {
 
     return this.visit(ctx.getChild(0))
   }

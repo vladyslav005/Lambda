@@ -34,7 +34,7 @@ term
     ;
 
 type
-    : (GREEK_TYPE | ID | 'Nat' | 'Bool' )                        # GreekType
+    : (GREEK_TYPE | ID | 'Nat' | 'Bool' | 'Unit')                # GreekType
     | <assoc=right> type ARROW type                              # FunctionType
     | type '+' type                                              # BinaryVariantType
     | '[' ID COLON type (COMMA ID COLON type)* ']'               # VariantType
@@ -54,12 +54,12 @@ list_op
 
 constant
     : NATURAL_NUMBER | '0'
-    | 'TRUE'
     | 'true'
     | 'True'
-    | 'FALSE'
     | 'false'
     | 'False'
+    | 'Unit'
+    | 'unit'
     ;
 
 

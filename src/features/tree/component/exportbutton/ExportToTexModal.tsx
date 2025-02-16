@@ -8,14 +8,14 @@ import {EditorContext} from "../../../lambda-input/context/EditorContext";
 
 
 interface ExportToEbpModalProps {
-    isOpen: boolean;
-    setIsOpen: (isOpen: boolean) => void;
-    tex : string;
-    showAliases : boolean;
-    setShowAliases: (showAliases: boolean) => void;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  tex: string;
+  showAliases: boolean;
+  setShowAliases: (showAliases: boolean) => void;
 }
 
-export const ExportToTexModal = (props : ExportToEbpModalProps) => {
+export const ExportToTexModal = (props: ExportToEbpModalProps) => {
   const editorContext = useContext(EditorContext);
 
   return (

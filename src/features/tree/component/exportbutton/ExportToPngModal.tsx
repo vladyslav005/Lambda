@@ -15,7 +15,7 @@ import {IoMdClose, IoMdDownload} from "react-icons/io";
 import {MapInteractionCSS} from "react-map-interaction";
 import {ProofTreeComponentUsingCss} from "../prooftreeusingcss/ProofTreeUsingCss";
 import {MyColorPicker} from "../colorpicker/ColorPicker";
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import {useExportToImage} from "../../hook/ExportToImageHook";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
 
@@ -45,8 +45,8 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
       <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
         <Dialog className="outline-0" style={{position: "relative"}}>
 
-          {isImageLoading &&<div className={"loading-overlay"}>
-            <img src={rollingGif}/>
+          {isImageLoading && <div className={"loading-overlay"}>
+              <img src={rollingGif}/>
           </div>}
 
           <Toaster

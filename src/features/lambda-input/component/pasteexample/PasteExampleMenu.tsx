@@ -40,7 +40,7 @@ export const PasteExampleMenu = (props: PasteExampleMenuProps) => {
                   setEditorErrors(errors)
                 }}
 
-                >{example.name}</MenuItem>
+                          key={example.name}>{example.name}</MenuItem>
             ))}
           </Menu>
         </Popover>

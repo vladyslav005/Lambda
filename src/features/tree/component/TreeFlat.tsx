@@ -17,6 +17,13 @@ export default function TreeFlat() {
 
   const [showAliases, setShowAliases] = useState(false)
 
+  const [map, setMap] = useState({
+    value: {
+      scale: 0.8,
+      translation: {x: 0, y: 0}
+    }
+  });
+
   const handleFullScreenClick = () => {
     setFullScreen(!fullScreen);
   }
@@ -27,59 +34,56 @@ export default function TreeFlat() {
       >
         <div className="tree-bx"
         >
-          {editorContext.tree &&
-              <>
-                  <MapInteractionCSS>
-                    {editorContext.tree &&
-                        <ProofTreeComponentUsingCss showAliases={showAliases} node={editorContext.tree}/>}
-                  </MapInteractionCSS>
-                  <IconButton className={"tree-full-screen-btn"} style={{
-                    position: fullScreen ? "fixed" : "absolute",
-                    zIndex: 9999,
-                    bottom: '1rem',
+          <MapInteractionCSS
+              value={map.value}
+              onChange={(value) => setMap({value})}
+          >
+            {editorContext.tree &&
+                <ProofTreeComponentUsingCss showAliases={showAliases} node={editorContext.tree}/>}
+          </MapInteractionCSS>
+          <IconButton className={"tree-full-screen-btn"} style={{
+            position: fullScreen ? "fixed" : "absolute",
+            zIndex: 9999,
+            bottom: '1rem',
+            right: '1rem',
+
+          }} onClick={handleFullScreenClick}>
+            {fullScreen && <MdFullscreenExit size={48}/>}
+            {!fullScreen && <MdFullscreen size={48}/>}
+          </IconButton>
+
+          {!fullScreen &&
+              <ExportButton
+                  style={{
+                    position: 'absolute',
                     right: '1rem',
-
-                  }} onClick={handleFullScreenClick}>
-                    {fullScreen && <MdFullscreenExit size={48}/>}
-                    {!fullScreen && <MdFullscreen size={48}/>}
-                  </IconButton>
-
-                {!fullScreen &&
-                    <ExportButton
-                        style={{
-                          position: 'absolute',
-                          right: '1rem',
-                          top: '1rem',
-                          zIndex: 9999,
-                        }}
-                        useAliases={showAliases}
-                    />
-                }
-
-                {editorContext.aliasesPresent && <Checkbox
-                    style={{
-                      position: 'absolute',
-                      left: '1rem',
-                      top: '1rem',
-                      zIndex: 9999,
-                    }}
-                    defaultSelected={showAliases}
-                    onChange={(isChecked) => setShowAliases(isChecked)}
-                >
-                  <div className="checkbox">
-                    <svg viewBox="0 0 18 18" aria-hidden="true">
-                      <polyline points="1 9 7 14 15 4"/>
-                    </svg>
-                  </div>
-                  Show aliases
-                </Checkbox>}
-
-              </>
+                    top: '1rem',
+                    zIndex: 9999,
+                  }}
+                  useAliases={showAliases}
+              />
           }
+
+          {editorContext.aliasesPresent && <Checkbox
+              style={{
+                position: 'absolute',
+                left: '1rem',
+                top: '1rem',
+                zIndex: 9999,
+              }}
+              defaultSelected={showAliases}
+              onChange={(isChecked) => setShowAliases(isChecked)}
+          >
+              <div className="checkbox">
+                  <svg viewBox="0 0 18 18" aria-hidden="true">
+                      <polyline points="1 9 7 14 15 4"/>
+                  </svg>
+              </div>
+              Show aliases
+          </Checkbox>}
 
           {!editorContext.tree &&
               <div className="tree-info-bx">
-
                   <h1>
                       Tree will be displayed here
                   </h1>

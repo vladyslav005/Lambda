@@ -1,30 +1,10 @@
-import {
-  Checkbox,
-  Color,
-  Dialog,
-  Label,
-  Menu,
-  MenuItem,
-  MenuTrigger,
-  Modal,
-  Popover,
-  Slider,
-  SliderOutput,
-  SliderThumb,
-  SliderTrack
-} from "react-aria-components";
+import {Menu, MenuItem, MenuTrigger, Popover} from "react-aria-components";
 import {IconButton} from "../../../../common/components/button/IconButton";
-import {MdContentCopy, MdDownload} from "react-icons/md";
-import React, {useContext, useEffect, useRef, useState} from "react";
-import {IoMdClose, IoMdDownload} from "react-icons/io";
+import {MdDownload} from "react-icons/md";
+import React, {useContext, useEffect, useState} from "react";
 import {useExportToLatex} from "../../hook/ExportToLatexHook";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
 import "./style.css"
-import toast, {Toaster} from "react-hot-toast";
-import {useExportToImage} from "../../hook/ExportToImageHook";
-import {MapInteractionCSS} from "react-map-interaction";
-import {ProofTreeComponentUsingCss} from "../prooftreeusingcss/ProofTreeUsingCss";
-import {MyColorPicker} from "../colorpicker/ColorPicker";
 import {ExportToTexModal} from "./ExportToTexModal";
 import {ExportToPngModal} from "./ExportToPngModal";
 
@@ -78,30 +58,36 @@ export const ExportButton = (props: ExportButtonProps) => {
             <Menu className="menu-bx">
               {editorContext.tree && isTreeExportableToBussproofs(editorContext.tree) &&
                   <MenuItem className="menu-item"
-                      onAction={() => {setBussproofsModal(true)}}
+                            onAction={() => {
+                              setBussproofsModal(true)
+                            }}
                   >LaTeX using bussproofs</MenuItem>}
 
               <MenuItem className="menu-item"
-                  onAction={() => {setEbproofModal(true)}}
+                        onAction={() => {
+                          setEbproofModal(true)
+                        }}
               >LaTeX using ebproof</MenuItem>
               <MenuItem className="menu-item"
-                  onAction={() => {setPngModal(true)}}
+                        onAction={() => {
+                          setPngModal(true)
+                        }}
               >PNG</MenuItem>
             </Menu>
           </Popover>
         </MenuTrigger>
 
-        <ExportToPngModal isOpen={pngModal} setIsOpen={setPngModal} />
+        <ExportToPngModal isOpen={pngModal} setIsOpen={setPngModal}/>
 
         <ExportToTexModal
             showAliases={showAliases} setShowAliases={setShowAliases}
             isOpen={ebproofModal} setIsOpen={setEbproofModal}
-            tex={ebproofLatex} />
+            tex={ebproofLatex}/>
 
         <ExportToTexModal
             showAliases={showAliases} setShowAliases={setShowAliases}
             isOpen={bussproofsModal} setIsOpen={setBussproofsModal}
-            tex={bussproofsLatex} />
+            tex={bussproofsLatex}/>
       </>
   )
 }

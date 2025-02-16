@@ -1,14 +1,17 @@
 export function setUpMonacoLanguage(monaco: any) {
   monaco.languages.register({id: "lambda"});
 
-  let keywords: string[] = ["as", "case", "of", "if", "then", "else", "inl", "inr", "nil", "isnil", "head", "tail", "cons"];
+  let keywords: string[] = [
+    "as", "case", "of", "if", "then", "else", "inl", "inr", "nil",
+    "isnil", "head", "tail", "cons"
+  ];
   monaco.languages.setMonarchTokensProvider("lambda", {
     keywords,
     tokenizer: {
       root: [
-        [/Nat|Bool/, "builtInType"],
+        [/Nat|Bool|Unit/, "builtInType"],
         [/iszero|succ|pred/, "builtInFunction"],
-        [/true|false|True|False/, "constant"],
+        [/true|false|True|False|Unit|unit/, "constant"],
 
         [/(\b)\w+(\b)/, {
           cases: {
@@ -26,7 +29,7 @@ export function setUpMonacoLanguage(monaco: any) {
         [/>/, "rangle"],
         [/]/, "rb"],
         [/\[/, "lb"],
-
+        [/\./, "dot"],
         [/:/, "semi"],
         {include: "@whitespace"},
       ],
@@ -52,7 +55,7 @@ export function setUpMonacoLanguage(monaco: any) {
       {token: 'rb', foreground: '#807d7d', fontStyle: 'bold'},
       {token: 'langle', foreground: '#807d7d', fontStyle: 'bold'},
       {token: 'rangle', foreground: '#807d7d', fontStyle: 'bold'},
-
+      {token: 'dot', foreground: '#807d7d', fontStyle: 'bold'},
       {token: 'doubleArrow', foreground: '#6ae40d', fontStyle: 'bold'},
       {token: 'semi', foreground: '#5b8cff', fontStyle: 'bold'},
       {token: 'variable', foreground: '#333333', fontStyle: 'regular'},

@@ -11,7 +11,7 @@ interface ConclusionCenterProps {
   isExpanded: boolean;
   setIsExpanded: (expanded: boolean) => void;
   showAliases: boolean;
-  color : string | undefined;
+  color: string | undefined;
 }
 
 

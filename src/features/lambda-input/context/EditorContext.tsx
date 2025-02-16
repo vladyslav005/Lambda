@@ -23,13 +23,20 @@ export interface EditorContextInterface {
 }
 
 export const EditorContext = createContext<EditorContextInterface>({
-      setEditorValue: (value: any) => {},
-      setTree: (tree: ProofNode | undefined) => {},
-      setErrors: (errors: Error[]) => {},
-      setEditor: (editor: any) => {},
-      setMonaco: (monaco: any) => {},
-      setFontSize: (newSize: number) => {},
-      setAliasesPresent: (value: boolean) => {},
+      setEditorValue: (value: any) => {
+      },
+      setTree: (tree: ProofNode | undefined) => {
+      },
+      setErrors: (errors: Error[]) => {
+      },
+      setEditor: (editor: any) => {
+      },
+      setMonaco: (monaco: any) => {
+      },
+      setFontSize: (newSize: number) => {
+      },
+      setAliasesPresent: (value: boolean) => {
+      },
 
       aliasesPresent: false,
       fontSize: 18,
