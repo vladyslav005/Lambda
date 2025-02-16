@@ -10,7 +10,7 @@ export function setUpMonacoLanguage(monaco: any) {
         [/iszero|succ|pred/, "builtInFunction"],
         [/true|false|True|False/, "constant"],
 
-        [/\b[a-zA-z]+\b/, {
+        [/(\b)\w+(\b)/, {
           cases: {
             '@keywords': 'keyword',
             '@default': 'variable',
@@ -21,6 +21,12 @@ export function setUpMonacoLanguage(monaco: any) {
         [/=/, "delimiter"],
         [/λ/, "lambda"],
         [/->/, "arrow"],
+        [/\*/, "times"],
+        [/</, "langle"],
+        [/>/, "rangle"],
+        [/]/, "rb"],
+        [/\[/, "lb"],
+
         [/:/, "semi"],
         {include: "@whitespace"},
       ],
@@ -40,7 +46,13 @@ export function setUpMonacoLanguage(monaco: any) {
       {token: 'constant', foreground: '#ef9105', fontStyle: 'regular'},
       {token: 'builtInFunction', foreground: '#2ba6d3', fontStyle: 'regular'},
       {token: 'builtInType', foreground: '#f6ac1e', fontStyle: 'regular'},
-      {token: 'arrow', foreground: '#98c379', fontStyle: 'bold'},
+      {token: 'arrow', foreground: '#82bd52', fontStyle: 'bold'},
+      {token: 'times', foreground: '#82bd52', fontStyle: 'bold'},
+      {token: 'lb', foreground: '#807d7d', fontStyle: 'bold'},
+      {token: 'rb', foreground: '#807d7d', fontStyle: 'bold'},
+      {token: 'langle', foreground: '#807d7d', fontStyle: 'bold'},
+      {token: 'rangle', foreground: '#807d7d', fontStyle: 'bold'},
+
       {token: 'doubleArrow', foreground: '#6ae40d', fontStyle: 'bold'},
       {token: 'semi', foreground: '#5b8cff', fontStyle: 'bold'},
       {token: 'variable', foreground: '#333333', fontStyle: 'regular'},
@@ -107,7 +119,7 @@ export function setUpMonacoLanguage(monaco: any) {
     brackets: [["(", ")"]],
     autoClosingPairs: [
       {open: "(", close: ")"},
-      {open: "-", close: ">"},
+      // {open: "-", close: ">"},
       {open: "<", close: ">"},
       {open: "[", close: "]"},
     ],
@@ -152,12 +164,52 @@ export function setUpMonacoLanguage(monaco: any) {
       const word = model.getWordUntilPosition(position);
       const wordRange = new monaco.Range(
           position.lineNumber,
-          word.startColumn - 1,
+          word.startColumn,
           position.lineNumber,
           word.endColumn
       );
 
       const suggestions = [
+        {
+          label: 'nil',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'nil[$1]',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'nil',
+          range: wordRange,
+        },
+        {
+          label: 'head',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'head[$1]',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'head',
+          range: wordRange,
+        },
+        {
+          label: 'cons',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'cons[$1]',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'cons',
+          range: wordRange,
+        },
+        {
+          label: 'tail',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'tail[$1]',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'tail',
+          range: wordRange,
+        },
+        {
+          label: 'isnil',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'isnil[$1]',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'isnil',
+          range: wordRange,
+        },
         {
           label: '\\abstraction',
           kind: monaco.languages.CompletionItemKind.Text,

@@ -14,7 +14,7 @@ import {
   SequenceContext,
   TupleContext,
   TupleProjectionContext,
-  VariableContext
+  VariableContext, WildCardContext
 } from "../antlr/LambdaCalcParser";
 import {TypeChecker} from "../typechecker/TypeChecker";
 import {ParserRuleContext, ParseTree} from "antlr4";
@@ -105,7 +105,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     this.localContext.addVariable(ctx.ID().getText(),
         this.typeChecker.decodeAlias(this.typeChecker.visit(ctx.type_(0))), undefined)
     this.typeChecker.localContext = this.localContext;
-
     this.updateContextExtension()
 
     const type = this.typeChecker.visit(ctx);
@@ -121,7 +120,11 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const unwrappedConclusion = `λ ${ctx.ID().getText()}:${argumentType} . ${cncs.conclusion}`;
     const unwrappedConclusionWithAlias = `λ ${ctx.ID().getText()}:${argumentTypeWithAlias} . ${cncs.conclusionWithAlias}`;
 
-    const result = {
+    this.localContext.deleteVariable(ctx.ID().getText())
+    this.typeChecker.clearLocalContext();
+    this.updateContextExtension()
+
+    return {
       type: type,
       wrappedConclusion: `\\Gamma${ctxExtensionTmp}\\vdash ${unwrappedConclusion} : ${type}`,
       wrappedConclusionWithAlias:
@@ -132,16 +135,45 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
       root: false,
-      premises: [this.visit(body)],
+      premises: premises,
       isExpandable: false
     } as ProofNode;
-
-    this.localContext.deleteVariable(ctx.ID().getText())
-    this.typeChecker.clearLocalContext();
-    this.updateContextExtension()
-
-    return result;
   };
+
+  visitWildCard = (ctx: WildCardContext) => {
+    console.log("T-abs: " + ctx.getText())
+
+    const ctxExtensionTmp = this.contextExtension
+
+    const type = this.typeChecker.visit(ctx);
+    const typeWithAlias = this.typeChecker.encodeToAlias(type)
+    const body = ctx.term();
+
+    const argumentType = ctx.type_(0).getText()
+    const argumentTypeWithAlias = this.typeChecker.encodeToAlias(argumentType)
+
+    const premises = [this.visit(body)]
+
+    const cncs = this.generateConclusionStr(premises);
+    const unwrappedConclusion = `λ _:${argumentType} . ${cncs.conclusion}`;
+    const unwrappedConclusionWithAlias = `λ _:${argumentTypeWithAlias} . ${cncs.conclusionWithAlias}`;
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${ctxExtensionTmp}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.typeChecker.encodeToAlias(ctxExtensionTmp)}\\vdash ${unwrappedConclusionWithAlias} : ${typeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: "(T-wildcard)",
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      premises: premises,
+      isExpandable: false
+    } as ProofNode;
+  };
+
 
   visitVariable = (ctx: VariableContext): ProofNode => {
     console.log("Var: " + ctx.getText())

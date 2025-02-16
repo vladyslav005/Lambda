@@ -31,7 +31,7 @@ import {
   TypeContext,
   VariableContext,
   VariantTypeContext,
-  ListContext, ListTypeContext
+  ListContext, ListTypeContext, WildCardContext
 } from "../antlr/LambdaCalcParser";
 import {ParseTree} from "antlr4";
 import {IndexError, SyntaxError, TypeError} from "../errorhandling/customErrors";
@@ -219,6 +219,69 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return absType
   };
 
+  visitWildCard = (ctx: WildCardContext) => {
+    const paramTypeNode = ctx.type_(0);
+
+    let declaredType = undefined;
+    try {
+      declaredType = this.visit(ctx.type_(1))
+      declaredType = this.decodeAlias(declaredType);
+    } catch (e) {
+
+    }
+
+    let parentCtx = ctx.parentCtx;
+    while (parentCtx instanceof ParenthesesContext) {
+      parentCtx = parentCtx.parentCtx;
+      if (parentCtx === undefined)
+        break;
+    }
+
+    if (!declaredType && ctx.parentCtx && !(parentCtx instanceof LambdaAbstractionContext)) {
+      throw new SyntaxError(`Provide explicit type declaration for term ${ctx.getText()}`,
+          getTokenLocation(ctx)
+      )
+    }
+
+    let paramType: string = this.decodeAlias(this.visit(paramTypeNode));
+
+    let body: ParseTree = ctx.term();
+    body = eliminateOutParentheses(body);
+
+
+    let bodyType = this.visit(body); // defines type, that function's body returns
+
+
+    let bodyTypeNode = parseTypeAndElimParentheses(bodyType);
+
+    if (bodyTypeNode instanceof FunctionTypeContext ||
+        bodyTypeNode instanceof TupleTypeContext ||
+        bodyTypeNode instanceof RecordTypeContext ||
+        bodyTypeNode instanceof ListTypeContext
+    ) {
+      bodyType = '(' + bodyType + ')';
+    }
+
+    if (parseTypeAndElimParentheses(paramType) instanceof FunctionTypeContext ||
+        parseTypeAndElimParentheses(paramType) instanceof TupleTypeContext ||
+        parseTypeAndElimParentheses(paramType) instanceof RecordTypeContext ||
+        parseTypeAndElimParentheses(paramType) instanceof ListTypeContext
+    ) {
+      paramType = '(' + paramType + ')';
+    }
+
+    const absType = paramType + "->" + bodyType;
+
+    if (declaredType && absType !== declaredType) {
+      throw new TypeError(
+          `Abstraction '${ctx.getText()}' has type '${absType}', that doesn't match declared type '${declaredType}'`,
+          getTokenLocation(ctx)
+      );
+    }
+
+    return absType
+  };
+
   /* IMPLEMENTS VAR RULE */
   visitVariable = (ctx: VariableContext): string => {
     console.log("Visiting variable", ctx.getText());
@@ -290,7 +353,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return typeAlias;
   }
 
-  /* IMPLEMENTS APP RULE */
+  /* APP RULE */
   visitApplication = (ctx: ApplicationContext): string => {
     const funcName = ctx.getChild(0).getText();
     let func = ctx.getChild(0);
@@ -358,7 +421,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return returnType;
   };
 
-  /* IMPLEMENTS TUPLE RULE */
+  /* TUPLE RULE */
   visitTuple = (ctx: TupleContext): string => {
     console.log(`Visiting a tuple term ${ctx.getText()} ${ctx.getChildCount()}`);
     let type: string = '';
@@ -385,7 +448,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
   }
 
-  /* IMPLEMENTS PROJECTION RULE */
+  /* PROJECTION RULE */
   visitTupleProjection = (ctx: TupleProjectionContext): string => {
     const tupleName = ctx.getChild(0).getText();
     const tupleNode = ctx.getChild(0);
@@ -487,7 +550,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
         getTokenLocation(ctx))
   };
 
-  visitLeftRightInj?= (ctx: LeftRightInjContext) => {
+  visitLeftRightInj = (ctx: LeftRightInjContext) => {
     console.log("Visiting a lr inj", ctx.getText());
 
     const variantTypeNode = parseTypeAndElimParentheses(this.decodeAlias(ctx.type_().getText()));
@@ -496,8 +559,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       throw new TypeError(`Injection should have variant type but '${variantTypeNode.getText()}' declared`,
           getTokenLocation(ctx));
 
-    const leftType = variantTypeNode.getChild(0).getText();
-    const rightType = variantTypeNode.getChild(2).getText();
+    const leftType = eliminateOutParentheses(variantTypeNode.getChild(0)).getText();
+    const rightType = eliminateOutParentheses(variantTypeNode.getChild(2)).getText();
 
     const termNode = ctx.term();
     const termType = this.visit(termNode);
@@ -538,7 +601,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     for (let i = 1; i < variantTypeNode.getChildCount() - 1; i += 4) {
       let injLabel = variantTypeNode.getChild(i);
       if (injLabel.getText() === label) {
-        injectionDeclaredLabelType = variantTypeNode.getChild(i + 2).getText()
+        injectionDeclaredLabelType = eliminateOutParentheses(variantTypeNode.getChild(i + 2)).getText()
       }
     }
 
@@ -546,10 +609,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       throw new TypeError(`Variant type '${variantTypeNode}' has no label ${label}`,
           getTokenLocation(ctx))
     } else if (injectionDeclaredLabelType !== bodyType) {
-      throw new TypeError(`Label '${label}' has type ${injectionDeclaredLabelType} but provided term has type: ${bodyType}`,
+      throw new TypeError(`Label '${label}' has type '${injectionDeclaredLabelType}' but provided term has type: '${bodyType}'`,
           getTokenLocation(ctx))
     }
-
 
     return variantTypeNode.getText();
   };
