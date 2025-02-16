@@ -6,7 +6,7 @@ import {
   IfElseContext,
   InjectionContext,
   LambdaAbstractionContext,
-  LeftRightInjContext,
+  LeftRightInjContext, ListConsContext, ListContext, ListHeadContext, ListIsNilContext, ListNilContext, ListTailContext,
   LiteralContext,
   ParenthesesContext,
   RecordContext,
@@ -19,7 +19,7 @@ import {
 import {TypeChecker} from "../typechecker/TypeChecker";
 import {ParserRuleContext, ParseTree} from "antlr4";
 import {Context, ContextElement} from "../context/Context";
-import {getTokenLocation, parseType, preprocessString, tupleTypeToArray} from "../utils";
+import {getTokenLocation, parseTypeAndElimParentheses, preprocessString, tupleTypeToArray} from "../utils";
 import {TypeError} from "../errorhandling/customErrors";
 
 export interface ProofNode {
@@ -60,7 +60,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     this.localContext = new Context();
     this.contextExtension = "";
     this.contextExtensionWithAlies = "";
-
   }
 
   private _proofTree: ProofNode | undefined;
@@ -258,7 +257,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const type = this.typeChecker.visit(ctx);
     const typeWithAlias = this.typeChecker.encodeToAlias(type);
     const tupleTypesArray: string[] = []
-    const tupleTypeNode = parseType(type)
+    const tupleTypeNode = parseTypeAndElimParentheses(type)
     tupleTypeToArray(tupleTypeNode, tupleTypesArray)
 
     const nodeList = []
@@ -377,8 +376,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return {
       type: projectionType,
-      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${ctx.getText()} : ${preprocessString(projectionType)}`,
-      wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${ctx.getText()} : ${preprocessString(projectionTypeWithAlias)}`,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${ctx.getText()} : ${projectionType}`,
+      wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${ctx.getText()} : ${projectionTypeWithAlias}`,
       unwrappedConclusion: ctx.getText(),
       unwrappedConclusionWithAlias: ctx.getText(),
       rule: "(T-proj)",
@@ -391,8 +390,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           [
             {
               type: projectionType,
-              wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash  ${record.getText()} : ${preprocessString(recordType)}`,
-              wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash  ${record.getText()} : ${preprocessString(recordTypeWithAlias)}`,
+              wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash  ${record.getText()} : ${recordType}`,
+              wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash  ${record.getText()} : ${recordTypeWithAlias}`,
               unwrappedConclusion: ctx.getText(),
               unwrappedConclusionWithAlias: ctx.getText(),
               rule: "",
@@ -512,7 +511,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const variantType = this.typeChecker.findType(varName, varNode);
     if (!variantType) throw new Error();
-    const variantTypeNode = parseType(variantType);
+    const variantTypeNode = parseTypeAndElimParentheses(variantType);
 
     const variantLabels = this.typeChecker.extractLabels(variantTypeNode);
 
@@ -581,7 +580,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const variantType = this.typeChecker.findType(varName, varNode);
     if (!variantType) throw new Error();
-    const variantTypeNode = parseType(variantType);
+    const variantTypeNode = parseTypeAndElimParentheses(variantType);
 
     const leftType = variantTypeNode.getChild(0).getText();
     const rightType = variantTypeNode.getChild(2).getText();
@@ -661,7 +660,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     return {
         type: type,
         wrappedConclusion: `${literal} : ${type}`,
-        wrappedConclusionWithAlias: `${ctx.getText()} : ${type}`,
+        wrappedConclusionWithAlias: `${literal} : ${type}`,
         unwrappedConclusion: `${literal}`,
         unwrappedConclusionWithAlias: `${literal}`,
         rule: `(T-${ruleName})`,
@@ -751,6 +750,166 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     this.contextExtensionWithAlies = this.contextExtensionWithAlies.substring(0, this.contextExtensionWithAlies.lastIndexOf(','));
   }
 
+  visitListNil = (ctx: ListNilContext): any => {
+    console.log("Nil", ctx.getText());
+
+    const type = this.typeChecker.visit(ctx)
+    const typeWithAlias = this.typeChecker.encodeToAlias(type)
+
+    const elType = parseTypeAndElimParentheses(type).getChild(1).getText()
+
+    const elTypeWithAlias = this.typeChecker.encodeToAlias(elType);
+
+    const unwrappedConclusion = `nil[${elType}]`
+    const unwrappedConclusionWithAlias = `nil[${elTypeWithAlias}]`
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${typeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: `(T-nil)`,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises: [
+        {
+          type: type,
+          wrappedConclusion: "",
+          wrappedConclusionWithAlias: "",
+          unwrappedConclusion: "",
+          unwrappedConclusionWithAlias: "",
+          rule: "",
+          context: ctx,
+          tokenLocation: getTokenLocation(ctx),
+          root: false,
+          isExpandable: false,
+        }
+      ]
+    } as ProofNode;
+  };
+
+  visitListCons = (ctx: ListConsContext): any => {
+    console.log("Cons", ctx.getText());
+
+    const type = this.typeChecker.visit(ctx)
+    const typeWithAlias = this.typeChecker.encodeToAlias(type)
+
+    const elType = parseTypeAndElimParentheses(type).getChild(1).getText()
+
+    const elTypeWithAlias = this.typeChecker.encodeToAlias(elType);
+
+    const premises: ProofNode[] = ctx.term_list().map((t) => this.visit(t))
+
+    const unwrappedConclusion = `cons[${elType}] ${premises[0].unwrappedConclusion} ${premises[1].unwrappedConclusion}`;
+    const unwrappedConclusionWithAlias =
+        `cons[${elTypeWithAlias}] ${premises[0].unwrappedConclusionWithAlias} ${premises[1].unwrappedConclusionWithAlias}`
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${typeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: `(T-cons)`,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises: premises
+    } as ProofNode;
+  };
+
+  visitListIsNil = (ctx: ListIsNilContext): any => {
+    console.log("Isnil", ctx.getText());
+
+    const type = 'Bool'
+    const typeWithAlias = 'Bool'
+    const elType = parseTypeAndElimParentheses(this.typeChecker.visit(ctx.term())).getChild(1).getText()
+    const elTypeWithAlias = this.typeChecker.encodeToAlias(elType);
+    const premises: ProofNode[] =  [this.visit(ctx.term())];
+    const unwrappedConclusion = `isnil[${elType}] ${premises[0].unwrappedConclusion}`;
+    const unwrappedConclusionWithAlias =
+        `isnil[${elTypeWithAlias}] ${premises[0].unwrappedConclusionWithAlias}`
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${typeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: `(T-isnil)`,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises: premises
+    } as ProofNode;
+  };
+
+  visitListTail = (ctx: ListTailContext): any => {
+    console.log("Cons", ctx.getText());
+
+    const type = this.typeChecker.visit(ctx)
+    const typeWithAlias = this.typeChecker.encodeToAlias(type)
+    const elType = parseTypeAndElimParentheses(type).getChild(1).getText()
+    const elTypeWithAlias = this.typeChecker.encodeToAlias(elType);
+    const premises: ProofNode[] =  [this.visit(ctx.term())]
+    const unwrappedConclusion = `tail[${elType}] ${premises[0].unwrappedConclusion}`;
+    const unwrappedConclusionWithAlias =
+        `tail[${elTypeWithAlias}] ${premises[0].unwrappedConclusionWithAlias}`
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${typeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: `(T-tail)`,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises: premises
+    } as ProofNode;
+  };
+
+  visitListHead = (ctx: ListHeadContext): any => {
+    console.log("Visiting a head", ctx.getText());
+    const type = this.typeChecker.visit(ctx)
+    const typeWithAlias = this.typeChecker.encodeToAlias(type)
+    const premises: ProofNode[] =  [this.visit(ctx.term())]
+    const unwrappedConclusion = `head[${type}] ${premises[0].unwrappedConclusion}`;
+    const unwrappedConclusionWithAlias =
+        `head[${typeWithAlias}] ${premises[0].unwrappedConclusionWithAlias}`
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${typeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: `(T-head)`,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises: premises
+    } as ProofNode;
+  };
+
+  visitList = (ctx : ListContext): any => {
+
+    return this.visit(ctx.getChild(0))
+  }
+
   getContextInfo(name: string): ContextElement {
     let ctxInfo = this.typeChecker.globalContext.getContextInfo(name)
     if (!ctxInfo) ctxInfo = this.typeChecker.localContext.getContextInfo(name)
@@ -770,4 +929,3 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     return {conclusion: unwrappedConclusion, conclusionWithAlias: unwrappedConclusionWithAlias};
   }
 }
-

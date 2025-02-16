@@ -9,10 +9,6 @@ import {IconButton} from "../../../common/components/button/IconButton";
 import {ExportButton} from "./exportbutton/ExportButton";
 import {Checkbox} from "react-aria-components";
 
-export enum TreeView {
-  INTERACTIVE = 0,
-  LATEX = 1
-}
 
 export default function TreeFlat() {
 
@@ -67,6 +63,7 @@ export default function TreeFlat() {
                       top: '1rem',
                       zIndex: 9999,
                     }}
+                    defaultSelected={showAliases}
                     onChange={(isChecked) => setShowAliases(isChecked)}
                 >
                   <div className="checkbox">
@@ -79,7 +76,6 @@ export default function TreeFlat() {
 
               </>
           }
-
 
           {!editorContext.tree &&
               <div className="tree-info-bx">

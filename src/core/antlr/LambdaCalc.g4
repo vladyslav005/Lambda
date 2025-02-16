@@ -26,6 +26,7 @@ term
     | term DOT ID                                                                    # RecordProjection
     | '<'term (COMMA term)* '>'                                                      # Tuple
     | term DOT NATURAL_NUMBER                                                        # TupleProjection
+    | list_op                                                                        # List
     | 'case' term 'of' '['ID EQ ID ']' '=>' term ('||' '['ID EQ ID ']' '=>' term)*   # CaseOf
     | 'case' term 'of' ('inl'|'inr') ID '=>' term '||' ('inl'|'inr') ID '=>' term    # BinaryCaseOf
     | LPAREN term RPAREN                                                             # Parentheses
@@ -38,7 +39,16 @@ type
     | '[' ID COLON type (COMMA ID COLON type)* ']'               # VariantType
     | '<' ID COLON type (COMMA ID COLON type)* '>'               # RecordType
     | <assoc=right> type '*' type                                # TupleType
+    | 'List ' type                                               # ListType
     | LPAREN type RPAREN                                         # ParenType
+    ;
+
+list_op
+    : 'nil' '['type']'                 # ListNil
+    | 'cons' '['type']' term term       # ListCons
+    | 'isnil' '['type']' term           # ListIsNil
+    | 'tail' '['type']' term            # ListTail
+    | 'head' '['type']' term            # ListHead
     ;
 
 constant

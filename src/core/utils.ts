@@ -3,7 +3,8 @@ import LambdaCalcParser, {
   GreekTypeContext,
   ParenthesesContext,
   ParenTypeContext,
-  TypeContext
+  TypeContext,
+    ListTypeContext
 } from "./antlr/LambdaCalcParser";
 import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
 
@@ -17,6 +18,13 @@ export function getTokenLocation(ctx: ParserRuleContext) {
 }
 
 
+export function parseTypeAndElimParentheses(input: string): TypeContext {
+  const lexer = new LambdaCalcLexer(new CharStream(input));
+  const tokens = new CommonTokenStream(lexer);
+  const parser = new LambdaCalcParser(tokens);
+  return eliminateOutParentheses(parser.type_());
+}
+
 export function parseType(input: string): TypeContext {
   const lexer = new LambdaCalcLexer(new CharStream(input));
   const tokens = new CommonTokenStream(lexer);
@@ -24,8 +32,13 @@ export function parseType(input: string): TypeContext {
   return parser.type_();
 }
 
-
 export function eliminateOutParentheses(ctx: ParseTree): any {
+  if (ctx instanceof ListTypeContext) {
+    let listType = ctx.getChild(1)
+    if (listType instanceof ParenthesesContext || listType instanceof ParenTypeContext)
+      return parseType("List " + listType.getChild(1).getText())
+  }
+
   if (ctx instanceof ParenthesesContext || ctx instanceof ParenTypeContext) {
     return ctx.getChild(1)
   }
