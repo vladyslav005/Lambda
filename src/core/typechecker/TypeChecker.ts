@@ -602,23 +602,26 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
   visitIfElse = (ctx: IfElseContext) => {
     console.log("Visiting a condition", ctx.getText());
-    const childCount = ctx.getChildCount();
+
+    const termList = ctx.term_list();
     const condition = ctx.term(0);
+    const ifTermType : string = this.visit(ctx.term(1));
 
-    const conditionType = this.visit(condition);
-    const ifTermType = this.visit(ctx.term(1));
 
-    if (conditionType !== "Bool" )
-        throw new TypeError(`Contition mus have type 'Bool', but got '${conditionType}'`,
-            getTokenLocation(ctx))
+    for (let i = 0; i < termList.length; i++) {
+      const child = termList[i];
+      const childType: string = this.visit(child);
 
-    if (childCount === 6) {
-      const elseTermType = this.visit(ctx.term(2));
-
-      if (ifTermType !== elseTermType)
-        throw new TypeError(
-            `All branches of if condition must return the same type, but got '${ifTermType}' and '${elseTermType}'`,
-            getTokenLocation(ctx));
+      if (i % 2 !== 0 || i === termList.length - 1) {
+        if (ifTermType !== childType)
+          throw new TypeError(
+              `All branches of if condition must return the same type, but got '${ifTermType}' and '${childType}'`,
+              getTokenLocation(child));
+      } else {
+          if (childType !== "Bool" )
+            throw new TypeError(`Contition mus have type 'Bool', but got '${childType}'`,
+                getTokenLocation(child))
+      }
     }
 
     return ifTermType

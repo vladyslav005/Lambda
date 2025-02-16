@@ -16,7 +16,7 @@ globalDecl
 
 term
     : LAMBDA ID COLON type DOT term (COLON type)?                                    # LambdaAbstraction
-    | 'if' term 'then' term ('else' term)?                                              # IfElse
+    | 'if' term 'then' term ('else if' term 'then' term)* ('else' term)?   # IfElse
     | <assoc=left> term term                                                         # Application
     | ID                                                                             # Variable
     | constant                                                                       # Literal

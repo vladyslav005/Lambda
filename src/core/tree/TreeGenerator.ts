@@ -577,13 +577,20 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const premises: ProofNode[] = ctx.term_list().map(t => this.visit(t));
 
-    const unwrappedConclusion =
-        `if ${premises[0].unwrappedConclusion} then ${premises[1].unwrappedConclusion}` +
-          (premises.length === 3 ? ` else ${premises[2].unwrappedConclusion}` : "");
+    let unwrappedConclusion = `if ${premises[0].unwrappedConclusion} then ${premises[1].unwrappedConclusion}`
+    let unwrappedConclusionWithAlias =
+        `if ${premises[0].unwrappedConclusionWithAlias} then ${premises[1].unwrappedConclusionWithAlias}`
 
-    const unwrappedConclusionWithAlias =
-            `if ${premises[0].unwrappedConclusionWithAlias} then ${premises[1].unwrappedConclusionWithAlias}` +
-        (premises.length === 3 ? ` else ${premises[2].unwrappedConclusionWithAlias}` : "");
+    for (let i = 2; i < (premises.length % 2 === 0?premises.length:premises.length-1);  i += 2) {
+      unwrappedConclusion += ` else if ${premises[i].unwrappedConclusion} then ${premises[i+1].unwrappedConclusion}`
+      unwrappedConclusionWithAlias
+          += ` else if ${premises[i].unwrappedConclusionWithAlias} then ${premises[i+1].unwrappedConclusionWithAlias}`
+    }
+
+    if (premises.length % 2 !== 0) {
+      unwrappedConclusion += ` else ${premises[premises.length-1].unwrappedConclusion}`;
+      unwrappedConclusionWithAlias += ` else ${premises[premises.length-1].unwrappedConclusionWithAlias}`;
+    }
 
     return {
       type: ifType,
