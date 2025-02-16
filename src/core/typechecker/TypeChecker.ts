@@ -1,6 +1,6 @@
 import LambdaCalcVisitor from "../antlr/LambdaCalcVisitor";
 import {
-  ApplicationContext,
+  ApplicationContext, BinaryVariantTypeContext,
   CaseOfContext,
   ExprContext,
   FunctionTypeContext,
@@ -8,7 +8,7 @@ import {
   GlobalVariableDeclarationContext,
   GreekTypeContext, IfElseContext,
   InjectionContext,
-  LambdaAbstractionContext, LiteralContext,
+  LambdaAbstractionContext, LeftRightInjContext, LiteralContext,
   ParenthesesContext,
   ParenTypeContext,
   RecordContext,
@@ -468,17 +468,49 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
         getTokenLocation(ctx))
   };
 
+  visitLeftRightInj?= (ctx: LeftRightInjContext) => {
+    console.log("Visiting a lr inj", ctx.getText());
+
+    const variantTypeNode = parseType(this.decodeAlias(ctx.type_().getText()));
+
+    if (!(variantTypeNode instanceof BinaryVariantTypeContext))
+      throw new TypeError(`Injection should have variant type but '${variantTypeNode.getText()}' declared`,
+          getTokenLocation(ctx));
+
+    const leftType = variantTypeNode.getChild(0).getText();
+    const rightType = variantTypeNode.getChild(2).getText();
+
+    const termNode = ctx.term();
+    const termType = this.visit(termNode);
+
+    const injType = ctx.getChild(0).getText();
+
+    if (injType === "inl" && termType !== leftType) {
+        throw new TypeError(
+            `Term '${termNode.getText()}' should have type '${leftType}' to perform left injection with ${variantTypeNode.getText()}, but got ${termType}`,
+            getTokenLocation(ctx));
+
+    } else if (injType === "inr" && termType !== rightType) {
+        throw new TypeError(
+            `Term '${termNode.getText()}' should have type '${rightType}' to perform right injection with ${variantTypeNode.getText()}, but got ${termType}`,
+            getTokenLocation(ctx));
+    }
+
+    return variantTypeNode.getText();
+  };
 
   visitInjection = (ctx: InjectionContext): string => {
     console.log("Visiting injection ", ctx.getText());
 
     const variantTypeNode = parseType(this.decodeAlias(ctx.type_().getText()));
 
-    const labelNode = ctx.ID();
+    if (!(variantTypeNode instanceof VariantTypeContext))
+      throw new TypeError(`Injection should have variant type but '${variantTypeNode.getText()}' declared`,
+          getTokenLocation(ctx));
+
     const label = ctx.ID().getText();
 
     const bodyNode = ctx.term();
-    const body = ctx.term().getText();
 
     const bodyType = this.visit(bodyNode)
 
@@ -503,11 +535,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return variantTypeNode.getText();
   };
 
-
   visitParentheses = (ctx: ParenthesesContext): any => {
     console.log("Visiting parentheses ", ctx.getText());
-
-    // return this.visitChildren(ctx);
     return this.visit(ctx.getChild(1));
   };
 
@@ -533,10 +562,11 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const varName = varNode.getText();
 
     const variantType = this.findType(varName, varNode);
-    const variantTypeNode = parseType(variantType);
+
     if (variantType === undefined)
       throw new TypeError(`Cant define type of '${varName}'`, getTokenLocation(ctx));
 
+    const variantTypeNode = parseType(variantType);
     if (!(variantTypeNode instanceof VariantTypeContext))
       throw new TypeError(`'${varName}' should have an variant type to be used in case of`, getTokenLocation(ctx));
 
@@ -604,9 +634,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     console.log("Visiting a condition", ctx.getText());
 
     const termList = ctx.term_list();
-    const condition = ctx.term(0);
     const ifTermType : string = this.visit(ctx.term(1));
-
 
     for (let i = 0; i < termList.length; i++) {
       const child = termList[i];
@@ -627,6 +655,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return ifTermType
   };
 
+
   extractLabels = (typeNode: TypeContext) => {
     const variantLabels = new Array<{ name: string, type: string }>();
     for (let i = 1; i < typeNode.getChildCount() - 1; i += 4) {
@@ -639,6 +668,13 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   }
 
   visitVariantType = (ctx: VariantTypeContext) => {
+    console.log("Visiting a variant type", ctx.getText());
+
+
+    return ctx.getText()
+  };
+
+  visitBinaryVariantType = (ctx: BinaryVariantTypeContext) => {
     console.log("Visiting a variant type", ctx.getText());
 
 
@@ -680,7 +716,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   };
 
 
-  findType = (name: string, node: ParseTree): any => {
+  findType = (name: string, node: ParseTree): string | undefined => {
     let type: string | undefined;
     if (this._localContext.isVariableInContext(name)) {
       type = this._localContext.getType(name);
@@ -690,9 +726,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       type = this.visit(node);
     }
 
-    if (type) {
+    if (type)
       type = this.decodeAlias(type);
-    }
 
     return type;
   }

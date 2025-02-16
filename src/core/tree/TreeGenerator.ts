@@ -9,7 +9,7 @@ import {
   GreekTypeContext,
   IfElseContext,
   InjectionContext,
-  LambdaAbstractionContext,
+  LambdaAbstractionContext, LeftRightInjContext,
   LiteralContext,
   ParenthesesContext,
   ParenTypeContext,
@@ -458,6 +458,54 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     } as ProofNode;
   }
 
+  visitLeftRightInj?= (ctx: LeftRightInjContext) => {
+
+    const variantType = this.typeChecker.visit(ctx);
+    const variantTypeWithAlias = this.typeChecker.encodeToAlias(variantType);
+
+    const body = ctx.term()
+    const premise: ProofNode = this.visit(body);
+    const injType = ctx.getChild(0).getText();
+
+    const bodyType = this.typeChecker.visit(body)
+    const bodyTypeWithAlias = this.typeChecker.encodeToAlias(bodyType);
+    const unwrappedConclusion= `${injType} ${premise.unwrappedConclusion} as ${variantType}`;
+    const unwrappedConclusionWithAlias =
+        `${injType} = ${premise.unwrappedConclusionWithAlias} as ${variantTypeWithAlias}`;
+
+    return {
+      type: variantType,
+      wrappedConclusion:
+          `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${variantType}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${variantTypeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: `(T-${injType})`,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises:
+          [
+            {
+              type: variantType,
+              wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${premise.unwrappedConclusion} : ${bodyType}`,
+              wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${premise.unwrappedConclusionWithAlias} : ${bodyTypeWithAlias}`,
+              unwrappedConclusion: premise.unwrappedConclusion,
+              unwrappedConclusionWithAlias: premise.unwrappedConclusionWithAlias,
+              rule: "",
+              root: false,
+              context: ctx,
+              tokenLocation: getTokenLocation(ctx),
+              isExpandable: false
+            }
+          ],
+
+    } as ProofNode;
+
+  }
+
   visitCaseOf = (ctx: CaseOfContext): ProofNode => {
     console.log("Cas " + ctx.getText())
 
@@ -467,7 +515,9 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const caseTypeWithAlias = this.typeChecker.encodeToAlias(caseType);
 
     const variantType = this.typeChecker.findType(varName, varNode);
+    if (!variantType) throw new Error();
     const variantTypeNode = parseType(variantType);
+
     const variantLabels = this.typeChecker.extractLabels(variantTypeNode);
 
     const premises: ProofNode[] = [this.visit(varNode)]

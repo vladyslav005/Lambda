@@ -1,7 +1,7 @@
 export function setUpMonacoLanguage(monaco: any) {
   monaco.languages.register({id: "lambda"});
 
-  let keywords: string[] = ["as", "case", "of", "if", "then", "else"];
+  let keywords: string[] = ["as", "case", "of", "if", "then", "else", "inl", "inr"];
   monaco.languages.setMonarchTokensProvider("lambda", {
     keywords,
     tokenizer: {

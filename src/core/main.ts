@@ -7,7 +7,7 @@ import {InputAnalyzer} from "./AnalyzeInput";
 
 
 let input = `
-if true then 1 else if true then 1 else 2;
+inl true as Nat + Bool;
 `;
 
 // const lexer = new LambdaCalcLexer(new CharStream(input))

@@ -16,12 +16,14 @@ globalDecl
 
 term
     : LAMBDA ID COLON type DOT term (COLON type)?                                    # LambdaAbstraction
-    | 'if' term 'then' term ('else if' term 'then' term)* ('else' term)?   # IfElse
+    | 'if' term 'then' term ('else if' term 'then' term)* ('else' term)?             # IfElse
     | <assoc=left> term term                                                         # Application
     | ID                                                                             # Variable
     | constant                                                                       # Literal
     | '['ID EQ term']' 'as' type                                                     # Injection
+    | ('inl'|'inr') term 'as' type                                                   # LeftRightInj
     | 'case' term 'of' '['ID EQ ID ']' '=>' term ('||' '['ID EQ ID ']' '=>' term)*   # CaseOf
+    | 'case' term 'of' ('inl'|'inr') ID '=>' term '||' ('inl'|'inr') ID '=>' term    # BinaryCaseOf
     | '<' ID EQ term (COMMA ID EQ term)*'>'                                          # Record
     | term DOT ID                                                                    # RecordProjection
     | '<'term (COMMA term)* '>'                                                      # Tuple
@@ -32,6 +34,7 @@ term
 type
     : (GREEK_TYPE | ID | 'Nat' | 'Bool' )                        # GreekType
     | <assoc=right> type ARROW type                              # FunctionType
+    | type '+' type                                              # BinaryVariantType
     | '[' ID COLON type (COMMA ID COLON type)* ']'               # VariantType
     | '<' ID COLON type (COMMA ID COLON type)* '>'               # RecordType
     | <assoc=right> type '*' type                                # TupleType
