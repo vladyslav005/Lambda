@@ -7,8 +7,16 @@ import {InputAnalyzer} from "./AnalyzeInput";
 
 
 let input = `
-inl true as Nat + Bool;
-`;
+PhysicalAddr = < firstlast : String, addr : String> ;
+VirtualAddr = <name : String, email : String>;
+Addr = PhysicalAddr + VirtualAddr;
+
+pa : PhysicalAddr;
+a = inl pa as Addr;
+
+case a of
+     inl x => x.firstlast
+  || inr y => y.name;`;
 
 // const lexer = new LambdaCalcLexer(new CharStream(input))
 //

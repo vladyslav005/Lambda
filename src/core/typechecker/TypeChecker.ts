@@ -1,6 +1,6 @@
 import LambdaCalcVisitor from "../antlr/LambdaCalcVisitor";
 import {
-  ApplicationContext, BinaryVariantTypeContext,
+  ApplicationContext, BinaryCaseOfContext, BinaryVariantTypeContext,
   CaseOfContext,
   ExprContext,
   FunctionTypeContext,
@@ -124,7 +124,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const body = ctx.term();
     const bodyType = this.visit(body);
 
-    if (!(body instanceof LambdaAbstractionContext || body instanceof InjectionContext)) {
+    if (!(body instanceof LambdaAbstractionContext || body instanceof InjectionContext || body instanceof  LeftRightInjContext)) {
       if (ctx.getChildCount() !== 6)
         throw new TypeError("Provide explicit type declaration", getTokenLocation(ctx))
 
@@ -579,6 +579,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     for (let i = 4; i < ctx.getChildCount(); i += 8) {
       const labelNode = ctx.getChild(i);
       const label = labelNode.getText();
+
+      if (coveredLabels.has(label))
+        throw new TypeError(`Label '${label}' can be used only once in case of construction`, getTokenLocation(ctx))
+
       const variableNode = ctx.getChild(i + 2);
       const variable = variableNode.getText();
       const variableType = variantLabels
@@ -598,11 +602,77 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       if (caseType === undefined)
         caseType = termType
 
-      if (caseType !== termType) {
-        console.log(this._aliasContext)
+      if (caseType !== termType)
         throw new TypeError(`All cases should have the same type, but case '${label}' has type '${termType}', while other's type is '${caseType}'`,
             getTokenLocation(ctx))
+
+      coveredLabels.add(labelNode.getText());
+    }
+
+    for (const el of variantLabels) {
+      if (!coveredLabels.has(el.name)) {
+        throw new TypeError(`Label '${el.name}' with '${el.type}', not covered in case of construction`,
+            getTokenLocation(ctx));
       }
+    }
+
+    return caseType;
+  };
+
+  visitBinaryCaseOf = (ctx: BinaryCaseOfContext) => {
+
+    const varNode = ctx.term(0);
+    const varName = varNode.getText();
+
+    const variantType = this.findType(varName, varNode);
+
+    if (variantType === undefined)
+      throw new TypeError(`Cant define type of '${varName}'`, getTokenLocation(ctx));
+
+    const variantTypeNode = parseType(variantType);
+    if (!(variantTypeNode instanceof BinaryVariantTypeContext))
+      throw new TypeError(`'${varName}' should have an binary variant type to be used in case of`, getTokenLocation(ctx));
+
+    const leftType = variantTypeNode.getChild(0).getText();
+    const rightType = variantTypeNode.getChild(2).getText();
+
+    const variantLabels = [
+        { name: 'inl', type: leftType },
+        { name: 'inr', type: rightType },
+    ];
+    const coveredLabels = new Set<string>();
+
+    let caseType: string | undefined;
+
+    for (let i = 3; i < ctx.getChildCount(); i += 5) {
+      const labelNode = ctx.getChild(i);
+      const label = labelNode.getText();
+
+      if (coveredLabels.has(label))
+        throw new TypeError(`Label '${label}' can be used only once in case of construction`, getTokenLocation(ctx))
+
+
+      const variableNode = ctx.getChild(i + 1);
+      const variable = variableNode.getText();
+      const variableType = variantLabels
+          .find(e => e.name === label)?.type;
+
+      const term = ctx.getChild(i + 3);
+      if (variableType === undefined)
+        throw new TypeError(`Type '${variantType}' does not contain label '${label}'`, getTokenLocation(ctx))
+
+      this.localContext.addVariable(variable, variableType, undefined)
+
+      const termType = this.visit(term)
+
+      this.localContext.deleteVariable(variable)
+
+      if (caseType === undefined)
+        caseType = termType
+
+      if (caseType !== termType)
+        throw new TypeError(`All cases should have the same type, but case '${label}' has type '${termType}', while other's type is '${caseType}'`,
+            getTokenLocation(ctx))
 
       coveredLabels.add(labelNode.getText());
     }

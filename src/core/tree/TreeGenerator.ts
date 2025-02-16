@@ -1,18 +1,14 @@
 import LambdaCalcVisitor from "../antlr/LambdaCalcVisitor";
 import {
-  ApplicationContext,
+  ApplicationContext, BinaryCaseOfContext,
   CaseOfContext,
   ExprContext,
-  FunctionTypeContext,
-  GlobalFunctionDeclarationContext,
-  GlobalVariableDeclarationContext,
-  GreekTypeContext,
   IfElseContext,
   InjectionContext,
-  LambdaAbstractionContext, LeftRightInjContext,
+  LambdaAbstractionContext,
+  LeftRightInjContext,
   LiteralContext,
   ParenthesesContext,
-  ParenTypeContext,
   RecordContext,
   RecordProjectionContext,
   SequenceContext,
@@ -559,13 +555,13 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
                 `[${ctx.ID(i*2)}=${ctx.ID(i*2+1)}]=>${premises[i+1].unwrappedConclusionWithAlias}`)
             .join(" || ");
 
-    const result = {
+    return {
       type: caseType,
       wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${caseType}`,
       wrappedConclusionWithAlias:
           `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithALias} : ${caseTypeWithAlias}`,
       unwrappedConclusion: unwrappedConclusion,
-      unwrappedConclusionWithAlias:unwrappedConclusionWithALias,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithALias,
       rule: "(T-case)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -573,9 +569,80 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       premises: premises,
       isExpandable: false
     } as ProofNode;
-
-    return result;
   };
+
+  visitBinaryCaseOf = (ctx: BinaryCaseOfContext): ProofNode => {
+    console.log("Cas B " + ctx.getText())
+
+    const varNode = ctx.term(0);
+    const varName = varNode.getText();
+    const caseType = this.typeChecker.visit(ctx);
+    const caseTypeWithAlias = this.typeChecker.encodeToAlias(caseType);
+
+    const variantType = this.typeChecker.findType(varName, varNode);
+    if (!variantType) throw new Error();
+    const variantTypeNode = parseType(variantType);
+
+    const leftType = variantTypeNode.getChild(0).getText();
+    const rightType = variantTypeNode.getChild(2).getText();
+
+    const variantLabels = [
+      { name: 'inl', type: leftType },
+      { name: 'inr', type: rightType },
+    ];
+
+    const premises: ProofNode[] = [this.visit(varNode)]
+
+    for (let i = 3; i < ctx.getChildCount(); i += 5) {
+      const labelNode = ctx.getChild(i);
+      const label = labelNode.getText();
+      const variableNode = ctx.getChild(i + 1);
+      const variable = variableNode.getText();
+      const variableType = variantLabels
+          .find(e => e.name === label)?.type;
+
+      const term = ctx.getChild(i + 3);
+
+      if (variableType === undefined)
+        throw new TypeError(`Type '${variantType}' does not contain label '${label}'`, getTokenLocation(ctx))
+
+      this.localContext.addVariable(variable, variableType, undefined)
+      this.typeChecker.localContext.addVariable(variable, variableType, undefined)
+      this.updateContextExtension()
+
+      const termProofNode = this.visit(term)
+      premises.push(termProofNode);
+
+      this.typeChecker.localContext.deleteVariable(variable)
+      this.localContext.deleteVariable(variable)
+      this.updateContextExtension()
+    }
+
+    const unwrappedConclusion = `case ${premises[0].unwrappedConclusion} of ` +
+        `${ctx.getChild(3).getText()} ${ctx.ID(0).getText()}=>${premises[1].unwrappedConclusion} ||` +
+        ` ${ctx.getChild(8).getText()} ${ctx.ID(1).getText()}=>${premises[2].unwrappedConclusion}`;
+
+
+    const unwrappedConclusionWithAlias =  `case ${premises[0].unwrappedConclusionWithAlias} of ` +
+        `${ctx.getChild(3).getText()} ${ctx.ID(0).getText()}=>${premises[1].unwrappedConclusionWithAlias} ||` +
+        ` ${ctx.getChild(8).getText()} ${ctx.ID(1).getText()}=>${premises[2].unwrappedConclusionWithAlias}`;
+
+    return {
+      type: caseType,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${caseType}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${caseTypeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: "(T-case)",
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      premises: premises,
+      isExpandable: false
+    } as ProofNode;
+  };
+
 
   visitLiteral = (ctx: LiteralContext) : ProofNode => {
     console.log("Lit", ctx.getText());

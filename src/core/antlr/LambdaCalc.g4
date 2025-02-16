@@ -22,12 +22,12 @@ term
     | constant                                                                       # Literal
     | '['ID EQ term']' 'as' type                                                     # Injection
     | ('inl'|'inr') term 'as' type                                                   # LeftRightInj
-    | 'case' term 'of' '['ID EQ ID ']' '=>' term ('||' '['ID EQ ID ']' '=>' term)*   # CaseOf
-    | 'case' term 'of' ('inl'|'inr') ID '=>' term '||' ('inl'|'inr') ID '=>' term    # BinaryCaseOf
     | '<' ID EQ term (COMMA ID EQ term)*'>'                                          # Record
     | term DOT ID                                                                    # RecordProjection
     | '<'term (COMMA term)* '>'                                                      # Tuple
     | term DOT NATURAL_NUMBER                                                        # TupleProjection
+    | 'case' term 'of' '['ID EQ ID ']' '=>' term ('||' '['ID EQ ID ']' '=>' term)*   # CaseOf
+    | 'case' term 'of' ('inl'|'inr') ID '=>' term '||' ('inl'|'inr') ID '=>' term    # BinaryCaseOf
     | LPAREN term RPAREN                                                             # Parentheses
     ;
 
