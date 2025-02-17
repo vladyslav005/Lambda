@@ -1,18 +1,24 @@
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import "./ProofTreeUsingCss.css"
 import {ConclusionCenter} from "./ConclusionCenter";
-import {useState} from "react";
+import {Ref, useState} from "react";
 
+interface ProofTreeUsingCssProps {
+  node: ProofNode,
+  color?: string,
+  showAliases: boolean
+  treeRef? : Ref<HTMLDivElement>;
+}
 
 export function ProofTreeComponentUsingCss(
-    {node, color, showAliases}: { node: ProofNode, color?: string, showAliases: boolean }) {
+    {node, color, showAliases, treeRef}: ProofTreeUsingCssProps,) {
   const isItRoot = node.root ? "root" : "not-root";
   const isItLeaf = node.premises === undefined ? 'leaf-node' : 'not-leaf-node';
 
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-      <div className="proof-node" style={{color: color ? color : "black"}}>
+      <div ref={isItRoot && treeRef ? treeRef : undefined} className="proof-node" style={{color: color ? color : "black"}}>
 
         {node.premises && !isExpanded && (
             <div className={`premises`}
