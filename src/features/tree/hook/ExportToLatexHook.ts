@@ -1,19 +1,22 @@
 import {ProofNode} from "../../../core/tree/TreeGenerator";
-import {preprocessString} from "../../../core/utils";
+import {preprocessString, preprocessTex} from "../../../core/utils";
 
 export function useExportToLatex() {
 
   function exportToLatex(tree: ProofNode, showAliases: boolean): string {
-    let latex = '\\begin{prooftree} \n';
+    let latex = '\\begin{prooftree}\n';
 
     const traverseTree = (node: ProofNode, level: number = 0): string => {
       let nodeLatex = '';
 
-      const premisesCount = node.premises ? node.premises.length : 0;
+      const premises: ProofNode[] | undefined =
+          node.isExpanded && node.expandedPremises ? node.expandedPremises : node.premises;
+
+      const premisesCount = premises ? premises.length : 0;
       const nodeConclusion = showAliases ? node.wrappedConclusionWithAlias : node.wrappedConclusion;
 
-      if (node.premises) {
-        for (let premise of node.premises)
+      if (premises) {
+        for (let premise of premises)
           nodeLatex += traverseTree(premise, level + 1);
         nodeLatex += `\t\\infer${premisesCount}[${node.rule}]{${nodeConclusion} }\n`;
       } else
@@ -26,21 +29,24 @@ export function useExportToLatex() {
 
     latex += '\\end{prooftree}\n';
 
-    return preprocessString(latex);
+    return preprocessTex(preprocessString(latex));
   }
 
   //todo : aliases show
   const exportToBussproofs = (tree: ProofNode, showAliases: boolean): string => {
-    let latex = '\\begin{prooftree} \n';
+    let latex = '\\begin{prooftree}\n';
 
     const traverseTree = (node: ProofNode, level: number = 0): void => {
-      const premisesCount = node.premises ? node.premises.length : 0;
+      const premises: ProofNode[] | undefined =
+          node.isExpanded && node.expandedPremises ? node.expandedPremises : node.premises;
+
+      const premisesCount = premises ? premises.length : 0;
       const nodeConclusion = showAliases ? node.wrappedConclusionWithAlias : node.wrappedConclusion;
 
-      if (node.premises) {
+      if (premises) {
 
-        for (const premise of node.premises) {
-          traverseTree(premise);
+        for (const premise of premises) {
+            traverseTree(premise);
         }
 
         latex += '\t\\RightLabel{$' + node.rule + '$}\n';
@@ -71,19 +77,23 @@ export function useExportToLatex() {
 
     latex += '\\end{prooftree}\n';
 
-    return preprocessString(latex);
+    return preprocessTex(preprocessString(latex));
   }
 
   const isTreeExportableToBussproofs = (tree: ProofNode): boolean => {
     let isExportable = true;
 
     const traverseTree = (node: ProofNode): void => {
-      if (node.premises) {
-        if (node.premises.length > 5)
+      const premises: ProofNode[] | undefined =
+          node.isExpanded && node.expandedPremises ? node.expandedPremises : node.premises ;
+
+      if (premises) {
+        if (premises.length > 5)
           isExportable = false;
 
-        for (let premise of node.premises)
+        for (let premise of premises) {
           traverseTree(premise);
+        }
       }
     }
 

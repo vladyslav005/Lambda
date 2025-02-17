@@ -24,6 +24,8 @@ export default function TreeFlat() {
   const [treeContainerHeight, setTreeContainerHeight] = useState(0);
   const [treeHeight, setTreeHeight] = useState(0);
 
+  const [treeHasChanged, setTreeHasChanged] = useState(false)
+
   const [map, setMap] = useState({
     value: {
       scale: 1,
@@ -67,7 +69,7 @@ export default function TreeFlat() {
       observer.observe(treeRef.current);
       return () => observer.disconnect();
     }
-  }, [editorContext.tree, showAliases, fullScreen]);
+  }, [editorContext.tree, showAliases, fullScreen, treeHasChanged]);
 
   const handleFullScreenClick = () => {
     setFullScreen(!fullScreen);
@@ -83,7 +85,9 @@ export default function TreeFlat() {
               value={map.value}
               onChange={(value) => setMap({value})}
           >
-            {editorContext.tree && <ProofTreeComponentUsingCss treeRef={treeRef} showAliases={showAliases} node={editorContext.tree}/>}
+            {editorContext.tree && <ProofTreeComponentUsingCss
+                treeHasChanged={treeHasChanged} setTreeHasChanged={setTreeHasChanged}
+                treeRef={treeRef} showAliases={showAliases} node={editorContext.tree}/>}
           </MapInteractionCSS>
           <IconButton className={"tree-full-screen-btn"} style={{
             position: fullScreen ? "fixed" : "absolute",

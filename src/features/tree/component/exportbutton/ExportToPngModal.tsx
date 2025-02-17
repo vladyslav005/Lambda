@@ -46,6 +46,9 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
   const [treeWidth, setTreeWidth] = useState(props.treeWidth);
   const [treeHeight, setTreeHeight] = useState(props.treeHeight);
   const pngBoxRef = useRef<HTMLDivElement | null>(null);
+  const treeRef = useRef<HTMLDivElement | null>(null);
+
+  const [treeHasChanged, setTreeHasChanged] = useState(false)
 
   const [map, setMap] = useState({
     value: {
@@ -62,7 +65,6 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
     const centeredX = (pngWidth - (treeWidth + 75) * scale) / 2;
     const centeredY = (pngHeight - (treeHeight) * scale) /2
 
-    console.warn(`${treeWidth} ${treeHeight} ${pngWidth} ${pngHeight}`)
     setMap({
       value: {
         scale: scale,
@@ -74,7 +76,22 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
   useEffect(() => {
     setTreeWidth(props.treeWidth);
     setTreeHeight(props.treeHeight);
-  }, [props.treeWidth, props.treeHeight]);
+  }, [props.treeWidth, props.treeHeight, treeHasChanged]);
+
+  useEffect(() => {
+    if (treeRef.current) {
+      const observer = new ResizeObserver(() => {
+        if (treeRef.current) {
+
+          setTreeWidth(treeRef.current.getBoundingClientRect().width / map.value.scale );
+          setTreeHeight(treeRef.current.getBoundingClientRect().height / map.value.scale );
+        }
+      });
+
+      observer.observe(treeRef.current);
+      return () => observer.disconnect();
+    }
+  }, [treeHasChanged, treeRef.current]);
 
   return (
       <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
@@ -103,26 +120,28 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
           <IconButton
               style={{
                 position: "absolute",
-                top: "0.3rem",
+                top: "0.4rem",
                 right: "1rem",
+                zIndex: 100000,
               }}
               onClick={() => props.setIsOpen(false)}
           >
             <IoMdClose size={20}/>
           </IconButton>
 
-          <div className="help-modal-content flex flex-col export-modal-content justify-between">
+          <div className="help-modal-content flex flex-col relative export-modal-content justify-between">
 
             <h1 className="modal-title">Preview</h1>
 
-            <div ref={pngBoxRef} className="png-bx w-full relative">
-              <div ref={pngDivRef}
+            <div ref={pngBoxRef} className="png-bx relative">
+              <div className="png-div" ref={pngDivRef}
                    style={{
                      backgroundColor: pngBackgroundColor,
                      height: pngHeight,
                      width: pngWidth,
                      position: "relative",
                      right: "0",
+                     top: "0",
                    }}
               >
                 <MapInteractionCSS
@@ -131,6 +150,8 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 >
                   {editorContext.tree &&
                       <ProofTreeComponentUsingCss
+                          treeRef={treeRef}
+                          treeHasChanged={treeHasChanged} setTreeHasChanged={setTreeHasChanged}
                           showAliases={showAliases} color={pngFontColor}
                           node={editorContext.tree}/>}
                 </MapInteractionCSS>
@@ -140,7 +161,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
 
             <div className="my-6 flex flex-row justify-between ">
               <div className="flex flex-col justify-between gap-4">
-                <Slider defaultValue={pngWidth} maxValue={1200}
+                <Slider defaultValue={pngWidth} maxValue={4096}
                         onChange={(width: number) => setPngWidth(width)}
                 >
                   <Label>Width (px)</Label>
@@ -150,7 +171,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                   </SliderTrack>
                 </Slider>
 
-                <Slider defaultValue={pngHeight} maxValue={600}
+                <Slider defaultValue={pngHeight} maxValue={1024}
                         onChange={(height: number) => setPngHeight(height)}
                 >
                   <Label>Height (px)</Label>

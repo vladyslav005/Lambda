@@ -8,10 +8,12 @@ interface ProofTreeUsingCssProps {
   color?: string,
   showAliases: boolean
   treeRef? : Ref<HTMLDivElement>;
+  treeHasChanged: boolean;
+  setTreeHasChanged: (state: boolean) => void;
 }
 
 export function ProofTreeComponentUsingCss(
-    {node, color, showAliases, treeRef}: ProofTreeUsingCssProps,) {
+    {node, color, showAliases, treeRef, treeHasChanged, setTreeHasChanged}: ProofTreeUsingCssProps,) {
   const isItRoot = node.root ? "root" : "not-root";
   const isItLeaf = node.premises === undefined ? 'leaf-node' : 'not-leaf-node';
 
@@ -26,7 +28,9 @@ export function ProofTreeComponentUsingCss(
             >
               {node.premises.map((premise, index) => (
                   <>
-                    <ProofTreeComponentUsingCss showAliases={showAliases} color={color} node={premise}/>
+                    <ProofTreeComponentUsingCss
+                        setTreeHasChanged={setTreeHasChanged} treeHasChanged={treeHasChanged}
+                        showAliases={showAliases} color={color} node={premise}/>
                     {node.premises !== undefined && index !== node.premises.length - 1 && (
                         <div className="inter-proof"></div>
                     )}
@@ -41,7 +45,9 @@ export function ProofTreeComponentUsingCss(
             >
               {node.expandedPremises.map((premise, index) => (
                   <>
-                    <ProofTreeComponentUsingCss showAliases={showAliases} color={color} node={premise}/>
+                    <ProofTreeComponentUsingCss
+                        treeHasChanged={treeHasChanged} setTreeHasChanged={setTreeHasChanged}
+                        showAliases={showAliases} color={color} node={premise}/>
                     {node.expandedPremises !== undefined && index !== node.expandedPremises.length - 1 && (
                         <div className="inter-proof"></div>
                     )}
@@ -62,6 +68,8 @@ export function ProofTreeComponentUsingCss(
               node={node}
               showAliases={showAliases}
               color={color}
+              treeHasChanged={treeHasChanged}
+              setTreeHasChanged={setTreeHasChanged}
           ></ConclusionCenter>
 
           <div className="conclusion-right">

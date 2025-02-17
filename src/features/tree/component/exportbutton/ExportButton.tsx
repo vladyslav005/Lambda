@@ -36,12 +36,14 @@ export const ExportButton = (props: ExportButtonProps) => {
   const [showAliases, setShowAliases] = useState(props.useAliases)
 
   useEffect(() => {
-    setBussproofsLatex(
-        `${editorContext.tree && isTreeExportableToBussproofs(editorContext.tree)
-            ? exportToBussproofs(editorContext.tree, showAliases)
-            : "not exported"}`)
-    setEbproofLatex(`${editorContext.tree ? exportToLatex(editorContext.tree, showAliases) : " "}`)
-  }, [showAliases, editorContext.tree]);
+    if ((bussproofsModal || ebproofModal)) {
+      setBussproofsLatex(
+          `${editorContext.tree && isTreeExportableToBussproofs(editorContext.tree)
+              ? exportToBussproofs(editorContext.tree, showAliases)
+              : "not exported"}`)
+      setEbproofLatex(`${editorContext.tree ? exportToLatex(editorContext.tree, showAliases) : " "}`)
+    }
+  }, [showAliases, bussproofsModal, ebproofModal]);
 
   return (
       <>
