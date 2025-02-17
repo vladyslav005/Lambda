@@ -15,16 +15,19 @@ import {IoMdClose, IoMdDownload} from "react-icons/io";
 import {MapInteractionCSS} from "react-map-interaction";
 import {ProofTreeComponentUsingCss} from "../prooftreeusingcss/ProofTreeUsingCss";
 import {MyColorPicker} from "../colorpicker/ColorPicker";
-import React, {useContext, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {useExportToImage} from "../../hook/ExportToImageHook";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
 
 // @ts-ignore
 import rollingGif from "../../../../assets/rolling.gif"
+import {AiOutlineAim} from "react-icons/ai";
 
 interface ExportToEbpModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  treeWidth : number;
+  treeHeight : number;
 }
 
 export const ExportToPngModal = (props: ExportToEbpModalProps) => {
@@ -32,7 +35,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
 
   const [showAliases, setShowAliases] = useState(false)
   const pngDivRef = useRef(null);
-  const [pngWidth, setPngWidth] = useState(500)
+  const [pngWidth, setPngWidth] = useState(600)
   const [pngHeight, setPngHeight] = useState(300)
   const [pngBackgroundColor, setPngBackgroundColor] = useState<string>("#ffffff")
   const [pngFontColor, setPngFontColor] = useState<string>("#000000")
@@ -40,6 +43,38 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
 
   const {handleDownloadPng} = useExportToImage();
 
+  const [treeWidth, setTreeWidth] = useState(props.treeWidth);
+  const [treeHeight, setTreeHeight] = useState(props.treeHeight);
+  const pngBoxRef = useRef<HTMLDivElement | null>(null);
+
+  const [map, setMap] = useState({
+    value: {
+      scale: 1,
+      translation: {x: 0, y: 0}
+    }
+  });
+
+  const centerTree = () => {
+    let scale = map.value.scale;
+    if (Math.abs(treeWidth - pngWidth) > 5)
+      scale = pngWidth / (treeWidth + 200 );
+
+    const centeredX = (pngWidth - (treeWidth + 75) * scale) / 2;
+    const centeredY = (pngHeight - (treeHeight) * scale) /2
+
+    console.warn(`${treeWidth} ${treeHeight} ${pngWidth} ${pngHeight}`)
+    setMap({
+      value: {
+        scale: scale,
+        translation: { x: centeredX, y: centeredY },
+      }
+    });
+  }
+
+  useEffect(() => {
+    setTreeWidth(props.treeWidth);
+    setTreeHeight(props.treeHeight);
+  }, [props.treeWidth, props.treeHeight]);
 
   return (
       <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
@@ -75,33 +110,38 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
           >
             <IoMdClose size={20}/>
           </IconButton>
-          <div className="help-modal-content export-modal-content">
+
+          <div className="help-modal-content flex flex-col export-modal-content justify-between">
 
             <h1 className="modal-title">Preview</h1>
 
-            <div className="png-bx w-full">
+            <div ref={pngBoxRef} className="png-bx w-full relative">
               <div ref={pngDivRef}
                    style={{
                      backgroundColor: pngBackgroundColor,
                      height: pngHeight,
                      width: pngWidth,
+                     position: "relative",
+                     right: "0",
                    }}
               >
-                <MapInteractionCSS>
-                  {editorContext.tree && <ProofTreeComponentUsingCss showAliases={showAliases} color={pngFontColor}
-                                                                     node={editorContext.tree}/>}
+                <MapInteractionCSS
+                    value={map.value}
+                    onChange={(value) => setMap({value})}
+                >
+                  {editorContext.tree &&
+                      <ProofTreeComponentUsingCss
+                          showAliases={showAliases} color={pngFontColor}
+                          node={editorContext.tree}/>}
                 </MapInteractionCSS>
 
               </div>
             </div>
 
-
             <div className="my-6 flex flex-row justify-between ">
-
-              <div className="flex flex-col gap-4">
-                <Slider defaultValue={pngWidth} maxValue={2048}
+              <div className="flex flex-col justify-between gap-4">
+                <Slider defaultValue={pngWidth} maxValue={1200}
                         onChange={(width: number) => setPngWidth(width)}
-
                 >
                   <Label>Width (px)</Label>
                   <SliderOutput/>
@@ -110,7 +150,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                   </SliderTrack>
                 </Slider>
 
-                <Slider defaultValue={pngHeight} maxValue={2048}
+                <Slider defaultValue={pngHeight} maxValue={600}
                         onChange={(height: number) => setPngHeight(height)}
                 >
                   <Label>Height (px)</Label>
@@ -134,14 +174,24 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
 
               </div>
 
-              <div className="flex flex-col justify-evenly ">
-                <MyColorPicker defaultValue={pngFontColor} label={"Font color"}
-                               onChange={(color: Color) => setPngFontColor(color.toString())}
-                ></MyColorPicker>
+              <div className="flex flex-col justify-between ">
+                <div style={{padding: '0.5rem'}}>
+                  <MyColorPicker defaultValue={pngFontColor} label={"Font color"}
+                                 onChange={(color: Color) => setPngFontColor(color.toString())}
+                  ></MyColorPicker>
+                </div>
 
-                <MyColorPicker defaultValue={pngBackgroundColor} label={"Fill color"}
-                               onChange={(color: Color) => setPngBackgroundColor(color.toString())}
-                ></MyColorPicker>
+                <div style={{padding: '0.5rem'}}>
+                  <MyColorPicker defaultValue={pngBackgroundColor} label={"Fill color"}
+                                 onChange={(color: Color) => setPngBackgroundColor(color.toString())}
+                  ></MyColorPicker>
+                </div>
+
+                <IconButton className={"center-tree-btn"} onClick={ () => centerTree()}>
+                  <AiOutlineAim size={26}></AiOutlineAim>
+                  Center tree
+                </IconButton>
+
               </div>
 
               <div className="flex justify-end items-end">
@@ -172,8 +222,8 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 </IconButton>
               </div>
             </div>
+            </div>
 
-          </div>
           <div className="h-1"></div>
 
         </Dialog>

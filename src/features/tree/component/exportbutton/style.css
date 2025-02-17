@@ -22,12 +22,11 @@
     max-height: 600px;
 
     overflow: auto;
-
 }
 
 .export-modal-content {
     min-height: fit-content;
-    max-height: 50vh;
+    max-height: 80vh;
     height: fit-content !important;
     overflow-y: auto;
 }
@@ -35,18 +34,16 @@
 .png-bx {
     max-height: 400px;
     min-height: 400px;
-    /*max-width: fit-content;*/
     overflow-y: auto;
     overflow-x: auto;
 
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: start;
+    justify-content: start;
 
     border-radius: 0.4rem;
     border: 3px solid var(--Schemes-Primary, #65558F);
 }
-
 
 .react-aria-Slider {
     display: grid;
@@ -85,7 +82,6 @@
             background: var(--Schemes-Secondary-Container, #ddcff4);
             /*border: 2px solid var(--Schemes-Primary, #65558F);*/
         }
-
     }
 
     .react-aria-SliderThumb {
@@ -100,8 +96,6 @@
         &[data-dragging] {
             /*background: blue;*/
         }
-
-
     }
 
     &[data-orientation=horizontal] {
@@ -141,11 +135,15 @@
 
     background: rgba(0, 0, 0, 0.17);
     backdrop-filter: blur(1px);
-
 }
 
 .loading-overlay img {
     user-drag: none;
     -webkit-user-drag: none;
     -moz-user-select: none;
+}
+
+
+.center-tree-btn {
+    padding: 0.5rem;
 }

@@ -38,7 +38,7 @@ export default function TreeFlat() {
       if (Math.abs(treeWidth - treeContainerWidth) > 10)
         scale = treeContainerWidth / (treeWidth + 200);
 
-      const centeredX = (treeContainerWidth - (treeWidth + 110) * scale) / 2;
+      const centeredX = (treeContainerWidth - (treeWidth + 75) * scale) / 2;
       const centeredY = (treeContainerHeight - (treeHeight) * scale) / 2;
 
       setMap({
@@ -98,6 +98,8 @@ export default function TreeFlat() {
 
           {!fullScreen &&
               <ExportButton
+                  treeWidth={treeWidth}
+                  treeHeight={treeHeight}
                   style={{
                     position: 'absolute',
                     right: '1rem',

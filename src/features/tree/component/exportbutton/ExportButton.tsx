@@ -12,6 +12,8 @@ import {ExportToPngModal} from "./ExportToPngModal";
 interface ExportButtonProps {
   style?: React.CSSProperties;
   useAliases: boolean;
+  treeWidth: number;
+  treeHeight: number;
 }
 
 export const ExportButton = (props: ExportButtonProps) => {
@@ -39,7 +41,7 @@ export const ExportButton = (props: ExportButtonProps) => {
             ? exportToBussproofs(editorContext.tree, showAliases)
             : "not exported"}`)
     setEbproofLatex(`${editorContext.tree ? exportToLatex(editorContext.tree, showAliases) : " "}`)
-  }, [showAliases]);
+  }, [showAliases, editorContext.tree]);
 
   return (
       <>
@@ -77,7 +79,9 @@ export const ExportButton = (props: ExportButtonProps) => {
           </Popover>
         </MenuTrigger>
 
-        <ExportToPngModal isOpen={pngModal} setIsOpen={setPngModal}/>
+        <ExportToPngModal
+            treeWidth={props.treeWidth} treeHeight={props.treeHeight}
+            isOpen={pngModal} setIsOpen={setPngModal}/>
 
         <ExportToTexModal
             showAliases={showAliases} setShowAliases={setShowAliases}

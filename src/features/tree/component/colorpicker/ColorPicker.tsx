@@ -30,7 +30,7 @@ export const MyColorPicker = (props: MyColorPickerProps) => {
 
 
   return (
-      <ColorPicker {...props}>
+      <ColorPicker {...props} >
         <DialogTrigger>
           <Button className="color-picker">
             <MyColorSwatch/>
