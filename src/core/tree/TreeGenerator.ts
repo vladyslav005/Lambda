@@ -1,8 +1,10 @@
 import LambdaCalcVisitor from "../antlr/LambdaCalcVisitor";
 import {
+  AdditionContext,
   ApplicationContext,
   BinaryCaseOfContext,
   CaseOfContext,
+  ComparisonContext,
   ExprContext,
   IfElseContext,
   InjectionContext,
@@ -15,7 +17,9 @@ import {
   ListNilContext,
   ListTailContext,
   LiteralContext,
+  MultiplicationContext,
   ParenthesesContext,
+  PowerContext,
   RecordContext,
   RecordProjectionContext,
   SequenceContext,
@@ -104,6 +108,125 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
   visitExpr = (ctx: ExprContext): any => {
     this._proofTree = this.visit(ctx.terms());
+  };
+
+  visitAddition = (ctx: AdditionContext): ProofNode => {
+    const premises: ProofNode[] = ctx.term_list().map(t => this.visit(t));
+    const type = 'Nat'
+    const cncns = this.generateConclusionStr(premises, ` ${ctx.getChild(1).getText()} `)
+    const unwrappedConclusion = cncns.conclusion;
+    const unwrappedConclusionWithAlias = cncns.conclusionWithAlias;
+    const ruleName = `T-${ctx.getChild(1).getText() === '+' ? 'add' : 'sub'}`
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${type}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: ruleName,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises: premises,
+    } as ProofNode;
+  };
+
+  visitMultiplication = (ctx: MultiplicationContext): ProofNode => {
+    const premises: ProofNode[] = ctx.term_list().map(t => this.visit(t));
+    const type = 'Nat'
+    const cncns = this.generateConclusionStr(premises, ` ${ctx.getChild(1).getText()} `)
+    const unwrappedConclusion = cncns.conclusion;
+    const unwrappedConclusionWithAlias = cncns.conclusionWithAlias;
+    const ruleName = `T-mult`
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${type}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: ruleName,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises: premises,
+    } as ProofNode;
+  };
+
+  visitPower = (ctx: PowerContext): ProofNode => {
+    const premises: ProofNode[] = ctx.term_list().map(t => this.visit(t));
+    const type = 'Nat'
+    const cncns = this.generateConclusionStr(premises, `${ctx.getChild(1).getText()}`)
+    const unwrappedConclusion = cncns.conclusion;
+    const unwrappedConclusionWithAlias = cncns.conclusionWithAlias;
+    const ruleName = `T-pow`
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${type}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: ruleName,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises: premises,
+    } as ProofNode;
+  };
+
+  visitComparison = (ctx: ComparisonContext): ProofNode => {
+    const premises: ProofNode[] = ctx.term_list().map(t => this.visit(t));
+    const type = 'Bool'
+
+    const operator = ctx.getChild(1).getText();
+    let texOperator = ctx.getChild(1).getText();
+
+    switch (operator) {
+      case '>': {
+        texOperator = ">";
+        break;
+      }
+      case '<': {
+        texOperator = "<";
+        break;
+      }
+      case '>=': {
+        texOperator = "\\geq";
+        break;
+      }
+      case '<=': {
+        texOperator = "\\leq";
+        break;
+      }
+      case '==': {
+        texOperator = "=";
+        break;
+      }
+    }
+
+    const cncns = this.generateConclusionStr(premises, ` ${texOperator} `)
+    const unwrappedConclusion = cncns.conclusion;
+    const unwrappedConclusionWithAlias = cncns.conclusionWithAlias;
+    const ruleName = `T-comp`
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${type}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: ruleName,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises: premises,
+    } as ProofNode;
   };
 
   visitLambdaAbstraction = (ctx: LambdaAbstractionContext): ProofNode => {
@@ -314,10 +437,11 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const result = {
       type: type,
-      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash <${cncs.conclusion}> : ${type}`,
-      wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash <${cncs.conclusionWithAlias}> : ${typeWithAlias}`,
-      unwrappedConclusion: `<${cncs.conclusion}>`,
-      unwrappedConclusionWithAlias: `<${cncs.conclusionWithAlias}>`,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash \\langle ${cncs.conclusion} \\rangle : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.contextExtensionWithAlies}\\vdash \\langle ${cncs.conclusionWithAlias} \\rangle : ${typeWithAlias}`,
+      unwrappedConclusion: `\\langle ${cncs.conclusion} \\rangle`,
+      unwrappedConclusionWithAlias: `\\langle ${cncs.conclusionWithAlias} \\rangle`,
       rule: "(T-tuple)",
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
@@ -946,7 +1070,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   };
 
   visitList = (ctx: ListContext): any => {
-
     return this.visit(ctx.getChild(0))
   }
 

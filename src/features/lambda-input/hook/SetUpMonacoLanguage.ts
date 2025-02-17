@@ -19,11 +19,16 @@ export function setUpMonacoLanguage(monaco: any) {
             '@default': 'variable',
           }
         }],
-
         [/=>/, "doubleArrow"],
+        [/>=/, "geq"],
+        [/<=/, "leq"],
+        [/==/, "eq"],
+        [/\^/, "pow"],
+        [/\+/, "plus"],
+        [/-/, "minus"],
         [/=/, "delimiter"],
+
         [/λ/, "lambda"],
-        [/->/, "arrow"],
         [/\*/, "times"],
         [/</, "langle"],
         [/>/, "rangle"],
@@ -50,11 +55,19 @@ export function setUpMonacoLanguage(monaco: any) {
       {token: 'builtInFunction', foreground: '#2ba6d3', fontStyle: 'regular'},
       {token: 'builtInType', foreground: '#f6ac1e', fontStyle: 'regular'},
       {token: 'arrow', foreground: '#82bd52', fontStyle: 'bold'},
-      {token: 'times', foreground: '#82bd52', fontStyle: 'bold'},
+
+      {token: 'geq', foreground: '#e06c75', fontStyle: 'bold'},
+      {token: 'leq', foreground: '#e06c75', fontStyle: 'bold'},
+      {token: 'eq', foreground: '#e06c75', fontStyle: 'bold'},
+      {token: 'plus', foreground: '#e06c75', fontStyle: 'bold'},
+      {token: 'minus', foreground: '#e06c75', fontStyle: 'bold'},
+      {token: 'pow', foreground: '#e06c75', fontStyle: 'bold'},
+      {token: 'times', foreground: '#e06c75', fontStyle: 'bold'},
+
       {token: 'lb', foreground: '#807d7d', fontStyle: 'bold'},
       {token: 'rb', foreground: '#807d7d', fontStyle: 'bold'},
-      {token: 'langle', foreground: '#807d7d', fontStyle: 'bold'},
-      {token: 'rangle', foreground: '#807d7d', fontStyle: 'bold'},
+      {token: 'langle', foreground: '#e06c75', fontStyle: 'bold'},
+      {token: 'rangle', foreground: '#e06c75', fontStyle: 'bold'},
       {token: 'dot', foreground: '#807d7d', fontStyle: 'bold'},
       {token: 'doubleArrow', foreground: '#6ae40d', fontStyle: 'bold'},
       {token: 'semi', foreground: '#5b8cff', fontStyle: 'bold'},
@@ -122,8 +135,6 @@ export function setUpMonacoLanguage(monaco: any) {
     brackets: [["(", ")"]],
     autoClosingPairs: [
       {open: "(", close: ")"},
-      // {open: "-", close: ">"},
-      {open: "<", close: ">"},
       {open: "[", close: "]"},
     ],
   });
@@ -173,6 +184,38 @@ export function setUpMonacoLanguage(monaco: any) {
       );
 
       const suggestions = [
+        {
+          label: 'true',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'true',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'true',
+          range: wordRange,
+        },
+        {
+          label: 'false',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'false',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'false',
+          range: wordRange,
+        },
+        {
+          label: 'unit',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'unit',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'unit',
+          range: wordRange,
+        },
+        {
+          label: 'Unit',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'Unit',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'Unit type',
+          range: wordRange,
+        },
         {
           label: 'nil',
           kind: monaco.languages.CompletionItemKind.Text,

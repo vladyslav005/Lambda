@@ -66,9 +66,7 @@ export function preprocessString(str: string): string {
       .replaceAll("=>", "{ \\Rightarrow }")
       .replaceAll("*", "{\\times}")
       .replaceAll("->", "{ \\rightarrow }")
-      .replaceAll("<", "{\\langle}")
-      .replaceAll(">", "{\\rangle}")
+      .replaceAll(/\S<\S/g, "{\\langle}")
+      .replaceAll(/\S>\S/g, "{\\rangle}")
       .replaceAll(" ", "{\\ }")
-
-
 }

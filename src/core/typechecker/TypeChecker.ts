@@ -1,9 +1,11 @@
 import LambdaCalcVisitor from "../antlr/LambdaCalcVisitor";
 import {
+  AdditionContext,
   ApplicationContext,
   BinaryCaseOfContext,
   BinaryVariantTypeContext,
   CaseOfContext,
+  ComparisonContext,
   ExprContext,
   FunctionTypeContext,
   GlobalFunctionDeclarationContext,
@@ -21,8 +23,10 @@ import {
   ListTailContext,
   ListTypeContext,
   LiteralContext,
+  MultiplicationContext,
   ParenthesesContext,
   ParenTypeContext,
+  PowerContext,
   RecordContext,
   RecordProjectionContext,
   RecordTypeContext,
@@ -153,6 +157,78 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     console.log("Visiting an alias", ctx.getText());
 
     this._aliasContext.addVariable(ctx.type_(0).getText(), ctx.type_(1).getText(), getTokenLocation(ctx));
+  };
+
+  visitAddition = (ctx: AdditionContext): string => {
+    const first = ctx.term(0);
+    const second = ctx.term(1);
+
+    const firstType = this.visit(first);
+    const secondType = this.visit(second);
+
+    if (firstType !== 'Nat')
+      throw new TypeError(`Operands of arithmetic operations must have type 'Nat', but got '${firstType}'`,
+          getTokenLocation(first));
+
+    if (secondType !== 'Nat')
+      throw new TypeError(`Operands of arithmetic operations must have type 'Nat', but got '${secondType}'`,
+          getTokenLocation(second));
+
+    return 'Nat'
+  };
+
+  visitMultiplication = (ctx: MultiplicationContext): string => {
+    const first = ctx.term(0);
+    const second = ctx.term(1);
+
+    const firstType = this.visit(first);
+    const secondType = this.visit(second);
+
+    if (firstType !== 'Nat')
+      throw new TypeError(`Operands of arithmetic operations must have type 'Nat', but got '${firstType}'`,
+          getTokenLocation(first));
+
+    if (secondType !== 'Nat')
+      throw new TypeError(`Operands of arithmetic operations must have type 'Nat', but got '${secondType}'`,
+          getTokenLocation(second));
+
+    return 'Nat'
+  };
+
+  visitPower = (ctx: PowerContext): string => {
+    const first = ctx.term(0);
+    const second = ctx.term(1);
+
+    const firstType = this.visit(first);
+    const secondType = this.visit(second);
+
+    if (firstType !== 'Nat')
+      throw new TypeError(`Operands of arithmetic operations must have type 'Nat', but got '${firstType}'`,
+          getTokenLocation(first));
+
+    if (secondType !== 'Nat')
+      throw new TypeError(`Operands of arithmetic operations must have type 'Nat', but got '${secondType}'`,
+          getTokenLocation(second));
+
+    return 'Nat'
+  };
+
+  visitComparison = (ctx: ComparisonContext): string => {
+    const first = ctx.term(0);
+    const second = ctx.term(1);
+
+    const firstType = this.visit(first);
+    const secondType = this.visit(second);
+
+    if (firstType !== 'Nat')
+      throw new TypeError(`Operands of comparison operations must have type 'Nat', but got '${firstType}'`,
+          getTokenLocation(first));
+
+    if (secondType !== 'Nat')
+      throw new TypeError(`Operands of comparison operations must have type 'Nat', but got '${secondType}'`,
+          getTokenLocation(second));
+
+    return 'Bool'
   };
 
   /* IMPLEMENTS ABS RULE */
