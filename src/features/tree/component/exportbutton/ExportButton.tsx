@@ -8,7 +8,6 @@ import "./style.css"
 import {ExportToTexModal} from "./ExportToTexModal";
 import {ExportToPngModal} from "./ExportToPngModal";
 
-//TODO: optimize for mobile
 interface ExportButtonProps {
   style?: React.CSSProperties;
   useAliases: boolean;

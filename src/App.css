@@ -23,7 +23,7 @@
 
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1024px) {
 
     .hide-sidebar-btn {
         display: none !important;
@@ -62,7 +62,6 @@
         gap: 1rem !important;
 
         max-width: none !important;
-
     }
 
     .main-pane {
@@ -106,7 +105,6 @@
         bottom: 1rem !important;
         right: 1rem !important;
     }
-
 }
 
 

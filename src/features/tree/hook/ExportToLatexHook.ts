@@ -32,7 +32,6 @@ export function useExportToLatex() {
     return preprocessTex(preprocessString(latex));
   }
 
-  //todo : aliases show
   const exportToBussproofs = (tree: ProofNode, showAliases: boolean): string => {
     let latex = '\\begin{prooftree}\n';
 

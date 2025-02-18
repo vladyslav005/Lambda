@@ -76,7 +76,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
   useEffect(() => {
     setTreeWidth(props.treeWidth);
     setTreeHeight(props.treeHeight);
-  }, [props.treeWidth, props.treeHeight, treeHasChanged]);
+  }, [props.treeWidth, props.treeHeight]);
 
   useEffect(() => {
     if (treeRef.current) {
@@ -91,7 +91,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
       observer.observe(treeRef.current);
       return () => observer.disconnect();
     }
-  }, [treeHasChanged, treeRef.current]);
+  }, [treeHasChanged, treeRef.current, showAliases]);
 
   return (
       <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
@@ -159,7 +159,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
               </div>
             </div>
 
-            <div className="my-6 flex flex-row justify-between ">
+            <div className="my-6 flex flex-row flex-wrap justify-between gap-4">
               <div className="flex flex-col justify-between gap-4">
                 <Slider defaultValue={pngWidth} maxValue={4096}
                         onChange={(width: number) => setPngWidth(width)}
@@ -195,24 +195,25 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
 
               </div>
 
-              <div className="flex flex-col justify-between ">
-                <div style={{padding: '0.5rem'}}>
+              <div className="flex flex-col justify-between gap-4">
+                <div>
                   <MyColorPicker defaultValue={pngFontColor} label={"Font color"}
                                  onChange={(color: Color) => setPngFontColor(color.toString())}
                   ></MyColorPicker>
                 </div>
 
-                <div style={{padding: '0.5rem'}}>
+                <div>
                   <MyColorPicker defaultValue={pngBackgroundColor} label={"Fill color"}
                                  onChange={(color: Color) => setPngBackgroundColor(color.toString())}
                   ></MyColorPicker>
                 </div>
 
-                <IconButton className={"center-tree-btn"} onClick={ () => centerTree()}>
+                <div className="flex flex-row items-center ">
                   <AiOutlineAim size={26}></AiOutlineAim>
-                  Center tree
-                </IconButton>
-
+                  <IconButton className={"center-tree-btn"} onClick={ () => centerTree()}>
+                    Center tree
+                  </IconButton>
+                </div>
               </div>
 
               <div className="flex justify-end items-end">
