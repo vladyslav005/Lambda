@@ -25,7 +25,7 @@ export class CustomParserErrorListener implements ErrorListener<any> {
       msg: string,
       e: RecognitionException | undefined
   ): void {
-    throw new SyntaxError(`at line ${line}:${charPositionInLine} - ${msg}`, [line, line, 0, charPositionInLine + 1]);
+    throw new SyntaxError(`Syntax error at line ${line}:${charPositionInLine} - ${msg}`, [line, line, 0, charPositionInLine + 1]);
   }
 
   reportAmbiguity(

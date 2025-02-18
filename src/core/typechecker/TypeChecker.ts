@@ -532,7 +532,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   visitTupleProjection = (ctx: TupleProjectionContext): string => {
     const tupleName = ctx.getChild(0).getText();
     const tupleNode = ctx.getChild(0);
-    let tupleType: string | undefined = undefined;
+    let tupleType: string | undefined;
 
     const projectionIndex = parseInt(ctx.getChild(2).getText());
 

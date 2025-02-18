@@ -1,13 +1,15 @@
 import {useContext} from "react";
 import {EditorContext} from "../context/EditorContext";
-import {InputAnalyzer} from "../../../core/AnalyzeInput";
 
-const analyzer = new InputAnalyzer();
 
 export function useBuildTree() {
   const editorContext = useContext(EditorContext);
 
-  function buildTree(value: string | undefined): Error[] | undefined {
+  const buildTree = async (value: string | undefined):Promise<Error[] | undefined> => {
+    const { InputAnalyzer } = await import("../../../core/AnalyzeInput");
+
+    const analyzer = new InputAnalyzer();
+
     try {
       editorContext.setTree(undefined);
 

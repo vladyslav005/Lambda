@@ -26,8 +26,8 @@ import {AiOutlineAim} from "react-icons/ai";
 interface ExportToEbpModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  treeWidth : number;
-  treeHeight : number;
+  treeWidth: number;
+  treeHeight: number;
 }
 
 export const ExportToPngModal = (props: ExportToEbpModalProps) => {
@@ -60,15 +60,15 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
   const centerTree = () => {
     let scale = map.value.scale;
     if (Math.abs(treeWidth - pngWidth) > 5)
-      scale = pngWidth / (treeWidth + 200 );
+      scale = pngWidth / (treeWidth + 200);
 
     const centeredX = (pngWidth - (treeWidth + 75) * scale) / 2;
-    const centeredY = (pngHeight - (treeHeight) * scale) /2
+    const centeredY = (pngHeight - (treeHeight) * scale) / 2
 
     setMap({
       value: {
         scale: scale,
-        translation: { x: centeredX, y: centeredY },
+        translation: {x: centeredX, y: centeredY},
       }
     });
   }
@@ -83,22 +83,22 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
       const observer = new ResizeObserver(() => {
         if (treeRef.current) {
 
-          setTreeWidth(treeRef.current.getBoundingClientRect().width / map.value.scale );
-          setTreeHeight(treeRef.current.getBoundingClientRect().height / map.value.scale );
+          setTreeWidth(treeRef.current.getBoundingClientRect().width / map.value.scale);
+          setTreeHeight(treeRef.current.getBoundingClientRect().height / map.value.scale);
         }
       });
 
       observer.observe(treeRef.current);
       return () => observer.disconnect();
     }
-  }, [treeHasChanged, treeRef.current, showAliases]);
+  }, [treeHasChanged, showAliases, map.value.scale]);
 
   return (
       <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
         <Dialog className="outline-0" style={{position: "relative"}}>
 
           {isImageLoading && <div className={"loading-overlay"}>
-              <img src={rollingGif}/>
+              <img alt="" src={rollingGif}/>
           </div>}
 
           <Toaster
@@ -210,7 +210,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
 
                 <div className="flex flex-row items-center ">
                   <AiOutlineAim size={26}></AiOutlineAim>
-                  <IconButton className={"center-tree-btn"} onClick={ () => centerTree()}>
+                  <IconButton className={"center-tree-btn"} onClick={() => centerTree()}>
                     Center tree
                   </IconButton>
                 </div>
@@ -244,7 +244,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 </IconButton>
               </div>
             </div>
-            </div>
+          </div>
 
           <div className="h-1"></div>
 

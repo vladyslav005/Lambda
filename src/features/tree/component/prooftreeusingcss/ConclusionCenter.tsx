@@ -14,9 +14,7 @@ interface ConclusionCenterProps {
   color: string | undefined;
   treeHasChanged: boolean;
   setTreeHasChanged: (state: boolean) => void;
-
 }
-
 
 export const ConclusionCenter = (props: ConclusionCenterProps) => {
 
@@ -107,6 +105,5 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
         <MathComponent
             tex={preprocessString(props.showAliases ? props.node.wrappedConclusionWithAlias : props.node.wrappedConclusion)}/>
       </div>
-
   )
 }

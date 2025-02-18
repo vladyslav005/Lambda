@@ -3,7 +3,7 @@ import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
 import LambdaCalcParser from "./antlr/LambdaCalcParser";
 import {TypeChecker} from "./typechecker/TypeChecker";
 import {ProofNode, TreeGenerator} from "./tree/TreeGenerator";
-import {CustomParserErrorListener} from "./errorhandling/ErrorListeners";
+import {CustomLexerErrorListener, CustomParserErrorListener} from "./errorhandling/ErrorListeners";
 import {Context} from "./context/Context";
 
 
@@ -36,8 +36,8 @@ export class InputAnalyzer {
 
     this.input = input;
     this.lexer = new LambdaCalcLexer(new CharStream(input))
-    // this.lexer.removeErrorListeners()
-    // this.lexer.addErrorListener(new CustomLexerErrorListener())
+    this.lexer.removeErrorListeners()
+    this.lexer.addErrorListener(new CustomLexerErrorListener())
 
     this.tokens = new CommonTokenStream(this.lexer);
 

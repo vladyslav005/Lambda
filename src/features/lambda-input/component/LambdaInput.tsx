@@ -33,14 +33,14 @@ export default function LambdaInput() {
     }
   }, [monaco]);
 
-  function editorOnChange(value: any, event: any) {
+  async function editorOnChange(value: any, event: any) {
     if (editorContext.editorValue.trim() === value.trim())
       return;
 
     editorContext.setEditorValue(value);
 
     console.log(value);
-    const errors: Error[] | undefined = buildTree(value)
+    const errors: Error[] | undefined = await buildTree(value)
     setEditorErrors(errors)
   }
 

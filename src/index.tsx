@@ -5,7 +5,6 @@ import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
 import {EditorState} from "./features/lambda-input/context/EditorContext";
-import {Toaster} from "react-hot-toast";
 
 
 const root = ReactDOM.createRoot(

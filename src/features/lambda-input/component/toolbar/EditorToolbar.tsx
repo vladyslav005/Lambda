@@ -8,9 +8,6 @@ import {EditorContext} from "../../context/EditorContext";
 import toast from 'react-hot-toast';
 import {IconButton} from "../../../../common/components/button/IconButton";
 
-interface EditorToolbarProps {
-
-}
 
 export const EditorToolbar = () => {
   let iconSize = 20
@@ -20,11 +17,11 @@ export const EditorToolbar = () => {
 
   const handleClick = () => {
     if (isExpanded) {
-      controls.start("initial")
+      controls.start("initial").then()
       setIsExpanded(false)
 
     } else {
-      controls.start("show")
+      controls.start("show").then()
       setIsExpanded(true)
     }
   }
@@ -59,7 +56,7 @@ export const EditorToolbar = () => {
             </IconButton>
             <IconButton
                 onClick={() => {
-                  navigator.clipboard.writeText(editorContext.editorValue)
+                  navigator.clipboard.writeText(editorContext.editorValue).then()
                   toast('Editor content copied to clipboard', {duration: 1000,})
                 }}
             >
@@ -69,7 +66,7 @@ export const EditorToolbar = () => {
 
             <IconButton
                 onClick={() => {
-                  navigator.clipboard.writeText(editorContext.editorValue)
+                  navigator.clipboard.writeText(editorContext.editorValue).then()
                   editorContext.setEditorValue("")
                   editorContext.setTree(undefined)
                   editorContext.setErrors([])

@@ -45,7 +45,7 @@ export function useExportToLatex() {
       if (premises) {
 
         for (const premise of premises) {
-            traverseTree(premise);
+          traverseTree(premise);
         }
 
         latex += '\t\\RightLabel{$' + node.rule + '$}\n';
@@ -84,7 +84,7 @@ export function useExportToLatex() {
 
     const traverseTree = (node: ProofNode): void => {
       const premises: ProofNode[] | undefined =
-          node.isExpanded && node.expandedPremises ? node.expandedPremises : node.premises ;
+          node.isExpanded && node.expandedPremises ? node.expandedPremises : node.premises;
 
       if (premises) {
         if (premises.length > 5)

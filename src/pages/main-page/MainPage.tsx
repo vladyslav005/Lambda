@@ -2,9 +2,8 @@ import {ErrorOutput} from "../../features/error-output/component/ErrorOutput";
 import {HelpBar} from "../../features/helpbar/component/HelpBar";
 import React, {lazy, Suspense, useState} from "react";
 import {LoadingIndicator} from "../../common/components/loading/LoadingIndicator";
-import {Toaster} from "react-hot-toast";
 import {IconButton} from "../../common/components/button/IconButton";
-import {MdOutlineKeyboardDoubleArrowLeft, MdOutlineKeyboardDoubleArrowRight} from "react-icons/md";
+import {MdOutlineKeyboardDoubleArrowRight} from "react-icons/md";
 import {AnimatePresence, motion} from "framer-motion";
 
 const TreeFlat = lazy(() => import('../../features/tree/component/TreeFlat'))

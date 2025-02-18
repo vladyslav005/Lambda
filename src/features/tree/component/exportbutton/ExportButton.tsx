@@ -15,7 +15,7 @@ interface ExportButtonProps {
   treeHeight: number;
 }
 
-export const ExportButton = (props: ExportButtonProps) => {
+const ExportButton = (props: ExportButtonProps) => {
   const editorContext = useContext(EditorContext);
 
   const [bussproofsModal, setBussproofsModal] = useState(false)
@@ -42,7 +42,8 @@ export const ExportButton = (props: ExportButtonProps) => {
               : "not exported"}`)
       setEbproofLatex(`${editorContext.tree ? exportToLatex(editorContext.tree, showAliases) : " "}`)
     }
-  }, [showAliases, bussproofsModal, ebproofModal]);
+  }, [showAliases, bussproofsModal, ebproofModal,
+    editorContext.tree, isTreeExportableToBussproofs, exportToBussproofs, exportToLatex]);
 
   return (
       <>
@@ -96,3 +97,5 @@ export const ExportButton = (props: ExportButtonProps) => {
       </>
   )
 }
+
+export default ExportButton;

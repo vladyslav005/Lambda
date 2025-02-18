@@ -1,13 +1,14 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {lazy, Suspense, useContext, useEffect, useRef, useState} from "react";
 import {EditorContext} from "../../lambda-input/context/EditorContext";
-import { AiOutlineAim } from "react-icons/ai";
+import {AiOutlineAim} from "react-icons/ai";
 import {MapInteractionCSS} from 'react-map-interaction';
 import "./ProofTree.css"
 import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTreeUsingCss";
 import {MdFullscreen, MdFullscreenExit} from "react-icons/md";
 import {IconButton} from "../../../common/components/button/IconButton";
-import {ExportButton} from "./exportbutton/ExportButton";
 import {Checkbox} from "react-aria-components";
+
+const ExportButton = lazy(() => import('./exportbutton/ExportButton'))
 
 
 export default function TreeFlat() {
@@ -16,7 +17,7 @@ export default function TreeFlat() {
 
   const [showAliases, setShowAliases] = useState(false)
 
-  const treeContainerRef= useRef<HTMLDivElement | null> (null);
+  const treeContainerRef = useRef<HTMLDivElement | null>(null);
   const treeRef = useRef<HTMLDivElement | null>(null);
 
   const [treeContainerWidth, setTreeContainerWidth] = useState(0);
@@ -46,7 +47,7 @@ export default function TreeFlat() {
       setMap({
         value: {
           scale: scale,
-          translation: { x: centeredX, y: centeredY },
+          translation: {x: centeredX, y: centeredY},
         }
       });
     }
@@ -60,8 +61,8 @@ export default function TreeFlat() {
           setTreeContainerHeight(treeContainerRef.current.getBoundingClientRect().height);
         }
         if (treeRef.current) {
-          setTreeWidth(treeRef.current.getBoundingClientRect().width / map.value.scale );
-          setTreeHeight(treeRef.current.getBoundingClientRect().height / map.value.scale );
+          setTreeWidth(treeRef.current.getBoundingClientRect().width / map.value.scale);
+          setTreeHeight(treeRef.current.getBoundingClientRect().height / map.value.scale);
         }
       });
 
@@ -77,7 +78,7 @@ export default function TreeFlat() {
 
   return (
       <div ref={treeContainerRef}
-          className={`${fullScreen ? 'tree-flat-container-full-screen' : 'tree-flat-container'} ui-block `}
+           className={`${fullScreen ? 'tree-flat-container-full-screen' : 'tree-flat-container'} ui-block `}
       >
         <div className="tree-bx"
         >
@@ -100,19 +101,19 @@ export default function TreeFlat() {
             {!fullScreen && <MdFullscreen size={48}/>}
           </IconButton>
 
-          {!fullScreen &&
-              <ExportButton
-                  treeWidth={treeWidth}
-                  treeHeight={treeHeight}
-                  style={{
-                    position: 'absolute',
-                    right: '1rem',
-                    top: '1rem',
-                    zIndex: 9999,
-                  }}
-                  useAliases={showAliases}
-              />
-          }
+          <Suspense fallback={<div></div>}>
+            <ExportButton
+                treeWidth={treeWidth}
+                treeHeight={treeHeight}
+                style={{
+                  position: 'absolute',
+                  right: '1rem',
+                  top: '1rem',
+                  zIndex: 9999,
+                }}
+                useAliases={showAliases}
+            />
+          </Suspense>
 
           <IconButton onClick={centerTree} style={{
             position: 'absolute',

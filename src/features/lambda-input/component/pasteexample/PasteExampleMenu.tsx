@@ -34,12 +34,11 @@ export const PasteExampleMenu = (props: PasteExampleMenuProps) => {
           <Menu className="menu-bx">
 
             {examples.map((example, index) => (
-                <MenuItem className='menu-item' onAction={() => {
+                <MenuItem className='menu-item' onAction={async () => {
                   editorContext.setEditorValue(example.code);
-                  const errors: Error[] | undefined = buildTree(example.code)
+                  const errors: Error[] | undefined = await buildTree(example.code)
                   setEditorErrors(errors)
                 }}
-
                           key={example.name}>{example.name}</MenuItem>
             ))}
           </Menu>

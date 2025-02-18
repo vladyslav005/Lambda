@@ -1,9 +1,7 @@
 import "./style.css"
 import {Button} from "react-aria-components";
-import toast from "react-hot-toast";
-import {MdContentCopy} from "react-icons/md";
 import React from "react";
-import Ripples, {createRipples} from 'react-ripples'
+import {createRipples} from 'react-ripples'
 
 interface IconButtonProps {
   onClick?: () => void;
@@ -39,6 +37,5 @@ export const IconButton = (props : IconButtonProps) => {
           </MyRipples>
 
         </Button>
-
   )
 }

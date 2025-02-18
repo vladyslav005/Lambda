@@ -1,8 +1,3 @@
-import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
-import {CharStream, CommonTokenStream} from "antlr4";
-import LambdaCalcParser from "./antlr/LambdaCalcParser";
-import {TypeChecker} from "./typechecker/TypeChecker";
-import {TreeGenerator} from "./tree/TreeGenerator";
 import {InputAnalyzer} from "./AnalyzeInput";
 
 

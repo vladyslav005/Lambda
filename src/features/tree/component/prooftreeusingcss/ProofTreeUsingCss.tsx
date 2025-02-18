@@ -7,7 +7,7 @@ interface ProofTreeUsingCssProps {
   node: ProofNode,
   color?: string,
   showAliases: boolean
-  treeRef? : Ref<HTMLDivElement>;
+  treeRef?: Ref<HTMLDivElement>;
   treeHasChanged: boolean;
   setTreeHasChanged: (state: boolean) => void;
 }
@@ -20,7 +20,8 @@ export function ProofTreeComponentUsingCss(
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-      <div ref={isItRoot && treeRef ? treeRef : undefined} className="proof-node" style={{color: color ? color : "black"}}>
+      <div ref={isItRoot && treeRef ? treeRef : undefined} className="proof-node"
+           style={{color: color ? color : "black"}}>
 
         {node.premises && !isExpanded && (
             <div className={`premises`}

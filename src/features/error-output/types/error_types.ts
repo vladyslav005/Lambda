@@ -1,8 +1,6 @@
 export enum ErrorType {
-  WARNING = 'WARNING',
   ERROR = 'ERROR',
   INFO = 'INFO',
-
 }
 
 export interface ErrorMessageType {
