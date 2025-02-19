@@ -59,8 +59,8 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
 
   const centerTree = () => {
     let scale = map.value.scale;
-    if (Math.abs(treeWidth - pngWidth) > 5)
-      scale = pngWidth / (treeWidth + 200);
+    if (Math.abs(treeWidth - pngWidth) > 0 || Math.abs(treeHeight - pngHeight) > 0)
+      scale = Math.min(pngWidth / (treeWidth + 200), pngHeight / (treeHeight + 200));
 
     const centeredX = (pngWidth - (treeWidth + 75) * scale) / 2;
     const centeredY = (pngHeight - (treeHeight) * scale) / 2
@@ -206,7 +206,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 </div>
 
                 <div className="flex flex-row items-center ">
-                  <AiOutlineAim size={26}></AiOutlineAim>
+                  <AiOutlineAim size={26} style={{cursor: "pointer"}} onClick={() => centerTree()}></AiOutlineAim>
                   <IconButton className={"center-tree-btn"} onClick={() => centerTree()}>
                     Center tree
                   </IconButton>
@@ -230,7 +230,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                         await handleDownloadPng(pngDivRef);
 
                         setIsImageLoading(false);
-                        toast("Image downloaded", {duration: 1000});
+                        toast("File downloaded", {duration: 1000});
                       }, 500);
                     }}
 

@@ -50,8 +50,8 @@
     align-items: start;
     justify-content: start;
 
-    border-radius: 0.4rem;
-    border: 3px solid var(--Schemes-Primary, #65558F);
+    border-radius: 0.2rem;
+    border: 2px solid var(--Schemes-Primary, #65558F);
 }
 
 .png-div {
@@ -159,4 +159,8 @@
 
 .center-tree-btn {
     padding: 0.5rem;
+}
+
+.export-button:hover {
+    transform: scale(1.1);
 }

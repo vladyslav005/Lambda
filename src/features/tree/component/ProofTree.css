@@ -115,6 +115,7 @@
 }
 
 .react-aria-Switch {
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.571rem;

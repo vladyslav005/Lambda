@@ -38,8 +38,8 @@ export default function TreeFlat() {
     if (treeContainerRef.current && treeRef.current) {
       let scale = map.value.scale;
 
-      if (Math.abs(treeWidth - treeContainerWidth) > 10)
-        scale = treeContainerWidth / (treeWidth + 200);
+      if (Math.abs(treeWidth - treeContainerWidth) > 0 || Math.abs(treeHeight - treeContainerHeight) > 0)
+        scale = Math.min(treeContainerWidth / (treeWidth + 200), treeContainerHeight / (treeHeight + 200));
 
       const centeredX = (treeContainerWidth - (treeWidth + 75) * scale) / 2;
       const centeredY = (treeContainerHeight - (treeHeight) * scale) / 2;
