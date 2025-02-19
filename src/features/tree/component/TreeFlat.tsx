@@ -6,7 +6,7 @@ import "./ProofTree.css"
 import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTreeUsingCss";
 import {MdFullscreen, MdFullscreenExit} from "react-icons/md";
 import {IconButton} from "../../../common/components/button/IconButton";
-import {Checkbox} from "react-aria-components";
+import {Checkbox, Switch} from "react-aria-components";
 
 const ExportButton = lazy(() => import('./exportbutton/ExportButton'))
 
@@ -122,7 +122,7 @@ export default function TreeFlat() {
           }}>
             <AiOutlineAim size={26}></AiOutlineAim>
           </IconButton>
-          {editorContext.aliasesPresent && <Checkbox
+          {editorContext.aliasesPresent && <Switch
               style={{
                 position: 'absolute',
                 left: '1rem',
@@ -132,13 +132,10 @@ export default function TreeFlat() {
               defaultSelected={showAliases}
               onChange={(isChecked) => setShowAliases(isChecked)}
           >
-              <div className="checkbox">
-                  <svg viewBox="0 0 18 18" aria-hidden="true">
-                      <polyline points="1 9 7 14 15 4"/>
-                  </svg>
-              </div>
-              Show aliases
-          </Checkbox>}
+              <div className="indicator" />
+
+              Type aliases
+          </Switch>}
 
           {!editorContext.tree &&
               <div className="tree-info-bx">

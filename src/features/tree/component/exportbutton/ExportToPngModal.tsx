@@ -7,7 +7,7 @@ import {
   Slider,
   SliderOutput,
   SliderThumb,
-  SliderTrack
+  SliderTrack, Switch
 } from "react-aria-components";
 import toast, {Toaster} from "react-hot-toast";
 import {IconButton} from "../../../../common/components/button/IconButton";
@@ -181,17 +181,14 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                   </SliderTrack>
                 </Slider>
 
-                {editorContext.aliasesPresent && <Checkbox
+                {editorContext.aliasesPresent && <Switch
                     style={{}}
                     onChange={(isChecked) => setShowAliases(isChecked)}
                 >
-                    <div className="checkbox">
-                        <svg viewBox="0 0 18 18" aria-hidden="true">
-                            <polyline points="1 9 7 14 15 4"/>
-                        </svg>
-                    </div>
-                    Show aliases
-                </Checkbox>}
+                    <div className="indicator" />
+
+                    Type aliases
+                </Switch>}
 
               </div>
 
