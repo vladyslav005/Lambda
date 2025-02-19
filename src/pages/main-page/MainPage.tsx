@@ -1,6 +1,6 @@
 import {ErrorOutput} from "../../features/error-output/component/ErrorOutput";
 import {HelpBar} from "../../features/helpbar/component/HelpBar";
-import React, {lazy, Suspense, useState} from "react";
+import React, {lazy, Suspense, useEffect, useState} from "react";
 import {LoadingIndicator} from "../../common/components/loading/LoadingIndicator";
 import {IconButton} from "../../common/components/button/IconButton";
 import {MdOutlineKeyboardDoubleArrowRight} from "react-icons/md";
@@ -13,7 +13,11 @@ const LambdaInput = lazy(() => import('../../features/lambda-input/component/Lam
 export function MainPage() {
 
   const [sidebarHidden, setSidebarHidden] = useState(false)
+  const [firstRender, setFirstRender] = useState(true);
 
+  useEffect(() => {
+    setFirstRender(false);
+  }, []);
 
   return (
       <div className="main-page flex flex-row relative">
@@ -39,18 +43,11 @@ export function MainPage() {
           </IconButton>
         </div>
 
-
-
         <AnimatePresence mode="wait">
           {!sidebarHidden &&
               <motion.div className="flex flex-col sidebar"
-                  initial={{
-                    x:0
-                  }}
-                  animate={{
-                    x: [400, 0]
-
-                  }}
+                  initial={firstRender ? false : { x: 400 }}
+                  animate={{x: [400, 0]}}
                   transition={{
                     duration: 0.4,
                     ease: "easeInOut",
@@ -64,13 +61,9 @@ export function MainPage() {
                     position: "relative",
                   }}
               >
-                {/*<div className="flex flex-col sidebar relative"*/}
-                {/*     style={{flexGrow: 1}}*/}
-                {/*>*/}
-                  <ErrorOutput></ErrorOutput>
 
+                  <ErrorOutput></ErrorOutput>
                   <HelpBar></HelpBar>
-                {/*</div>*/}
               </motion.div>
           }
         </AnimatePresence>
