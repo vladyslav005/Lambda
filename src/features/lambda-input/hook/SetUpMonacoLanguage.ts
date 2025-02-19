@@ -3,7 +3,7 @@ export function setUpMonacoLanguage(monaco: any) {
 
   let keywords: string[] = [
     "as", "case", "of", "if", "then", "else", "inl", "inr", "nil",
-    "isnil", "head", "tail", "cons"
+    "isnil", "head", "tail", "cons", "typedef"
   ];
   monaco.languages.setMonarchTokensProvider("lambda", {
     keywords,
@@ -184,6 +184,14 @@ export function setUpMonacoLanguage(monaco: any) {
       );
 
       const suggestions = [
+        {
+          label: 'typedef',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: 'typedef ',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'typedef',
+          range: wordRange,
+        },
         {
           label: 'true',
           kind: monaco.languages.CompletionItemKind.Text,

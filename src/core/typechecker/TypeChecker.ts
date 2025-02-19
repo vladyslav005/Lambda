@@ -126,37 +126,52 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return this.visitChildren(ctx);
   };
 
-  visitGlobalFunctionDeclaration = (ctx: GlobalFunctionDeclarationContext): string => {
+  visitGlobalFunctionDeclaration = (ctx: GlobalFunctionDeclarationContext): void => {
     let id: string = ctx.getChild(0).getText();
 
     const body = ctx.term();
     const bodyType = this.visit(body);
-
-    if (!(body instanceof LambdaAbstractionContext || body instanceof InjectionContext || body instanceof LeftRightInjContext)) {
-      if (ctx.getChildCount() !== 6)
-        throw new TypeError("Provide explicit type declaration", getTokenLocation(ctx))
-
-      const declaredType = this.decodeAlias(ctx.getChild(4).getText());
-
-      if (bodyType !== declaredType)
-        throw new TypeError(
-            `term ${body.getText()} is of type ${bodyType}, but declared type is ${declaredType}`,
-            getTokenLocation(ctx)
-        );
-
+    if (this._globalContext.isVariableInContext(id)) {
+      const varType = this.findType(id, ctx.getChild(0))
+      console.warn(varType)
+      const bodyType = this.findType('', body)
+      if (bodyType !== varType) {
+        throw new TypeError(`Cant assign term of type '${bodyType}' to variable of type '${varType}'`, getTokenLocation(ctx))
+      }
     }
+    else {
+      if (!(body instanceof LambdaAbstractionContext || body instanceof InjectionContext || body instanceof LeftRightInjContext)) {
+        if (ctx.getChildCount() !== 6)
+          throw new TypeError("Provide explicit type declaration", getTokenLocation(ctx))
 
-    this._globalContext.addVariable(id, bodyType, getTokenLocation(ctx), true, ctx);
+        const declaredType = this.decodeAlias(ctx.getChild(4).getText());
 
-    console.log("Visiting a global function declaration", ctx.getText() /*, id, declaredType*/);
+        if (bodyType !== declaredType)
+          throw new TypeError(
+              `term ${body.getText()} is of type ${bodyType}, but declared type is ${declaredType}`,
+              getTokenLocation(ctx)
+          );
 
-    return this.visitChildren(ctx);
+      }
+
+      this._globalContext.addVariable(id, bodyType, getTokenLocation(ctx), true, ctx);
+
+      console.log("Visiting a global function declaration", ctx.getText() /*, id, declaredType*/);
+    }
   };
 
   visitTypeAlias = (ctx: TypeAliasContext): void => {
     console.log("Visiting an alias", ctx.getText());
+    const type = ctx.type_(1).getText()
+    const alias = ctx.type_(0).getText();
 
-    this._aliasContext.addVariable(ctx.type_(0).getText(), ctx.type_(1).getText(), getTokenLocation(ctx));
+    const regex = new RegExp(`\\b(${alias})\\b`, "g");
+    if (type.match(regex)) {
+      throw new TypeError(`Recursive types are not supported: ${type}`,
+          getTokenLocation(ctx));
+    }
+
+    this._aliasContext.addVariable(alias, type, getTokenLocation(ctx));
   };
 
   visitAddition = (ctx: AdditionContext): string => {
