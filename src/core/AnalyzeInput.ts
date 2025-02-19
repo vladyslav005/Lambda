@@ -32,7 +32,8 @@ export class InputAnalyzer {
   }
 
   public analyzeInput(input: string) {
-    input = input.replaceAll(/^\s*\/\/.*$/gm, "") // remove comments
+    input = input.replaceAll(/\/\/.*$/gm, "") // remove comments
+
 
     this.input = input;
     this.lexer = new LambdaCalcLexer(new CharStream(input))

@@ -188,11 +188,11 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     switch (operator) {
       case '>': {
-        texOperator = ">";
+        texOperator = "~";
         break;
       }
       case '<': {
-        texOperator = "<";
+        texOperator = "`";
         break;
       }
       case '>=': {
@@ -209,7 +209,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       }
     }
 
-    const cncns = this.generateConclusionStr(premises, ` ${texOperator} `)
+    const cncns = this.generateConclusionStr(premises, `${texOperator}`)
     const unwrappedConclusion = cncns.conclusion;
     const unwrappedConclusionWithAlias = cncns.conclusionWithAlias;
     const ruleName = `T-comp`
@@ -537,6 +537,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const recordTypeWithAlias = this.typeChecker.encodeToAlias(recordType);
     const projectionTypeWithAlias = this.typeChecker.encodeToAlias(projectionType);
+    console.warn(recordType)
 
     return {
       type: projectionType,
@@ -554,7 +555,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           [
             {
               type: projectionType,
-              wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash  ${record.getText()} : ${recordType}`,
+              wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${record.getText()} : ${recordType}`,
               wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash  ${record.getText()} : ${recordTypeWithAlias}`,
               unwrappedConclusion: ctx.getText(),
               unwrappedConclusionWithAlias: ctx.getText(),
