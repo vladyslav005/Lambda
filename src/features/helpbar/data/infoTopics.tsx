@@ -1,21 +1,16 @@
 import {HelpListItem} from "../component/ListItem/HelpListItem";
+import {GrammarTutorial} from "./tutorials/GrammarTutorial";
+import {ApplicationTutorial} from "./tutorials/ApplicationTutorial";
+import {AbstractionTutorial} from "./tutorials/AbstractionTutorial";
+import {RecordsAndTuplesTutorial} from "./tutorials/RecordsAndTuplesTutorial";
+import {VariantsTutorial} from "./tutorials/VariantsTutorial";
 
 const topics = [
-  <HelpListItem title={'Basics of lambda calculi'} description={'Base types and definitions'}>
-    Grammar
-  </HelpListItem>,
-  <HelpListItem title={'Grammar'} description={'Grammar of languge and structure of expressions'}>
-    Grammar
-  </HelpListItem>,
-  <HelpListItem title={'Application rule'} description={'Short description  of topic'}>
-    Application
-  </HelpListItem>,
-  <HelpListItem title={'Tuples and records'} description={'Short description  of topic'}>
-    Application
-  </HelpListItem>,
-  <HelpListItem title={'Variants'} description={'Short description  of topic'}>
-    Application
-  </HelpListItem>
+  <GrammarTutorial title={'Grammar'} description={'Grammar of language'}/>,
+  <AbstractionTutorial title={'Abstraction'} description={'Abstraction rule'}/>,
+  <ApplicationTutorial title={'Application'} description={'Application rule'}/>,
+  <RecordsAndTuplesTutorial title={'Records and tuples'} description={'Records, tuples, their projections'}/>,
+  <VariantsTutorial title={'Variants'} description={'Varians, case-of construction'}/>,
 ]
 
 export default topics;

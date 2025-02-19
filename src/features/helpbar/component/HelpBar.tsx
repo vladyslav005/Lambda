@@ -3,6 +3,7 @@ import {useState} from "react";
 import {Input} from "react-aria-components";
 import {IoMdSearch} from "react-icons/io";
 import topics from "../data/infoTopics";
+import "../data/tutorials/style.css"
 
 
 export function HelpBar() {

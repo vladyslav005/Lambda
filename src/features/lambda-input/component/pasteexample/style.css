@@ -39,6 +39,9 @@
     line-height: var(--Body-Large-Line-Height, 24px);
     letter-spacing: var(--Body-Large-Tracking, 0.5px);
     outline: none;
+
+    max-height: 300px;
+    overflow-y: scroll;
 }
 
 .menu-item {

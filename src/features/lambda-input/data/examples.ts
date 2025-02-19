@@ -61,7 +61,7 @@ john.name; john.age; // use record projection`
     name: "If condition",
     code: `typedef Human = <name: String, fullName: String, age: Nat>; // define type
 
-john : Human; // define var of type 'Human
+john : Human; // define var of type 'Human'
 
 showFullName = true : Bool;
 
@@ -86,7 +86,6 @@ isnil[A] list; // check if list is empty
 head[A] list; // get first element
 
 tail[A] list; // get list without first element
-
 `
   }
 
