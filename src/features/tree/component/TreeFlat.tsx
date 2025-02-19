@@ -6,7 +6,7 @@ import "./ProofTree.css"
 import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTreeUsingCss";
 import {MdFullscreen, MdFullscreenExit} from "react-icons/md";
 import {IconButton} from "../../../common/components/button/IconButton";
-import {Checkbox, Switch} from "react-aria-components";
+import {Switch} from "react-aria-components";
 
 const ExportButton = lazy(() => import('./exportbutton/ExportButton'))
 
@@ -86,7 +86,7 @@ export default function TreeFlat() {
               value={map.value}
               onChange={(value) => setMap({value})}
           >
-            {editorContext.tree && <ProofTreeComponentUsingCss
+            {editorContext.tree && <ProofTreeComponentUsingCss canMutateTree={true}
                 treeHasChanged={treeHasChanged} setTreeHasChanged={setTreeHasChanged}
                 treeRef={treeRef} showAliases={showAliases} node={editorContext.tree}/>}
           </MapInteractionCSS>

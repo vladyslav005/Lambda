@@ -14,6 +14,7 @@ interface ConclusionCenterProps {
   color: string | undefined;
   treeHasChanged: boolean;
   setTreeHasChanged: (state: boolean) => void;
+  canMutateTree?: boolean;
 }
 
 export const ConclusionCenter = (props: ConclusionCenterProps) => {
@@ -78,7 +79,10 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
   const handleClick = () => {
     if (props.node.isExpandable) {
       props.setIsExpanded(!props.isExpanded);
-      props.node.isExpanded = !props.node.isExpanded;
+
+      if (props.canMutateTree)
+        props.node.isExpanded = !props.node.isExpanded;
+
       props.setTreeHasChanged(!props.treeHasChanged)
       editorContext.editor.deltaDecorations(editorContext.editor.getModel().getAllDecorations()
           .filter((decorator: any) => decorator.options.className === "highlighted-code")

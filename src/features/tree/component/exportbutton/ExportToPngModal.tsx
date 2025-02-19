@@ -60,7 +60,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
   const centerTree = () => {
     let scale = map.value.scale;
     if (Math.abs(treeWidth - pngWidth) > 0 || Math.abs(treeHeight - pngHeight) > 0)
-      scale = Math.min(pngWidth / (treeWidth + 200), pngHeight / (treeHeight + 200));
+      scale = Math.min(pngWidth / (treeWidth + 100), pngHeight / (treeHeight + 50));
 
     const centeredX = (pngWidth - (treeWidth + 75) * scale) / 2;
     const centeredY = (pngHeight - (treeHeight) * scale) / 2
@@ -76,13 +76,14 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
   useEffect(() => {
     setTreeWidth(props.treeWidth);
     setTreeHeight(props.treeHeight);
+    setPngHeight(props.treeHeight);
+    setPngWidth(props.treeWidth + 90);
   }, [props.treeWidth, props.treeHeight]);
 
   useEffect(() => {
     if (treeRef.current) {
       const observer = new ResizeObserver(() => {
         if (treeRef.current) {
-
           setTreeWidth(treeRef.current.getBoundingClientRect().width / map.value.scale);
           setTreeHeight(treeRef.current.getBoundingClientRect().height / map.value.scale);
         }
@@ -150,6 +151,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 >
                   {editorContext.tree &&
                       <ProofTreeComponentUsingCss
+                          canMutateTree={false}
                           treeRef={treeRef}
                           treeHasChanged={treeHasChanged} setTreeHasChanged={setTreeHasChanged}
                           showAliases={showAliases} color={pngFontColor}
