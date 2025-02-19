@@ -1,5 +1,6 @@
 import {HelpListItem} from "../../component/ListItem/HelpListItem";
 import {CodeExample} from "./CodeExample";
+import RecordsAndTuplesTutorial from "./RecordsAndTuplesTutorial";
 
 interface GrammarTutorialProps {
   title: string;
@@ -89,3 +90,5 @@ case a of                       // use case of construction injection
       </HelpListItem>
   )
 }
+
+export default VariantsTutorial;

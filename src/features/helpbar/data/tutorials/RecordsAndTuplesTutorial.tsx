@@ -1,5 +1,6 @@
 import {HelpListItem} from "../../component/ListItem/HelpListItem";
 import {CodeExample} from "./CodeExample";
+import GrammarTutorial from "./GrammarTutorial";
 
 interface GrammarTutorialProps {
   title: string;
@@ -62,3 +63,4 @@ tuple.2; // access second element (var2)`}></CodeExample>
       </HelpListItem>
   )
 }
+export default RecordsAndTuplesTutorial;

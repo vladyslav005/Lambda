@@ -63,3 +63,5 @@ var1;`}></CodeExample>
       </HelpListItem>
   )
 }
+
+export default GrammarTutorial;

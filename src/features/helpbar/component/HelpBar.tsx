@@ -1,18 +1,25 @@
 import './HelpBar.css'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Input} from "react-aria-components";
 import {IoMdSearch} from "react-icons/io";
-import topics from "../data/infoTopics";
 import "../data/tutorials/style.css"
 
 
 export function HelpBar() {
+  const [topics, setTopics] = useState<any[]>([]);
+
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredTopics = topics.filter((topic) =>
       topic.props.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       topic.props.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  useEffect(() => {
+    import("../data/infoTopics").then((module) => {
+      setTopics(module.default);
+    });
+  }, []);
 
   return (
       <div className="help-bar ui-block ml-0 flex flex-col ">
@@ -41,7 +48,6 @@ export function HelpBar() {
           ) : (
               <p className="text-gray-500 text-center">No matching topics found.</p>
           )}
-
 
         </div>
       </div>

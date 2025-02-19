@@ -11,7 +11,7 @@ interface ListItemProps {
 }
 
 export const HelpListItem = (props: ListItemProps) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
 
   return (

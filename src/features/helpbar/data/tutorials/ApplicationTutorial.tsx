@@ -1,5 +1,6 @@
 import {HelpListItem} from "../../component/ListItem/HelpListItem";
 import {CodeExample} from "./CodeExample";
+import AbstractionTutorial from "./AbstractionTutorial";
 
 interface GrammarTutorialProps {
   title: string;
@@ -56,3 +57,5 @@ id 5;`}></CodeExample>
       </HelpListItem>
   )
 }
+
+export default ApplicationTutorial;

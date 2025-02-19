@@ -60,3 +60,5 @@ export const AbstractionTutorial = (props: GrammarTutorialProps) => {
       </HelpListItem>
   )
 }
+
+export default AbstractionTutorial

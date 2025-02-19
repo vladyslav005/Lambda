@@ -1,4 +1,3 @@
-import {HelpListItem} from "../component/ListItem/HelpListItem";
 import {GrammarTutorial} from "./tutorials/GrammarTutorial";
 import {ApplicationTutorial} from "./tutorials/ApplicationTutorial";
 import {AbstractionTutorial} from "./tutorials/AbstractionTutorial";

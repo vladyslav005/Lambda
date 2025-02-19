@@ -32,7 +32,9 @@ section {
 
 *::-webkit-scrollbar {
     width: 9px; /* width of the entire scrollbar */
+    height: 9px;
 }
+
 
 *::-webkit-scrollbar-track {
     background: transparent; /* color of the tracking area */
@@ -40,7 +42,7 @@ section {
 
 *::-webkit-scrollbar-thumb {
     background: #AEAEB2;
-    width: 8px;
+    /*width: 8px;*/
     border-radius: 20px; /* roundness of the scroll thumb */
 }
 
