@@ -9,9 +9,7 @@ import {AnimatePresence, motion} from "framer-motion";
 const TreeFlat = lazy(() => import('../../features/tree/component/TreeFlat'))
 const LambdaInput = lazy(() => import('../../features/lambda-input/component/LambdaInput'))
 
-
 export function MainPage() {
-
   const [sidebarHidden, setSidebarHidden] = useState(false)
   const [firstRender, setFirstRender] = useState(true);
 
@@ -24,11 +22,17 @@ export function MainPage() {
 
         <div className="main-pane flex flex-col relative" style={{flexGrow: 10}}>
 
-          <Suspense fallback={<div className="lambda-input ui-block flex-row justify-center items-center"><LoadingIndicator/></div>}>
+          <Suspense
+              fallback={
+                <div className="lambda-input ui-block flex-row justify-center items-center">
+                  <LoadingIndicator/>
+                </div>}
+          >
             <LambdaInput></LambdaInput>
           </Suspense>
 
-          <Suspense fallback={<div className="tree-flat-container ui-block"><LoadingIndicator/></div>}>
+          <Suspense
+              fallback={<div className="tree-flat-container ui-block"><LoadingIndicator/></div>}>
             <TreeFlat></TreeFlat>
           </Suspense>
           <IconButton className={`hide-sidebar-btn ${sidebarHidden ?  "rotated" : " "}`} style={{
@@ -53,15 +57,11 @@ export function MainPage() {
                     ease: "easeInOut",
                     times: [0 , .5, .7, .8, 1]
                   }}
-                  exit={{
-                    x:400
-                  }}
-
+                  exit={{x:400}}
                   style={{
                     position: "relative",
                   }}
               >
-
                   <ErrorOutput></ErrorOutput>
                   <HelpBar></HelpBar>
               </motion.div>

@@ -1,6 +1,5 @@
 import {HelpListItem} from "../../component/ListItem/HelpListItem";
 import {CodeExample} from "./CodeExample";
-import RecordsAndTuplesTutorial from "./RecordsAndTuplesTutorial";
 
 interface GrammarTutorialProps {
   title: string;
@@ -9,7 +8,7 @@ interface GrammarTutorialProps {
 
 export const VariantsTutorial = (props: GrammarTutorialProps) => {
   return (
-      <HelpListItem title={props.title} description={props.description} >
+      <HelpListItem title={props.title} description={props.description}>
         <h1 className="title">{props.title}</h1>
         <p className="paragraph">
           Variants are a powerful construct that allow you to represent
@@ -20,7 +19,8 @@ export const VariantsTutorial = (props: GrammarTutorialProps) => {
         <h3 className="subtitle">Binary Variants</h3>
 
         <p className="paragraph">
-          A binary variant can only contain two types and supports two types of injections: <b>left injection</b> (<code>inl</code>) and <b>right injection</b> (<code>inr</code>).
+          A binary variant can only contain two types and supports two types of injections: <b>left
+          injection</b> (<code>inl</code>) and <b>right injection</b> (<code>inr</code>).
           This is a simplified form of variants used to model two distinct possibilities.
         </p>
 
@@ -38,7 +38,7 @@ a = inl pa as Addr; // make injection
 
 case a of                // use case of construction injection
     inl x => x.firstlast
- || inr y => y.name;`} />
+ || inr y => y.name;`}/>
 
         <p className="paragraph">
           In this example, we define two types: <code>PhysicalAddr</code> and <code>VirtualAddr</code>.
@@ -70,7 +70,7 @@ a = [physical = pa] as Addr; // make injection
 
 case a of                       // use case of construction injection
      [physical = x] => x.firstlast
-  || [virtual = y] => y.name;`} />
+  || [virtual = y] => y.name;`}/>
 
         <p className="paragraph">
           In this case, the <code>Addr</code> type is a generalized variant defined by a sum of multiple types
@@ -84,8 +84,10 @@ case a of                       // use case of construction injection
         <h3 className="subtitle">Summary</h3>
 
         <p className="paragraph">
-          - <b>Binary variants</b> are limited to two types, where you can inject values using either <code>inl</code> (left) or <code>inr</code> (right).<br/>
-          - <b>Generalized variants</b> are more flexible, supporting any number of types and using a more structured injection syntax with labeled fields.
+          - <b>Binary variants</b> are limited to two types, where you can inject values using
+          either <code>inl</code> (left) or <code>inr</code> (right).<br/>
+          - <b>Generalized variants</b> are more flexible, supporting any number of types and using a more structured
+          injection syntax with labeled fields.
         </p>
       </HelpListItem>
   )

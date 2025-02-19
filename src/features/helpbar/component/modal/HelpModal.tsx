@@ -14,11 +14,12 @@ interface HelpModalProps {
 export const HelpModal = (props: HelpModalProps) => {
 
   return (
-      <Modal  isDismissable isOpen={props.modalOpen} onOpenChange={props.setModalOpen}>
+      <Modal isDismissable isOpen={props.modalOpen} onOpenChange={props.setModalOpen}>
         <div className="my-overlay"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  props.setModalOpen(false);}}>
+             onClick={(event) => {
+               event.stopPropagation();
+               props.setModalOpen(false);
+             }}>
         </div>
         <Toaster
             toastOptions={{

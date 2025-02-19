@@ -1,6 +1,5 @@
 import {HelpListItem} from "../../component/ListItem/HelpListItem";
 import {CodeExample} from "./CodeExample";
-import GrammarTutorial from "./GrammarTutorial";
 
 interface GrammarTutorialProps {
   title: string;
@@ -9,7 +8,7 @@ interface GrammarTutorialProps {
 
 export const RecordsAndTuplesTutorial = (props: GrammarTutorialProps) => {
   return (
-      <HelpListItem title={props.title} description={props.description} >
+      <HelpListItem title={props.title} description={props.description}>
         <h1 className="title">{props.title}</h1>
         <p className="paragraph">
           In this tutorial, we'll explore the usage of records,

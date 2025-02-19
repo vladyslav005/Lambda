@@ -49,11 +49,11 @@ const ExportButton = (props: ExportButtonProps) => {
       <>
         <MenuTrigger>
           <IconButton className="export-button"
-              style={{
-                ...props.style,
-                backgroundColor: "rgb(115,102,149)",
-                borderRadius: 16
-              }}
+                      style={{
+                        ...props.style,
+                        backgroundColor: "rgb(115,102,149)",
+                        borderRadius: 16
+                      }}
           >
             <MdDownload size={28} color="#ffff"/>
           </IconButton>

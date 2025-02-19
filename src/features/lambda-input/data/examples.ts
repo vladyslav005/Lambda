@@ -9,7 +9,7 @@ P = λ g: α -> α . (g x) : (α -> α) -> α;
 Q = λ h: α -> α . (h x) : (α -> α) -> α; 
 
 (N (M N (P (y))));`
-  },
+},
   {
     name: "Variants",
     code: `typedef PhysicalAddr = < firstlast : String, addr : String> ;
@@ -88,7 +88,6 @@ head[A] list; // get first element
 tail[A] list; // get list without first element
 `
   }
-
 
 
 ];

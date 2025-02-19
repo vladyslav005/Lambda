@@ -8,7 +8,7 @@ interface GrammarTutorialProps {
 
 export const GrammarTutorial = (props: GrammarTutorialProps) => {
   return (
-      <HelpListItem title={props.title} description={props.description} >
+      <HelpListItem title={props.title} description={props.description}>
         <h1 className="title">{props.title}</h1>
 
         <p className="paragraph">

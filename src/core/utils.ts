@@ -1,10 +1,10 @@
 import {CharStream, CommonTokenStream, ParserRuleContext, ParseTree} from "antlr4";
 import LambdaCalcParser, {
   GreekTypeContext,
+  ListTypeContext,
   ParenthesesContext,
   ParenTypeContext,
-  TypeContext,
-    ListTypeContext
+  TypeContext
 } from "./antlr/LambdaCalcParser";
 import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
 

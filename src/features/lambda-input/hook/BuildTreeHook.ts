@@ -5,8 +5,8 @@ import {EditorContext} from "../context/EditorContext";
 export function useBuildTree() {
   const editorContext = useContext(EditorContext);
 
-  const buildTree = async (value: string | undefined):Promise<Error[] | undefined> => {
-    const { InputAnalyzer } = await import("../../../core/AnalyzeInput");
+  const buildTree = async (value: string | undefined): Promise<Error[] | undefined> => {
+    const {InputAnalyzer} = await import("../../../core/AnalyzeInput");
 
     const analyzer = new InputAnalyzer();
 

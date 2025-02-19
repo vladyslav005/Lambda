@@ -87,8 +87,10 @@ export default function TreeFlat() {
               onChange={(value) => setMap({value})}
           >
             {editorContext.tree && <ProofTreeComponentUsingCss canMutateTree={true}
-                treeHasChanged={treeHasChanged} setTreeHasChanged={setTreeHasChanged}
-                treeRef={treeRef} showAliases={showAliases} node={editorContext.tree}/>}
+                                                               treeHasChanged={treeHasChanged}
+                                                               setTreeHasChanged={setTreeHasChanged}
+                                                               treeRef={treeRef} showAliases={showAliases}
+                                                               node={editorContext.tree}/>}
           </MapInteractionCSS>
           <IconButton className={"tree-full-screen-btn"} style={{
             position: fullScreen ? "fixed" : "absolute",
@@ -132,7 +134,7 @@ export default function TreeFlat() {
               defaultSelected={showAliases}
               onChange={(isChecked) => setShowAliases(isChecked)}
           >
-              <div className="indicator" />
+              <div className="indicator"/>
 
               Type aliases
           </Switch>}

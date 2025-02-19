@@ -1,5 +1,4 @@
 import {
-  Checkbox,
   Color,
   Dialog,
   Label,
@@ -7,7 +6,8 @@ import {
   Slider,
   SliderOutput,
   SliderThumb,
-  SliderTrack, Switch
+  SliderTrack,
+  Switch
 } from "react-aria-components";
 import toast, {Toaster} from "react-hot-toast";
 import {IconButton} from "../../../../common/components/button/IconButton";
@@ -187,7 +187,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                     style={{}}
                     onChange={(isChecked) => setShowAliases(isChecked)}
                 >
-                    <div className="indicator" />
+                    <div className="indicator"/>
 
                     Type aliases
                 </Switch>}

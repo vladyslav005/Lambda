@@ -138,8 +138,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       if (bodyType !== varType) {
         throw new TypeError(`Cant assign term of type '${bodyType}' to variable of type '${varType}'`, getTokenLocation(ctx))
       }
-    }
-    else {
+    } else {
       if (!(body instanceof LambdaAbstractionContext || body instanceof InjectionContext || body instanceof LeftRightInjContext)) {
         if (ctx.getChildCount() !== 6)
           throw new TypeError("Provide explicit type declaration", getTokenLocation(ctx))
