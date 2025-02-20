@@ -49,3 +49,5 @@ export const Topics = ({searchQuery}: TopicsProps) => {
       </div>
   )
 }
+
+export default Topics;

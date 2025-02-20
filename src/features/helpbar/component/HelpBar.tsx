@@ -1,11 +1,12 @@
 import './HelpBar.css'
-import {useContext, useState} from "react";
+import {lazy, Suspense, useContext, useState} from "react";
 import {Input} from "react-aria-components";
 import {IoMdSearch} from "react-icons/io";
 import "../data/tutorials/style.css"
-import {Topics} from "../data/infoTopics";
 import {ConfigurationContext} from "../../configurations/context/ConfigurationContext";
 import translations from "../../configurations/data/translations";
+
+const Topics = lazy(() => import("../data/infoTopics"))
 
 
 export function HelpBar() {
@@ -30,7 +31,9 @@ export function HelpBar() {
 
         </div>
 
-        <Topics searchQuery={searchQuery}/>
+        <Suspense>
+          <Topics searchQuery={searchQuery}/>
+        </Suspense>
       </div>
   )
 }
