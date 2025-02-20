@@ -1,12 +1,14 @@
 import {IconButton} from "../../../../common/components/button/IconButton";
 import {MdContentCopy} from "react-icons/md";
-import React from "react";
+import React, {useContext} from "react";
 import toast from "react-hot-toast";
+import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
+import translations from "../../../configurations/data/translations";
 
 
 export const CodeExample = ({code}: { code: string }) => {
 
-
+  const confCtx = useContext(ConfigurationContext)
   return (
       <p className="code relative">
           <pre>
@@ -20,7 +22,7 @@ export const CodeExample = ({code}: { code: string }) => {
             }}
             onClick={() => {
               navigator.clipboard.writeText(code).then()
-              toast('Example copied to clipboard', {duration: 1000,})
+              toast(translations[confCtx.language].toast.exampleCopy, {duration: 1000,})
             }}
         >
           <MdContentCopy size={20}/>

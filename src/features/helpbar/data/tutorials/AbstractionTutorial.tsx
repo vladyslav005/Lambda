@@ -1,5 +1,8 @@
 import {HelpListItem} from "../../component/ListItem/HelpListItem";
 import {CodeExample} from "./CodeExample";
+import {useContext} from "react";
+import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
+import translations from "../../../configurations/data/translations";
 
 interface GrammarTutorialProps {
   title: string;
@@ -7,53 +10,64 @@ interface GrammarTutorialProps {
 }
 
 export const AbstractionTutorial = (props: GrammarTutorialProps) => {
+  const confCtx = useContext(ConfigurationContext)
+
   return (
       <HelpListItem title={props.title} description={props.description}>
         <h1 className="title">{props.title}</h1>
 
-        <p className="paragraph">
-          The <em>abstraction rule</em> is used to define functions.
-          In simple terms, an abstraction introduces a variable and specifies the
-          function’s input type and output type.
+        <p className="paragraph"
+          dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.abstraction.p1}}
+        >
+
         </p>
 
-        <p className="paragraph">
-          Consider the following function:
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.abstraction.p2}}
+        >
+
         </p>
 
         <CodeExample code={`id = λ x: Nat . x : Nat -> Nat;`}></CodeExample>
 
-        <p className="paragraph">
-          This defines a function <code>id</code> that takes an argument <code>x</code> of type <code>Nat</code>
-          and returns <code>x</code>. The type annotation <code>Nat -&gt; Nat</code> means that this function
-          takes a natural number and returns a natural number.
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.abstraction.p3}}
+        >
+
         </p>
 
-        <p className="paragraph">
-          More generally, function abstraction follows this pattern:
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.abstraction.p4}}
+        >
+
         </p>
 
         <CodeExample code={`λ x: A . t : A -> B;`}></CodeExample>
 
-        <p className="paragraph">
-          Here, <code>x</code> is a variable of type <code>A</code>, and <code>t</code> is an expression
-          that returns a value of type <code>B</code>. The function itself has type <code>A -&gt; B</code>.
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.abstraction.p5}}
+        >
+
         </p>
 
-        <p className="paragraph">
-          Let's define another function that adds one to a number:
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.abstraction.p6}}
+        >
+
         </p>
 
         <CodeExample code={`addOne = λ x: Nat . x + 1 : Nat -> Nat;`}></CodeExample>
 
-        <p className="paragraph">
-          The abstraction rule ensures that this function is correctly typed:
-          it takes a natural number and returns a natural number.
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.abstraction.p7}}
+        >
+
         </p>
 
-        <p className="paragraph">
-          Try experimenting with different abstractions in the editor to see
-          how function definitions work in various cases.
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.abstraction.p8}}
+        >
+
         </p>
 
 

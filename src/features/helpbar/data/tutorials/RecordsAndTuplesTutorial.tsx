@@ -1,5 +1,8 @@
 import {HelpListItem} from "../../component/ListItem/HelpListItem";
 import {CodeExample} from "./CodeExample";
+import {useContext} from "react";
+import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
+import translations from "../../../configurations/data/translations";
 
 interface GrammarTutorialProps {
   title: string;
@@ -7,17 +10,22 @@ interface GrammarTutorialProps {
 }
 
 export const RecordsAndTuplesTutorial = (props: GrammarTutorialProps) => {
+  const confCtx = useContext(ConfigurationContext)
+
+
   return (
       <HelpListItem title={props.title} description={props.description}>
         <h1 className="title">{props.title}</h1>
-        <p className="paragraph">
-          In this tutorial, we'll explore the usage of records,
-          tuples, and how to access their values using projections.
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.recordsAndTuples.p1}}
+        >
+
         </p>
 
-        <p className="paragraph">
-          A record is a collection of named fields,
-          and a tuple is an ordered collection of values. You can define them as follows:
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.recordsAndTuples.p2}}
+        >
+
         </p>
 
         <CodeExample code={`typedef Human = <name: String, age: Nat>; // define type
@@ -26,16 +34,16 @@ john : Human; // define var of type 'Human'
 
 john.name; john.age; // use record projections`}></CodeExample>
 
-        <p className="paragraph">
-          In the example above, we define a type <code>Human</code> as a
-          record with fields <code>name</code> and <code>age</code>.
-          We then create a variable <code>john</code> of type <code>Human</code>
-          and access its fields using projections: <code>john.name</code> and <code>john.age</code>.
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.recordsAndTuples.p3}}
+        >
+
         </p>
 
-        <p className="paragraph">
-          Similarly, you can work with tuples, which are represented as an ordered collection of values.
-          Here's an example:
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.recordsAndTuples.p4}}
+        >
+
         </p>
 
         <CodeExample code={`var1 : A;
@@ -47,16 +55,16 @@ tuple;  // access entire tuple
 tuple.1; // access first element (var1)
 tuple.2; // access second element (var2)`}></CodeExample>
 
-        <p className="paragraph">
-          In this case, we define a tuple that combines two variables
-          <code>var1</code> and <code>var2</code>.
-          You can access the individual elements of the tuple using projections:
-          <code>tuple.1</code> for the first element and <code>tuple.2</code> for the second.
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.recordsAndTuples.p5}}
+        >
+
         </p>
 
-        <p className="paragraph">
-          These projections allow you to retrieve specific values from records and tuples,
-          enabling you to work with complex data structures in a simple and efficient way.
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.recordsAndTuples.p6}}
+        >
+
         </p>
 
       </HelpListItem>
