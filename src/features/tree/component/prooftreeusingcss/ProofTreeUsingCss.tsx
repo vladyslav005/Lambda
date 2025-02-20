@@ -2,6 +2,7 @@ import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import "./ProofTreeUsingCss.css"
 import {ConclusionCenter} from "./ConclusionCenter";
 import {Ref, useState} from "react";
+import React from "react";
 
 interface ProofTreeUsingCssProps {
   node: ProofNode,
@@ -29,15 +30,16 @@ export function ProofTreeComponentUsingCss(
                  style={{borderColor: color ? color : "black"}}
             >
               {node.premises.map((premise, index) => (
-                  <>
+                  <React.Fragment key={index}>
                     <ProofTreeComponentUsingCss
+                        key={`${premise.rule}-${premise.tokenLocation.join("-")}-${index}`}
                         canMutateTree={canMutateTree}
                         setTreeHasChanged={setTreeHasChanged} treeHasChanged={treeHasChanged}
                         showAliases={showAliases} color={color} node={premise}/>
                     {node.premises !== undefined && index !== node.premises.length - 1 && (
                         <div className="inter-proof"></div>
                     )}
-                  </>
+                  </React.Fragment>
               ))}
             </div>
         )}
@@ -47,15 +49,16 @@ export function ProofTreeComponentUsingCss(
                  style={{borderColor: color ? color : "black"}}
             >
               {node.expandedPremises.map((premise, index) => (
-                  <>
+                  <React.Fragment key={index}>
                     <ProofTreeComponentUsingCss
+                        key={index}
                         canMutateTree={canMutateTree}
                         treeHasChanged={treeHasChanged} setTreeHasChanged={setTreeHasChanged}
                         showAliases={showAliases} color={color} node={premise}/>
                     {node.expandedPremises !== undefined && index !== node.expandedPremises.length - 1 && (
                         <div className="inter-proof"></div>
                     )}
-                  </>
+                  </React.Fragment>
               ))}
             </div>
         )}
