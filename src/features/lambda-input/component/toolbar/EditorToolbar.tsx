@@ -7,6 +7,8 @@ import {motion, useAnimationControls} from "framer-motion";
 import {EditorContext} from "../../context/EditorContext";
 import toast from 'react-hot-toast';
 import {IconButton} from "../../../../common/components/button/IconButton";
+import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
+import translations from "../../../configurations/data/translations";
 
 
 export const EditorToolbar = () => {
@@ -14,6 +16,7 @@ export const EditorToolbar = () => {
   const controls = useAnimationControls();
   const editorContext = useContext(EditorContext);
 
+  const confContext = useContext(ConfigurationContext);
 
   const handleClick = () => {
     if (isExpanded) {
@@ -57,7 +60,7 @@ export const EditorToolbar = () => {
             <IconButton
                 onClick={() => {
                   navigator.clipboard.writeText(editorContext.editorValue).then()
-                  toast('Editor content copied to clipboard', {duration: 1000,})
+                  toast(translations[confContext.language].toast.editorContentCopy, {duration: 1000,})
                 }}
             >
               <MdContentCopy size={iconSize}/>
@@ -70,7 +73,7 @@ export const EditorToolbar = () => {
                   editorContext.setEditorValue("")
                   editorContext.setTree(undefined)
                   editorContext.setErrors([])
-                  toast('Editor content copied to clipboard', {duration: 1000,})
+                  toast(translations[confContext.language].toast.editorContentCopy, {duration: 1000,})
                 }}
             >
               <MdContentCut size={iconSize}/>

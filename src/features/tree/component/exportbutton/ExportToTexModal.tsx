@@ -83,7 +83,7 @@ export const ExportToTexModal = (props: ExportToEbpModalProps) => {
 
                   onClick={() => {
                     navigator.clipboard.writeText(props.tex)
-                    toast('LaTex code copied to clipboard', {duration: 1000,})
+                    toast(translations[confContext.language].toast.texCopy, {duration: 1000,})
                   }}
               >
                 <p>{translations[confContext.language].tree.exportTexCopy}</p>

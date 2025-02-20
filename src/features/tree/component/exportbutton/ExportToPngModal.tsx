@@ -236,7 +236,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                         await handleDownloadPng(pngDivRef);
 
                         setIsImageLoading(false);
-                        toast("File downloaded", {duration: 1000});
+                        toast(translations[confContext.language].toast.imgDownload, {duration: 1000});
                       }, 500);
                     }}
 

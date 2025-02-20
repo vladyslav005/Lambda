@@ -43,7 +43,14 @@ const translations = {
 
     conf: {
       interactiveMode: "Interactive Mode",
+    },
+
+    toast: {
+      editorContentCopy: "Editor content copied to clipboard",
+      texCopy: "LaTex code copied to clipboard",
+      imgDownload: "Image downloaded",
     }
+
   },
 
   sk: {
@@ -90,6 +97,12 @@ const translations = {
 
     conf: {
       interactiveMode: "Interaktívny režim",
+    },
+
+    toast: {
+      editorContentCopy: "Obsah editora skopírovaný do schránky",
+      texCopy: "LaTeX kód skopírovaný do schránky",
+      imgDownload: "Obrázok bol stiahnutý",
     }
   }
 
