@@ -32,8 +32,15 @@ export const Topics = ({searchQuery}: TopicsProps) => {
   ]
 
   const filteredTopics = topics.filter((topic) =>
-      topic.props.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      topic.props.description.toLowerCase().includes(searchQuery.toLowerCase())
+      topic.props.title
+          .toLowerCase()
+          .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+          .includes(searchQuery.toLowerCase()) ||
+      topic.props.description
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .includes(searchQuery.toLowerCase())
   );
 
   return (
