@@ -42,7 +42,7 @@ const translations = {
     },
 
     conf: {
-      interactiveMode: "Interactive Mode",
+      interactiveMode: "Interactive mode",
     },
 
     toast: {

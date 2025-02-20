@@ -1,4 +1,4 @@
-import {Checkbox, Dialog, Modal} from "react-aria-components";
+import {Checkbox, Dialog, Modal, Switch} from "react-aria-components";
 import toast, {Toaster} from "react-hot-toast";
 import {IconButton} from "../../../../common/components/button/IconButton";
 import {IoMdClose} from "react-icons/io";
@@ -22,8 +22,8 @@ export const ExportToTexModal = (props: ExportToEbpModalProps) => {
   const confContext = useContext(ConfigurationContext)
 
   return (
-      <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
-        <Dialog className="outline-0" style={{position: "relative"}}>
+      <Modal className="outline-0" isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
+        <Dialog style={{position: "relative"}}>
           <Toaster
               toastOptions={{
                 position: "top-center",
@@ -53,23 +53,20 @@ export const ExportToTexModal = (props: ExportToEbpModalProps) => {
           <div className="help-modal-content export-modal-content">
             <h1 className="modal-title">{translations[confContext.language].tree.preview}</h1>
 
-            <pre className="latex-code">
-              {`${props.tex}`}
-            </pre>
+            <div className="latex-code">
+              <pre>
+                {`${props.tex}`}
+              </pre>
+            </div>
 
             <div className="my-4 flex flex-row justify-between">
-              {editorContext.aliasesPresent && <Checkbox
+              {editorContext.aliasesPresent && <Switch
                   style={{}}
                   onChange={(isChecked) => props.setShowAliases(isChecked)}
-                  defaultSelected={props.showAliases}
               >
-                  <div className="checkbox">
-                      <svg viewBox="0 0 18 18" aria-hidden="true">
-                          <polyline points="1 9 7 14 15 4"/>
-                      </svg>
-                  </div>
+                  <div className="indicator"/>
                 {translations[confContext.language].tree.showAlias}
-              </Checkbox>}
+              </Switch>}
 
               {!editorContext.aliasesPresent && <div></div>}
 

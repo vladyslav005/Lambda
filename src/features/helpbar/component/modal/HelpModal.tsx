@@ -11,7 +11,7 @@ interface HelpModalProps {
   children?: React.ReactNode
 }
 
-export const HelpModal = (props: HelpModalProps) => {
+export const  HelpModal = (props: HelpModalProps) => {
 
   return (
       <Modal isDismissable isOpen={props.modalOpen} onOpenChange={props.setModalOpen}>
@@ -36,7 +36,7 @@ export const HelpModal = (props: HelpModalProps) => {
               }
             }}
         />
-        <Dialog className="outline-0" style={{position: "relative"}}>
+        <Dialog style={{position: "relative"}}>
           <div className="h-1"></div>
 
           <IconButton

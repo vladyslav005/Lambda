@@ -122,8 +122,8 @@ export default function TreeFlat() {
 
           <IconButton onClick={centerTree} style={{
             position: 'absolute',
-            bottom: '1rem',
-            left: '1rem',
+            bottom: '1.4rem',
+            left: '1.4rem',
           }}>
             <AiOutlineAim size={26}></AiOutlineAim>
           </IconButton>

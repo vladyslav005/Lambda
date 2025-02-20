@@ -1,26 +1,26 @@
 .my-overlay {
     position: absolute;
-
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: -1;
     background: transparent;
+    outline: none;
 }
 
 .react-aria-ModalOverlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     height: var(--visual-viewport-height);
     background: rgba(0, 0, 0, 0.26);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 10000;
-
+    outline: none;
     inset: 0;
     backdrop-filter: blur(1px);
 
@@ -31,6 +31,10 @@
     &[data-exiting] {
         animation: modal-fade 150ms reverse ease-in;
     }
+}
+
+.react-aria-Dialog {
+    outline: none !important;
 }
 
 .react-aria-Modal {

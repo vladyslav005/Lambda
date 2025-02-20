@@ -19,27 +19,29 @@
 }
 
 .latex-code {
+    text-wrap: nowrap;
+    display: block;
     border: 1px #000000 solid;
     padding: 2rem;
     border-radius: 0.4rem;
     color: #000000;
     background: var(--Schemes-Surface, #FEF7FF);
+    overflow: scroll;
 
     max-height: 600px;
-    overflow: auto;
 }
 
 .export-modal-content {
     min-height: fit-content;
-    max-height: 80vh;
+    max-height: 75vh;
     /*max-width: none;*/
-    height: fit-content !important;
+    /*height: fit-content !important;*/
     overflow-y: auto;
     overflow-x: clip !important;
 }
 
 .png-bx {
-    max-height: 400px;
+    /*max-height: 400px;*/
     min-height: 400px;
 
     width: 100%;
@@ -164,3 +166,4 @@
 .export-button:hover {
     transform: scale(1.1);
 }
+
