@@ -52,7 +52,7 @@ interface EditorProviderProps {
   children: React.ReactNode;
 }
 
-export const EditorState = (props: EditorProviderProps) => {
+export const EditorContextProvider = (props: EditorProviderProps) => {
   const [editorValue, setEditorValue] = useState<string>('');
   const [tree, setTree] = useState<ProofNode | undefined>(undefined);
   const [errors, setErrors] = useState<Error[] | undefined>(undefined);

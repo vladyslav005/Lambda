@@ -5,6 +5,8 @@ import {IoMdClose} from "react-icons/io";
 import {MdContentCopy} from "react-icons/md";
 import React, {useContext} from "react";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
+import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
+import translations from "../../../configurations/data/translations";
 
 
 interface ExportToEbpModalProps {
@@ -17,6 +19,7 @@ interface ExportToEbpModalProps {
 
 export const ExportToTexModal = (props: ExportToEbpModalProps) => {
   const editorContext = useContext(EditorContext);
+  const confContext = useContext(ConfigurationContext)
 
   return (
       <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
@@ -48,7 +51,7 @@ export const ExportToTexModal = (props: ExportToEbpModalProps) => {
             <IoMdClose size={20}/>
           </IconButton>
           <div className="help-modal-content export-modal-content">
-            <h1 className="modal-title">Preview</h1>
+            <h1 className="modal-title">{translations[confContext.language].tree.preview}</h1>
 
             <pre className="latex-code">
               {`${props.tex}`}
@@ -65,7 +68,7 @@ export const ExportToTexModal = (props: ExportToEbpModalProps) => {
                           <polyline points="1 9 7 14 15 4"/>
                       </svg>
                   </div>
-                  Use aliases
+                {translations[confContext.language].tree.showAlias}
               </Checkbox>}
 
               {!editorContext.aliasesPresent && <div></div>}
@@ -83,7 +86,7 @@ export const ExportToTexModal = (props: ExportToEbpModalProps) => {
                     toast('LaTex code copied to clipboard', {duration: 1000,})
                   }}
               >
-                <p>Copy to clipboard</p>
+                <p>{translations[confContext.language].tree.exportTexCopy}</p>
 
                 <MdContentCopy size={18}/>
               </IconButton>

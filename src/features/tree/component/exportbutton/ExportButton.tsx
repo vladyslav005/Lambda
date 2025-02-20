@@ -65,13 +65,13 @@ const ExportButton = (props: ExportButtonProps) => {
                             onAction={() => {
                               setBussproofsModal(true)
                             }}
-                  >LaTeX using bussproofs</MenuItem>}
+                  >LaTeX, bussproofs</MenuItem>}
 
               <MenuItem className="menu-item"
                         onAction={() => {
                           setEbproofModal(true)
                         }}
-              >LaTeX using ebproof</MenuItem>
+              >LaTeX, ebproof</MenuItem>
               <MenuItem className="menu-item"
                         onAction={() => {
                           setPngModal(true)

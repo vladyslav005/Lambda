@@ -22,6 +22,8 @@ import {EditorContext} from "../../../lambda-input/context/EditorContext";
 // @ts-ignore
 import rollingGif from "../../../../assets/rolling.gif"
 import {AiOutlineAim} from "react-icons/ai";
+import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
+import translations from "../../../configurations/data/translations";
 
 interface ExportToEbpModalProps {
   isOpen: boolean;
@@ -31,6 +33,8 @@ interface ExportToEbpModalProps {
 }
 
 export const ExportToPngModal = (props: ExportToEbpModalProps) => {
+  const confContext = useContext(ConfigurationContext)
+
   const editorContext = useContext(EditorContext);
 
   const [showAliases, setShowAliases] = useState(false)
@@ -132,7 +136,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
 
           <div className="help-modal-content flex flex-col relative export-modal-content justify-between">
 
-            <h1 className="modal-title">Preview</h1>
+            <h1 className="modal-title">{translations[confContext.language].tree.preview}</h1>
 
             <div ref={pngBoxRef} className="png-bx relative">
               <div className="png-div" ref={pngDivRef}
@@ -166,7 +170,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 <Slider defaultValue={pngWidth} maxValue={4096}
                         onChange={(width: number) => setPngWidth(width)}
                 >
-                  <Label>Width (px)</Label>
+                  <Label>{translations[confContext.language].tree.width} (px)</Label>
                   <SliderOutput/>
                   <SliderTrack>
                     <SliderThumb/>
@@ -176,7 +180,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 <Slider defaultValue={pngHeight} maxValue={1024}
                         onChange={(height: number) => setPngHeight(height)}
                 >
-                  <Label>Height (px)</Label>
+                  <Label>{translations[confContext.language].tree.height} (px)</Label>
                   <SliderOutput/>
                   <SliderTrack>
                     <SliderThumb/>
@@ -188,21 +192,21 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                     onChange={(isChecked) => setShowAliases(isChecked)}
                 >
                     <div className="indicator"/>
-
-                    Type aliases
+                  {translations[confContext.language].tree.showAlias}
                 </Switch>}
 
               </div>
 
               <div className="flex flex-col justify-between gap-4">
                 <div>
-                  <MyColorPicker defaultValue={pngFontColor} label={"Font color"}
+                  <MyColorPicker defaultValue={pngFontColor} label={translations[confContext.language].tree.fontColor}
                                  onChange={(color: Color) => setPngFontColor(color.toString())}
                   ></MyColorPicker>
                 </div>
 
                 <div>
-                  <MyColorPicker defaultValue={pngBackgroundColor} label={"Fill color"}
+                  <MyColorPicker defaultValue={pngBackgroundColor}
+                                 label={translations[confContext.language].tree.fillColor}
                                  onChange={(color: Color) => setPngBackgroundColor(color.toString())}
                   ></MyColorPicker>
                 </div>
@@ -210,7 +214,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 <div className="flex flex-row items-center ">
                   <AiOutlineAim size={26} style={{cursor: "pointer"}} onClick={() => centerTree()}></AiOutlineAim>
                   <IconButton className={"center-tree-btn"} onClick={() => centerTree()}>
-                    Center tree
+                    {translations[confContext.language].tree.centerTree}
                   </IconButton>
                 </div>
               </div>
@@ -237,7 +241,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                     }}
 
                 >
-                  <p>Download image</p>
+                  <p>{translations[confContext.language].tree.exportImg}</p>
 
                   <IoMdDownload size={18}/>
                 </IconButton>

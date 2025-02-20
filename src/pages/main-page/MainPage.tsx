@@ -5,6 +5,7 @@ import {LoadingIndicator} from "../../common/components/loading/LoadingIndicator
 import {IconButton} from "../../common/components/button/IconButton";
 import {MdOutlineKeyboardDoubleArrowRight} from "react-icons/md";
 import {AnimatePresence, motion} from "framer-motion";
+import {Configurations} from "../../features/configurations/component/Configurations";
 
 const TreeFlat = lazy(() => import('../../features/tree/component/TreeFlat'))
 const LambdaInput = lazy(() => import('../../features/lambda-input/component/LambdaInput'))
@@ -63,6 +64,8 @@ export function MainPage() {
                   }}
               >
                   <ErrorOutput></ErrorOutput>
+                  <Configurations></Configurations>
+
                   <HelpBar></HelpBar>
               </motion.div>
           }

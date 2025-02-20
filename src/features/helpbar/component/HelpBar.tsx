@@ -1,26 +1,16 @@
 import './HelpBar.css'
-import {useEffect, useState} from "react";
+import {useContext, useState} from "react";
 import {Input} from "react-aria-components";
 import {IoMdSearch} from "react-icons/io";
 import "../data/tutorials/style.css"
+import {Topics} from "../data/infoTopics";
+import {ConfigurationContext} from "../../configurations/context/ConfigurationContext";
+import translations from "../../configurations/data/translations";
 
 
 export function HelpBar() {
-  const [topics, setTopics] = useState<any[]>([]);
-
   const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredTopics = topics.filter((topic) =>
-      topic.props.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      topic.props.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  useEffect(() => {
-    import("../data/infoTopics").then((module) => {
-      setTopics(module.default);
-    });
-  }, []);
-
+  const confContext = useContext(ConfigurationContext)
   return (
       <div className="help-bar ui-block ml-0 flex flex-col ">
 
@@ -29,7 +19,7 @@ export function HelpBar() {
           <Input
               className="search-input"
               type="text"
-              placeholder="Search topics..."
+              placeholder={translations[confContext.language].helpBar.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -40,16 +30,7 @@ export function HelpBar() {
 
         </div>
 
-        <div className="list px-7 mx-1 my-4 flex flex-col gap-4">
-          {filteredTopics.length > 0 ? (
-              filteredTopics.map((topic, index) => (
-                  <div key={index}>{topic}</div>
-              ))
-          ) : (
-              <p className="text-gray-500 text-center">No matching topics found.</p>
-          )}
-
-        </div>
+        <Topics searchQuery={searchQuery}/>
       </div>
   )
 }

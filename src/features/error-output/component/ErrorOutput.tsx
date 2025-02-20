@@ -3,10 +3,12 @@ import {ErrorType} from "../types/error_types";
 import {useContext} from "react";
 import {EditorContext} from "../../lambda-input/context/EditorContext";
 import './ErrorOutput.css'
+import {ConfigurationContext} from "../../configurations/context/ConfigurationContext";
+import translations from "../../configurations/data/translations";
 
 export function ErrorOutput() {
   const editorContext = useContext(EditorContext)
-
+  const confContext = useContext(ConfigurationContext);
 
   return (
       <div className="error-output ui-block">
@@ -17,7 +19,7 @@ export function ErrorOutput() {
                   type: ErrorType.INFO,
                   color: "#226303",
                   background: "#e6f9dc",
-                  message: 'There you\'ll see the errors'
+                  message: translations[confContext.language].error.info
                 }}/>
         }
 

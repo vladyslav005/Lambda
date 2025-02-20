@@ -1,5 +1,5 @@
-const examples = [{
-  name: "Application",
+const examples: { name: string, code: string }[] = [{
+  name: "application",
   code: `x : α;
 y : α -> α;
 
@@ -11,7 +11,7 @@ Q = λ h: α -> α . (h x) : (α -> α) -> α;
 (N (M N (P (y))));`
 },
   {
-    name: "Variants",
+    name: "variants",
     code: `typedef PhysicalAddr = < firstlast : String, addr : String> ;
 typedef VirtualAddr = <name : String, email : String>;
 
@@ -25,7 +25,7 @@ case a of                       // use case of construction injection
   || [virtual = y] => y.name;`
   },
   {
-    name: "Bianry variants",
+    name: "binaryVariants",
     code: `typedef PhysicalAddr = < firstlast : String, addr : String>;
 typedef VirtualAddr = <name : String, email : String>;
 
@@ -39,7 +39,7 @@ case a of                // use case of construction injection
  || inr y => y.name;`
   },
   {
-    name: "Tuples",
+    name: "tuples",
     code: `var1 : A;
 var2 : B;
 
@@ -50,7 +50,7 @@ tuple.1;
 tuple.2;`
   },
   {
-    name: "Records",
+    name: "records",
     code: `typedef Human = <name: String, age: Nat>; // define type
 
 john : Human; // define var of type 'Human'
@@ -58,7 +58,7 @@ john : Human; // define var of type 'Human'
 john.name; john.age; // use record projection`
   },
   {
-    name: "If condition",
+    name: "ifCondition",
     code: `typedef Human = <name: String, fullName: String, age: Nat>; // define type
 
 john : Human; // define var of type 'Human'
@@ -72,7 +72,7 @@ else
 ;`
   },
   {
-    name: "Lists",
+    name: "lists",
     code: `list = nil[A] : List A; // create an empty list
 
 var : A;

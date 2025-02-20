@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
-import {EditorState} from "./features/lambda-input/context/EditorContext";
+import {EditorContextProvider} from "./features/lambda-input/context/EditorContext";
+import {ConfigurationContextProvider} from "./features/configurations/context/ConfigurationContext";
 
 
 const root = ReactDOM.createRoot(
@@ -14,9 +15,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <BrowserRouter>
-      <EditorState>
-        <App/>
-      </EditorState>
+      <EditorContextProvider>
+        <ConfigurationContextProvider>
+          <App/>
+        </ConfigurationContextProvider>
+      </EditorContextProvider>
     </BrowserRouter>
 );
 

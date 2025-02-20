@@ -7,17 +7,18 @@ import {EditorContext} from "../../context/EditorContext";
 import {useBuildTree} from "../../hook/BuildTreeHook";
 import {useEditorErrorsHook} from "../../hook/EditorErrorsHook";
 import examples from "../../data/examples";
+import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
+import translations from "../../../configurations/data/translations";
 
 interface PasteExampleMenuProps {
   style?: React.CSSProperties;
 }
 
 export const PasteExampleMenu = (props: PasteExampleMenuProps) => {
-
   const editorContext = useContext(EditorContext);
   const {buildTree} = useBuildTree();
   const {setEditorErrors} = useEditorErrorsHook()
-
+  const confContext = useContext(ConfigurationContext);
 
   return (
       <MenuTrigger>
@@ -26,7 +27,7 @@ export const PasteExampleMenu = (props: PasteExampleMenuProps) => {
                      className={["my-button"].join(" ")}
 
           >
-            Paste example
+            {translations[confContext.language].editor.pasteExample}
             <IoMdArrowDropdown size={18}/>
           </MyRipples>
         </Button>
@@ -34,12 +35,21 @@ export const PasteExampleMenu = (props: PasteExampleMenuProps) => {
           <Menu className="menu-bx">
 
             {examples.map((example, index) => (
-                <MenuItem className='menu-item' onAction={async () => {
-                  editorContext.setEditorValue(example.code);
-                  const errors: Error[] | undefined = await buildTree(example.code)
-                  setEditorErrors(errors)
-                }}
-                          key={example.name}>{example.name}</MenuItem>
+                <MenuItem className='menu-item'
+                          onAction={async () => {
+                            editorContext.setEditorValue(example.code);
+                            if (confContext.interactive) {
+                              const errors: Error[] | undefined = await buildTree(example.code)
+                              setEditorErrors(errors)
+                            }
+                          }}
+                          key={example.name}>
+                  {
+                    translations[confContext.language]
+                        .editor
+                        .pasteExampleMenu[example.name as keyof typeof translations.en.editor.pasteExampleMenu]
+                  }
+                </MenuItem>
             ))}
           </Menu>
         </Popover>

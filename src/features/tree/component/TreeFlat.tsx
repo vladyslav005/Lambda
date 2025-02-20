@@ -7,11 +7,14 @@ import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTreeUsingCss"
 import {MdFullscreen, MdFullscreenExit} from "react-icons/md";
 import {IconButton} from "../../../common/components/button/IconButton";
 import {Switch} from "react-aria-components";
+import {ConfigurationContext} from "../../configurations/context/ConfigurationContext";
+import translations from "../../configurations/data/translations";
 
 const ExportButton = lazy(() => import('./exportbutton/ExportButton'))
 
-
 export default function TreeFlat() {
+  const confContext = useContext(ConfigurationContext);
+
   const editorContext = useContext(EditorContext);
   const [fullScreen, setFullScreen] = useState(false);
 
@@ -136,13 +139,13 @@ export default function TreeFlat() {
           >
               <div className="indicator"/>
 
-              Type aliases
+            {translations[confContext.language].tree.showAlias}
           </Switch>}
 
           {!editorContext.tree &&
               <div className="tree-info-bx">
                   <h1>
-                      Tree will be displayed here
+                    {translations[confContext.language].tree.treePlaceholder}
                   </h1>
               </div>
           }

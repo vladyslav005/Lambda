@@ -1,26 +1,6 @@
-@media only screen and (max-width: 1300px) {
-    /*.ui-block {*/
-    /*    margin: 2rem !important;*/
-    /*}*/
-    /*.main-page {*/
-    /*    flex-direction: column;*/
-    /*}*/
-    /*.lambda-input {*/
-    /*    margin-top: 0 !important;*/
-    /*    margin-right: 0 !important;*/
-    /*}*/
-    /*.help-bar {*/
-    /*    margin-right: 2rem !important;*/
-    /*}*/
-    /*.error-output {*/
-    /*    margin-top: 0 !important;*/
-    /*    margin-left: 2rem !important;*/
-    /*}*/
-    /*.tree-flat-container {*/
-    /*    margin-right: 0 !important;*/
-    /*    margin-top: 0 !important;*/
-    /*}*/
 
+:root {
+    --config-block-height: 100px;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -52,6 +32,7 @@
     .main-page {
         flex-direction: column-reverse;
         gap: 0 !important;
+        max-height: none !important;
     }
 
     .sidebar {
@@ -125,16 +106,34 @@
 }
 
 .sidebar {
-    gap: 2rem;
+    /*gap: 2rem;*/
     margin-bottom: 2rem;
     margin-top: 2rem;
     margin-right: 2rem;
 }
 
 .error-output {
-
-    min-height: calc((100% - 2rem) / 2);
+    min-height: calc((100%) / 2 - var(--config-block-height) - 3rem);
     flex-grow: 0;
+    margin-bottom: 1rem;
+}
+
+.configurations {
+    height: var(--config-block-height);
+    margin-bottom: 2rem;
+
+    margin-top: 1rem;
+    background: var(--Schemes-Surface-Container, #F3EDF7);
+
+}
+
+.help-bar {
+    min-height: calc((100%) / 2  - 1rem);
+
+    max-height: calc((100%) / 2 - 1rem );
+    /*margin-top: 1rem;*/
+
+    flex-grow: 1;
 }
 
 .sidebar {
@@ -144,29 +143,20 @@
 
 .main-pane {
     min-width: 400px;
-
 }
 
 .error-message {
     width: 90%;
-
 }
 
 .error-message p {
     text-wrap: pretty;
-
 }
 
-.help-bar {
-    min-height: calc((100% - 2rem) / 2);
-
-    max-height: calc((100% - 2rem) / 2);
-
-    flex-grow: 1;
-}
 
 .main-page {
     min-height: 100vh;
+    max-height: 100vh;
     background: var(--Schemes-Surface, #FEF7FF);
 }
 
