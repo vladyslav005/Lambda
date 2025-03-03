@@ -394,7 +394,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     type = this.decodeAlias(type);
 
-
     return type;
   };
 

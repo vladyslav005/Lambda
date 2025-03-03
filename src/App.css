@@ -183,3 +183,34 @@
 .rotated {
     transform: rotate(180deg);
 }
+
+
+.feedback-btn {
+    border-radius: 16px;
+    background: var(--Schemes-Surface-Container-High, #ECE6F0);
+
+    /* M3/Elevation Light/3 */
+    box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.30);
+
+
+    color: var(--M3-sys-light-primary, var(--Schemes-Primary, #65558F));
+    text-align: center;
+
+    /* M3/label/large */
+    font-family: var(--Label-Large-Font, Roboto);
+    /*font-size: var(--Label-Large-Size, 14px);*/
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--Label-Large-Line-Height, 20px); /* 142.857% */
+    letter-spacing: var(--Label-Large-Tracking, 0.1px);
+
+    padding: 1.2rem !important;
+    font-size: 1.1rem;
+}
+
+
+.feedback-btn:hover {
+    background: var(--Schemes-Surface-Container-High, #d8d2dd) !important;
+    transform: scale(1.05);
+
+}

@@ -97,7 +97,7 @@ export default function TreeFlat() {
           </MapInteractionCSS>
           <IconButton className={"tree-full-screen-btn"} style={{
             position: fullScreen ? "fixed" : "absolute",
-            zIndex: 9999,
+            zIndex: 999,
             bottom: '1rem',
             right: '1rem',
 
@@ -114,7 +114,7 @@ export default function TreeFlat() {
                   position: 'absolute',
                   right: '1rem',
                   top: '1rem',
-                  zIndex: 9999,
+                  zIndex: 999,
                 }}
                 useAliases={showAliases}
             />
@@ -132,7 +132,7 @@ export default function TreeFlat() {
                 position: 'absolute',
                 left: '1rem',
                 top: '1rem',
-                zIndex: 9999,
+                zIndex: 999,
               }}
               defaultSelected={showAliases}
               onChange={(isChecked) => setShowAliases(isChecked)}

@@ -166,9 +166,9 @@ const translations = {
           - <b>Generalized variants</b> are more flexible, supporting any number of types and using a more structured
           injection syntax with labeled fields.`,
       }
+    },
 
-    }
-
+    feedback: "Feedback",
   },
 
   sk: {
@@ -331,9 +331,11 @@ const translations = {
         - <b>Zovšeobecnené varianty</b> sú flexibilnejšie, podporujú ľubovoľný počet typov a používajú štruktúrovanú
         syntax s pomenovanými prvkámi.`,
       },
-    }
-  }
+    },
 
+    feedback: "Spätná väzba",
+
+  },
 }
 
 export default translations

@@ -1,11 +1,13 @@
 import {ErrorOutput} from "../../features/error-output/component/ErrorOutput";
 import {HelpBar} from "../../features/helpbar/component/HelpBar";
-import React, {lazy, Suspense, useEffect, useState} from "react";
+import React, {lazy, Suspense, useContext, useEffect, useState} from "react";
 import {LoadingIndicator} from "../../common/components/loading/LoadingIndicator";
 import {IconButton} from "../../common/components/button/IconButton";
-import {MdOutlineKeyboardDoubleArrowRight} from "react-icons/md";
+import {MdFeedback, MdOutlineKeyboardDoubleArrowRight} from "react-icons/md";
 import {AnimatePresence, motion} from "framer-motion";
 import {Configurations} from "../../features/configurations/component/Configurations";
+import {ConfigurationContext} from "../../features/configurations/context/ConfigurationContext";
+import translations from "../../features/configurations/data/translations";
 
 const TreeFlat = lazy(() => import('../../features/tree/component/TreeFlat'))
 const LambdaInput = lazy(() => import('../../features/lambda-input/component/LambdaInput'))
@@ -14,12 +16,27 @@ export function MainPage() {
   const [sidebarHidden, setSidebarHidden] = useState(false)
   const [firstRender, setFirstRender] = useState(true);
 
+  const confContext = useContext(ConfigurationContext)
+
   useEffect(() => {
     setFirstRender(false);
   }, []);
 
   return (
       <div className="main-page flex flex-row relative">
+        {!sidebarHidden && <IconButton className="feedback-btn"
+                     style={{
+                       position: "absolute",
+                       bottom: "1rem",
+                       right: "1rem",
+                       zIndex: 1100,
+                     }}
+                     onClick={() => {window.open("http://google.com", "_blank");
+                     }}
+        >
+          {translations[confContext.language].feedback}
+          <MdFeedback size={24}/>
+        </IconButton>}
 
         <div className="main-pane flex flex-col relative" style={{flexGrow: 10}}>
 
@@ -67,6 +84,8 @@ export function MainPage() {
                   <Configurations></Configurations>
 
                   <HelpBar></HelpBar>
+
+
               </motion.div>
           }
         </AnimatePresence>
