@@ -212,5 +212,4 @@
 .feedback-btn:hover {
     background: var(--Schemes-Surface-Container-High, #d8d2dd) !important;
     transform: scale(1.05);
-
 }

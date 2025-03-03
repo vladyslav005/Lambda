@@ -42,7 +42,7 @@ const translations = {
     },
 
     conf: {
-      interactiveMode: "Interactive mode",
+      interactiveMode: "Run after change",
     },
 
     toast: {
@@ -214,7 +214,7 @@ const translations = {
     },
 
     conf: {
-      interactiveMode: "Interaktívny režim",
+      interactiveMode: "Spustiť po zmene",
     },
 
     toast: {
