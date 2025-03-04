@@ -269,7 +269,7 @@ const translations = {
       },
       application: {
         p1: `<em>Pravidlo aplikácie</em> sa používa pri aplikovaní funkcie na argument.
-        Ak mátme funkciu a platný vstup, pravidlo aplikácie
+        Ak máme funkciu a platný vstup, pravidlo aplikácie
         skontroluje, či je možné funkciu použiť na daný argument.`,
         p2: `Pozrime sa na nasledujúcu funkciu:`,
         p3: `Tu je <code>id</code> funkcia, ktorá prijíma argument typu <code>Nat</code>
