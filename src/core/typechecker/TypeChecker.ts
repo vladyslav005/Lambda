@@ -506,8 +506,14 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     console.log("Visiting sequence", ctx.getText(), ctx.getChildCount());
 
     let returnType: string = '';
-    for (let i = 0; i < ctx.getChildCount(); i++) {
-      let childType = this.visit(ctx.getChild(i));
+    const childCount = ctx.term_list().length;
+    const termList = ctx.term_list();
+    for (let i = 0; i < childCount; i++) {
+      let childType = this.visit(termList[i]);
+      if (i !== childCount - 1 && childType !== "Unit")
+        throw new TypeError(`All terms in sequence, except for last, should have Unit type but got '${childType}'`,
+            getTokenLocation(ctx))
+
       returnType = childType ? childType : returnType;
     }
 

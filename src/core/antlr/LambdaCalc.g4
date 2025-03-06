@@ -5,7 +5,7 @@ expression
     ;
 
 terms
-    : (term SEMI (term SEMI)* (globalDecl)*)+ # Sequence
+    : (seqTerm=term SEMI (seqTerm=term SEMI)* (globalDecl)*)+ # Sequence
     ;
 
 globalDecl
