@@ -50,11 +50,11 @@ type
     ;
 
 list_op
-    : 'nil' '['type']'                 # ListNil
-    | 'cons' '['type']' term term       # ListCons
-    | 'isnil' '['type']' term           # ListIsNil
-    | 'tail' '['type']' term            # ListTail
-    | 'head' '['type']' term            # ListHead
+    : NIL LBRACK type RBRACK                # ListNil
+    | CONS LBRACK type RBRACK term term     # ListCons
+    | ISNIL LBRACK type RBRACK term         # ListIsNil
+    | TAIL LBRACK type RBRACK term          # ListTail
+    | HEAD LBRACK type RBRACK term          # ListHead
     ;
 
 
@@ -71,16 +71,26 @@ constant
 
 
 // Lexer rules
+
 LAMBDA         : 'λ' | '\\y' ;
 EQ             : '=';
+NIL   : 'nil';
+CONS  : 'cons';
+ISNIL : 'isnil';
+TAIL  : 'tail';
+HEAD  : 'head';
+
+LBRACK : '[';
+RBRACK : ']';
 ID             : [a-zA-Z_][a-zA-Z0-9_]* ;
 GREEK_TYPE     : [\u03B1-\u03C9] ;                 // Matches Greek lowercase letters: α (U+03B1) to ω (U+03C9)
 NATURAL_NUMBER : [1-9] [0-9]*;
 COMMA          : ',';
-ARROW          : '->' ;
+ARROW          : '->';
 COLON          : ':' ;
 DOT            : '.' ;
 SEMI           : ';' ;
 LPAREN         : '(' ;
 RPAREN         : ')' ;
+
 WS             : [ \t\r\n]+ -> skip ;

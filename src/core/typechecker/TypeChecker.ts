@@ -1047,7 +1047,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
           getTokenLocation(ctx));
 
     return listType;
-
   };
 
   visitListHead = (ctx: ListHeadContext): any => {

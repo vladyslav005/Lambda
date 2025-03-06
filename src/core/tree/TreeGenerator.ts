@@ -41,7 +41,6 @@ export interface ProofNode {
   unwrappedConclusion: string;
   unwrappedConclusionWithAlias: string;
   rule: string;
-  parentheses?: boolean
   context: ParserRuleContext;
   tokenLocation: number[],
   declarationLocation?: number[];
@@ -892,7 +891,9 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   visitParentheses = (ctx: ParenthesesContext): ProofNode => {
     const tmp: ProofNode = this.visit(ctx.getChild(1))
     console.log(ctx.getText())
-    tmp.parentheses = true
+    tmp.unwrappedConclusion = `(${tmp.unwrappedConclusion})`
+    tmp.unwrappedConclusionWithAlias = `(${tmp.unwrappedConclusionWithAlias})`
+
     return tmp;
   };
 
@@ -1084,10 +1085,10 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
   generateConclusionStr(premises: ProofNode[], separator?: string) {
     const unwrappedConclusion = premises
-        .map(p => p.parentheses ? `(${p.unwrappedConclusion})` : p.unwrappedConclusion)
+        .map(p => p.unwrappedConclusion)
         .join(separator ? separator : " ");
     const unwrappedConclusionWithAlias = premises
-        .map(p => p.parentheses ? `(${p.unwrappedConclusionWithAlias})` : p.unwrappedConclusionWithAlias)
+        .map(p => p.unwrappedConclusionWithAlias)
         .join(separator ? separator : " ");
 
     return {conclusion: unwrappedConclusion, conclusionWithAlias: unwrappedConclusionWithAlias};
