@@ -86,7 +86,8 @@ ID             : [a-zA-Z_][a-zA-Z0-9_]* ;
 GREEK_TYPE     : [\u03B1-\u03C9] ;                 // Matches Greek lowercase letters: α (U+03B1) to ω (U+03C9)
 NATURAL_NUMBER : [1-9] [0-9]*;
 COMMA          : ',';
-ARROW          : '->';
+ARROW          : '->' | '→';
+DOUBLEARROW    : '=>' | '⇒';
 COLON          : ':' ;
 DOT            : '.' ;
 SEMI           : ';' ;

@@ -24,18 +24,40 @@ export default function LambdaInput() {
   const handleEditorDidMount = (editor: any, monaco: any) => {
     editorContext.setEditor(editor);
     editorContext.setMonaco(monaco);
+
+    const model = editor.getModel();
+    if (!model) return;
+
+    model.onDidChangeContent(() => {
+      const value = model.getValue();
+      const newValue = value
+          .replace(/->/g, "→")
+          .replace(/=>/g, "⇒");
+
+      if (value !== newValue) {
+        editor.executeEdits("", [
+          {
+            range: model.getFullModelRange(),
+            text: newValue,
+          },
+        ]);
+      }
+    });
   };
+
 
   useEffect(() => {
     if (monaco) {
       try {
         setUpMonacoLanguage(monaco); // set up language and editor settings
         monaco.editor.setTheme("lambda-theme");
+
       } catch (e) {
         console.error('Error setting up Monaco:', e);
       }
     }
   }, [monaco]);
+
 
   async function editorOnChange(value: any) {
     if (editorContext.editorValue.trim() === value.trim())

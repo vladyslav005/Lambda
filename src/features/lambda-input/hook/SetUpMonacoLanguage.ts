@@ -19,7 +19,9 @@ export function setUpMonacoLanguage(monaco: any) {
             '@default': 'variable',
           }
         }],
-        [/=>/, "doubleArrow"],
+        [/=>|⇒/, "doubleArrow"],
+        [/→/, "arrow"],
+
         [/>=/, "geq"],
         [/<=/, "leq"],
         [/==/, "eq"],
@@ -173,6 +175,8 @@ export function setUpMonacoLanguage(monaco: any) {
     },
   });
 
+
+
   monaco.languages.registerCompletionItemProvider("lambda", {
     provideCompletionItems: (model: any, position: any) => {
       const word = model.getWordUntilPosition(position);
@@ -272,7 +276,7 @@ export function setUpMonacoLanguage(monaco: any) {
           range: wordRange,
         },
         {
-          label: '\\rightarrow',
+          label: '\\to',
           kind: monaco.languages.CompletionItemKind.Snippet,
           insertText: '->',
           detail: 'Arrow',
