@@ -14,7 +14,9 @@ interface ConclusionCenterProps {
   color: string | undefined;
   treeHasChanged: boolean;
   setTreeHasChanged: (state: boolean) => void;
-  canMutateTree?: boolean;
+  isExpandedPremise?: boolean;
+  parentIsExpanded?: boolean;
+  parentSetIsExpanded?: (expanded: boolean) => void;
 }
 
 export const ConclusionCenter = (props: ConclusionCenterProps) => {
@@ -82,31 +84,29 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
   const handleClick = () => {
     if (props.node.isExpandable) {
       props.setIsExpanded(!props.isExpanded);
-
-      if (props.canMutateTree)
-        props.node.isExpanded = !props.node.isExpanded;
-
       props.setTreeHasChanged(!props.treeHasChanged)
-      editorContext.editor.deltaDecorations(editorContext.editor.getModel().getAllDecorations()
-          .filter((decorator: any) => decorator.options.className === "highlighted-code")
-          .map((decorator: any) => decorator.id), [])
-    }
-    console.log(editorContext.editor.getModel().getAllDecorations()
-        .filter((decorator: any) => decorator.options.className === "highlighted-code"))
-  }
 
+    } else if (props.isExpandedPremise && props.parentSetIsExpanded && props.parentIsExpanded) {
+      props.parentSetIsExpanded(!props.parentIsExpanded);
+      props.setTreeHasChanged(!props.treeHasChanged)
+    }
+
+    editorContext.editor.deltaDecorations(editorContext.editor.getModel().getAllDecorations()
+        .filter((decorator: any) => decorator.options.className === "highlighted-code")
+        .map((decorator: any) => decorator.id), [])
+  }
 
   return (
       <div className={`conclusion-center ${props.isItLeaf} ${props.isItRoot}`}
            onMouseEnter={handleMouseEnter}
            onMouseLeave={handleMouseLeave}
            onClick={handleClick}
-           onTouchStart={props.node.isExpandable ? handleClick : handleTouch}
+           onTouchStart={props.node.isExpandable || (props.isExpandedPremise && props.parentSetIsExpanded && props.parentIsExpanded) ? handleClick : handleTouch}
 
            style={{
              backgroundColor: isHovered ? "rgba(255, 255, 0, 0.3)" : "", // Highlight the div when hovered
              borderRadius: '10px',
-             cursor: props.node.isExpandable ? 'pointer' : 'default',
+             cursor: props.node.isExpandable || (props.isExpandedPremise && props.parentSetIsExpanded && props.parentIsExpanded) ? 'pointer' : 'default',
            }}
       >
         <MathComponent

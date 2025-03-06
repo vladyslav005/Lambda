@@ -12,14 +12,25 @@ interface ProofTreeUsingCssProps {
   treeHasChanged: boolean;
   setTreeHasChanged: (state: boolean) => void;
   canMutateTree?: boolean;
+  isExpandedPremise?: boolean;
+  parentIsExpanded?: boolean;
+  parentSetIsExpanded?: (expanded: boolean) => void;
 }
 
 export function ProofTreeComponentUsingCss(
-    {node, color, showAliases, treeRef, treeHasChanged, setTreeHasChanged, canMutateTree}: ProofTreeUsingCssProps,) {
+    {parentSetIsExpanded, parentIsExpanded, isExpandedPremise, node, color, showAliases, treeRef, treeHasChanged, setTreeHasChanged, canMutateTree}: ProofTreeUsingCssProps,) {
   const isItRoot = node.root ? "root" : "not-root";
   const isItLeaf = node.premises === undefined ? 'leaf-node' : 'not-leaf-node';
 
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded_] = useState(false)
+
+   const setIsExpanded = (value: boolean) => {
+      if (node.expandedPremises !== undefined) {
+        setIsExpanded_(value);
+        if (canMutateTree)
+          node.isExpanded = value;
+      }
+   }
 
   return (
       <div ref={isItRoot && treeRef ? treeRef : undefined} className="proof-node"
@@ -46,12 +57,18 @@ export function ProofTreeComponentUsingCss(
 
         {node.expandedPremises && isExpanded && (
             <div className={`premises`}
-                 style={{borderColor: color ? color : "black"}}
+                 style={{
+                   borderColor: color ? color : "black",
+                   borderBottom: "none"
+            }}
             >
               {node.expandedPremises.map((premise, index) => (
                   <React.Fragment key={index}>
                     <ProofTreeComponentUsingCss
                         key={index}
+                        isExpandedPremise={true}
+                        parentIsExpanded={isExpanded}
+                        parentSetIsExpanded={setIsExpanded}
                         canMutateTree={canMutateTree}
                         treeHasChanged={treeHasChanged} setTreeHasChanged={setTreeHasChanged}
                         showAliases={showAliases} color={color} node={premise}/>
@@ -63,11 +80,14 @@ export function ProofTreeComponentUsingCss(
             </div>
         )}
 
-        <div className={`conclusion ${isItRoot} ${isItLeaf}`}>
+        {!isExpanded && <div className={`conclusion ${isItRoot} ${isItLeaf}`}>
           <div className="conclusion-left">
           </div>
 
           <ConclusionCenter
+              isExpandedPremise={isExpandedPremise ?? false}
+              parentIsExpanded={parentIsExpanded}
+              parentSetIsExpanded={parentSetIsExpanded}
               isExpanded={isExpanded}
               setIsExpanded={setIsExpanded}
               isItLeaf={isItLeaf}
@@ -77,14 +97,13 @@ export function ProofTreeComponentUsingCss(
               color={color}
               treeHasChanged={treeHasChanged}
               setTreeHasChanged={setTreeHasChanged}
-              canMutateTree={canMutateTree}
           ></ConclusionCenter>
 
           <div className="conclusion-right">
             <p className="rule-name">{node.rule.replaceAll('-', ' – ')}</p>
 
           </div>
-        </div>
+        </div>}
       </div>
   );
 }
