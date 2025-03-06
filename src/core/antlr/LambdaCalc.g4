@@ -55,6 +55,7 @@ list_op
     | ISNIL LBRACK type RBRACK term         # ListIsNil
     | TAIL LBRACK type RBRACK term          # ListTail
     | HEAD LBRACK type RBRACK term          # ListHead
+    | LBRACK (term (COMMA term)* ) RBRACK    # ListConstructor
     ;
 
 

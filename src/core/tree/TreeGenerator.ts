@@ -10,7 +10,7 @@ import {
   InjectionContext,
   LambdaAbstractionContext,
   LeftRightInjContext,
-  ListConsContext,
+  ListConsContext, ListConstructorContext,
   ListContext,
   ListHeadContext,
   ListIsNilContext,
@@ -989,6 +989,35 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       premises: premises
     } as ProofNode;
   };
+
+  visitListConstructor = (ctx: ListConstructorContext) => {
+    console.log("Constructor", ctx.getText());
+
+    const type = this.typeChecker.visit(ctx)
+    const typeWithAlias = this.typeChecker.encodeToAlias(type)
+
+    const elType = parseTypeAndElimParentheses(type).getChild(1).getText()
+
+    const premises: ProofNode[] = ctx.term_list().map((t) => this.visit(t))
+
+    const unwrappedConclusion = `[ ${premises.map(p => p.unwrappedConclusion).join(', ')} ]`;
+    const unwrappedConclusionWithAlias = `[ ${premises.map(p => p.unwrappedConclusionWithAlias).join(', ')} ]`;
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${typeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: `(T-list)`,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises: premises
+    } as ProofNode;
+  }
 
   visitListIsNil = (ctx: ListIsNilContext): any => {
     console.log("Isnil", ctx.getText());

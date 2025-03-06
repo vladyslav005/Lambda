@@ -15,7 +15,7 @@ import {
   InjectionContext,
   LambdaAbstractionContext,
   LeftRightInjContext,
-  ListConsContext,
+  ListConsContext, ListConstructorContext,
   ListContext,
   ListHeadContext,
   ListIsNilContext,
@@ -1004,6 +1004,23 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     return listType;
   };
+
+  visitListConstructor = (ctx: ListConstructorContext) => {
+    console.log("Visiting a cons cons", ctx.getText());
+
+    const termList = ctx.term_list();
+
+    let listType = this.findType('', termList[0]);
+    for (let i = 2; i < termList.length; i++) {
+      const elType = this.findType('', termList[0]);
+      if (listType !== elType) {
+        throw new TypeError(`Can't construct list form elements of type '${listType}' and '${elType}' `,
+            getTokenLocation(ctx));
+      }
+    }
+
+    return 'List ' + listType;
+  }
 
   visitListIsNil = (ctx: ListIsNilContext): any => {
     console.log("Visiting a isnil", ctx.getText());
