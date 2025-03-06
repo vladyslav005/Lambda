@@ -6,7 +6,7 @@ import {
   BinaryVariantTypeContext,
   CaseOfContext,
   ComparisonContext,
-  ExprContext,
+  ExprContext, FixContext,
   FunctionTypeContext,
   GlobalFunctionDeclarationContext,
   GlobalVariableDeclarationContext,
@@ -1013,6 +1013,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     let listType = this.findType('', termList[0]);
     for (let i = 2; i < termList.length; i++) {
       const elType = this.findType('', termList[0]);
+      if (elType === undefined)
+        throw new Error()
+
       if (listType !== elType) {
         throw new TypeError(`Can't construct list form elements of type '${listType}' and '${elType}' `,
             getTokenLocation(ctx));
@@ -1085,7 +1088,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       throw new TypeError(`HEAD can't be used with term of type '${listType}'`,
           getTokenLocation(ctx));
 
-
     if (declaredElType !== elType)
       throw new TypeError(`List is of type '${elType}' but you have delared '${declaredElType}`,
           getTokenLocation(ctx));
@@ -1097,10 +1099,42 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return elType;
   };
 
+
   visitList = (ctx: ListContext): any => {
 
     return this.visit(ctx.getChild(0))
   }
+
+
+  visitFix = (ctx: FixContext) => {
+    console.log("Visiting a fix", ctx.getText());
+    const termNode = ctx.term();
+
+    const termType = this.findType('', termNode);
+    if (termType === undefined)
+      throw new Error()
+
+    const termTypeNode = parseTypeAndElimParentheses(termType);
+
+    if (!(termTypeNode instanceof FunctionTypeContext)) {
+      throw new TypeError(`Can't use fix with term of type '${termType}'`,
+          getTokenLocation(ctx))
+    }
+
+    const termArgTypeNode = eliminateOutParentheses(termTypeNode.getChild(0));
+    const termRetTypeNode = eliminateOutParentheses(termTypeNode.getChild(2));
+
+    const termArgType = termArgTypeNode.getText();
+    const termRetType = termRetTypeNode.getText();
+
+    if (termRetType !== termArgType) {
+      throw new TypeError(`Can't use fix with term of type '${termType}'`,
+          getTokenLocation(ctx))
+    }
+
+    return termRetType;
+  }
+
 
   findType = (name: string, node: ParseTree): string | undefined => {
     let type: string | undefined;

@@ -5,7 +5,7 @@ import {
   BinaryCaseOfContext,
   CaseOfContext,
   ComparisonContext,
-  ExprContext,
+  ExprContext, FixContext,
   IfElseContext,
   InjectionContext,
   LambdaAbstractionContext,
@@ -1076,7 +1076,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   };
 
   visitListHead = (ctx: ListHeadContext): any => {
-    console.log("Visiting a head", ctx.getText());
+    console.log("head", ctx.getText());
     const type = this.typeChecker.visit(ctx)
     const typeWithAlias = this.typeChecker.encodeToAlias(type)
     const premises: ProofNode[] = [this.visit(ctx.term())]
@@ -1099,6 +1099,32 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       premises: premises
     } as ProofNode;
   };
+
+  visitFix = (ctx: FixContext) => {
+    console.log("Visiting a fix", ctx.getText());
+    const type = this.typeChecker.visit(ctx)
+    const typeWithAlias = this.typeChecker.encodeToAlias(type)
+    const premises: ProofNode[] = [this.visit(ctx.term())]
+    const unwrappedConclusion = `fix ${premises[0].unwrappedConclusion}`;
+    const unwrappedConclusionWithAlias =
+        `fix ${premises[0].unwrappedConclusionWithAlias}`
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.contextExtensionWithAlies}\\vdash ${unwrappedConclusionWithAlias} : ${typeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: `(T-fix)`,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      isExpandable: false,
+      premises: premises
+    } as ProofNode;
+
+  }
 
   visitList = (ctx: ListContext): any => {
     return this.visit(ctx.getChild(0))

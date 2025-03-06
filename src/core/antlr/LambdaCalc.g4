@@ -25,6 +25,7 @@ term
     | 'if' term 'then' term ('else if' term 'then' term)* ('else' term)?             # IfElse
     | <assoc=left> term term                                                         # Application
     | ID                                                                             # Variable
+    | 'fix' term                                                                     # Fix
     | constant                                                                       # Literal
     | '['ID EQ term']' 'as' type                                                     # Injection
     | ('inl'|'inr') term 'as' type                                                   # LeftRightInj

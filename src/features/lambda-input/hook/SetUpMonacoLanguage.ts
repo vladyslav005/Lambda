@@ -3,7 +3,7 @@ export function setUpMonacoLanguage(monaco: any) {
 
   let keywords: string[] = [
     "as", "case", "of", "if", "then", "else", "inl", "inr", "nil",
-    "isnil", "head", "tail", "cons", "typedef"
+    "isnil", "head", "tail", "cons", "typedef", "fix"
   ];
   monaco.languages.setMonarchTokensProvider("lambda", {
     keywords,
