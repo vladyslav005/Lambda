@@ -9,7 +9,7 @@ terms
     ;
 
 globalDecl
-    : 'typedef' type EQ type SEMI                       # TypeAlias
+    : 'typedef' ID EQ type SEMI                       # TypeAlias
     | ID COLON type SEMI                      # GlobalVariableDeclaration
     | ID EQ term (COLON type)? SEMI           # GlobalFunctionDeclaration
     ;
@@ -34,8 +34,8 @@ term
     | '<'term (COMMA term)* '>'                                                      # Tuple
     | term DOT NATURAL_NUMBER                                                        # TupleProjection
     | list_op                                                                        # List
-    | 'case' term 'of' '['ID EQ ID ']' '=>' term ('||' '['ID EQ ID ']' '=>' term)*   # CaseOf
-    | 'case' term 'of' ('inl'|'inr') ID '=>' term '||' ('inl'|'inr') ID '=>' term    # BinaryCaseOf
+    | 'case' term 'of' '['ID EQ ID ']' DOUBLEARROW term ('||' '['ID EQ ID ']' DOUBLEARROW term)*   # CaseOf
+    | 'case' term 'of' ('inl'|'inr') ID DOUBLEARROW term '||' ('inl'|'inr') ID DOUBLEARROW term    # BinaryCaseOf
     | LPAREN term RPAREN                                                             # Parentheses
     ;
 

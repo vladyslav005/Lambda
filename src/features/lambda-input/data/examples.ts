@@ -45,8 +45,8 @@ var2 : B;
 
 tuple = <var1, var2> : A * B;
 
-tuple; 
-tuple.1; 
+//tuple; 
+//tuple.1; 
 tuple.2;`
   },
   {
@@ -55,7 +55,8 @@ tuple.2;`
 
 john : Human; // define var of type 'Human'
 
-john.name; john.age; // use record projection`
+//john.name; 
+john.age; // use record projection`
   },
   {
     name: "ifCondition",
@@ -88,7 +89,6 @@ head[A] list; // get first element
 tail[A] list; // get list without first element
 `
   }
-
 
 ];
 

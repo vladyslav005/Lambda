@@ -115,7 +115,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   visitGlobalVariableDeclaration = (ctx: GlobalVariableDeclarationContext): string => {
     console.log("Visiting a global variable declaration", ctx.getText());
 
-    let typeNode = ctx.getChild(2);
+    let typeNode = ctx.type_();
+    this.validateType(typeNode)
+
     let id: string = ctx.getChild(0).getText();
 
     this._globalContext.addVariable(
@@ -161,9 +163,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
   visitTypeAlias = (ctx: TypeAliasContext): void => {
     console.log("Visiting an alias", ctx.getText());
-    const type = ctx.type_(1).getText()
-    const alias = ctx.type_(0).getText();
+    const type = ctx.type_().getText()
+    const alias = ctx.ID().getText();
 
+    this.validateType(ctx.type_())
     const regex = new RegExp(`\\b(${alias})\\b`, "g");
     if (type.match(regex)) {
       throw new TypeError(`Recursive types are not supported: ${type}`,
@@ -1135,6 +1138,16 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     return termRetType;
   }
 
+  validateType(ctx: TypeContext) {
+    if ((ctx instanceof RecordTypeContext) || (ctx instanceof VariantTypeContext)) {
+      const idList = ctx.ID_list().map(id => id.getText());
+      const idSet = new Set(idList);
+      if (idSet.size !== idList.length) {
+        throw new TypeError(`Duplicate labels in type definition '${ctx.getText()}'`
+            , getTokenLocation(ctx))
+      }
+    }
+  }
 
   findType = (name: string, node: ParseTree): string | undefined => {
     let type: string | undefined;
