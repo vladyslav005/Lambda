@@ -20,6 +20,8 @@ const translations = {
         abstraction: {title: "Abstraction", desc: "Application rule"},
         recordsAndTuples: {title: "Records & Tuples", desc: "Records, tuples, their projections"},
         variants: {title: "Varians", desc: "Varians, case-of construction"},
+        syntax: {title: "Syntax", desc: "Short syntax overview"},
+
       },
       searchPlaceholder: "Search topics...",
 
@@ -165,6 +167,22 @@ const translations = {
           either <code>inl</code> (left) or <code>inr</code> (right).<br/>
           - <b>Generalized variants</b> are more flexible, supporting any number of types and using a more structured
           injection syntax with labeled fields.`,
+      },
+      syntax: {
+        t1: `Conditional expressions and arithmetic operations:`,
+        t2: `Lambda expressions abstractions functions and their applications:`,
+        t3: `Conditional expressions, arithmetic operations, comparison:`,
+        t4: `<b>Case Analysis & Injection: </b>pattern matching with case expressions:`,
+        t5: `Types`,
+        t6: `<b>Global Declarations:</b> Lambda Calculus supports global type and function declarations.`,
+        t7: `Values`,
+        t8: `Basic values in Lambda Calculus include numbers, booleans, and unit values.`,
+        t9: `Fixpoint Operator`,
+        t10: `Lambda Calculus allows the definition of recursive functions using the fixpoint operator. This is commonly used in defining recursive functions like factorial or Fibonacci.`,
+        t11: `List Operations`,
+        t12: `Here’s a more concise description of the whole syntax:`,
+        t13: ``,
+
       }
     },
 
@@ -192,6 +210,8 @@ const translations = {
         abstraction: {title: "Abstrakcia", desc: "Pravidlo abstrakcie"},
         recordsAndTuples: {title: "Záznamy & súčinové typy", desc: "Záznamy, súčinové typy a ich projekcie"},
         variants: {title: "Varianty", desc: "Varianty a konštrukcia case-of"},
+        syntax: {title: "Syntax", desc: "Stručný prehľad syntaxe"},
+
       },
       searchPlaceholder: "Hľadať témy...",
     },
@@ -331,6 +351,20 @@ const translations = {
         - <b>Zovšeobecnené varianty</b> sú flexibilnejšie, podporujú ľubovoľný počet typov a používajú štruktúrovanú
         syntax s pomenovanými prvkámi.`,
       },
+      syntax: {
+        t1: `Podmienené výrazy a aritmetické operácie:`,
+        t2: `Lambda abstrakcie a ich aplikácie:`,
+        t3: `Podmienené výrazy, aritmetické operácie, porovnávanie:`,
+        t4: `Konštrukcia case-of a injekcia:`,
+        t5: `Typy`,
+        t6: `<b>Globálne deklarácie:</b> Lambda Calculus podporuje globálne deklarácie typov a funkcií.`,
+        t7: `Hodnoty`,
+        t8: `Základné hodnoty v Lambda Calculus zahŕňajú čísla, boolovské hodnoty a jednotkové hodnoty.`,
+        t9: `Fixpoint operátor`,
+        t10: `Lambda Calculus umožňuje definíciu rekurzívnych funkcií pomocou fixpoint operátora. Toto sa bežne používa pri definovaní rekurzívnych funkcií ako faktoriál alebo Fibonacci.`,
+        t11: `Operácie so zoznamami`,
+        t12: `Tu je stručnejší popis celej syntaxe:`,
+      }
     },
 
     feedback: "Spätná väzba",

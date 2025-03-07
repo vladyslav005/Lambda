@@ -6,6 +6,7 @@ import {VariantsTutorial} from "./tutorials/VariantsTutorial";
 import {useContext} from "react";
 import {ConfigurationContext} from "../../configurations/context/ConfigurationContext";
 import translations from "../../configurations/data/translations";
+import SyntaTutorial from "./tutorials/SyntaTutorial";
 
 interface TopicsProps {
   searchQuery: string
@@ -15,6 +16,8 @@ export const Topics = ({searchQuery}: TopicsProps) => {
   const confContext = useContext(ConfigurationContext);
 
   const topics = [
+    <SyntaTutorial title={translations[confContext.language].helpBar.guides.syntax.title}
+                   description={translations[confContext.language].helpBar.guides.syntax.desc}/>,
     <GrammarTutorial title={translations[confContext.language].helpBar.guides.grammar.title}
                      description={translations[confContext.language].helpBar.guides.grammar.desc}/>,
 
@@ -27,8 +30,6 @@ export const Topics = ({searchQuery}: TopicsProps) => {
     <RecordsAndTuplesTutorial title={translations[confContext.language].helpBar.guides.recordsAndTuples.title}
                               description={translations[confContext.language].helpBar.guides.recordsAndTuples.desc}/>,
 
-    <VariantsTutorial title={translations[confContext.language].helpBar.guides.variants.title}
-                      description={translations[confContext.language].helpBar.guides.variants.desc}/>,
   ]
 
   const filteredTopics = topics.filter((topic) =>
