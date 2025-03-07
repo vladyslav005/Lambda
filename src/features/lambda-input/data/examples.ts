@@ -88,6 +88,11 @@ head[A] list; // get first element
 
 tail[A] list; // get list without first element
 `
+  },
+  {
+    name: "Fix operator",
+    code: `fix (λ f : Nat → Nat . (λ n : Nat . if iszero(n) then 1 else n  * f (pred n)) : (Nat → Nat) → (Nat → Nat));`
+
   }
 
 ];

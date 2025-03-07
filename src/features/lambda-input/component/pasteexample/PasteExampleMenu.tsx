@@ -48,6 +48,7 @@ export const PasteExampleMenu = (props: PasteExampleMenuProps) => {
                     translations[confContext.language]
                         .editor
                         .pasteExampleMenu[example.name as keyof typeof translations.en.editor.pasteExampleMenu]
+                      ?? example.name
                   }
                 </MenuItem>
             ))}

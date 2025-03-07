@@ -15,7 +15,9 @@ globalDecl
     ;
 
 term
-    : term ('>'|'>='|'<'|'<='|'==') term                                                 # Comparison
+    : <assoc=left> term term                                                         # Application
+
+    | term ('>'|'>='|'<'|'<='|'==') term                                             # Comparison
     | term ('+'|'-') term                                                            # Addition
     | term ('*') term                                                                # Multiplication
     | term ('^') term                                                                # Power
@@ -23,7 +25,6 @@ term
     | LAMBDA ID COLON type DOT term (COLON type)?                                    # LambdaAbstraction
     | LAMBDA '_' COLON type DOT term (COLON type)?                                   # WildCard
     | 'if' term 'then' term ('else if' term 'then' term)* ('else' term)?             # IfElse
-    | <assoc=left> term term                                                         # Application
     | ID                                                                             # Variable
     | 'fix' term                                                                     # Fix
     | constant                                                                       # Literal
@@ -58,8 +59,6 @@ list_op
     | HEAD LBRACK type RBRACK term          # ListHead
     | LBRACK (term (COMMA term)* ) RBRACK    # ListConstructor
     ;
-
-
 
 constant
     : NATURAL_NUMBER | '0'
