@@ -176,7 +176,6 @@ export function setUpMonacoLanguage(monaco: any) {
   });
 
 
-
   monaco.languages.registerCompletionItemProvider("lambda", {
     provideCompletionItems: (model: any, position: any) => {
       const word = model.getWordUntilPosition(position);

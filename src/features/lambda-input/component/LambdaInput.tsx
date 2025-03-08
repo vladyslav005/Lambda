@@ -5,7 +5,6 @@ import {EditorContext} from "../context/EditorContext";
 import {useBuildTree} from "../hook/BuildTreeHook";
 import "./LambdaInput.css"
 import {EditorToolbar} from "./toolbar/EditorToolbar";
-import {PasteExampleMenu} from "./pasteexample/PasteExampleMenu";
 import {useEditorErrorsHook} from "../hook/EditorErrorsHook";
 import {ConfigurationContext} from "../../configurations/context/ConfigurationContext";
 import {IconButton} from "../../../common/components/button/IconButton";
@@ -81,9 +80,9 @@ export default function LambdaInput() {
       <div
           className="lambda-input ui-block "
       >
-        <EditorToolbar></EditorToolbar>
+        {/*<EditorToolbar></EditorToolbar>*/}
 
-        <div className="flex flex-row gap-2"
+        <div className="flex flex-row gap-2 items-center"
              style={{
                position: "absolute",
                zIndex: 1000,
@@ -91,9 +90,6 @@ export default function LambdaInput() {
                right: "1rem",
              }}
         >
-          <PasteExampleMenu
-
-          />
           {!confContext.interactive &&
               <IconButton className="build-tree-btn"
                           onClick={() => buildTreeClickHandler(editorContext.editorValue)}

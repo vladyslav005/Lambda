@@ -29,6 +29,8 @@ export const Topics = ({searchQuery}: TopicsProps) => {
 
     <RecordsAndTuplesTutorial title={translations[confContext.language].helpBar.guides.recordsAndTuples.title}
                               description={translations[confContext.language].helpBar.guides.recordsAndTuples.desc}/>,
+    <VariantsTutorial title={translations[confContext.language].helpBar.guides.variants.title}
+                      description={translations[confContext.language].helpBar.guides.variants.desc}/>,
 
   ]
 
@@ -45,15 +47,14 @@ export const Topics = ({searchQuery}: TopicsProps) => {
   );
 
   return (
-      <div className="list px-7 mx-1 my-4 flex flex-col gap-4">
+      <div className="info-topics-bx max-h-80 overflow-auto">
         {filteredTopics.length > 0 ? (
             filteredTopics.map((topic, index) => (
                 <div key={index}>{topic}</div>
             ))
         ) : (
-            <p className="text-gray-500 text-center">No matching topics found.</p>
+            <p className="text-gray-500 text-center p-2">No matching topics found.</p>
         )}
-
       </div>
   )
 }

@@ -1,6 +1,6 @@
-import {Group, Input, TextField, Toolbar} from 'react-aria-components';
+import {Group, Input, Separator, TextField, Toolbar} from 'react-aria-components';
 import "./EditorToolbar.css"
-import {MdAdd, MdContentCopy, MdContentCut, MdRemove} from "react-icons/md";
+import {MdAdd, MdContentCopy, MdContentCut, MdOutlineKeyboardDoubleArrowRight, MdRemove} from "react-icons/md";
 import React, {useContext, useState} from "react";
 import {HiOutlineDotsHorizontal} from "react-icons/hi";
 import {motion, useAnimationControls} from "framer-motion";
@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import {IconButton} from "../../../../common/components/button/IconButton";
 import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
 import translations from "../../../configurations/data/translations";
+import {LuSeparatorVertical} from "react-icons/lu";
 
 
 export const EditorToolbar = () => {
@@ -34,7 +35,7 @@ export const EditorToolbar = () => {
         <motion.div className={"toolbar-wrapper"}
                     variants={{
                       initial: {
-                        x: "80%"
+                        x: "75%"
                       },
                       show: {
                         x: 0
@@ -55,7 +56,7 @@ export const EditorToolbar = () => {
             <IconButton className={"toolbar-button"}
                         onClick={handleClick}
             >
-              <HiOutlineDotsHorizontal></HiOutlineDotsHorizontal>
+              <HiOutlineDotsHorizontal color="#ffffff"></HiOutlineDotsHorizontal>
             </IconButton>
             <IconButton
                 onClick={() => {
@@ -63,21 +64,10 @@ export const EditorToolbar = () => {
                   toast(translations[confContext.language].toast.editorContentCopy, {duration: 1000,})
                 }}
             >
-              <MdContentCopy size={iconSize}/>
+              <MdContentCopy color='#FFFFFF' size={iconSize}/>
 
             </IconButton>
 
-            <IconButton
-                onClick={() => {
-                  navigator.clipboard.writeText(editorContext.editorValue).then()
-                  editorContext.setEditorValue("")
-                  editorContext.setTree(undefined)
-                  editorContext.setErrors([])
-                  toast(translations[confContext.language].toast.editorContentCopy, {duration: 1000,})
-                }}
-            >
-              <MdContentCut size={iconSize}/>
-            </IconButton>
             <Group aria-label="Font size">
               <IconButton
                   onClick={() => {
@@ -85,7 +75,7 @@ export const EditorToolbar = () => {
                       editorContext.setFontSize(editorContext.fontSize - 2)
                   }}
               >
-                <MdRemove size={iconSize}/>
+                <MdRemove color='#FFFFFF' size={iconSize}/>
               </IconButton>
               <TextField className="font-size-field">
                 <Input value={editorContext.fontSize} type={"number"} className={"text-input"}/>
@@ -96,7 +86,7 @@ export const EditorToolbar = () => {
                       editorContext.setFontSize(editorContext.fontSize + 2)
                   }}
               >
-                <MdAdd size={iconSize}/>
+                <MdAdd color='#FFFFFF' size={iconSize}/>
               </IconButton>
             </Group>
           </Toolbar>

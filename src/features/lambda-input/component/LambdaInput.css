@@ -1,6 +1,6 @@
 .lambda-input {
     position: relative;
-    flex-grow: 1;
+    flex-grow: 3;
     background: var(--Schemes-Surface-Container, #F3EDF7);
 }
 
@@ -24,4 +24,8 @@
 
 .build-tree-btn:hover {
     background: var(--Schemes-Primary, #746797);
+}
+
+.switch-bx {
+
 }

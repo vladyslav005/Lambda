@@ -17,7 +17,7 @@ export const AbstractionTutorial = (props: GrammarTutorialProps) => {
         <h1 className="title">{props.title}</h1>
 
         <p className="paragraph"
-          dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.abstraction.p1}}
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.abstraction.p1}}
         >
 
         </p>

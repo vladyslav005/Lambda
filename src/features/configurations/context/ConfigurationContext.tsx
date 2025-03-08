@@ -2,7 +2,8 @@ import {createContext, useState} from "react";
 
 export enum Language {
   EN = "en",
-  SK = "sk"
+  SK = "sk",
+  UA = "ua"
 }
 
 export interface ConfigurationContextInterface {

@@ -100,7 +100,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
 
   return (
       <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
-        <Dialog className="outline-0" style={{position: "relative"}}>
+        <Dialog >
 
           {isImageLoading && <div className={"loading-overlay"}>
               <img alt="" src={rollingGif}/>

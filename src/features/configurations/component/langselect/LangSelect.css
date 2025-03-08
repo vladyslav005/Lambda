@@ -1,0 +1,22 @@
+.lang-btn {
+    border: 1px solid var(--Schemes-Outline, #79747E);
+    height: 2.2rem;
+}
+
+.sk {
+    border-radius: 100px 0px 0px 100px;
+
+}
+
+.en {
+    border-radius: 0px 100px 100px 0px;
+}
+
+.ua {
+    border-radius: 0 0 0 0;
+
+}
+
+.lang-btn-selected {
+    background: var(--Schemes-Secondary-Container, #d9c4fb);
+}

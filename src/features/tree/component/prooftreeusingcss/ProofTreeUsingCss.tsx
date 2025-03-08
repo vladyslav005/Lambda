@@ -1,8 +1,7 @@
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import "./ProofTreeUsingCss.css"
 import {ConclusionCenter} from "./ConclusionCenter";
-import {Ref, useState} from "react";
-import React from "react";
+import React, {Ref, useState} from "react";
 
 interface ProofTreeUsingCssProps {
   node: ProofNode,
@@ -18,19 +17,30 @@ interface ProofTreeUsingCssProps {
 }
 
 export function ProofTreeComponentUsingCss(
-    {parentSetIsExpanded, parentIsExpanded, isExpandedPremise, node, color, showAliases, treeRef, treeHasChanged, setTreeHasChanged, canMutateTree}: ProofTreeUsingCssProps,) {
+    {
+      parentSetIsExpanded,
+      parentIsExpanded,
+      isExpandedPremise,
+      node,
+      color,
+      showAliases,
+      treeRef,
+      treeHasChanged,
+      setTreeHasChanged,
+      canMutateTree
+    }: ProofTreeUsingCssProps,) {
   const isItRoot = node.root ? "root" : "not-root";
   const isItLeaf = node.premises === undefined ? 'leaf-node' : 'not-leaf-node';
 
   const [isExpanded, setIsExpanded_] = useState(false)
 
-   const setIsExpanded = (value: boolean) => {
-      if (node.expandedPremises !== undefined) {
-        setIsExpanded_(value);
-        if (canMutateTree)
-          node.isExpanded = value;
-      }
-   }
+  const setIsExpanded = (value: boolean) => {
+    if (node.expandedPremises !== undefined) {
+      setIsExpanded_(value);
+      if (canMutateTree)
+        node.isExpanded = value;
+    }
+  }
 
   return (
       <div ref={isItRoot && treeRef ? treeRef : undefined} className="proof-node"
@@ -60,7 +70,7 @@ export function ProofTreeComponentUsingCss(
                  style={{
                    borderColor: color ? color : "black",
                    borderBottom: "none"
-            }}
+                 }}
             >
               {node.expandedPremises.map((premise, index) => (
                   <React.Fragment key={index}>
@@ -81,28 +91,28 @@ export function ProofTreeComponentUsingCss(
         )}
 
         {!isExpanded && <div className={`conclusion ${isItRoot} ${isItLeaf}`}>
-          <div className="conclusion-left">
-          </div>
+            <div className="conclusion-left">
+            </div>
 
-          <ConclusionCenter
-              isExpandedPremise={isExpandedPremise ?? false}
-              parentIsExpanded={parentIsExpanded}
-              parentSetIsExpanded={parentSetIsExpanded}
-              isExpanded={isExpanded}
-              setIsExpanded={setIsExpanded}
-              isItLeaf={isItLeaf}
-              isItRoot={isItRoot}
-              node={node}
-              showAliases={showAliases}
-              color={color}
-              treeHasChanged={treeHasChanged}
-              setTreeHasChanged={setTreeHasChanged}
-          ></ConclusionCenter>
+            <ConclusionCenter
+                isExpandedPremise={isExpandedPremise ?? false}
+                parentIsExpanded={parentIsExpanded}
+                parentSetIsExpanded={parentSetIsExpanded}
+                isExpanded={isExpanded}
+                setIsExpanded={setIsExpanded}
+                isItLeaf={isItLeaf}
+                isItRoot={isItRoot}
+                node={node}
+                showAliases={showAliases}
+                color={color}
+                treeHasChanged={treeHasChanged}
+                setTreeHasChanged={setTreeHasChanged}
+            ></ConclusionCenter>
 
-          <div className="conclusion-right">
-            <p className="rule-name">{node.rule.replaceAll('-', ' – ')}</p>
+            <div className="conclusion-right">
+                <p className="rule-name">{node.rule.replaceAll('-', ' – ')}</p>
 
-          </div>
+            </div>
         </div>}
       </div>
   );

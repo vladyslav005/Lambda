@@ -17,7 +17,7 @@ export const ApplicationTutorial = (props: GrammarTutorialProps) => {
         <h1 className="title">{props.title}</h1>
 
         <p className="paragraph"
-          dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.application.p1}}
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.application.p1}}
         >
 
         </p>

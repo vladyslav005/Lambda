@@ -18,24 +18,24 @@ export const MyRipples = createRipples({
 })
 
 
-export const IconButton = (props : IconButtonProps) => {
+export const IconButton = (props: IconButtonProps) => {
 
 
   return (
-        <Button
-            style={{
-              outline: 'none',
-              ...props.style,
-            }}
-            id={props.id}
-            onPress={props.onClick}
+      <Button
+          style={{
+            outline: 'none',
+            ...props.style,
+          }}
+          id={props.id}
+          onPress={props.onClick}
+      >
+        <MyRipples during={500} color={'rgba(251,246,246,0.63)'}
+                   className={[props.className, "my-button"].join(" ")}
         >
-          <MyRipples during={500} color={'rgba(251,246,246,0.63)'}
-                     className={[props.className, "my-button"].join(" ")}
-          >
-              {props.children}
-          </MyRipples>
+          {props.children}
+        </MyRipples>
 
-        </Button>
+      </Button>
   )
 }

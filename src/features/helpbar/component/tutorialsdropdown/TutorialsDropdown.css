@@ -1,14 +1,6 @@
-.help-bar {
-    background: var(--Schemes-Surface-Container, #F3EDF7);
-
-    overflow: hidden;
+.tutorials-popover {
+    max-width: 300px !important;
 }
-
-.help-bar .list {
-    height: 90%;
-    overflow-y: auto;
-}
-
 
 .search .search-input {
     color: var(--M3-sys-light-on-surface-variant, var(--Schemes-On-Surface-Variant, #49454F));
@@ -19,28 +11,30 @@
     font-weight: 400;
     line-height: var(--Body-Large-Line-Height, 24px); /* 150% */
     letter-spacing: var(--Body-Large-Tracking, 0.5px);
-    border-radius: 28px;
+    border-radius: 4px 4px 0px 0px;
     background: var(--Schemes-Surface-Container-High, #ECE6F0);
-    padding: 1rem 2rem;
+    padding: 0.6rem 1rem;
     width: 100%;
 }
 
 .search .search-input:focus {
+    border: 3px solid var(--Schemes-Primary, #65558F);
+
     color: var(--M3-sys-light-on-surface-variant, var(--Schemes-On-Surface-Variant, #49454F));
-    border: none !important;
     outline: none !important;
     background: var(--State-Layers-On-Surface-Opacity-08, rgba(29, 27, 32, 0.08));
 }
 
 .search {
-    margin: 1.5rem 1rem 1rem 1rem;
-    /*width: 90%;*/
+    /*margin: 1rem 1rem 1rem 1rem;*/
+    width: 100%;
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     /*background: red;*/
+    border-radius: 4px;
 
 }
 

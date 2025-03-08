@@ -1,3 +1,28 @@
+.header-bx {
+    min-height: 80px;
+    background: var(--Schemes-Surface-Container, #e8e0ef);
+    margin: 0 2rem 0 2rem;
+    border-radius: 0 0 var(--Corner-Medium, 12px) var(--Corner-Medium, 12px);
+
+}
+
+.logo {
+    width: 3.8rem;
+    margin: 1rem;
+}
+
+.name {
+    color: var(--Schemes-On-Surface-Variant, #49454F);
+    text-align: center;
+    font-family: var(--Headline-Medium-Font, Roboto);
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Display-Large-Line-Height, 64px); /* 160% */
+    letter-spacing: var(--Display-Large-Tracking, -0.25px);
+}
+
+
 .configurations {
     display: flex;
 
@@ -29,20 +54,4 @@
     background: var(--Schemes-Primary, #746797);
 }
 
-.lang-btn {
-    border: 1px solid var(--Schemes-Outline, #79747E);
-    height: 2.2rem;
-}
 
-.sk {
-    border-radius: 100px 0px 0px 100px;
-
-}
-
-.en {
-    border-radius: 0px 100px 100px 0px;
-}
-
-.lang-btn-selected {
-    background: var(--Schemes-Secondary-Container, #E8DEF8);
-}

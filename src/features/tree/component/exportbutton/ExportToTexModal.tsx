@@ -1,4 +1,4 @@
-import {Checkbox, Dialog, Modal, Switch} from "react-aria-components";
+import {Dialog, Modal, Switch} from "react-aria-components";
 import toast, {Toaster} from "react-hot-toast";
 import {IconButton} from "../../../../common/components/button/IconButton";
 import {IoMdClose} from "react-icons/io";
@@ -23,7 +23,7 @@ export const ExportToTexModal = (props: ExportToEbpModalProps) => {
 
   return (
       <Modal className="outline-0" isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
-        <Dialog style={{position: "relative"}}>
+        <Dialog>
           <Toaster
               toastOptions={{
                 position: "top-center",

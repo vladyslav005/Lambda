@@ -33,17 +33,11 @@
         max-height: 300px !important;
     }
 
-    .error-output {
-        padding-bottom: 1rem;
-    }
-
-
     .ui-block {
         margin: 1rem !important;
     }
 
     .main-page {
-        flex-direction: column-reverse;
         gap: 0 !important;
         max-height: none !important;
     }
@@ -71,12 +65,15 @@
     }
 
     .error-output {
-        margin-top: 0 !important;
+        margin-top: 1rem !important;
+        margin-bottom: 0 !important;
+
+        padding-bottom: 1rem;
     }
 
     .lambda-input {
         flex-grow: 2 !important;
-        margin-top: 0 !important;
+        margin-top: 1rem !important;
         margin-bottom: 0 !important;
 
         max-height: 400px !important;
@@ -89,6 +86,18 @@
         /*margin-bottom: 0 !important;*/
     }
 
+    .header-bx {
+        margin: 0 1rem 0 1rem !important;
+
+    }
+
+    .logo {
+        width: 3rem !important;
+    }
+
+    .name {
+        font-size: 1.5rem !important;
+    }
 
     .tree-flat-container {
         /*flex-grow: 2 !important;*/
@@ -107,9 +116,8 @@
 
 .ui-block {
     flex-wrap: nowrap;
-    flex-shrink: 0;
+    /*flex-shrink: 0;*/
     border-radius: var(--Corner-Medium, 12px);
-
 }
 
 .lambda-input {
@@ -129,9 +137,8 @@
 }
 
 .error-output {
-    min-height: calc((100%) / 2 - var(--config-block-height) - 3rem);
-    flex-grow: 0;
-    margin-bottom: 1rem;
+    flex-grow: 1;
+    margin: 2rem 2rem 1rem 0;
 }
 
 .configurations {
@@ -153,16 +160,20 @@
 }
 
 .sidebar {
-    max-width: 400px;
-    min-width: 400px;
+    /*max-width: 400px;*/
+    /*min-width: 400px;*/
 }
 
 .main-pane {
     min-width: 400px;
 }
 
+.main-page {
+    min-width: 400px;
+}
 .error-message {
     width: 90%;
+
 }
 
 .error-message p {
@@ -204,7 +215,7 @@
     line-height: var(--Label-Large-Line-Height, 20px); /* 142.857% */
     letter-spacing: var(--Label-Large-Tracking, 0.1px);
 
-    padding: 1.2rem !important;
+    padding: 1rem !important;
     font-size: 1.1rem;
 }
 

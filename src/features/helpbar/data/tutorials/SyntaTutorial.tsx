@@ -127,13 +127,13 @@ head [Nat] x  // ListHead
 tail [Nat] x  // ListTail
 [1, 2, 3]  // ListConstructor`}></CodeExample>
 
-      <p className="paragraph"
-         dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.syntax.t12}}
-      >
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.syntax.t12}}
+        >
 
-      </p>
+        </p>
 
-      <CodeExample code={`
+        <CodeExample code={`
 t ::= t t                                   (Application)
     | t (> | >= | < | <= | ==) t            (Comparison)
     | t (+ | -) t                           (Addition)
@@ -155,7 +155,7 @@ t ::= t t                                   (Application)
     | case t of [x = x] => t (|| [x = x] => t)*          (Case Of)
     | case t of (inl | inr) x => t || (inl | inr) x => t (Binary Case Of)
     | ( t )                                 (Parentheses)`
-      }/>
+        }/>
         <CodeExample code={`
 list_op ::= nil [T]                        (Nil)
           | cons [T] t t                   (Cons)
@@ -163,7 +163,7 @@ list_op ::= nil [T]                        (Nil)
           | tail [T] t                     (Tail)
           | head [T] t                     (Head)
           | [t (, t)*]                     (List Constructor)`}/>
-      <CodeExample code={`
+        <CodeExample code={`
 T ::= ID | Nat | Bool | Unit               (Primitive type)
     | T -> T                               (Function Type)
     | T + T                                (Binary Variant Type)
