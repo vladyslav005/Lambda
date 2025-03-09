@@ -65,7 +65,7 @@ export default function LambdaInput() {
         console.error('Error setting up Monaco:', e);
       }
     }
-  }, [confContext.theme]);
+  }, [confContext.theme, monaco]);
 
 
   async function editorOnChange(value: any) {
@@ -90,9 +90,7 @@ export default function LambdaInput() {
       <div
           className="lambda-input ui-block "
       >
-        {/*<EditorToolbar></EditorToolbar>*/}
-
-        <div className="flex flex-row gap-2 items-center"
+        <div className="flex flex-row gap-2"
              style={{
                position: "absolute",
                zIndex: 1000,
@@ -111,6 +109,7 @@ export default function LambdaInput() {
         </div>
 
         <Editor
+            className="h-full"
             language="lambda"
             options={{
               minimap: {enabled: true},
@@ -127,7 +126,6 @@ export default function LambdaInput() {
             wrapperProps={{
               style: {
                 position: 'absolute',
-                height: '100%',
                 top: 0,
                 left: 0,
                 right: 0,

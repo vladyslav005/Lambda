@@ -1,4 +1,4 @@
-import {createContext, useState} from "react";
+import {createContext, useEffect, useState} from "react";
 
 export enum Language {
   EN = "en",
@@ -41,10 +41,17 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
   const [interactive, setInteractive] = useState(true);
   const [theme, setTheme] = useState(Theme.Light);
 
+
+
   const setThemeHandler = (theme: Theme) => {
     setTheme(theme);
+    localStorage.setItem('theme', theme);
     document.documentElement.setAttribute("data-theme", theme);
   }
+
+  useEffect(() => {
+    setThemeHandler(localStorage.getItem("theme") as Theme ?? Theme.Light);
+  }, [])
 
   const initialValue: ConfigurationContextInterface = {
     language: language,
