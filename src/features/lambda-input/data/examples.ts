@@ -82,16 +82,16 @@ list;
 
 list = cons[A] var list; // add var to list
 
-isnil[A] list; // check if list is empty
+// isnil[A] list; // check if list is empty
 
-head[A] list; // get first element
+// head[A] list; // get first element
 
-tail[A] list; // get list without first element
+// tail[A] list; // get list without first element
 `
   },
   {
-    name: "Fix operator",
-    code: `fix (λ f : Nat → Nat . (λ n : Nat . if iszero(n) then 1 else n  * f (pred n)) : (Nat → Nat) → (Nat → Nat));`
+    name: "fixOperator",
+    code: `fix (λ f : Nat → Nat . (λ n : Nat . if iszero(n) then 1 else n * f (pred n)) : (Nat → Nat) → (Nat → Nat));`
 
   }
 

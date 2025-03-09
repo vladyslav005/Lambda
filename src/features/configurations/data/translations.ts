@@ -10,6 +10,7 @@ const translations = {
         records: "Records",
         lists: "Lists",
         ifCondition: "If condition",
+        fixOperator: "Fix operator",
       }
     },
 
@@ -46,6 +47,7 @@ const translations = {
 
     conf: {
       interactiveMode: "Run after change",
+      fontSize: "Font size"
     },
 
     toast: {
@@ -188,6 +190,7 @@ const translations = {
     },
 
     feedback: "Feedback",
+
   },
 
   sk: {
@@ -201,6 +204,7 @@ const translations = {
         records: "Záznamy",
         lists: "Zoznamy",
         ifCondition: "Podmienka",
+        fixOperator: "Operátor fix",
       }
     },
 
@@ -237,6 +241,7 @@ const translations = {
 
     conf: {
       interactiveMode: "Spustiť po zmene",
+      fontSize: "Veľkosť písma"
     },
 
     toast: {
@@ -383,7 +388,8 @@ const translations = {
         tuples: "Кортежі",
         records: "Записи",
         lists: "Списки",
-        ifCondition: "Умова if"
+        ifCondition: "Умова if",
+        fixOperator: "Оператор fix",
       }
     },
 
@@ -418,7 +424,9 @@ const translations = {
     },
 
     conf: {
-      interactiveMode: "Запускати після зміни"
+      interactiveMode: "Запускати після зміни",
+      fontSize: "Розмір шрифту"
+
     },
 
     toast: {

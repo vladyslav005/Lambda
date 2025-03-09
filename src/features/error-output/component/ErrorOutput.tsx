@@ -17,8 +17,8 @@ export function ErrorOutput() {
               <ErrorMessage
                   error={{
                     type: ErrorType.INFO,
-                    color: "#226303",
-                    background: "#e6f9dc",
+                    color: "var(--Log-On-Info-Container, #226303)",
+                    background: "var(--Log-Info-Container, #e6f9dc)",
                     message: translations[confContext.language].error.info
                   }}/>
           }
@@ -30,8 +30,8 @@ export function ErrorOutput() {
                       key={index}
                       error={{
                         type: ErrorType.ERROR,
-                        color: "#852221",
-                        background: "#F9DEDC",
+                        color: "var(--Log-On-Error-Container, #852221)",
+                        background: "var(--Log-Error-Container, #F9DEDC)",
                         message: error.message
                       }}
                   />

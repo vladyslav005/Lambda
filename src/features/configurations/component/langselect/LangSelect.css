@@ -1,6 +1,8 @@
 .lang-btn {
     border: 1px solid var(--Schemes-Outline, #79747E);
     height: 2.2rem;
+    color: var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459));
+
 }
 
 .sk {

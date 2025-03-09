@@ -24,7 +24,7 @@
     border: 1px #000000 solid;
     padding: 2rem;
     border-radius: 0.4rem;
-    color: #000000;
+    color: var(--Schemes-On-Surface, #000000);
     background: var(--Schemes-Surface, #FEF7FF);
     overflow: scroll;
 
@@ -41,8 +41,8 @@
 }
 
 .png-bx {
-    /*max-height: 400px;*/
-    min-height: 400px;
+    max-height: 400px;
+    min-height: 100px;
 
     width: 100%;
     overflow-x: auto;
@@ -164,6 +164,12 @@
 }
 
 .export-button:hover {
-    transform: scale(1.1);
+    background: var(--Schemes-Primary, #65558F);
+
+    transform: scale(1.05);
+}
+
+.export-button {
+    background: var(--Schemes-Primary, #65558F);
 }
 

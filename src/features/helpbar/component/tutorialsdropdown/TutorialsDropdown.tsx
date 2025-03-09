@@ -1,6 +1,6 @@
 import {Button, Dialog, DialogTrigger, Input, Popover,} from "react-aria-components";
 import {IoMdArrowDropdown, IoMdSearch} from "react-icons/io";
-import {useContext, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
 import translations from "../../../configurations/data/translations";
 import Topics from "../../data/infoTopics";
@@ -15,7 +15,6 @@ interface TutorialsDropdownProps {
 export const TutorialsDropdown = (props: TutorialsDropdownProps) => {
   const confContext = useContext(ConfigurationContext);
   const [searchQuery, setSearchQuery] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
 
   return (
       <DialogTrigger>
@@ -33,7 +32,6 @@ export const TutorialsDropdown = (props: TutorialsDropdownProps) => {
           <Dialog>
             <div className="search">
               <Input
-                  ref={inputRef}
                   className="search-input"
                   type="text"
                   placeholder={translations[confContext.language].helpBar.searchPlaceholder}

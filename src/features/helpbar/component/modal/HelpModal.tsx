@@ -3,6 +3,7 @@ import {IconButton} from "../../../../common/components/button/IconButton";
 import {IoMdClose} from "react-icons/io";
 import {Toaster} from "react-hot-toast";
 import "./style.css"
+import React from "react";
 
 
 interface HelpModalProps {
@@ -25,7 +26,8 @@ export const HelpModal = (props: HelpModalProps) => {
             toastOptions={{
               position: "top-center",
               style: {
-                color: "#49454F",
+                background: "var(--Schemes-Surface-Variant, #E7E0EC)",
+                color: "var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))",
                 fontFamily: "Roboto",
                 fontSize: "var(--Body-Medium-Size, 14px)",
                 fontStyle: "normal",
@@ -47,7 +49,8 @@ export const HelpModal = (props: HelpModalProps) => {
               }}
               onClick={() => props.setModalOpen(false)}
           >
-            <IoMdClose size={20}/>
+            <IoMdClose color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
+                       size={20}/>
           </IconButton>
           <div className="help-modal-content">
             {props.children}

@@ -7,11 +7,12 @@
     background: var(--Schemes-Surface, #FEF7FF);
 
     cursor: pointer;
-    transition: all 0.25s ease-in-out;
+    /*transition: all 0.25s ease-in-out;*/
 }
 
 .list-item-container:hover {
-    background: var(--Schemes-Surface-Variant, #E7E0EC);
+    background: var(--Schemes-Secondary-Container, #E8DEF8);
+
 }
 
 .list-item-container img {
@@ -20,7 +21,7 @@
 }
 
 .list-item-content h3 {
-    color: var(--M3-sys-light-on-surface, var(--Schemes-On-Surface, #1D1B20));
+    color: var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459));
 
     /* M3/body/large */
     font-family: var(--Body-Large-Font, Roboto);

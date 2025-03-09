@@ -11,7 +11,7 @@ function App() {
             toastOptions={{
               position: "top-center",
               style: {
-                color: "#49454F",
+                color: "var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))",
                 fontFamily: "Roboto",
                 fontSize: "var(--Body-Medium-Size, 14px)",
                 fontStyle: "normal",

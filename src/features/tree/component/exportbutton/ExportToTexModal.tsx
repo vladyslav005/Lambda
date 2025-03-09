@@ -28,7 +28,8 @@ export const ExportToTexModal = (props: ExportToEbpModalProps) => {
               toastOptions={{
                 position: "top-center",
                 style: {
-                  color: "#49454F",
+                  background: "var(--Schemes-Surface-Variant, #E7E0EC)",
+                  color: "var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))",
                   fontFamily: "Roboto",
                   fontSize: "var(--Body-Medium-Size, 14px)",
                   fontStyle: "normal",

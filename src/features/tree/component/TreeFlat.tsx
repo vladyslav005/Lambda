@@ -89,7 +89,8 @@ export default function TreeFlat() {
               value={map.value}
               onChange={(value) => setMap({value})}
           >
-            {editorContext.tree && <ProofTreeComponentUsingCss canMutateTree={true}
+            {editorContext.tree && <ProofTreeComponentUsingCss color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
+                                                               canMutateTree={true}
                                                                treeHasChanged={treeHasChanged}
                                                                setTreeHasChanged={setTreeHasChanged}
                                                                treeRef={treeRef} showAliases={showAliases}
@@ -98,12 +99,12 @@ export default function TreeFlat() {
           <IconButton className={"tree-full-screen-btn"} style={{
             position: fullScreen ? "fixed" : "absolute",
             zIndex: 999,
-            bottom: '1rem',
-            right: '1rem',
+            bottom: '.3rem',
+            right: '.3rem',
 
-          }} onClick={handleFullScreenClick}>
-            {fullScreen && <MdFullscreenExit size={48}/>}
-            {!fullScreen && <MdFullscreen size={48}/>}
+          }} onClick={handleFullScreenClick} title={"Full screen"}>
+            {fullScreen && <MdFullscreenExit color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))" size={38}/>}
+            {!fullScreen && <MdFullscreen color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))" size={38}/>}
           </IconButton>
 
           <Suspense fallback={<div></div>}>
@@ -122,10 +123,11 @@ export default function TreeFlat() {
 
           <IconButton onClick={centerTree} style={{
             position: 'absolute',
-            bottom: '1.4rem',
-            left: '1.4rem',
-          }}>
-            <AiOutlineAim size={26}></AiOutlineAim>
+            bottom: '.5rem',
+            left: '.5rem',
+          }} title={"Center tree"}
+          >
+            <AiOutlineAim size={26} color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"></AiOutlineAim>
           </IconButton>
           {editorContext.aliasesPresent && <Switch
               style={{

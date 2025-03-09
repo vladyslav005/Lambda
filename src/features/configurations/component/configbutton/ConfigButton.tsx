@@ -50,7 +50,7 @@ export const ConfigButton = () => {
             <Group aria-label="Font size" className="flex flex-row items-center p-4">
 
               <Label className="label">
-                Font size:
+                {translations[confCtx.language].conf.fontSize}
               </Label>
               <IconButton
                   onClick={() => {

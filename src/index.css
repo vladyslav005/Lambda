@@ -4,6 +4,85 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --config-block-height: 100px;
+    --Corner-Medium: 12px;
+    --Corner-Extra-small: 4px;
+    --Corner-Extra-large: 28px;
+    --Label-Large-Font: Roboto;
+    --Label-Large-Size: 14px;
+    --Label-Large-Line-Height: 20px;
+    --Label-Large-Tracking: 0.1px;
+    --Body-Large-Font: Roboto;
+    --Body-Large-Size: 16px;
+    --Body-Large-Line-Height: 24px;
+    --Body-Large-Tracking: 0.5px;
+    --Body-Medium-Font: Roboto;
+    --Body-Medium-Size: 14px;
+    --Body-Medium-Line-Height: 20px;
+    --Body-Medium-Tracking: 0.25px;
+    --Title-Medium-Font: Roboto;
+    --Title-Medium-Size: 16px;
+    --Title-Medium-Line-Height: 24px;
+    --Title-Medium-Tracking: 0.15px;
+    --Headline-Medium-Font: Roboto;
+    --Display-Large-Line-Height: 64px;
+    --Display-Large-Tracking: -0.25px;
+
+    --Schemes-Surface: #FEF7FF;
+    --Schemes-Surface-Container: #F3EDF7;
+    --Schemes-Surface-Container-High: #ECE6F0;
+    --Schemes-Surface-Container-Highest: #E6E0E9;
+    --Schemes-Surface-Variant: #E7E0EC;
+    --Schemes-Primary: #65558F;
+    --Schemes-On-Primary: #FFF;
+    --Schemes-On-Surface: #1D1B20;
+    --Schemes-On-Surface-Variant: #49454F;
+    --Schemes-Outline: #79747E;
+    --Schemes-Outline-Variant: #CAC4D0;
+    --Schemes-Secondary: #8e889a;
+    --Schemes-Secondary-Container: #E8DEF8;
+    --Schemes-On-Secondary-Container: #4A4459;
+    --State-Layers-On-Surface-Opacity-08: rgba(29, 27, 32, 0.08);
+    --State-Layers-On-Secondary-Container-Opacity-12: rgba(74, 68, 89, 0.12);
+    --M3-sys-light-primary: #65558F;
+    --M3-sys-light-on-primary: #FFF;
+    --M3-sys-light-on-surface: #1D1B20;
+    --M3-sys-light-on-surface-variant: #49454F;
+    --M3-sys-light-on-secondary-container: #4A4459;
+    --Log-Info-Container: #e6f9dc;
+    --Log-Error-Container: #F9DEDC;
+    --Log-On-Info-Container: #226303;
+    --Log-On-Error-Container: #852221;
+}
+
+[data-theme='dark'] {
+    --Schemes-Surface: #1E1E1E;
+    --Schemes-Surface-Container: #2D2D2D;
+    --Schemes-Surface-Container-High: #3A3A3A;
+    --Schemes-Surface-Container-Highest: #4A4A4A;
+    --Schemes-Surface-Variant: #333333;
+    --Schemes-Primary: #BB86FC;
+    --Schemes-On-Primary: #000000;
+    --Schemes-On-Surface: #E0E0E0;
+    --Schemes-On-Surface-Variant: #B0B0B0;
+    --Schemes-Outline: #666666;
+    --Schemes-Outline-Variant: #555555;
+    --Schemes-Secondary: #673AB7;
+    --Schemes-Secondary-Container: #9180af;
+    --Schemes-On-Secondary-Container: #FFFFFF;
+    --State-Layers-On-Surface-Opacity-08: rgba(224, 224, 224, 0.08);
+    --State-Layers-On-Secondary-Container-Opacity-12: rgba(255, 255, 255, 0.12);
+    --M3-sys-light-primary: #BB86FC;
+    --M3-sys-light-on-primary: #000000;
+    --M3-sys-light-on-surface: #E0E0E0;
+    --M3-sys-light-on-surface-variant: #B0B0B0;
+    --M3-sys-light-on-secondary-container: #FFFFFF;
+    --Log-Info-Container: #1E3A1A;
+    --Log-Error-Container: #3A1A1A;
+    --Log-On-Info-Container: #A8F5A2;
+    --Log-On-Error-Container: #FFA8A8;
+}
 
 body {
     margin: 0;
@@ -69,7 +148,6 @@ section {
     top: 0;
     left: 0;
     width: 100%;
-    height: var(--visual-viewport-height);
     background: rgba(0, 0, 0, 0.26);
     display: flex;
     align-items: center;
@@ -96,9 +174,6 @@ section {
 .react-aria-Modal {
     box-shadow: 0 8px 20px rgba(0 0 0 / 0.1);
     border-radius: 6px;
-    background: var(--overlay-background);
-    color: var(--text-color);
-    border: 1px solid var(--gray-400);
     outline: none;
 
     z-index: 1000;
@@ -227,5 +302,5 @@ section {
 
 .label {
     font-size: 1.143rem;
-    color: black;
+    color: var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459));
 }

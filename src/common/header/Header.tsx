@@ -11,6 +11,7 @@ import {IconButton} from "../components/button/IconButton";
 import {ConfigButton} from "../../features/configurations/component/configbutton/ConfigButton";
 import {MdClose, MdFeedback, MdMenu} from "react-icons/md";
 import {LangSelect} from "../../features/configurations/component/langselect/LangSelect";
+import {SwitchTheme} from "../../features/configurations/component/switchtheme/SwitchTheme";
 
 export const Header = () => {
   const confCtx = useContext(ConfigurationContext)
@@ -26,7 +27,7 @@ export const Header = () => {
 
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex flex-row items-center gap-8 mx-8">
+        <div className="hidden lg:flex flex-row items-center gap-1 xl:gap-8 mx-8">
           <div className="flex items-center gap-2">
             <PasteExampleMenu />
             <TutorialsDropdown />
@@ -34,12 +35,13 @@ export const Header = () => {
 
           <div className="flex items-center gap-2">
             <LangSelect/>
+            <SwitchTheme/>
             <ConfigButton />
           </div>
 
           <IconButton className="feedback-btn" onClick={() => window.open("http://google.com", "_blank")}>
             {translations[confCtx.language].feedback}
-            <MdFeedback size={24} />
+            <MdFeedback size={24}  />
           </IconButton>
         </div>
 
@@ -49,7 +51,11 @@ export const Header = () => {
               className=""
               onClick={() => setMenuOpen(!menuOpen)}
           >
-            {menuOpen ? <MdClose size={28} /> : <MdMenu size={28} />}
+            {menuOpen ?
+                <MdClose size={28}
+                   color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/> :
+                <MdMenu size={28}
+                   color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))" />}
           </IconButton>
         </div>
         {/* Mobile Menu (Dropdown) */}
@@ -62,6 +68,7 @@ export const Header = () => {
 
               <div className="flex items-center gap-2">
                 <LangSelect/>
+                <SwitchTheme/>
                 <ConfigButton />
               </div>
 

@@ -9,7 +9,7 @@ interface IconButtonProps {
   className?: string;
   id?: string;
   style?: React.CSSProperties;
-
+  title?: string;
 }
 
 export const MyRipples = createRipples({
@@ -30,11 +30,14 @@ export const IconButton = (props: IconButtonProps) => {
           id={props.id}
           onPress={props.onClick}
       >
-        <MyRipples during={500} color={'rgba(251,246,246,0.63)'}
-                   className={[props.className, "my-button"].join(" ")}
-        >
-          {props.children}
-        </MyRipples>
+        <div title={props.title ? `${props.title}` : ''}>
+
+          <MyRipples  during={500} color={'rgba(251,246,246,0.63)'}
+                     className={[props.className, "my-button"].join(" ")}
+          >
+            {props.children}
+          </MyRipples>
+        </div>
 
       </Button>
   )

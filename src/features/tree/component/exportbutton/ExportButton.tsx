@@ -49,9 +49,9 @@ const ExportButton = (props: ExportButtonProps) => {
       <>
         <MenuTrigger>
           <IconButton className="export-button"
+                      title={"Export"}
                       style={{
                         ...props.style,
-                        backgroundColor: "rgb(115,102,149)",
                         borderRadius: 16
                       }}
           >

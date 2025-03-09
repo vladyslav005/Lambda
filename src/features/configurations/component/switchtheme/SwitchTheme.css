@@ -1,0 +1,6 @@
+.toggle-theme-button {
+    border-radius: 50px;
+    border: 1px solid var(--Schemes-Outline, #79747E) ;
+    padding: .5rem ;
+
+}

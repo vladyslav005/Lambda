@@ -4,9 +4,8 @@ import {setUpMonacoLanguage} from "../hook/SetUpMonacoLanguage";
 import {EditorContext} from "../context/EditorContext";
 import {useBuildTree} from "../hook/BuildTreeHook";
 import "./LambdaInput.css"
-import {EditorToolbar} from "./toolbar/EditorToolbar";
 import {useEditorErrorsHook} from "../hook/EditorErrorsHook";
-import {ConfigurationContext} from "../../configurations/context/ConfigurationContext";
+import {ConfigurationContext, Theme} from "../../configurations/context/ConfigurationContext";
 import {IconButton} from "../../../common/components/button/IconButton";
 import {VscDebugRerun} from "react-icons/vsc";
 
@@ -49,13 +48,24 @@ export default function LambdaInput() {
     if (monaco) {
       try {
         setUpMonacoLanguage(monaco); // set up language and editor settings
-        monaco.editor.setTheme("lambda-theme");
+        monaco.editor.setTheme(confContext.theme === Theme.Light ? "lambda-theme" : "dark-lambda-theme");
 
       } catch (e) {
         console.error('Error setting up Monaco:', e);
       }
     }
   }, [monaco]);
+
+
+  useEffect(() => {
+    if (monaco) {
+      try {
+        monaco.editor.setTheme(confContext.theme === Theme.Light ? "lambda-theme" : "lambda-theme-dark");
+      } catch (e) {
+        console.error('Error setting up Monaco:', e);
+      }
+    }
+  }, [confContext.theme]);
 
 
   async function editorOnChange(value: any) {
@@ -91,18 +101,19 @@ export default function LambdaInput() {
              }}
         >
           {!confContext.interactive &&
-              <IconButton className="build-tree-btn"
+              <IconButton className="build-tree-btn" title={"Run"}
                           onClick={() => buildTreeClickHandler(editorContext.editorValue)}
               >
-                  <VscDebugRerun size={20}/>
+                  <VscDebugRerun
+                      color="#ffffff"
+                      size={24}/>
               </IconButton>}
         </div>
 
         <Editor
-            className="h-full"
             language="lambda"
             options={{
-              minimap: {enabled: false},
+              minimap: {enabled: true},
               automaticLayout: true,
               fontSize: editorContext.fontSize,
             }}
@@ -116,10 +127,12 @@ export default function LambdaInput() {
             wrapperProps={{
               style: {
                 position: 'absolute',
-                top: 16,
+                height: '100%',
+                top: 0,
                 left: 0,
                 right: 0,
                 bottom: 0,
+                paddingTop: editorContext.fontSize,
               }
             }}
         />
