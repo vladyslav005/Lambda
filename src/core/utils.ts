@@ -72,6 +72,7 @@ export function preprocessString(str: string): string {
       .replaceAll(/>/g, "{\\rangle}")
       .replaceAll(/`/g, "<")
       .replaceAll(/~/g, ">")
+      .replaceAll(/§/g, "*")
 
       .replaceAll(" ", "{\\ }")
 }

@@ -53,11 +53,11 @@ type
 
 list_op
     : NIL LBRACK type RBRACK                # ListNil
-    | CONS LBRACK type RBRACK term term     # ListCons
-    | ISNIL LBRACK type RBRACK term         # ListIsNil
-    | TAIL LBRACK type RBRACK term          # ListTail
-    | HEAD LBRACK type RBRACK term          # ListHead
-    | LBRACK (term (COMMA term)* ) RBRACK    # ListConstructor
+    | CONS LBRACK type RBRACK               # ListCons
+    | ISNIL LBRACK type RBRACK              # ListIsNil
+    | TAIL LBRACK type RBRACK               # ListTail
+    | HEAD LBRACK type RBRACK               # ListHead
+    | LBRACK (term (COMMA term)* ) RBRACK   # ListConstructor
     ;
 
 constant

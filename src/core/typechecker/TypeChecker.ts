@@ -988,25 +988,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     const declaredElType = this.decodeAlias(ctx.type_().getText());
 
-    const list = ctx.term(1);
-    const el = ctx.term(0);
-
-    const listType: string = this.visit(list);
-    const elType: string = this.visit(el);
-
-    if (!(parseTypeAndElimParentheses(listType) instanceof ListTypeContext))
-      throw new TypeError(`CONS can't be used with term of type '${listType}'`,
-          getTokenLocation(ctx));
-
-    if (declaredElType !== parseTypeAndElimParentheses(listType).getChild(1).getText())
-      throw new TypeError(`List is of type '${listType}' but you have delared '[${declaredElType}]'`,
-          getTokenLocation(ctx));
-
-    if (elType !== declaredElType)
-      throw new TypeError(`Can't add element of type '${elType}' to list of type '${listType}'`,
-          getTokenLocation(ctx));
-
-    return listType;
+    return `(${declaredElType})->(List ${declaredElType})->(List ${declaredElType})`;
   };
 
   visitListConstructor = (ctx: ListConstructorContext) => {
@@ -1033,25 +1015,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     console.log("Visiting a isnil", ctx.getText());
 
     const declaredElType = this.decodeAlias(ctx.type_().getText());
-
-    const list = ctx.term();
-
-    const listType: string = this.visit(list);
-    const elType = parseTypeAndElimParentheses(listType).getChild(1).getText()
-
-    if (!(parseTypeAndElimParentheses(listType) instanceof ListTypeContext))
-      throw new TypeError(`ISNIL can't be used with term of type '${listType}'`,
-          getTokenLocation(ctx));
-
-    if (declaredElType !== parseTypeAndElimParentheses(listType).getChild(1).getText())
-      throw new TypeError(`List is of type '${listType}' but you have delared '[${declaredElType}]'`,
-          getTokenLocation(ctx));
-
-    if (elType !== declaredElType)
-      throw new TypeError(`Can't add element of type '${elType}' to list of type '${listType}'`,
-          getTokenLocation(ctx));
-
-    return "Bool";
+    return `(List ${declaredElType})->Bool`;
   };
 
   visitListTail = (ctx: ListTailContext): any => {
@@ -1059,48 +1023,14 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     const declaredElType = this.decodeAlias(ctx.type_().getText());
 
-    const list = ctx.term();
-
-    const listType: string = this.visit(list);
-    const elType = parseTypeAndElimParentheses(listType).getChild(1).getText()
-
-    if (!(parseTypeAndElimParentheses(listType) instanceof ListTypeContext))
-      throw new TypeError(`TAIL can't be used with term of type '${listType}'`,
-          getTokenLocation(ctx));
-
-    if (declaredElType !== parseTypeAndElimParentheses(listType).getChild(1).getText())
-      throw new TypeError(`List is of type '${listType}' but you have delared '[${declaredElType}]'`,
-          getTokenLocation(ctx));
-
-    if (elType !== declaredElType)
-      throw new TypeError(`Can't add element of type '${elType}' to list of type '${listType}'`,
-          getTokenLocation(ctx));
-
-    return listType;
+    return `(List ${declaredElType})->(${declaredElType})`;
   };
 
   visitListHead = (ctx: ListHeadContext): any => {
     console.log("Visiting a head", ctx.getText());
     const declaredElType = this.decodeAlias(ctx.type_().getText());
 
-    const list = ctx.term();
-
-    const listType: string = this.visit(list);
-    const elType = parseTypeAndElimParentheses(listType).getChild(1).getText()
-
-    if (!(parseTypeAndElimParentheses(listType) instanceof ListTypeContext))
-      throw new TypeError(`HEAD can't be used with term of type '${listType}'`,
-          getTokenLocation(ctx));
-
-    if (declaredElType !== elType)
-      throw new TypeError(`List is of type '${elType}' but you have delared '${declaredElType}`,
-          getTokenLocation(ctx));
-
-    if (elType !== declaredElType)
-      throw new TypeError(`Can't add element of type '${elType}' to list of type '${listType}'`,
-          getTokenLocation(ctx));
-
-    return elType;
+    return `(List ${declaredElType})->(${declaredElType})`;
   };
 
 
