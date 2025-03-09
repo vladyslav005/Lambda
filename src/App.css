@@ -64,6 +64,8 @@
         margin-bottom: 0 !important;
 
         padding-bottom: 1rem;
+        overflow: scroll !important;
+        min-height: 160px !important;
         height: fit-content !important;
     }
 
