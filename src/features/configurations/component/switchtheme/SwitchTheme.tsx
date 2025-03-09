@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {ConfigurationContext, Language, Theme} from "../../context/ConfigurationContext";
+import {ConfigurationContext, Theme} from "../../context/ConfigurationContext";
 import {IconButton} from "../../../../common/components/button/IconButton";
 import {IoIosMoon, IoIosSunny} from "react-icons/io";
 import './SwitchTheme.css'
@@ -21,9 +21,9 @@ export const SwitchTheme = () => {
             className="toggle-theme-button"
             onClick={clickHandler}
         >
-         {confCtx.theme === Theme.Dark && <IoIosSunny
+          {confCtx.theme === Theme.Dark && <IoIosSunny
               color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
-              size={26}/> }
+              size={26}/>}
           {confCtx.theme === Theme.Light && <IoIosMoon
               color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
               size={26}/>}

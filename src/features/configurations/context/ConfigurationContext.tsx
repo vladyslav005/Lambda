@@ -26,9 +26,12 @@ export const ConfigurationContext = createContext<ConfigurationContextInterface>
   interactive: true,
   theme: Theme.Light,
 
-  setInteractive: interactive => {},
-  setLanguage: (language: Language) => {},
-  setTheme: (theme: Theme) => {}
+  setInteractive: interactive => {
+  },
+  setLanguage: (language: Language) => {
+  },
+  setTheme: (theme: Theme) => {
+  }
 })
 
 interface ConfigurationContextProps {
@@ -40,7 +43,6 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
   const [language, setLanguage] = useState(Language.EN);
   const [interactive, setInteractive] = useState(true);
   const [theme, setTheme] = useState(Theme.Light);
-
 
 
   const setThemeHandler = (theme: Theme) => {

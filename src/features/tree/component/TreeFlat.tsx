@@ -89,12 +89,13 @@ export default function TreeFlat() {
               value={map.value}
               onChange={(value) => setMap({value})}
           >
-            {editorContext.tree && <ProofTreeComponentUsingCss color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
-                                                               canMutateTree={true}
-                                                               treeHasChanged={treeHasChanged}
-                                                               setTreeHasChanged={setTreeHasChanged}
-                                                               treeRef={treeRef} showAliases={showAliases}
-                                                               node={editorContext.tree}/>}
+            {editorContext.tree && <ProofTreeComponentUsingCss
+                color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
+                canMutateTree={true}
+                treeHasChanged={treeHasChanged}
+                setTreeHasChanged={setTreeHasChanged}
+                treeRef={treeRef} showAliases={showAliases}
+                node={editorContext.tree}/>}
           </MapInteractionCSS>
           <IconButton className={"tree-full-screen-btn"} style={{
             position: fullScreen ? "fixed" : "absolute",
@@ -103,8 +104,12 @@ export default function TreeFlat() {
             right: '.3rem',
 
           }} onClick={handleFullScreenClick} title={"Full screen"}>
-            {fullScreen && <MdFullscreenExit color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))" size={38}/>}
-            {!fullScreen && <MdFullscreen color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))" size={38}/>}
+            {fullScreen && <MdFullscreenExit
+                color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
+                size={38}/>}
+            {!fullScreen && <MdFullscreen
+                color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
+                size={38}/>}
           </IconButton>
 
           <Suspense fallback={<div></div>}>
@@ -127,7 +132,8 @@ export default function TreeFlat() {
             left: '.5rem',
           }} title={"Center tree"}
           >
-            <AiOutlineAim size={26} color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"></AiOutlineAim>
+            <AiOutlineAim size={26}
+                          color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"></AiOutlineAim>
           </IconButton>
           {editorContext.aliasesPresent && <Switch
               style={{

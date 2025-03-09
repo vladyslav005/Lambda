@@ -1,6 +1,6 @@
-import {Group, Input, Separator, TextField, Toolbar} from 'react-aria-components';
+import {Group, Input, TextField, Toolbar} from 'react-aria-components';
 import "./EditorToolbar.css"
-import {MdAdd, MdContentCopy, MdContentCut, MdOutlineKeyboardDoubleArrowRight, MdRemove} from "react-icons/md";
+import {MdAdd, MdContentCopy, MdRemove} from "react-icons/md";
 import React, {useContext, useState} from "react";
 import {HiOutlineDotsHorizontal} from "react-icons/hi";
 import {motion, useAnimationControls} from "framer-motion";
@@ -9,7 +9,6 @@ import toast from 'react-hot-toast';
 import {IconButton} from "../../../../common/components/button/IconButton";
 import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
 import translations from "../../../configurations/data/translations";
-import {LuSeparatorVertical} from "react-icons/lu";
 
 
 export const EditorToolbar = () => {

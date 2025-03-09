@@ -1,6 +1,6 @@
 import {Button, Dialog, DialogTrigger, Input, Popover,} from "react-aria-components";
 import {IoMdArrowDropdown, IoMdSearch} from "react-icons/io";
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useState} from "react";
 import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
 import translations from "../../../configurations/data/translations";
 import Topics from "../../data/infoTopics";

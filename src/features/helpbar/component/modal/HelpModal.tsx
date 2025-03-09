@@ -38,7 +38,7 @@ export const HelpModal = (props: HelpModalProps) => {
               }
             }}
         />
-        <Dialog >
+        <Dialog>
           <div className="h-1"></div>
 
           <IconButton
@@ -49,8 +49,9 @@ export const HelpModal = (props: HelpModalProps) => {
               }}
               onClick={() => props.setModalOpen(false)}
           >
-            <IoMdClose color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
-                       size={20}/>
+            <IoMdClose
+                color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
+                size={20}/>
           </IconButton>
           <div className="help-modal-content">
             {props.children}

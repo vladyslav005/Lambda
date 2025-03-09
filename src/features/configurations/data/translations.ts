@@ -402,12 +402,12 @@ const translations = {
     helpBar: {
       tutorial: "Посібник",
       guides: {
-        grammar: { title: "Граматика", desc: "Граматика мови" },
-        application: { title: "Застосування", desc: "Правило застосування" },
-        abstraction: { title: "Абстракція", desc: "Правило абстракції" },
-        recordsAndTuples: { title: "Записи та кортежі", desc: "Записи, кортежі та їх проекції" },
-        variants: { title: "Варіанти", desc: "Варіанти та конструкція case-of" },
-        syntax: { title: "Синтаксис", desc: "Короткий огляд синтаксису" }
+        grammar: {title: "Граматика", desc: "Граматика мови"},
+        application: {title: "Застосування", desc: "Правило застосування"},
+        abstraction: {title: "Абстракція", desc: "Правило абстракції"},
+        recordsAndTuples: {title: "Записи та кортежі", desc: "Записи, кортежі та їх проекції"},
+        variants: {title: "Варіанти", desc: "Варіанти та конструкція case-of"},
+        syntax: {title: "Синтаксис", desc: "Короткий огляд синтаксису"}
       },
       searchPlaceholder: "Шукати теми..."
     },

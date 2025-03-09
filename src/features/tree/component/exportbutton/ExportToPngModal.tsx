@@ -100,7 +100,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
 
   return (
       <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
-        <Dialog >
+        <Dialog>
 
           {isImageLoading && <div className={"loading-overlay"}>
               <img alt="" src={rollingGif}/>
@@ -213,7 +213,9 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 </div>
 
                 <div className="flex flex-row items-center ">
-                  <AiOutlineAim size={26} color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))" style={{cursor: "pointer"}} onClick={() => centerTree()}></AiOutlineAim>
+                  <AiOutlineAim size={26}
+                                color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
+                                style={{cursor: "pointer"}} onClick={() => centerTree()}></AiOutlineAim>
                   <IconButton className={"center-tree-btn"} onClick={() => centerTree()}>
                     {translations[confContext.language].tree.centerTree}
                   </IconButton>
