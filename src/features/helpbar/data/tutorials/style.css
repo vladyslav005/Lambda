@@ -39,7 +39,7 @@
 
 .paragraph code {
     font-family: monospace;
-    background: #f4f4f4;
+    background: var(--Schemes-Surface-Variant);
     padding: 2px 4px;
     border-radius: 4px;
     color: #d63384;

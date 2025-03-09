@@ -9,7 +9,7 @@ terms
     ;
 
 globalDecl
-    : 'typedef' ID EQ type SEMI                       # TypeAlias
+    : 'typedef' ID EQ type SEMI               # TypeAlias
     | ID COLON type SEMI                      # GlobalVariableDeclaration
     | ID EQ term (COLON type)? SEMI           # GlobalFunctionDeclaration
     ;

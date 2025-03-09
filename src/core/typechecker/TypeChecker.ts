@@ -135,13 +135,12 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const bodyType = this.visit(body);
     if (this._globalContext.isVariableInContext(id)) {
       const varType = this.findType(id, ctx.getChild(0))
-      console.warn(varType)
       const bodyType = this.findType('', body)
       if (bodyType !== varType) {
         throw new TypeError(`Cant assign term of type '${bodyType}' to variable of type '${varType}'`, getTokenLocation(ctx))
       }
     } else {
-      if (!(body instanceof LambdaAbstractionContext || body instanceof InjectionContext || body instanceof LeftRightInjContext)) {
+      if (!(body instanceof LambdaAbstractionContext)) {
         if (ctx.getChildCount() !== 6)
           throw new TypeError("Provide explicit type declaration", getTokenLocation(ctx))
 

@@ -205,6 +205,13 @@ export function setUpMonacoLanguage(monaco: any) {
           word.endColumn
       );
 
+      const slashRange = new monaco.Range(
+          position.lineNumber,
+          word.startColumn - 1,
+          position.lineNumber,
+          word.endColumn
+      );
+
       const suggestions = [
         {
           label: 'typedef',
@@ -298,12 +305,14 @@ export function setUpMonacoLanguage(monaco: any) {
           kind: monaco.languages.CompletionItemKind.Snippet,
           insertText: '->',
           detail: 'Arrow',
+          range: slashRange
         },
         {
           label: '\\Rightarrow',
           kind: monaco.languages.CompletionItemKind.Snippet,
           insertText: '=>',
           detail: 'DoubleArrow',
+          range: slashRange
         },
 
       ];

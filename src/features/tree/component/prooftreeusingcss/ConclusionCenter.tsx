@@ -37,6 +37,15 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
     }
   }
 
+  const generateTitle = () => {
+    if (props.node.isExpandable) {
+      return `Replace with variable definition`
+    } else if (props.isExpandedPremise && props.parentSetIsExpanded && props.parentIsExpanded) {
+      return `Replace with variable name`
+    } else
+      return "";
+  }
+
   function handleMouseEnter() {
     const startLine = props.node.tokenLocation[0];
     const endLine = props.node.tokenLocation[1];
@@ -102,7 +111,7 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
            onMouseLeave={handleMouseLeave}
            onClick={handleClick}
            onTouchStart={props.node.isExpandable || (props.isExpandedPremise && props.parentSetIsExpanded && props.parentIsExpanded) ? handleClick : handleTouch}
-
+           title={generateTitle()}
            style={{
              backgroundColor: isHovered ? "rgba(255, 255, 0, 0.3)" : "", // Highlight the div when hovered
              borderRadius: '10px',

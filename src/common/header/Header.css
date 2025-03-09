@@ -12,6 +12,7 @@
 }
 
 .name {
+    cursor: default;
     color: var(--Schemes-On-Surface-Variant, #49454F);
     text-align: center;
     font-family: var(--Headline-Medium-Font, Roboto);
@@ -22,6 +23,9 @@
     letter-spacing: var(--Display-Large-Tracking, -0.25px);
 }
 
+.name::selection {
+    background: transparent;
+}
 
 .configurations {
     display: flex;
