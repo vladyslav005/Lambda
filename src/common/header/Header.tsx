@@ -39,7 +39,8 @@ export const Header = () => {
             <ConfigButton />
           </div>
 
-          <IconButton className="feedback-btn" onClick={() => window.open("http://google.com", "_blank")}>
+          <IconButton className="feedback-btn" onClick={() =>
+              window.open("https://docs.google.com/forms/d/e/1FAIpQLScZPEpHaDug8IzCJHdx6IYVfqtrKoTTHb6ZCk1lInks7poLHw/viewform?usp=dialog", "_blank")}>
             {translations[confCtx.language].feedback}
             <MdFeedback size={24}  />
           </IconButton>

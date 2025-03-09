@@ -59,6 +59,12 @@ var1;`}></CodeExample>
 
         </p>
 
+        <p className="paragraph"
+           dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.grammar.p7}}
+        >
+
+        </p>
+
       </HelpListItem>
   )
 }

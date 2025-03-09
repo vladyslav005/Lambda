@@ -44,7 +44,7 @@ typedef VirtualAddr = <name : String, email : String>;
 typedef Addr = PhysicalAddr + VirtualAddr; // define variant type
 
 pa : PhysicalAddr;
-a = inl pa as Addr; // make injection
+a = inl pa as Addr : Addr; // make injection
 
 case a of                // use case of construction injection
     inl x => x.firstlast
@@ -78,7 +78,7 @@ typedef VirtualAddr = <name : String, email : String>;
 typedef Addr = [physical : PhysicalAddr, virtual : VirtualAddr]; // define variant type
 
 pa : PhysicalAddr;
-a = [physical = pa] as Addr; // make injection
+a = [physical = pa] as Addr : Addr; // make injection
 
 case a of                       // use case of construction injection
      [physical = x] => x.firstlast

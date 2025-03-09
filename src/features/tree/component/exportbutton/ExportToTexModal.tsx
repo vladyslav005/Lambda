@@ -49,7 +49,7 @@ export const ExportToTexModal = (props: ExportToEbpModalProps) => {
               }}
               onClick={() => props.setIsOpen(false)}
           >
-            <IoMdClose size={20}/>
+            <IoMdClose color="var(--M3-sys-light-on-surface, var(--Schemes-On-Surface, #1D1B20))" size={20}/>
           </IconButton>
           <div className="help-modal-content export-modal-content">
             <h1 className="modal-title">{translations[confContext.language].tree.preview}</h1>

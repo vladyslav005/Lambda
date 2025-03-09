@@ -66,6 +66,7 @@
                        "track track";
     grid-template-columns: 1fr auto;
     max-width: 300px;
+    color: var(--M3-sys-light-on-surface, var(--Schemes-On-Surface, #1D1B20));
 
     /* M3/label/large */
     font-family: var(--Label-Large-Font, Roboto);
@@ -160,6 +161,7 @@
 
 
 .center-tree-btn {
+    color: var(--M3-sys-light-on-surface, var(--Schemes-On-Surface, #1D1B20));
     padding: 0.5rem;
 }
 

@@ -80,7 +80,10 @@ const translations = {
           the term <code>var1</code> is correctly typed.
           You can use this approach to write more complex terms.
           It's also possible to write a sequence of unrelated terms
-          to see them all in the proof tree. In such cases, they will appear under the <em>sequence rule</em>.`,
+          to see them all in the proof tree. In such cases, they will appear under the <em>sequence rule</em>.
+          But due to definition of sequence rule, all terms should have type <code>Unit</code>, except for last term.`,
+        p7: `Generally all kinds of terms that you write in editor will be displayed in tree, 
+        except for variable declarations and type declarations.`
 
       },
       abstraction: {
@@ -254,28 +257,31 @@ const translations = {
     tutorials: {
       grammar: {
         p1: `Syntax jazyka je jednoduchá a minimalistická.
-        Existujú dva typy výrazov: <em>termy</em> a <em>deklarácie</em>.`,
+          Existujú dva typy výrazov: <em>termy</em> a <em>deklarácie</em>.`,
         p2: `Term môže byť ktorýmkoľvek z nasledujúcich: premenná, abstrakcia,
-        aplikácia, záznam, súčinový typ, projekcia, konštrukcia case-of,
-        konštrukcia if-else, variant alebo injekcia.`,
+          aplikácia, záznam, súčinový typ, projekcia, konštrukcia case-of,
+          konštrukcia if-else, variant alebo injekcia.`,
         p3: `Deklarácie sa používajú na naplnenie <b>globálneho kontextu &Gamma;</b>.
-        Premenné môžu byť deklarované priradením hodnoty a explicitnou
-        typovou anotáciou, alebo jednoducho poskytnutím názvu s typovou anotáciou.
-        Príklad:`,
+          Premenné môžu byť deklarované priradením hodnoty a explicitnou
+          typovou anotáciou, alebo jednoducho poskytnutím názvu s typovou anotáciou.
+          Príklad:`,
         p4: `Premenné môžu byť použité aj bez priradenia hodnoty,
         pretože táto webová aplikácia vykonáva iba kontrolu typov.
         Nevykonáva vyhodnocovanie výrazov ani neberie do úvahy ich hodnoty.`,
         p5: `Avšak, zatiaľ čo deklarácie pridávajú položky do kontextu, nie sú
-        zobrazované priamo v dôkazovom strome. Ak vložite vyššie uvedený príklad
-        do editora, dôjde k chybe, pretože nie je tam žiadny term,
-        ktorý by sa mohol v dôkazovom strome zobraziť. Na vyriešenie tohto problému musíme úpraviť 
-        kód nasledujúcim spôsobom:`,
+          zobrazované priamo v dôkazovom strome. Ak vložite vyššie uvedený príklad
+          do editora, dôjde k chybe, pretože nie je tam žiadny term,
+          ktorý by sa mohol v dôkazovom strome zobraziť. Na vyriešenie tohto problému musíme úpraviť 
+          kód nasledujúcim spôsobom:`,
         p6: `Teraz, ak vložite aktualizovaný príklad, uvidíte dôkazový strom,
-        ktorý obsahuje <em>var rule</em>, čo potvrdzuje, že
-        term <code>var1</code> je správne typovaný.
-        Môžete použiť tento prístup na zápis zložitejších termov.
-        Je tiež možné napísať sekvenciu nesúvisiacich termov,
-        aby sa zobrazili všetky v dôkazovom strome. V takom prípade sa zobrazia v pravidle <em>sequence rule</em>.`,
+          ktorý obsahuje <em>var rule</em>, čo potvrdzuje, že
+          term <code>var1</code> je správne typovaný.
+          Môžete použiť tento prístup na zápis zložitejších termov.
+          Je tiež možné napísať sekvenciu nesúvisiacich termov,
+          aby sa zobrazili všetky v dôkazovom strome. V takom prípade sa zobrazia v pravidle <em>sequence rule</em>.
+          Ale podľa definície pravidla sekvencie by všetky termíny mali mať typ <code>Unit</code>, okrem posledného termínu.`,
+        p7: `Vo všeobecnosti sa všetky druhy termov, ktoré napíšete v editore, zobrazia v strome, 
+             okrem deklarácií premenných a typov.`
       },
       abstraction: {
         p1: `Abstrakcia pravidlo sa používa na definovanie funkcií.
@@ -451,7 +457,11 @@ const translations = {
              який можна відобразити в дереві доведень. Щоб виправити це, потрібно зробити невелику корекцію:`,
         p6: `Тепер, якщо ви вставите оновлений приклад, ви побачите дерево доведень, яке містить <em>правило var</em>, 
              що підтверджує правильність типу терму <code>var1</code>. Ви можете використовувати цей підхід для 
-             написання складніших термів. Також можна написати послідовність не пов'язаних термів, щоб побачити їх усі в дереві доведень. У таких випадках вони з'являться під <em>правилом послідовності</em>.`
+             написання складніших термів. 
+             Також можна написати послідовність не пов'язаних термів, щоб побачити їх усі в дереві доведень. 
+             У таких випадках вони з'являться під <em>правилом послідовності</em>. 
+             Але за визначенням правила послідовності, всі терми повинні мати тип <code>Одиниця</code>, окрім останнього терма.`,
+        p7: `Як правило, всі типи термінів, які ви пишете у редакторі, відображаються у дереві, за винятком оголошень змінних та типів.`
       },
       abstraction: {
         p1: `<em>Правило абстракції</em> використовується для визначення функцій. 

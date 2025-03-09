@@ -132,7 +132,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
               }}
               onClick={() => props.setIsOpen(false)}
           >
-            <IoMdClose size={20}/>
+            <IoMdClose color="var(--M3-sys-light-on-surface, var(--Schemes-On-Surface, #1D1B20))" size={20}/>
           </IconButton>
 
           <div className="help-modal-content flex flex-col relative export-modal-content justify-between">
