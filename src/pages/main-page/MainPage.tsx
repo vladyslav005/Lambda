@@ -36,7 +36,9 @@ export function MainPage() {
               right: 30,
               zIndex: 10000,
             }} onClick={() => setSidebarHidden(!sidebarHidden)} title={"Show/Hide errors"}>
-              <MdOutlineKeyboardDoubleArrowRight color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))" size={24}/>
+              <MdOutlineKeyboardDoubleArrowRight
+                  color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
+                  size={24}/>
 
             </IconButton>
             <Suspense

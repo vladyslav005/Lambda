@@ -32,7 +32,7 @@ export const IconButton = (props: IconButtonProps) => {
       >
         <div title={props.title ? `${props.title}` : ''}>
 
-          <MyRipples  during={500} color={'rgba(251,246,246,0.63)'}
+          <MyRipples during={500} color={'rgba(251,246,246,0.63)'}
                      className={[props.className, "my-button"].join(" ")}
           >
             {props.children}

@@ -45,6 +45,11 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
   const [theme, setTheme] = useState(Theme.Light);
 
 
+  const setInteractiveHandler = (value: boolean) => {
+    setInteractive(value);
+    localStorage.setItem('interactive', value.toString());
+  }
+
   const setThemeHandler = (theme: Theme) => {
     setTheme(theme);
     localStorage.setItem('theme', theme);
@@ -53,6 +58,10 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
 
   useEffect(() => {
     setThemeHandler(localStorage.getItem("theme") as Theme ?? Theme.Light);
+    const interactivePersisted = localStorage.getItem("interactive") ?? 'true'
+    if (interactivePersisted === 'true')
+      setInteractiveHandler(true);
+    else setInteractiveHandler(false);
   }, [])
 
   const initialValue: ConfigurationContextInterface = {
@@ -60,7 +69,7 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
     interactive: interactive,
     theme: theme,
 
-    setInteractive: setInteractive,
+    setInteractive: setInteractiveHandler,
     setLanguage: setLanguage,
     setTheme: setThemeHandler,
   }

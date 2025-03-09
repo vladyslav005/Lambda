@@ -139,9 +139,9 @@
 }
 
 .help-bar {
-    min-height: calc((100%) / 2  - 1rem);
+    min-height: calc((100%) / 2 - 1rem);
 
-    max-height: calc((100%) / 2 - 1rem );
+    max-height: calc((100%) / 2 - 1rem);
     /*margin-top: 1rem;*/
 
     flex-grow: 1;
@@ -159,6 +159,7 @@
 .main-page {
     min-width: 400px;
 }
+
 .error-message {
     width: 90%;
 

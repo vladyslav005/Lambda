@@ -43,7 +43,7 @@
 
 .tree-info-bx h1 {
     font-size: 1.5rem;
-    color: #4A4459;
+    color: var(--Schemes-On-Surface-Variant, #4A4459);
 }
 
 .react-aria-Checkbox {

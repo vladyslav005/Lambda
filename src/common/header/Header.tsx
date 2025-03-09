@@ -6,7 +6,7 @@ import {PasteExampleMenu} from "../../features/lambda-input/component/pasteexamp
 import React, {useContext, useState} from "react";
 import {TutorialsDropdown} from "../../features/helpbar/component/tutorialsdropdown/TutorialsDropdown";
 import translations from "../../features/configurations/data/translations";
-import {ConfigurationContext, Language} from "../../features/configurations/context/ConfigurationContext";
+import {ConfigurationContext} from "../../features/configurations/context/ConfigurationContext";
 import {IconButton} from "../components/button/IconButton";
 import {ConfigButton} from "../../features/configurations/component/configbutton/ConfigButton";
 import {MdClose, MdFeedback, MdMenu} from "react-icons/md";
@@ -29,20 +29,20 @@ export const Header = () => {
         {/* Desktop Menu */}
         <div className="hidden lg:flex flex-row items-center gap-1 xl:gap-8 mx-8">
           <div className="flex items-center gap-2">
-            <PasteExampleMenu />
-            <TutorialsDropdown />
+            <PasteExampleMenu/>
+            <TutorialsDropdown/>
           </div>
 
           <div className="flex items-center gap-2">
             <LangSelect/>
             <SwitchTheme/>
-            <ConfigButton />
+            <ConfigButton/>
           </div>
 
           <IconButton className="feedback-btn" onClick={() =>
               window.open("https://docs.google.com/forms/d/e/1FAIpQLScZPEpHaDug8IzCJHdx6IYVfqtrKoTTHb6ZCk1lInks7poLHw/viewform?usp=dialog", "_blank")}>
             {translations[confCtx.language].feedback}
-            <MdFeedback size={24}  />
+            <MdFeedback size={24}/>
           </IconButton>
         </div>
 
@@ -54,28 +54,28 @@ export const Header = () => {
           >
             {menuOpen ?
                 <MdClose size={28}
-                   color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/> :
+                         color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/> :
                 <MdMenu size={28}
-                   color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))" />}
+                        color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/>}
           </IconButton>
         </div>
         {/* Mobile Menu (Dropdown) */}
         {menuOpen && (
             <div className="flex lg:hidden flex-row items-center m-3 gap-8 flex-wrap">
               <div className="flex items-center gap-2">
-                <PasteExampleMenu />
-                <TutorialsDropdown />
+                <PasteExampleMenu/>
+                <TutorialsDropdown/>
               </div>
 
               <div className="flex items-center gap-2">
                 <LangSelect/>
                 <SwitchTheme/>
-                <ConfigButton />
+                <ConfigButton/>
               </div>
 
               <IconButton className="feedback-btn" onClick={() => window.open("http://google.com", "_blank")}>
                 {translations[confCtx.language].feedback}
-                <MdFeedback size={24} />
+                <MdFeedback size={24}/>
               </IconButton>
             </div>
         )}
