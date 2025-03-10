@@ -75,19 +75,18 @@ else
   },
   {
     name: "lists",
-    code: `list = nil[A] : List A; // create an empty list
+    code: `list = nil[Nat] : List Nat; // create an empty list
+var : Nat;
 
-var : A;
-
-list;
-
-list = cons[A] var list; // add var to list
+list = cons[Nat] var list; // add var to list
 
 // isnil[A] list; // check if list is empty
 
 // head[A] list; // get first element
 
 // tail[A] list; // get list without first element
+
+head[Nat] (cons[Nat] 3 (cons[Nat] 8 list));
 `
   },
   {

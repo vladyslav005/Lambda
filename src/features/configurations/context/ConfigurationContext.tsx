@@ -56,12 +56,20 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
     document.documentElement.setAttribute("data-theme", theme);
   }
 
+  const setLanguageHandler = (language: Language) => {
+    setLanguage(language);
+    localStorage.setItem('language', language.toString());
+  }
+
   useEffect(() => {
     setThemeHandler(localStorage.getItem("theme") as Theme ?? Theme.Light);
     const interactivePersisted = localStorage.getItem("interactive") ?? 'true'
     if (interactivePersisted === 'true')
       setInteractiveHandler(true);
     else setInteractiveHandler(false);
+
+    setLanguageHandler(localStorage.getItem("language") as Language ?? Language.EN);
+
   }, [])
 
   const initialValue: ConfigurationContextInterface = {
@@ -70,7 +78,7 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
     theme: theme,
 
     setInteractive: setInteractiveHandler,
-    setLanguage: setLanguage,
+    setLanguage: setLanguageHandler,
     setTheme: setThemeHandler,
   }
 
