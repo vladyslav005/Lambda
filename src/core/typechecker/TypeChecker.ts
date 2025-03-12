@@ -42,10 +42,11 @@ import {
   VariantTypeContext,
   WildCardContext
 } from "../antlr/LambdaCalcParser";
-import {ParseTree} from "antlr4";
+import {ParserRuleContext, ParseTree} from "antlr4";
 import {IndexError, SyntaxError, TypeError} from "../errorhandling/customErrors";
 import {Context} from "../context/Context";
 import {eliminateOutParentheses, getTokenLocation, parseTypeAndElimParentheses, tupleTypeToArray} from "../utils";
+import hash from "object-hash";
 
 // TODO : refactor: split file, split type checker class
 // TODO : types priority
@@ -54,19 +55,25 @@ import {eliminateOutParentheses, getTokenLocation, parseTypeAndElimParentheses, 
 // TODO : cover all errors for case
 
 export class TypeChecker extends LambdaCalcVisitor<any> {
+
+  private cache: Map<string, string>
+
   constructor() {
     super();
     this.initBuiltInFunctions()
+    this.cache = new Map<string, string>();
+  }
+
+  private _aliasContext: Context = new Context();
+
+  get aliasContext(): Context {
+    return this._aliasContext;
   }
 
   private _globalContext: Context = new Context();
 
   get globalContext(): Context {
     return this._globalContext;
-  }
-
-  set globalContext(value: Context) {
-    this._globalContext = value;
   }
 
   private _localContext: Context = new Context();
@@ -79,15 +86,39 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     this._localContext = value;
   }
 
-  private _aliasContext: Context = new Context();
+  visit(tree: ParseTree): any {
 
-  get aliasContext(): Context {
-    return this._aliasContext;
+    const hash = this.hashParserContext(tree);
+
+    if (this.cache.has(hash)) {
+      return this.cache.get(hash);
+    }
+
+    const type = super.visit(tree);
+    this.cache.set(hash, type);
+
+    return type;
   }
 
-  set aliasContext(value: Context) {
-    this._aliasContext = value;
+  hashParserContext(ctx: ParseTree): string {
+
+    if (!(ctx instanceof ParserRuleContext)) {
+      return "";
+    }
+
+    function serialize(node: ParserRuleContext): any {
+      return {
+        rule: node.constructor.name || "UnknownRule",
+        text: node.getText().trim(),
+        children: node.children?.map((child) =>
+            child instanceof ParserRuleContext ? serialize(child) : child.getText()?.trim() || ""
+        ) || [],
+      };
+    }
+
+    return hash(serialize(ctx as ParserRuleContext));
   }
+
 
   initBuiltInFunctions() {
     this.globalContext.addVariable("iszero", "Nat->Bool", undefined)
@@ -99,14 +130,12 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     this._localContext = new Context();
   }
 
-  clearGlobalContext() {
+  clearContexts() {
+    this._aliasContext = new Context();
+    this._localContext = new Context();
     this._globalContext = new Context();
     // set built-in functions
     this.initBuiltInFunctions()
-  }
-
-  clearAliasContext() {
-    this._aliasContext = new Context();
   }
 
   visitExpr = (ctx: ExprContext): any => {
