@@ -14,7 +14,6 @@ export function MainPage() {
   const [sidebarHidden, setSidebarHidden] = useState(false)
   const [firstRender, setFirstRender] = useState(true);
 
-  const confContext = useContext(ConfigurationContext)
 
   useEffect(() => {
     setFirstRender(false);
