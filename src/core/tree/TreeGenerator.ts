@@ -7,6 +7,8 @@ import {
   ComparisonContext,
   ExprContext,
   FixContext,
+  GlobalFunctionDeclarationContext,
+  GlobalVariableDeclarationContext,
   IfElseContext,
   InjectionContext,
   LambdaAbstractionContext,
@@ -27,6 +29,7 @@ import {
   SequenceContext,
   TupleContext,
   TupleProjectionContext,
+  TypeAliasContext,
   VariableContext,
   WildCardContext
 } from "../antlr/LambdaCalcParser";
@@ -58,7 +61,6 @@ export interface ProofNode {
 export class TreeGenerator extends LambdaCalcVisitor<any> {
 
   private typeChecker: TypeChecker = new TypeChecker();
-  private globalContext: Context | undefined;
 
   private localContext: Context;
 
@@ -76,49 +78,51 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     root: false,
     isExpandable: false,
   };
+  private _proofTree: ProofNode | undefined;
 
   constructor() {
     super();
     this._proofTree = undefined;
-    this.globalContext = undefined;
     this.localContext = new Context();
     this.contextExtension = "";
     this.contextExtensionWithAlies = "";
   }
 
-  private _proofTree: ProofNode | undefined;
-
-  get proofTree(): ProofNode | undefined {
-    return this._proofTree;
-  }
-
-  public generateTree(AST: ParseTree, globalContext: Context, aliasContext: Context): ProofNode | undefined {
-
-    this.globalContext = globalContext;
-    this.typeChecker.globalContext = globalContext;
-    this.typeChecker.aliasContext = aliasContext;
-
+  public generateTree(AST: ParseTree): ProofNode | undefined {
     this.localContext = new Context()
 
     this.visit(AST);
 
     if (this._proofTree !== undefined) {
       this._proofTree.root = true;
-      this._proofTree.aliasesPresent = !aliasContext.isEmpty()
+      this._proofTree.aliasesPresent = !this.typeChecker.aliasContext.isEmpty()
       return this._proofTree;
     }
 
     const result = this._proofTree;
 
     this._proofTree = undefined;
-    this.typeChecker.clearGlobalContext();
-    this.typeChecker.clearLocalContext();
-    this.typeChecker.clearAliasContext();
+    this.typeChecker.clearContexts()
+    this.contextExtension = "";
+    this.contextExtensionWithAlies = "";
 
     return result;
   }
 
+  visitGlobalVariableDeclaration = (ctx: GlobalVariableDeclarationContext): void => {
+    this.typeChecker.visit(ctx)
+  };
+
+  visitGlobalFunctionDeclaration = (ctx: GlobalFunctionDeclarationContext): void => {
+    this.typeChecker.visit(ctx)
+  };
+
+  visitTypeAlias = (ctx: TypeAliasContext): void => {
+    this.typeChecker.visit(ctx)
+  };
+
   visitExpr = (ctx: ExprContext): any => {
+    ctx.globalDecl_list().map(d => this.typeChecker.visit(d));
     this._proofTree = this.visit(ctx.terms());
   };
 
@@ -395,31 +399,32 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
   visitSequence = (ctx: SequenceContext): ProofNode => {
     console.log("Seq " + ctx.getText())
-    const type = this.typeChecker.visit(ctx);
-    const typeWithAlias = this.typeChecker.encodeToAlias(type);
 
-    const seqTerms: {
-      ctx: ParseTree;
-      type: string;
-    }[] = []
+    if (ctx.term_list().length === 1)
+      return this.visit(ctx.term_list()[0])
+    else {
+      const type = this.typeChecker.visit(ctx);
+      const typeWithAlias = this.typeChecker.encodeToAlias(type);
 
-    for (let i = 0; i < ctx.getChildCount(); i++) {
-      const child = ctx.getChild(i);
-      const childType = this.typeChecker.visit(child);
-      if (typeof childType === "string") {
-        seqTerms.push({
-          ctx: child,
-          type: childType
-        })
+      const seqTerms: {
+        ctx: ParseTree;
+        type: string;
+      }[] = []
+
+      for (let i = 0; i < ctx.getChildCount(); i++) {
+        const child = ctx.getChild(i);
+        const childType = this.typeChecker.visit(child);
+        if (typeof childType === "string") {
+          seqTerms.push({
+            ctx: child,
+            type: childType
+          })
+        }
       }
-    }
 
-    const premises = seqTerms.map(c => this.visit(c.ctx));
-    const cncs = this.generateConclusionStr(premises, "; ")
+      const premises = seqTerms.map(c => this.visit(c.ctx));
+      const cncs = this.generateConclusionStr(premises, "; ")
 
-    if (seqTerms.length === 1)
-      return this.visit(seqTerms[0].ctx)
-    else
       return {
         type: type,
         wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${cncs.conclusion} : ${type}`,
@@ -434,6 +439,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
         premises: premises,
         isExpandable: false
       } as ProofNode;
+    }
   }
 
   visitTuple = (ctx: TupleContext): ProofNode => {

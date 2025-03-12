@@ -28,6 +28,8 @@ export default function TreeFlat() {
   const [treeContainerHeight, setTreeContainerHeight] = useState(0);
   const [treeHeight, setTreeHeight] = useState(0);
 
+  const [isTreeCentered, setIsTreeCentered] = useState(true)
+
   const [treeHasChanged, setTreeHasChanged] = useState(false)
 
   const [map, setMap] = useState({
@@ -71,9 +73,16 @@ export default function TreeFlat() {
 
       observer.observe(treeContainerRef.current);
       observer.observe(treeRef.current);
+      setIsTreeCentered(false)
+
       return () => observer.disconnect();
     }
   }, [editorContext.tree, showAliases, fullScreen, treeHasChanged]);
+
+  useEffect(() => {
+    centerTree();
+    setIsTreeCentered(true);
+  }, [isTreeCentered]);
 
   const handleFullScreenClick = () => {
     setFullScreen(!fullScreen);

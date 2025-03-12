@@ -17,20 +17,14 @@ export function useBuildTree() {
         editorContext.setErrors([])
         return undefined;
       }
-      analyzer.clearContext()
 
-      analyzer.analyzeInput(value)
-      analyzer.checkTypes()
-
-      const proofTree = analyzer.generateProofTree()
+      const proofTree = analyzer.analyzeInput(value);
 
       if (proofTree) {
         editorContext.setTree(proofTree);
         editorContext.setAliasesPresent(proofTree.aliasesPresent ? proofTree.aliasesPresent : false);
       }
       editorContext.setErrors([]);
-
-      analyzer.clearContext()
 
     } catch (error: any) {
 
