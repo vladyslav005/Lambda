@@ -17,6 +17,7 @@ interface ConclusionCenterProps {
   isExpandedPremise?: boolean;
   parentIsExpanded?: boolean;
   parentSetIsExpanded?: (expanded: boolean) => void;
+  showGammaDefinition: boolean;
 }
 
 export const ConclusionCenter = (props: ConclusionCenterProps) => {
@@ -105,6 +106,21 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
         .map((decorator: any) => decorator.id), [])
   }
 
+  const prepareConclusion = () => {
+    let returnValue = ""
+    if (!props.showAliases) {
+      returnValue = props.showGammaDefinition || editorContext.globalCtx === ''
+          ? preprocessString(props.node.wrappedConclusion.replace(/\\Gamma/g, editorContext.globalCtx))
+          : preprocessString(props.node.wrappedConclusion)
+    }
+    else
+      returnValue = props.showGammaDefinition || editorContext.globalCtx === ''
+          ? preprocessString(props.node.wrappedConclusionWithAlias.replace(/\\Gamma/g, editorContext.globalCtxWithAliases))
+          : preprocessString(props.node.wrappedConclusionWithAlias)
+
+    return returnValue;
+  }
+
   return (
       <div className={`conclusion-center ${props.isItLeaf} ${props.isItRoot}`}
            onMouseEnter={handleMouseEnter}
@@ -119,7 +135,7 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
            }}
       >
         <MathComponent
-            tex={preprocessString(props.showAliases ? props.node.wrappedConclusionWithAlias : props.node.wrappedConclusion)}/>
+            tex={prepareConclusion()}/>
       </div>
   )
 }

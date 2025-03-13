@@ -22,7 +22,9 @@ export function useBuildTree() {
 
       if (proofTree) {
         editorContext.setTree(proofTree);
-        editorContext.setAliasesPresent(proofTree.aliasesPresent ? proofTree.aliasesPresent : false);
+        editorContext.setAliasesPresent(proofTree.aliasesPresent ?? false);
+        editorContext.setGlobalCtx(proofTree.globalCtx ?? '');
+        editorContext.setGlobalCtxWithAliases(proofTree.globalCtxWithAliases ?? '');
       }
       editorContext.setErrors([]);
 

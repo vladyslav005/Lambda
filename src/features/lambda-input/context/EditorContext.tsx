@@ -13,7 +13,11 @@ export interface EditorContextInterface {
   setMonaco: (monaco: any) => void,
   setFontSize: (fontSize: any) => void,
   setAliasesPresent: (value: boolean) => void,
+  setGlobalCtx: (globalCtx: string) => void,
+  setGlobalCtxWithAliases: (globalCtx: string) => void,
 
+  globalCtxWithAliases: string,
+  globalCtx: string,
   aliasesPresent: boolean
   fontSize: number,
   tree: ProofNode | undefined,
@@ -23,21 +27,18 @@ export interface EditorContextInterface {
 }
 
 export const EditorContext = createContext<EditorContextInterface>({
-      setEditorValue: (value: any) => {
-      },
-      setTree: (tree: ProofNode | undefined) => {
-      },
-      setErrors: (errors: Error[]) => {
-      },
-      setEditor: (editor: any) => {
-      },
-      setMonaco: (monaco: any) => {
-      },
-      setFontSize: (newSize: number) => {
-      },
-      setAliasesPresent: (value: boolean) => {
-      },
+      setEditorValue: (value: any) => {},
+      setTree: (tree: ProofNode | undefined) => {},
+      setErrors: (errors: Error[]) => {},
+      setEditor: (editor: any) => {},
+      setMonaco: (monaco: any) => {},
+      setFontSize: (newSize: number) => {},
+      setAliasesPresent: (value: boolean) => {},
+      setGlobalCtx: (globalCtx: string) => {},
+      setGlobalCtxWithAliases: (globalCtx: string) => {},
 
+      globalCtxWithAliases: '',
+      globalCtx: '',
       aliasesPresent: false,
       fontSize: 18,
       editorValue: '',
@@ -60,7 +61,8 @@ export const EditorContextProvider = (props: EditorProviderProps) => {
   const [editor, setEditor] = useState<any>();
   const [fontSize, setFontSize] = useState(18)
   const [aliasesPresent, setAliasesPresent] = useState(false)
-
+  const [globalCtx, setGlobalCtx] = useState('');
+  const [globalCtxWithAliases, setGlobalCtxWithAliases] = useState('')
 
   const contextValue: EditorContextInterface = {
     setEditorValue,
@@ -70,6 +72,10 @@ export const EditorContextProvider = (props: EditorProviderProps) => {
     setMonaco,
     setFontSize,
     setAliasesPresent,
+    setGlobalCtx,
+    setGlobalCtxWithAliases,
+    globalCtxWithAliases,
+    globalCtx,
     aliasesPresent,
     fontSize,
     editorValue,

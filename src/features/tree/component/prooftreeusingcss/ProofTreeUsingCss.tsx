@@ -14,6 +14,7 @@ interface ProofTreeUsingCssProps {
   isExpandedPremise?: boolean;
   parentIsExpanded?: boolean;
   parentSetIsExpanded?: (expanded: boolean) => void;
+  showGammaDefinition: boolean;
 }
 
 export function ProofTreeComponentUsingCss(
@@ -27,7 +28,8 @@ export function ProofTreeComponentUsingCss(
       treeRef,
       treeHasChanged,
       setTreeHasChanged,
-      canMutateTree
+      canMutateTree,
+      showGammaDefinition,
     }: ProofTreeUsingCssProps,) {
   const isItRoot = node.root ? "root" : "not-root";
   const isItLeaf = node.premises === undefined ? 'leaf-node' : 'not-leaf-node';
@@ -53,6 +55,7 @@ export function ProofTreeComponentUsingCss(
               {node.premises.map((premise, index) => (
                   <React.Fragment key={index}>
                     <ProofTreeComponentUsingCss
+                        showGammaDefinition={showGammaDefinition}
                         key={`${premise.rule}-${premise.tokenLocation.join("-")}-${index}`}
                         canMutateTree={canMutateTree}
                         setTreeHasChanged={setTreeHasChanged} treeHasChanged={treeHasChanged}
@@ -75,6 +78,7 @@ export function ProofTreeComponentUsingCss(
               {node.expandedPremises.map((premise, index) => (
                   <React.Fragment key={index}>
                     <ProofTreeComponentUsingCss
+                        showGammaDefinition={showGammaDefinition}
                         key={index}
                         isExpandedPremise={true}
                         parentIsExpanded={isExpanded}
@@ -95,6 +99,7 @@ export function ProofTreeComponentUsingCss(
             </div>
 
             <ConclusionCenter
+                showGammaDefinition={showGammaDefinition}
                 isExpandedPremise={isExpandedPremise ?? false}
                 parentIsExpanded={parentIsExpanded}
                 parentSetIsExpanded={parentSetIsExpanded}

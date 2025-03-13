@@ -38,6 +38,8 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
   const editorContext = useContext(EditorContext);
 
   const [showAliases, setShowAliases] = useState(false)
+  const [showGammaDefinition, setShowGammaDefinition] = useState(false)
+
   const pngDivRef = useRef(null);
   const [pngWidth, setPngWidth] = useState(600)
   const [pngHeight, setPngHeight] = useState(300)
@@ -96,7 +98,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
       observer.observe(treeRef.current);
       return () => observer.disconnect();
     }
-  }, [treeHasChanged, showAliases, map.value.scale]);
+  }, [treeHasChanged, showGammaDefinition, showAliases, map.value.scale]);
 
   return (
       <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
@@ -156,6 +158,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 >
                   {editorContext.tree &&
                       <ProofTreeComponentUsingCss
+                          showGammaDefinition={showGammaDefinition}
                           canMutateTree={false}
                           treeRef={treeRef}
                           treeHasChanged={treeHasChanged} setTreeHasChanged={setTreeHasChanged}
@@ -194,6 +197,14 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 >
                     <div className="indicator"/>
                   {translations[confContext.language].tree.showAlias}
+                </Switch>}
+                {editorContext.globalCtx !== '' && <Switch
+                    defaultSelected={showGammaDefinition}
+                    onChange={(isChecked) => setShowGammaDefinition(isChecked)}
+                >
+                    <div className="indicator"/>
+                    Show Gamma definition
+
                 </Switch>}
 
               </div>

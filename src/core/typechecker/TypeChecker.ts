@@ -55,6 +55,9 @@ import hash from "object-hash";
 // TODO : cover all errors for case
 
 export class TypeChecker extends LambdaCalcVisitor<any> {
+  get predefinedFunctionsContext(): Context {
+    return this._predefinedFunctionsContext;
+  }
 
   private cache: Map<string, string>
 
@@ -75,6 +78,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   get globalContext(): Context {
     return this._globalContext;
   }
+
+  private _predefinedFunctionsContext: Context = new Context();
 
   private _localContext: Context = new Context();
 
@@ -121,9 +126,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
 
   initBuiltInFunctions() {
-    this.globalContext.addVariable("iszero", "Nat->Bool", undefined)
-    this.globalContext.addVariable("pred", "Nat->Nat", undefined)
-    this.globalContext.addVariable("succ", "Nat->Nat", undefined)
+    this._predefinedFunctionsContext.addVariable("iszero", "Nat->Bool", undefined)
+    this._predefinedFunctionsContext.addVariable("pred", "Nat->Nat", undefined)
+    this._predefinedFunctionsContext.addVariable("succ", "Nat->Nat", undefined)
   }
 
   clearLocalContext() {
@@ -414,18 +419,12 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     console.log("Visiting variable", ctx.getText());
 
     const name: string = ctx.getText();
-    let type;
-
-    if (this._localContext.isVariableInContext((name))) {
-      type = this._localContext.getType(name);
-    } else if (this._globalContext.isVariableInContext((name))) {
-      type = this._globalContext.getType(name);
-    }
+    const type = this.findType(ctx.getText(), ctx);
 
     if (!type)
       throw new TypeError(`Undefined variable : '${name}'`, getTokenLocation(ctx));
 
-    type = this.decodeAlias(type);
+    // type = this.decodeAlias(type);
 
     return type;
   };
@@ -1115,6 +1114,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       type = this._localContext.getType(name);
     } else if (this._globalContext.isVariableInContext(name)) {
       type = this._globalContext.getType(name);
+    } else if (this._predefinedFunctionsContext.isVariableInContext(name)) {
+      type = this._predefinedFunctionsContext.getType(name);
     } else {
       type = this.visit(node);
     }

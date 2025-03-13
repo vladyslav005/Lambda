@@ -1,4 +1,5 @@
 import {ParserRuleContext} from "antlr4";
+import {TypeChecker} from "../typechecker/TypeChecker";
 
 export interface ContextElement {
   name: string;
@@ -15,7 +16,7 @@ export class Context {
 
   addVariable(
       name: string, type: string, location: number[] | undefined,
-      isExpandable?: boolean, declarationNode?: ParserRuleContext, subtype?: string, value?: string): void {
+      isExpandable?: boolean, declarationNode?: ParserRuleContext): void {
 
     this.types.push({
       name: name,
@@ -23,8 +24,6 @@ export class Context {
       declarationLocation: location,
       isExpandable: isExpandable,
       declarationNode: declarationNode,
-      subtype: subtype,
-      value: value
     })
   }
 
@@ -90,5 +89,17 @@ export class Context {
     return this.types.length === 0;
   }
 
+  toStringWithAliases(tch: TypeChecker): string {
+    if (this.isEmpty())
+      return '';
 
+    return this.types.map(t => `${t.name}:${tch.encodeToAlias(t.type)}`).join(', ');
+  }
+
+  toStringWithoutAliases(tch: TypeChecker): string {
+    if (this.isEmpty())
+      return '';
+
+    return this.types.map(t => `${t.name}:${tch.decodeAlias(t.type)}`).join(', ');
+  }
 }

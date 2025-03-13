@@ -19,6 +19,7 @@ export default function TreeFlat() {
   const [fullScreen, setFullScreen] = useState(false);
 
   const [showAliases, setShowAliases] = useState(false)
+  const [showGammaDefinition, setShowGammaDefinition] = useState(false)
 
   const treeContainerRef = useRef<HTMLDivElement | null>(null);
   const treeRef = useRef<HTMLDivElement | null>(null);
@@ -77,7 +78,7 @@ export default function TreeFlat() {
 
       return () => observer.disconnect();
     }
-  }, [editorContext.tree, showAliases, fullScreen, treeHasChanged]);
+  }, [editorContext.tree, showAliases, showGammaDefinition, fullScreen, treeHasChanged]);
 
   useEffect(() => {
     centerTree();
@@ -99,6 +100,7 @@ export default function TreeFlat() {
               onChange={(value) => setMap({value})}
           >
             {editorContext.tree && <ProofTreeComponentUsingCss
+                showGammaDefinition={showGammaDefinition}
                 color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
                 canMutateTree={true}
                 treeHasChanged={treeHasChanged}
@@ -144,20 +146,33 @@ export default function TreeFlat() {
             <AiOutlineAim size={26}
                           color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"></AiOutlineAim>
           </IconButton>
-          {editorContext.aliasesPresent && <Switch
+
+          <div className="flex flex-col"
               style={{
                 position: 'absolute',
                 left: '1rem',
                 top: '1rem',
                 zIndex: 999,
               }}
-              defaultSelected={showAliases}
-              onChange={(isChecked) => setShowAliases(isChecked)}
           >
-              <div className="indicator"/>
+            {editorContext.aliasesPresent && <Switch
 
-            {translations[confContext.language].tree.showAlias}
-          </Switch>}
+                defaultSelected={showAliases}
+                onChange={(isChecked) => setShowAliases(isChecked)}
+            >
+                <div className="indicator"/>
+
+              {translations[confContext.language].tree.showAlias}
+            </Switch>}
+            {editorContext.globalCtx !== '' && <Switch
+                defaultSelected={showGammaDefinition}
+                onChange={(isChecked) => setShowGammaDefinition(isChecked)}
+            >
+              <div className="indicator"/>
+              Show Gamma definition
+
+            </Switch>}
+          </div>
 
           {!editorContext.tree &&
               <div className="tree-info-bx">

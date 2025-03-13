@@ -63,9 +63,9 @@ export function tupleTypeToArray(ctx: TypeContext, output: string[]): any {
 export function preprocessString(str: string): string {
 
   return str//.replaceAll(" ", "\\hspace{0.2cm}")
-      .replaceAll("=>", "{ \\Rightarrow }")
+      .replaceAll("=>", "{\\Rightarrow}")
       .replaceAll("*", "{\\times}")
-      .replaceAll("->", "{ \\rightarrow }")
+      .replaceAll("->", "{\\rightarrow}")
 
       .replaceAll(/</g, "{\\langle}")
 
@@ -131,9 +131,9 @@ export function preprocessTex(text: string): string {
 
   return text
       .replace(/[α-ωΑ-Ω]/g, (match) => greekToLatex[match] || match)
-      .replaceAll("{ \\Rightarrow }", " \\Rightarrow ")
+      .replaceAll("{\\Rightarrow}", " \\Rightarrow ")
       .replaceAll("{\\times}", " \\times ")
-      .replaceAll("{ \\rightarrow }", " \\rightarrow")
+      .replaceAll("{\\rightarrow}", " \\rightarrow")
       .replaceAll("{\\langle}", "\\langle")
       .replaceAll("{\\rangle}", "\\rangle")
       .replaceAll("{\\ }", " ")

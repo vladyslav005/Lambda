@@ -46,7 +46,6 @@ export interface ProofNode {
   unwrappedConclusion: string;
   unwrappedConclusionWithAlias: string;
   rule: string;
-  context?: ParserRuleContext;
   tokenLocation: number[],
   declarationLocation?: number[];
   premises?: ProofNode[];
@@ -54,9 +53,10 @@ export interface ProofNode {
   root: boolean;
   isExpandable: boolean;
   isExpanded?: boolean;
-  aliasesPresent?: boolean;
+  aliasesPresent?: boolean; // only for root node
+  globalCtx?: string; // only for root node
+  globalCtxWithAliases? : string; // only for root node
 }
-
 
 export class TreeGenerator extends LambdaCalcVisitor<any> {
 
@@ -96,6 +96,9 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     if (this._proofTree !== undefined) {
       this._proofTree.root = true;
       this._proofTree.aliasesPresent = !this.typeChecker.aliasContext.isEmpty()
+      this._proofTree.globalCtx = this.typeChecker.globalContext.toStringWithoutAliases(this.typeChecker)
+      this._proofTree.globalCtxWithAliases = this.typeChecker.globalContext.toStringWithAliases(this.typeChecker)
+
       return this._proofTree;
     }
 
@@ -146,6 +149,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       root: false,
       isExpandable: false,
       premises: premises,
+
     } as ProofNode;
   };
 
@@ -331,7 +335,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     let ctxInfo = this.getContextInfo(ctx.getText())
     const varName = ctx.getText()
 
-    return {
+    return !this.typeChecker.predefinedFunctionsContext.isVariableInContext(ctx.getText()) ? {
       type: type,
       wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${ctx.getText()} : ${(type)}`,
       wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${ctx.getText()} : ${(typeWithAlias)}`,
@@ -349,18 +353,34 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       premises: [
         {
           type: type,
-          wrappedConclusion: `${ctx.getText()} : ${type}\\in\\Gamma${this.contextExtension}`,
-          wrappedConclusionWithAlias: `${ctx.getText()} : ${typeWithAlias}\\in\\Gamma${this.contextExtensionWithAlies}`,
+          wrappedConclusion: `${ctx.getText()} : ${type}\\in \\Gamma${this.contextExtension}`,
+          wrappedConclusionWithAlias: `${ctx.getText()} : ${typeWithAlias}\\in \\Gamma${this.contextExtensionWithAlies}`,
           unwrappedConclusion: varName,
           unwrappedConclusionWithAlias: varName,
           rule: "",
           root: false,
-          context: ctx,
           tokenLocation: getTokenLocation(ctx),
           declarationLocation: ctxInfo.declarationLocation,
           isExpandable: ctxInfo.isExpandable,
         }
       ],
+    } as ProofNode :
+    {
+      type: type,
+      wrappedConclusion: `${ctx.getText()} : ${(type)}`,
+      wrappedConclusionWithAlias: `${ctx.getText()} : ${(typeWithAlias)}`,
+      unwrappedConclusion: varName,
+      unwrappedConclusionWithAlias: varName,
+      rule: `(T-${ctx.getText()})`,
+      root: false,
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      declarationLocation: ctxInfo.declarationLocation,
+      isExpandable: ctxInfo.isExpandable,
+      expandedPremises: ctxInfo.declarationNode ? [
+        this.visit(ctxInfo.declarationNode.getChild(2))
+      ] : undefined,
+      premises: [this.empty],
     } as ProofNode;
   };
 
@@ -512,7 +532,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
               unwrappedConclusionWithAlias: ctx.getText(),
               rule: "",
               root: false,
-              context: ctx,
               tokenLocation: getTokenLocation(ctx),
               declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(tuple.getText()),
               isExpandable: false
@@ -587,7 +606,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
               unwrappedConclusionWithAlias: ctx.getText(),
               rule: "",
               root: false,
-              context: ctx,
               tokenLocation: getTokenLocation(ctx),
               declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(record.getText()),
               isExpandable: false
@@ -635,7 +653,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
               unwrappedConclusionWithAlias: premise.unwrappedConclusionWithAlias,
               rule: "",
               root: false,
-              context: ctx,
               tokenLocation: getTokenLocation(ctx),
               isExpandable: false
             }
@@ -682,7 +699,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
               unwrappedConclusionWithAlias: premise.unwrappedConclusionWithAlias,
               rule: "",
               root: false,
-              context: ctx,
               tokenLocation: getTokenLocation(ctx),
               isExpandable: false
             }
@@ -867,7 +883,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           unwrappedConclusion: "",
           unwrappedConclusionWithAlias: "",
           rule: "",
-          context: ctx,
           tokenLocation: getTokenLocation(ctx),
           root: false,
           isExpandable: false,
@@ -930,17 +945,13 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     if (this.localContext.isEmpty()) return;
 
-    const ctxElements = this.localContext.getAllElements()
-    this.contextExtension = ", ";
-    this.contextExtensionWithAlies = ", ";
-
-    for (const element of ctxElements) {
-      this.contextExtension += element.name + ':' + element.type + ', ';
-      this.contextExtensionWithAlies += element.name + ':' + this.typeChecker.encodeToAlias(element.type) + ', ';
+    this.contextExtension = this.typeChecker.localContext.toStringWithoutAliases(this.typeChecker);
+    this.contextExtensionWithAlies = this.typeChecker.localContext.toStringWithAliases(this.typeChecker);
+    if (!this.typeChecker.globalContext.isEmpty()) {
+      this.contextExtension = ", " + this.contextExtension;
+      this.contextExtensionWithAlies = ", " + this.contextExtensionWithAlies;
     }
 
-    this.contextExtension = this.contextExtension.substring(0, this.contextExtension.lastIndexOf(','));
-    this.contextExtensionWithAlies = this.contextExtensionWithAlies.substring(0, this.contextExtensionWithAlies.lastIndexOf(','));
   }
 
   visitListNil = (ctx: ListNilContext): any => {
@@ -976,7 +987,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           unwrappedConclusion: "",
           unwrappedConclusionWithAlias: "",
           rule: "",
-          context: ctx,
           tokenLocation: getTokenLocation(ctx),
           root: false,
           isExpandable: false,
@@ -1206,6 +1216,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
   getContextInfo(name: string): ContextElement {
     let ctxInfo = this.typeChecker.globalContext.getContextInfo(name)
     if (!ctxInfo) ctxInfo = this.typeChecker.localContext.getContextInfo(name)
+    if (!ctxInfo) ctxInfo = this.typeChecker.predefinedFunctionsContext.getContextInfo(name)
     if (!ctxInfo) throw new Error("Unrecognized variable: " + name)
 
     return ctxInfo
