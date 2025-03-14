@@ -111,12 +111,12 @@
 }
 
 .lambda-input {
-    margin: 2rem 2rem 1rem;
+    margin: 2rem 1rem 1rem 2rem;
     overflow: hidden;
 }
 
 .tree-flat-container {
-    margin: 1rem 2rem 2rem;
+    margin: 1rem 1rem 2rem 2rem;
 }
 
 .sidebar {
@@ -128,7 +128,7 @@
 
 .error-output {
     flex-grow: 1;
-    margin: 2rem 2rem 1rem 0;
+    margin: 2rem 1rem 1rem 1rem;
 }
 
 .configurations {
@@ -144,14 +144,8 @@
     min-height: calc((100%) / 2 - 1rem);
 
     max-height: calc((100%) / 2 - 1rem);
-    /*margin-top: 1rem;*/
 
     flex-grow: 1;
-}
-
-.sidebar {
-    /*max-width: 400px;*/
-    /*min-width: 400px;*/
 }
 
 .main-pane {
@@ -214,4 +208,100 @@
 .feedback-btn:hover {
     background: var(--Schemes-Surface-Container-High, #d8d2dd) !important;
     transform: scale(1.05);
+}
+
+
+.resize {
+    background: var(--Schemes-Outline);
+}
+
+.resize-vertical {
+    height: 1px;
+}
+
+.resize-horizontal {
+    width: 1px;
+}
+
+
+
+
+.main-pane-mobile {
+    width: 100%;
+    height: 100%;
+    margin: 1rem 1rem 1rem 1rem;
+}
+
+
+
+
+.react-aria-Tabs {
+    display: flex;
+    width: 100%;
+    color: var(--Schemes-On-Surface-Variant, #4A4459);
+
+    &[data-orientation=horizontal] {
+        flex-direction: column;
+    }
+}
+
+.react-aria-TabList {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
+    &[data-orientation=horizontal] {
+        border-bottom: 1px solid var(--border-color);
+
+        .react-aria-Tab {
+            border-bottom: 3px solid var(--border-color);
+        }
+    }
+}
+
+.react-aria-Tab {
+    padding: 10px;
+    cursor: default;
+    outline: none;
+    position: relative;
+    color: var(--Schemes-On-Surface-Variant, #4A4459);
+    transition: color 200ms;
+    --border-color: transparent;
+    forced-color-adjust: none;
+
+    &[data-hovered],
+    &[data-focused] {
+        color: var(--Schemes-On-Surface);
+    }
+
+    &[data-selected] {
+        --border-color: var(--Schemes-Primary);
+        color: var(--Schemes-Primary);
+    }
+
+    &[data-disabled] {
+        color: var(--text-color-disabled);
+        &[data-selected] {
+            --border-color: var(--text-color-disabled);
+        }
+    }
+
+    &[data-focus-visible]:after {
+        content: '';
+        position: absolute;
+        inset: 4px;
+        border-radius: 4px;
+        border: 2px solid var(--focus-ring-color);
+    }
+}
+
+.react-aria-TabPanel {
+    margin-top: 4px;
+    padding: 10px;
+    border-radius: 4px;
+    outline: none;
+
+    &[data-focus-visible] {
+        outline: 2px solid var(--focus-ring-color);
+    }
 }
