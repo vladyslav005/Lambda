@@ -353,8 +353,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       premises: [
         {
           type: type,
-          wrappedConclusion: `${ctx.getText()} : ${type}\\in \\Gamma${this.contextExtension}`,
-          wrappedConclusionWithAlias: `${ctx.getText()} : ${typeWithAlias}\\in \\Gamma${this.contextExtensionWithAlies}`,
+          wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${ctx.getText()} : ${type}\\in \\Gamma${this.contextExtension}`,
+          wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${ctx.getText()} : ${typeWithAlias}\\in \\Gamma${this.contextExtensionWithAlies}`,
           unwrappedConclusion: varName,
           unwrappedConclusionWithAlias: varName,
           rule: "",
@@ -866,8 +866,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     return {
       type: type,
-      wrappedConclusion: `${literal} : ${type}`,
-      wrappedConclusionWithAlias: `${literal} : ${type}`,
+      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${literal} : ${type}`,
+      wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${literal} : ${type}`,
       unwrappedConclusion: `${literal}`,
       unwrappedConclusionWithAlias: `${literal}`,
       rule: `(T-${ruleName})`,

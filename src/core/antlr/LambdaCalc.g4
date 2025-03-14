@@ -42,12 +42,12 @@ term
 
 type
     : (GREEK_TYPE | ID | 'Nat' | 'Bool' | 'Unit')                # GreekType
-    | <assoc=right> type ARROW type                              # FunctionType
-    | type '+' type                                              # BinaryVariantType
-    | '[' ID COLON type (COMMA ID COLON type)* ']'               # VariantType
+    | 'List ' type                                               # ListType
     | '<' ID COLON type (COMMA ID COLON type)* '>'               # RecordType
     | <assoc=right> type '*' type                                # TupleType
-    | 'List ' type                                               # ListType
+    | type '+' type                                              # BinaryVariantType
+    | '[' ID COLON type (COMMA ID COLON type)* ']'               # VariantType
+    | <assoc=right> type ARROW type                              # FunctionType
     | LPAREN type RPAREN                                         # ParenType
     ;
 

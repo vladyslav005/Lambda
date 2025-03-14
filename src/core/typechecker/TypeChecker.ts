@@ -47,6 +47,7 @@ import {IndexError, SyntaxError, TypeError} from "../errorhandling/customErrors"
 import {Context} from "../context/Context";
 import {eliminateOutParentheses, getTokenLocation, parseTypeAndElimParentheses, tupleTypeToArray} from "../utils";
 import hash from "object-hash";
+import translations from "../../features/configurations/data/translations";
 
 // TODO : refactor: split file, split type checker class
 // TODO : types priority
@@ -106,7 +107,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   }
 
   hashParserContext(ctx: ParseTree): string {
-
     if (!(ctx instanceof ParserRuleContext)) {
       return "";
     }
@@ -180,11 +180,11 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
         if (ctx.getChildCount() !== 6)
           throw new TypeError("Provide explicit type declaration", getTokenLocation(ctx))
 
-        const declaredType = this.decodeAlias(ctx.getChild(4).getText());
+        const declaredType = this.findType('', ctx.getChild(4));
 
         if (bodyType !== declaredType)
           throw new TypeError(
-              `term ${body.getText()} is of type ${bodyType}, but declared type is ${declaredType}`,
+              `Term ${body.getText()} is of type ${bodyType}, but declared type is ${declaredType}`,
               getTokenLocation(ctx)
           );
 
@@ -323,25 +323,25 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     let bodyTypeNode = parseTypeAndElimParentheses(bodyType);
 
-    if (bodyTypeNode instanceof FunctionTypeContext ||
-        bodyTypeNode instanceof TupleTypeContext ||
-        bodyTypeNode instanceof RecordTypeContext ||
-        bodyTypeNode instanceof ListTypeContext
+    if (bodyTypeNode instanceof FunctionTypeContext //||
+        // bodyTypeNode instanceof TupleTypeContext ||
+        // bodyTypeNode instanceof RecordTypeContext ||
+        // bodyTypeNode instanceof ListTypeContext
     ) {
       bodyType = '(' + bodyType + ')';
     }
 
-    if (parseTypeAndElimParentheses(paramType) instanceof FunctionTypeContext ||
-        parseTypeAndElimParentheses(paramType) instanceof TupleTypeContext ||
-        parseTypeAndElimParentheses(paramType) instanceof RecordTypeContext ||
-        parseTypeAndElimParentheses(paramType) instanceof ListTypeContext
+    if (parseTypeAndElimParentheses(paramType) instanceof FunctionTypeContext //||
+        // parseTypeAndElimParentheses(paramType) instanceof TupleTypeContext ||
+        // parseTypeAndElimParentheses(paramType) instanceof RecordTypeContext ||
+        // parseTypeAndElimParentheses(paramType) instanceof ListTypeContext
     ) {
       paramType = '(' + paramType + ')';
     }
 
     const absType = paramType + "->" + bodyType;
 
-    if (declaredType && absType !== declaredType) {
+    if (declaredType && absType !== declaredType &&  ctx.parentCtx && !(parentCtx instanceof LambdaAbstractionContext)) {
       throw new TypeError(
           `Abstraction '${ctx.getText()}' has type '${absType}', that doesn't match declared type '${declaredType}'`,
           getTokenLocation(ctx)
@@ -419,7 +419,15 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     console.log("Visiting variable", ctx.getText());
 
     const name: string = ctx.getText();
-    const type = this.findType(ctx.getText(), ctx);
+    let type = undefined;
+
+    if (this._localContext.isVariableInContext(name)) {
+      type = this._localContext.getType(name);
+    } else if (this._globalContext.isVariableInContext(name)) {
+      type = this._globalContext.getType(name);
+    } else if (this._predefinedFunctionsContext.isVariableInContext(name)) {
+      type = this._predefinedFunctionsContext.getType(name);
+    }
 
     if (!type)
       throw new TypeError(`Undefined variable : '${name}'`, getTokenLocation(ctx));
@@ -562,13 +570,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
         let child = ctx.getChild(i);
         let childType = this.visit(child)
         let childTypeNode = parseTypeAndElimParentheses(childType);
-        if (childTypeNode instanceof TupleTypeContext ||
-            childTypeNode instanceof FunctionTypeContext ||
-            childTypeNode instanceof ListTypeContext ||
-            childTypeNode instanceof RecordTypeContext
-        ) {
-          childType = '(' + childType + ')'
+        if (childTypeNode instanceof FunctionTypeContext || childTypeNode instanceof BinaryVariantTypeContext) {
+          childType = '(' + childType + ')';
         }
+
         type = type.concat(childType, '*');
       }
     }
@@ -630,7 +635,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       const valueNode = ctx.getChild(i + 2);
 
       let valueType = this.visit(valueNode)
-      let valueTypeNode = parseTypeAndElimParentheses(valueType);
 
       if (labelsSet.has(labelNode.getText())) {
         throw new SyntaxError(`Duplicate key '${labelNode.getText()}' in record`,
@@ -709,7 +713,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
           getTokenLocation(ctx));
     }
 
-    return variantTypeNode.getText();
+    return this.visit(variantTypeNode);
   };
 
   visitInjection = (ctx: InjectionContext): string => {
@@ -744,7 +748,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
           getTokenLocation(ctx))
     }
 
-    return variantTypeNode.getText();
+    return this.visit(variantTypeNode);
   };
 
   visitParentheses = (ctx: ParenthesesContext): string => {
@@ -763,8 +767,13 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       }
       labelsSet.add(labelNode.getText());
     }
+    let retType = ctx.getText();
 
-    return ctx.getText();
+    ctx.type__list().forEach(item => {
+      retType = retType.replace(item.getText(), this.visit(item));
+    })
+
+    return retType;
   };
 
   visitCaseOf = (ctx: CaseOfContext): string => {
@@ -834,7 +843,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   };
 
   visitBinaryCaseOf = (ctx: BinaryCaseOfContext): string => {
-
     const varNode = ctx.term(0);
     const varName = varNode.getText();
 
@@ -965,14 +973,13 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   visitBinaryVariantType = (ctx: BinaryVariantTypeContext): string => {
     console.log("Visiting a variant type", ctx.getText());
 
-
-    return ctx.getText()
+    return ctx.type__list().map(c => this.visit(c)).join('+')
   };
 
   visitTupleType = (ctx: TupleTypeContext): any => {
     console.log("Visiting a tuple type", ctx.getText());
 
-    return ctx.getText();
+    return ctx.type__list().map(c => this.visit(c)).join('*')
   }
 
   visitListType = (ctx: ListTypeContext) => {
@@ -1001,7 +1008,24 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
   visitParenType = (ctx: ParenTypeContext): any => {
     let typeTextWithoutBrackets = this.visit(ctx.getChild(1));
-    return '(' + typeTextWithoutBrackets + ')';
+    const childType : string = ctx.getChild(1).constructor.name;
+    const parentType : string | undefined  = ctx.parentCtx?.constructor.name;
+
+    if (parentType === undefined)
+      return  typeTextWithoutBrackets
+
+    const childTypePriority = this.getPriority(childType);
+    const parentTypePriority = this.getPriority(parentType);
+
+    if (childTypePriority < parentTypePriority)
+      return '(' + typeTextWithoutBrackets + ')';
+
+    return  typeTextWithoutBrackets
+  };
+
+
+  getPriority = (type: string): number => {
+    return TypesPriority[type as  keyof typeof TypesPriority] ?? 0;
   };
 
   visitListNil = (ctx: ListNilContext): any => {
@@ -1125,9 +1149,16 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
       const typeNode = parseTypeAndElimParentheses(type);
 
-      type = eliminateOutParentheses(typeNode).getText();
+      type = this.visit(typeNode);
     }
-
     return type;
   }
+}
+
+
+
+const TypesPriority = {
+  FunctionTypeContext : 1,
+  VariantTypeContext : 2,
+  TupleTypeContext : 3,
 }
