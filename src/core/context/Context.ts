@@ -1,5 +1,6 @@
 import {ParserRuleContext} from "antlr4";
 import {TypeChecker} from "../typechecker/TypeChecker";
+import {decodeAlias, encodeToAlias} from "../utils";
 
 export interface ContextElement {
   name: string;
@@ -89,17 +90,17 @@ export class Context {
     return this.types.length === 0;
   }
 
-  toStringWithAliases(tch: TypeChecker): string {
+  toStringWithAliases(ctx : Context): string {
     if (this.isEmpty())
       return '';
 
-    return this.types.map(t => `${t.name}:${tch.encodeToAlias(t.type)}`).join(', ');
+    return this.types.map(t => `${t.name}:${encodeToAlias(t.type, ctx)}`).join(', ');
   }
 
-  toStringWithoutAliases(tch: TypeChecker): string {
+  toStringWithoutAliases(ctx : Context): string {
     if (this.isEmpty())
       return '';
 
-    return this.types.map(t => `${t.name}:${tch.decodeAlias(t.type)}`).join(', ');
+    return this.types.map(t => `${t.name}:${decodeAlias(t.type, ctx)}`).join(', ');
   }
 }

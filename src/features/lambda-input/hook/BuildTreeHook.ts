@@ -12,7 +12,8 @@ export function useBuildTree() {
 
     try {
       editorContext.setTree(undefined);
-
+      editorContext.setGlobalCtx(undefined);
+      editorContext.setAliasCtx(undefined);
       if (!value || (value && value.trim() === "")) {
         editorContext.setErrors([])
         return undefined;
@@ -23,9 +24,10 @@ export function useBuildTree() {
       if (proofTree) {
         editorContext.setTree(proofTree);
         editorContext.setAliasesPresent(proofTree.aliasesPresent ?? false);
-        editorContext.setGlobalCtx(proofTree.globalCtx ?? '');
-        editorContext.setGlobalCtxWithAliases(proofTree.globalCtxWithAliases ?? '');
+        editorContext.setGlobalCtx(proofTree.globalCtx ?? undefined);
+        editorContext.setAliasCtx(proofTree.aliasCtx ?? undefined);
       }
+
       editorContext.setErrors([]);
 
     } catch (error: any) {

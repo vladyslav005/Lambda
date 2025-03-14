@@ -1,5 +1,6 @@
 import {ProofNode} from "../../../core/tree/TreeGenerator";
 import React, {createContext, useState} from 'react';
+import {Context} from "../../../core/context/Context";
 
 
 // CONTEXT TO STORE EDITOR VALUE AND OTHER SHARED VARIABLES
@@ -13,11 +14,11 @@ export interface EditorContextInterface {
   setMonaco: (monaco: any) => void,
   setFontSize: (fontSize: any) => void,
   setAliasesPresent: (value: boolean) => void,
-  setGlobalCtx: (globalCtx: string) => void,
-  setGlobalCtxWithAliases: (globalCtx: string) => void,
+  setAliasCtx: (globalCtx: Context | undefined) => void,
+  setGlobalCtx: (globalCtx: Context | undefined) => void,
 
-  globalCtxWithAliases: string,
-  globalCtx: string,
+  aliasCtx: Context | undefined,
+  globalCtx: Context | undefined,
   aliasesPresent: boolean
   fontSize: number,
   tree: ProofNode | undefined,
@@ -34,11 +35,11 @@ export const EditorContext = createContext<EditorContextInterface>({
       setMonaco: (monaco: any) => {},
       setFontSize: (newSize: number) => {},
       setAliasesPresent: (value: boolean) => {},
-      setGlobalCtx: (globalCtx: string) => {},
-      setGlobalCtxWithAliases: (globalCtx: string) => {},
+      setAliasCtx: (globalCtx: Context | undefined) => {},
+      setGlobalCtx: (globalCtx: Context | undefined) => {},
 
-      globalCtxWithAliases: '',
-      globalCtx: '',
+      aliasCtx: undefined,
+      globalCtx: undefined,
       aliasesPresent: false,
       fontSize: 18,
       editorValue: '',
@@ -61,8 +62,10 @@ export const EditorContextProvider = (props: EditorProviderProps) => {
   const [editor, setEditor] = useState<any>();
   const [fontSize, setFontSize] = useState(18)
   const [aliasesPresent, setAliasesPresent] = useState(false)
-  const [globalCtx, setGlobalCtx] = useState('');
-  const [globalCtxWithAliases, setGlobalCtxWithAliases] = useState('')
+  const [globalCtx, setGlobalCtx] = useState<Context | undefined>(undefined);
+  const [aliasCtx, setAliasCtx] = useState<Context | undefined>(undefined);
+
+
 
   const contextValue: EditorContextInterface = {
     setEditorValue,
@@ -72,10 +75,11 @@ export const EditorContextProvider = (props: EditorProviderProps) => {
     setMonaco,
     setFontSize,
     setAliasesPresent,
+    setAliasCtx,
     setGlobalCtx,
-    setGlobalCtxWithAliases,
-    globalCtxWithAliases,
+
     globalCtx,
+    aliasCtx,
     aliasesPresent,
     fontSize,
     editorValue,

@@ -107,15 +107,18 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
   }
 
   const prepareConclusion = () => {
+    if (!(editorContext.globalCtx && editorContext.aliasCtx))
+      return '';
     let returnValue = ""
     if (!props.showAliases) {
-      returnValue = props.showGammaDefinition || editorContext.globalCtx === ''
-          ? preprocessString(props.node.wrappedConclusion.replace(/\\Gamma/g, editorContext.globalCtx))
+      returnValue = props.showGammaDefinition || editorContext.globalCtx.isEmpty()
+          ? preprocessString(props.node.wrappedConclusion
+              .replace(/\\Gamma/g, editorContext.globalCtx.toStringWithoutAliases(editorContext.aliasCtx)))
           : preprocessString(props.node.wrappedConclusion)
     }
     else
-      returnValue = props.showGammaDefinition || editorContext.globalCtx === ''
-          ? preprocessString(props.node.wrappedConclusionWithAlias.replace(/\\Gamma/g, editorContext.globalCtxWithAliases))
+      returnValue = props.showGammaDefinition || editorContext.globalCtx.isEmpty()
+          ? preprocessString(props.node.wrappedConclusionWithAlias)
           : preprocessString(props.node.wrappedConclusionWithAlias)
 
     return returnValue;

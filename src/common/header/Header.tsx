@@ -19,7 +19,7 @@ export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-      <div className="header-bx flex flex-row justify-between items-center gap-2 flex-wrap">
+      <div className="header-bx flex flex-row justify-between items-center gap-0 xl:gap-2 flex-wrap">
         <div className="flex flex-row items-center gap-2">
           <img src={logo} alt={"Logo"} className="logo"/>
           <h1 className="name">Type Checker</h1>

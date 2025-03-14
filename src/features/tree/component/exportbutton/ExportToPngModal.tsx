@@ -198,7 +198,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                     <div className="indicator"/>
                   {translations[confContext.language].tree.showAlias}
                 </Switch>}
-                {editorContext.globalCtx !== '' && <Switch
+                {editorContext.globalCtx && !editorContext.globalCtx.isEmpty() && <Switch
                     defaultSelected={showGammaDefinition}
                     onChange={(isChecked) => setShowGammaDefinition(isChecked)}
                 >

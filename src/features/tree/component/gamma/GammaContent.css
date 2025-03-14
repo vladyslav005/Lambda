@@ -1,0 +1,22 @@
+.gamma-content {
+    flex-grow: 1;
+    background: var(--Schemes-Surface-Container, #F3EDF7);
+    margin: 1rem 1rem 2rem 1rem;
+    overflow-y: scroll;
+}
+
+
+.ctx-el {
+    min-height: 50px;
+    padding: .5rem .5rem ;
+    color: var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459));
+    background-color: var(--Schemes-Outline-Variant);
+    border-radius: var(--Corner-Medium);
+    width: 90%;
+    overflow: hidden;
+    transition: all .2s ease-in-out;
+}
+
+.ctx-el:hover {
+    background-color: var(--Schemes-Outline);
+}

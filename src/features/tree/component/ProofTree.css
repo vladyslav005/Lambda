@@ -1,5 +1,5 @@
 .tree-flat-container {
-    flex-grow: 1;
+    flex-grow: 3;
     overflow: hidden;
     position: relative;
 }

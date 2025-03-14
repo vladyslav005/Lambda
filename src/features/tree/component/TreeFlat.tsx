@@ -12,13 +12,14 @@ import translations from "../../configurations/data/translations";
 
 const ExportButton = lazy(() => import('./exportbutton/ExportButton'))
 
-export default function TreeFlat() {
+export default function TreeFlat(
+    {showAliases, setShowAliases}: {showAliases: boolean, setShowAliases: (showAliases: boolean) => void}
+) {
   const confContext = useContext(ConfigurationContext);
 
   const editorContext = useContext(EditorContext);
   const [fullScreen, setFullScreen] = useState(false);
 
-  const [showAliases, setShowAliases] = useState(false)
   const [showGammaDefinition, setShowGammaDefinition] = useState(false)
 
   const treeContainerRef = useRef<HTMLDivElement | null>(null);
@@ -164,7 +165,7 @@ export default function TreeFlat() {
 
               {translations[confContext.language].tree.showAlias}
             </Switch>}
-            {editorContext.globalCtx !== '' && <Switch
+            {editorContext.globalCtx && !editorContext.globalCtx.isEmpty() && <Switch
                 defaultSelected={showGammaDefinition}
                 onChange={(isChecked) => setShowGammaDefinition(isChecked)}
             >

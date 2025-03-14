@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Editor, {useMonaco} from '@monaco-editor/react';
 import {setUpMonacoLanguage} from "../hook/SetUpMonacoLanguage";
 import {EditorContext} from "../context/EditorContext";
@@ -18,6 +18,8 @@ export default function LambdaInput() {
   const {buildTree} = useBuildTree();
 
   const {setEditorErrors} = useEditorErrorsHook();
+
+  const [theme, setTheme] = useState("lambda-theme");
 
   const handleEditorDidMount = (editor: any, monaco: any) => {
     editorContext.setEditor(editor);
@@ -48,19 +50,16 @@ export default function LambdaInput() {
     if (monaco) {
       try {
         setUpMonacoLanguage(monaco); // set up language and editor settings
-        monaco.editor.setTheme(confContext.theme === Theme.Light ? "lambda-theme" : "dark-lambda-theme");
-
       } catch (e) {
         console.error('Error setting up Monaco:', e);
       }
     }
   }, [monaco]);
 
-
   useEffect(() => {
     if (monaco) {
       try {
-        monaco.editor.setTheme(confContext.theme === Theme.Light ? "lambda-theme" : "lambda-theme-dark");
+        setTheme(confContext.theme === Theme.Light ? "lambda-theme" : "lambda-theme-dark");
       } catch (e) {
         console.error('Error setting up Monaco:', e);
       }
@@ -110,7 +109,9 @@ export default function LambdaInput() {
 
         <Editor
             className="h-full"
+            keepCurrentModel={true}
             language="lambda"
+            theme={theme}
             options={{
               minimap: {enabled: true},
               automaticLayout: true,

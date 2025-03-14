@@ -54,8 +54,8 @@ export interface ProofNode {
   isExpandable: boolean;
   isExpanded?: boolean;
   aliasesPresent?: boolean; // only for root node
-  globalCtx?: string; // only for root node
-  globalCtxWithAliases? : string; // only for root node
+  aliasCtx?: Context;
+  globalCtx?: Context;
 }
 
 export class TreeGenerator extends LambdaCalcVisitor<any> {
@@ -96,8 +96,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     if (this._proofTree !== undefined) {
       this._proofTree.root = true;
       this._proofTree.aliasesPresent = !this.typeChecker.aliasContext.isEmpty()
-      this._proofTree.globalCtx = this.typeChecker.globalContext.toStringWithoutAliases(this.typeChecker)
-      this._proofTree.globalCtxWithAliases = this.typeChecker.globalContext.toStringWithAliases(this.typeChecker)
+      this._proofTree.globalCtx = this.typeChecker.globalContext;
+      this._proofTree.aliasCtx = this.typeChecker.aliasContext;
 
       return this._proofTree;
     }
@@ -945,8 +945,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     if (this.localContext.isEmpty()) return;
 
-    this.contextExtension = this.typeChecker.localContext.toStringWithoutAliases(this.typeChecker);
-    this.contextExtensionWithAlies = this.typeChecker.localContext.toStringWithAliases(this.typeChecker);
+    this.contextExtension = this.typeChecker.localContext.toStringWithoutAliases(this.typeChecker.aliasContext);
+    this.contextExtensionWithAlies = this.typeChecker.localContext.toStringWithAliases(this.typeChecker.aliasContext);
     if (!this.typeChecker.globalContext.isEmpty()) {
       this.contextExtension = ", " + this.contextExtension;
       this.contextExtensionWithAlies = ", " + this.contextExtensionWithAlies;

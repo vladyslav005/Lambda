@@ -1,12 +1,14 @@
 import {CharStream, CommonTokenStream, ParserRuleContext, ParseTree} from "antlr4";
 import LambdaCalcParser, {
+  FunctionTypeContext,
   GreekTypeContext,
   ListTypeContext,
   ParenthesesContext,
-  ParenTypeContext,
+  ParenTypeContext, RecordTypeContext, TupleTypeContext,
   TypeContext
 } from "./antlr/LambdaCalcParser";
 import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
+import {Context} from "./context/Context";
 
 export function getTokenLocation(ctx: ParserRuleContext) {
   return [
@@ -137,4 +139,54 @@ export function preprocessTex(text: string): string {
       .replaceAll("{\\langle}", "\\langle")
       .replaceAll("{\\rangle}", "\\rangle")
       .replaceAll("{\\ }", " ")
+}
+
+export function decodeAlias(typeAlias: string, aliasCtx: Context) {
+
+  const context = aliasCtx.getAllElements();
+
+  for (let i = 0; i < context.length; i++) {
+    if (typeAlias.match(new RegExp(`\\b${context[i].name}\\b`, 'g')) !== null) {
+      let aliasNode = parseTypeAndElimParentheses(context[i].type)
+      console.log(`${typeAlias} ${context[i].name} {}`)
+      if ((aliasNode instanceof FunctionTypeContext ||
+              aliasNode instanceof TupleTypeContext ||
+              aliasNode instanceof ListTypeContext ||
+              aliasNode instanceof RecordTypeContext)
+          && context[i].name !== typeAlias.replaceAll('List ', ''))
+        typeAlias = typeAlias.replaceAll(new RegExp(`\\b${context[i].name}\\b`, 'g'), '(' + context[i].type + ')');
+      else
+        typeAlias = typeAlias.replaceAll(new RegExp(`\\b${context[i].name}\\b`, 'g'), context[i].type);
+
+      i = -1;
+    }
+  }
+
+  return typeAlias;
+};
+
+export function encodeToAlias(typeAlias: string, aliasCtx: Context): string {
+
+  const context = aliasCtx.getAllElements()
+
+  for (let i = 0; i < context.length; i++) {
+    if (typeAlias.includes(`${context[i].type}`)) {
+
+      let aliasNode = parseTypeAndElimParentheses(context[i].type)
+
+      if ((aliasNode instanceof FunctionTypeContext ||
+              aliasNode instanceof TupleTypeContext ||
+              aliasNode instanceof ListTypeContext ||
+              aliasNode instanceof RecordTypeContext)
+          && context[i].name !== typeAlias.replaceAll('List ', ''))
+        typeAlias = typeAlias.replaceAll(`(${context[i].type})`, context[i].name);
+
+      typeAlias = typeAlias.replaceAll(`${context[i].type}`, context[i].name);
+
+      i = -1;
+
+    }
+  }
+
+  return typeAlias;
 }
