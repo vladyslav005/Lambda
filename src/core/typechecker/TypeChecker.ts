@@ -432,7 +432,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     if (!type)
       throw new TypeError(`Undefined variable : '${name}'`, getTokenLocation(ctx));
 
-    // type = this.decodeAlias(type);
+    type = this.decodeAlias(type);
 
     return type;
   };
@@ -992,18 +992,22 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   };
 
   visitFunctionType = (ctx: FunctionTypeContext): any => {
-    let returnType = ctx.getChild(2);
-    let argumentType = ctx.getChild(0)
 
-    let result: string;
 
-    if (returnType instanceof FunctionTypeContext) {
-      result = this.visit(argumentType) + '->(' + this.visit(returnType) + ')';
-    } else {
-      result = this.visit(argumentType) + '->' + this.visit(returnType)
+    let returnType = this.visit(ctx.type_(1));
+    let argumentType = this.visit(ctx.type_(0));
+    let returnTypeNode = parseTypeAndElimParentheses(returnType);
+    let argumentTypeNode = parseTypeAndElimParentheses(argumentType);
+
+    if (returnTypeNode instanceof FunctionTypeContext) {
+      returnType = '(' + returnType + ')';
     }
 
-    return result;
+    if (argumentTypeNode instanceof FunctionTypeContext) {
+      argumentType = '(' + argumentType + ')';
+    }
+
+    return argumentType + '->' +  returnType;
   };
 
   visitParenType = (ctx: ParenTypeContext): any => {
@@ -1084,7 +1088,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     return `(List ${declaredElType})->(${declaredElType})`;
   };
-
 
   visitList = (ctx: ListContext): any => {
 
