@@ -1,5 +1,7 @@
 .menu-button {
     color: var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459));
+    background: var(--Schemes-Secondary-Container, #E8DEF8);
+
     text-align: center;
 
     /* M3/label/large */
@@ -11,7 +13,6 @@
     letter-spacing: var(--Label-Large-Tracking, 0.1px);
 
     border-radius: 16px;
-    background: var(--Schemes-Secondary-Container, #E8DEF8);
 
     /* M3/Elevation Light/3 */
     box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.30);

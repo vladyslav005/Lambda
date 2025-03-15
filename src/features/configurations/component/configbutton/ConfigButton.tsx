@@ -46,9 +46,18 @@ export const ConfigButton = () => {
               </Switch>
 
             </div>
+            <div className="p-4">
+              <Switch
+                  defaultSelected={confCtx.showGamma}
+                  onChange={(isChecked) => confCtx.setShowGamma(isChecked)}
+              >
+                <div className="indicator"/>
+                Show Gamma content window
+              </Switch>
+
+            </div>
             <Separator></Separator>
             <Group aria-label="Font size" className="flex flex-row items-center p-4">
-
               <Label className="label">
                 {translations[confCtx.language].conf.fontSize}
               </Label>
@@ -72,6 +81,7 @@ export const ConfigButton = () => {
                 <MdAdd size={20}/>
               </IconButton>
             </Group>
+            <Separator></Separator>
 
           </Dialog>
         </Popover>

@@ -3,20 +3,37 @@
     background: var(--Schemes-Surface-Container, #F3EDF7);
     margin: 1rem 1rem 2rem 1rem;
     overflow-y: scroll;
+    overflow-x: scroll;
+    align-items: start;
 }
-
 
 .ctx-el {
     min-height: 50px;
     padding: .5rem .5rem ;
-    color: var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459));
-    background-color: var(--Schemes-Outline-Variant);
-    border-radius: var(--Corner-Medium);
-    width: 90%;
-    overflow: hidden;
+    color: var(--Schemes-On-Secondary-Container, #4A4459);
+    background: var(--Schemes-Surface-Container-High, #E8DEF8);
+
+    border-radius: 12px;
+    margin: 0 1rem 0 1rem;
+
     transition: all .2s ease-in-out;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: start;
 }
 
 .ctx-el:hover {
-    background-color: var(--Schemes-Outline);
+    background-color: var(--Schemes-Secondary-Container);
+}
+
+.gamma-el-bx {
+    min-width: 100%;
+}
+
+.gamma-title {
+    padding-left: 1rem;
+    font-size: 1.2rem !important;
+    margin: .8rem 0 .6rem 0 !important;
+    color: var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459)) !important;
 }

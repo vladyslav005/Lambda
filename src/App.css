@@ -207,7 +207,7 @@
 
 
 .resize {
-    background: var(--Schemes-Outline);
+    background: var(--Schemes-Outline-Variant);
 }
 
 .resize-vertical {
@@ -217,9 +217,6 @@
 .resize-horizontal {
     width: 1px;
 }
-
-
-
 
 .main-pane-mobile {
     height: 100%;

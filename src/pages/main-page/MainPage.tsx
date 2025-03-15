@@ -1,10 +1,11 @@
 import {ErrorOutput} from "../../features/error-output/component/ErrorOutput";
-import React, {lazy, Suspense, useEffect, useState} from "react";
+import React, {lazy, Suspense, useContext, useEffect, useState} from "react";
 import {LoadingIndicator} from "../../common/components/loading/LoadingIndicator";
 import {Header} from "../../common/header/Header";
 import {GammaContent} from "../../features/tree/component/gamma/GammaContent";
 import {Panel, PanelGroup, PanelResizeHandle} from "react-resizable-panels";
 import {Tab, TabList, TabPanel, Tabs} from 'react-aria-components';
+import {ConfigurationContext} from "../../features/configurations/context/ConfigurationContext";
 
 const TreeFlat = lazy(() => import('../../features/tree/component/TreeFlat'))
 const LambdaInput = lazy(() => import('../../features/lambda-input/component/LambdaInput'))
@@ -17,13 +18,13 @@ export enum Screen {
 export function MainPage() {
   const [showAliases, setShowAliases] = useState(false)
 
+  const confCtx = useContext(ConfigurationContext);
   const [screen, setScreen] = useState<Screen>()
 
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
-      for (let entry of entries) {
+      for (let entry of entries)
         setScreen(entry.contentRect.width > 1024 ? Screen.PC : Screen.MOBILE);
-      }
     });
 
     observer.observe(document.body); // Observing the body for screen width changes
@@ -67,14 +68,19 @@ export function MainPage() {
                             <Panel minSize={25} defaultSize={75} className="flex grow">
                                 <TreeFlat showAliases={showAliases} setShowAliases={setShowAliases}/>
                             </Panel>
-                            <PanelResizeHandle className="resize resize-horizontal"/>
-                            <Panel minSize={20} collapsible={true} defaultSize={25} className="flex grow">
-                                <GammaContent showAliases={showAliases}/>
-                            </Panel>
+
+                            { confCtx.showGamma && <>
+                              <PanelResizeHandle className="resize resize-horizontal"/>
+                              <Panel minSize={20} collapsible={true} defaultSize={25} className="flex grow">
+                                  <GammaContent showAliases={showAliases}/>
+                              </Panel>
+                            </>}
                         </PanelGroup>
                     </Suspense>
                 </Panel>
-            </PanelGroup>}
+            </PanelGroup>
+        }
+
         {screen === Screen.MOBILE &&
             <div className="main-pane-mobile">
 
@@ -103,9 +109,9 @@ export function MainPage() {
                           <div className="flex grow">
                               <TreeFlat showAliases={showAliases} setShowAliases={setShowAliases}/>
                           </div>
-                          <div className="flex grow">
+                          {confCtx.showGamma && <div className="flex grow">
                               <GammaContent showAliases={showAliases}/>
-                          </div>
+                          </div>}
                       </Suspense>
                   </TabPanel>
               </Tabs>

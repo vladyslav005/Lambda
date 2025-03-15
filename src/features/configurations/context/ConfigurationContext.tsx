@@ -15,7 +15,9 @@ export interface ConfigurationContextInterface {
   language: Language;
   interactive: boolean;
   theme: Theme;
+  showGamma: boolean;
 
+  setShowGamma: (showGamma: boolean) => void;
   setLanguage: (language: Language) => void;
   setInteractive: (interactive: boolean) => void;
   setTheme: (theme: Theme) => void;
@@ -25,13 +27,12 @@ export const ConfigurationContext = createContext<ConfigurationContextInterface>
   language: Language.SK,
   interactive: true,
   theme: Theme.Light,
+  showGamma: true,
 
-  setInteractive: interactive => {
-  },
-  setLanguage: (language: Language) => {
-  },
-  setTheme: (theme: Theme) => {
-  }
+  setShowGamma: showGamma => {},
+  setInteractive: interactive => {},
+  setLanguage: (language: Language) => {},
+  setTheme: (theme: Theme) => {}
 })
 
 interface ConfigurationContextProps {
@@ -39,10 +40,11 @@ interface ConfigurationContextProps {
 }
 
 export const ConfigurationContextProvider = ({children}: ConfigurationContextProps) => {
-
   const [language, setLanguage] = useState(Language.EN);
   const [interactive, setInteractive] = useState(true);
   const [theme, setTheme] = useState(Theme.Light);
+
+  const [showGamma, setShowGamma] = useState(true)
 
 
   const setInteractiveHandler = (value: boolean) => {
@@ -61,22 +63,33 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
     localStorage.setItem('language', language.toString());
   }
 
+  const setShowGammaHandler = (showGamma: boolean) => {
+    setShowGamma(showGamma);
+    localStorage.setItem('showgamma', showGamma.toString());
+  }
+
   useEffect(() => {
-    setThemeHandler(localStorage.getItem("theme") as Theme ?? Theme.Light);
     const interactivePersisted = localStorage.getItem("interactive") ?? 'true'
     if (interactivePersisted === 'true')
       setInteractiveHandler(true);
     else setInteractiveHandler(false);
 
-    setLanguageHandler(localStorage.getItem("language") as Language ?? Language.EN);
+    const showGammaPersisted = localStorage.getItem("showgamma") ?? 'true'
+    if (showGammaPersisted === 'true')
+      setShowGammaHandler(true);
+    else setShowGammaHandler(false);
 
+    setThemeHandler(localStorage.getItem("theme") as Theme ?? Theme.Light);
+    setLanguageHandler(localStorage.getItem("language") as Language ?? Language.EN);
   }, [])
 
   const initialValue: ConfigurationContextInterface = {
     language: language,
     interactive: interactive,
     theme: theme,
+    showGamma,
 
+    setShowGamma: setShowGammaHandler,
     setInteractive: setInteractiveHandler,
     setLanguage: setLanguageHandler,
     setTheme: setThemeHandler,
