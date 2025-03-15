@@ -9,9 +9,7 @@ interface GammaItemProps {
   showAliases: boolean;
 }
 
-
 export const GammaItem = ({ctxElement, showAliases}: GammaItemProps) => {
-
   const editorContext = useContext(EditorContext);
 
   const [ctxElStr, setCtxElStr] = useState('')
@@ -66,7 +64,8 @@ export const GammaItem = ({ctxElement, showAliases}: GammaItemProps) => {
   const handleMouseLeave = () => {
     // Clear the decorations when the mouse leaves
     setDecorations(editorContext.editor.deltaDecorations(decorations, []));
-    editorContext.editor.deltaDecorations(editorContext.editor.getModel().getAllDecorations()
+    if (editorContext.editor.getModel())
+      editorContext.editor.deltaDecorations(editorContext.editor.getModel().getAllDecorations()
         .filter((decorator: any) => decorator.options.className === "highlighted-code")
         .map((decorator: any) => decorator.id), [])
     setIsHovered(false)
@@ -83,5 +82,4 @@ export const GammaItem = ({ctxElement, showAliases}: GammaItemProps) => {
       </div>
 
   )
-
 }

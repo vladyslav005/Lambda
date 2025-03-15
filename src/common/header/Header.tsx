@@ -20,9 +20,15 @@ export const Header = () => {
 
   return (
       <div className="header-bx flex flex-row justify-between items-center gap-0 xl:gap-2 flex-wrap">
-        <div className="flex flex-row items-center gap-2">
+        <div className=" flex flex-row items-center gap-2">
+
           <img src={logo} alt={"Logo"} className="logo"/>
           <h1 className="name">Type Checker</h1>
+          <IconButton className="mx-3 feedback-btn" onClick={() =>
+              window.open("https://docs.google.com/forms/d/e/1FAIpQLScZPEpHaDug8IzCJHdx6IYVfqtrKoTTHb6ZCk1lInks7poLHw/viewform?usp=dialog", "_blank")}>
+            {translations[confCtx.language].feedback}
+            <MdFeedback size={24}/>
+          </IconButton>
         </div>
 
 
@@ -39,11 +45,6 @@ export const Header = () => {
             <ConfigButton/>
           </div>
 
-          <IconButton className="feedback-btn" onClick={() =>
-              window.open("https://docs.google.com/forms/d/e/1FAIpQLScZPEpHaDug8IzCJHdx6IYVfqtrKoTTHb6ZCk1lInks7poLHw/viewform?usp=dialog", "_blank")}>
-            {translations[confCtx.language].feedback}
-            <MdFeedback size={24}/>
-          </IconButton>
         </div>
 
         {/* Mobile Burger Button */}
@@ -73,11 +74,6 @@ export const Header = () => {
                 <ConfigButton/>
               </div>
 
-              <IconButton className="feedback-btn" onClick={() =>
-                  window.open("https://docs.google.com/forms/d/e/1FAIpQLScZPEpHaDug8IzCJHdx6IYVfqtrKoTTHb6ZCk1lInks7poLHw/viewform?usp=dialog", "_blank")}>
-              {translations[confCtx.language].feedback}
-                <MdFeedback size={24}/>
-              </IconButton>
             </div>
         )}
       </div>

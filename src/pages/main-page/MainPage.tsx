@@ -77,20 +77,36 @@ export function MainPage() {
             </PanelGroup>}
         {screen === Screen.MOBILE &&
             <div className="main-pane-mobile">
-              <Tabs>
+
+              <Tabs className='flex flex-col grow'>
                   <TabList aria-label="History of Ancient Rome">
-                      <Tab id="FoR">Founding of Rome</Tab>
-                      <Tab id="MaR">Monarchy and Republic</Tab>
-                      <Tab id="Emp">Empire</Tab>
+                      <Tab id="FoR">Editor</Tab>
+                      <Tab id="MaR">Tree</Tab>
                   </TabList>
-                  <TabPanel id="FoR">
-                      Arma virumque cano, Troiae qui primus ab oris.
+                  <TabPanel id="FoR" className="flex flex-col grow">
+                      <Suspense
+                          fallback={
+                            <div className="lambda-input ui-block flex-row justify-center items-center">
+                              <LoadingIndicator/>
+                            </div>}
+                      >
+                          <div className="flex grow">
+                              <LambdaInput></LambdaInput>
+                          </div>
+                          <div className="flex ">
+                              <ErrorOutput></ErrorOutput>
+                          </div>
+                      </Suspense>
                   </TabPanel>
-                  <TabPanel id="MaR">
-                      Senatus Populusque Romanus.
-                  </TabPanel>
-                  <TabPanel id="Emp">
-                      Alea jacta est.
+                  <TabPanel id="MaR" className="flex flex-col grow">
+                      <Suspense fallback={<div className="tree-flat-container ui-block"><LoadingIndicator/></div>}>
+                          <div className="flex grow">
+                              <TreeFlat showAliases={showAliases} setShowAliases={setShowAliases}/>
+                          </div>
+                          <div className="flex grow">
+                              <GammaContent showAliases={showAliases}/>
+                          </div>
+                      </Suspense>
                   </TabPanel>
               </Tabs>
             </div>

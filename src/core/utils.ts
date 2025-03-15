@@ -148,7 +148,6 @@ export function decodeAlias(typeAlias: string, aliasCtx: Context) {
   for (let i = 0; i < context.length; i++) {
     if (typeAlias.match(new RegExp(`\\b${context[i].name}\\b`, 'g')) !== null) {
       let aliasNode = parseTypeAndElimParentheses(context[i].type)
-      console.log(`${typeAlias} ${context[i].name} {}`)
       if ((aliasNode instanceof FunctionTypeContext ||
               aliasNode instanceof TupleTypeContext ||
               aliasNode instanceof ListTypeContext ||

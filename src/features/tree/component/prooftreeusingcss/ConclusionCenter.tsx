@@ -84,9 +84,10 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
   const handleMouseLeave = () => {
     // Clear the decorations when the mouse leaves
     setDecorations(editorContext.editor.deltaDecorations(decorations, []));
-    editorContext.editor.deltaDecorations(editorContext.editor.getModel().getAllDecorations()
-        .filter((decorator: any) => decorator.options.className === "highlighted-code")
-        .map((decorator: any) => decorator.id), [])
+    if (editorContext.editor.getModel())
+      editorContext.editor.deltaDecorations(editorContext.editor.getModel().getAllDecorations()
+          .filter((decorator: any) => decorator.options.className === "highlighted-code")
+          .map((decorator: any) => decorator.id), [])
     setIsHovered(false)
   }
 
