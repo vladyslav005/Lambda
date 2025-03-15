@@ -1,6 +1,8 @@
 const translations = {
   en: {
     editor: {
+      tabEditor: "Editor",
+      tabTree: "Tree",
       pasteExample: "Paste example",
       pasteExampleMenu: {
         application: "Application",
@@ -205,6 +207,8 @@ const translations = {
 
   sk: {
     editor: {
+      tabEditor: "Editor",
+      tabTree: "Strom",
       pasteExample: "Vložiť príklad",
       pasteExampleMenu: {
         application: "Aplikácia",
@@ -400,7 +404,10 @@ const translations = {
   },
 
   ua: {
+
     editor: {
+      tabEditor: "Редактор",
+      tabTree: "Дерево",
       pasteExample: "Вставити приклад",
       pasteExampleMenu: {
         application: "Застосування",

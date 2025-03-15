@@ -6,6 +6,7 @@ import {GammaContent} from "../../features/tree/component/gamma/GammaContent";
 import {Panel, PanelGroup, PanelResizeHandle} from "react-resizable-panels";
 import {Key, Tab, TabList, TabPanel, Tabs} from 'react-aria-components';
 import {ConfigurationContext} from "../../features/configurations/context/ConfigurationContext";
+import translations from "../../features/configurations/data/translations";
 
 const TreeFlat = lazy(() => import('../../features/tree/component/TreeFlat'))
 const LambdaInput = lazy(() => import('../../features/lambda-input/component/LambdaInput'))
@@ -91,8 +92,8 @@ export function MainPage() {
                     onSelectionChange={setSelectedTab}
               >
                   <TabList aria-label="History of Ancient Rome">
-                      <Tab id="FoR">Editor</Tab>
-                      <Tab id="MaR">Tree</Tab>
+                      <Tab id="FoR">{translations[confCtx.language].editor.tabEditor}</Tab>
+                      <Tab id="MaR">{translations[confCtx.language].editor.tabTree}</Tab>
                   </TabList>
                   <div style={{ display: selectedTab === 'FoR' ? 'block' : 'none' }}>
                     <TabPanel id="FoR" shouldForceMount={true} className="flex flex-col grow">
