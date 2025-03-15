@@ -142,10 +142,10 @@ export function setUpMonacoLanguage(monaco: any) {
       "editor.lineHighlightBackground": "#3e3e3e",
 
       "editorLineNumber.foreground": "#7a7a7a",
-      "editor.selectionBackground": "#3a3a3a",
-      "editor.selectionHighlightBackground": "#4a4a4a",
+      "editor.selectionBackground": "#474545",
+      "editor.selectionHighlightBackground": "#2e2d2d",
       "editor.wordHighlightBackground": "#3a3a3a",
-      "editor.wordHighlightStrongBackground": "#4a4a4a",
+      "editor.wordHighlightStrongBackground": "#818080",
     },
   });
 

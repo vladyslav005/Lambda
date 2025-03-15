@@ -992,8 +992,6 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   };
 
   visitFunctionType = (ctx: FunctionTypeContext): any => {
-
-
     let returnType = this.visit(ctx.type_(1));
     let argumentType = this.visit(ctx.type_(0));
     let returnTypeNode = parseTypeAndElimParentheses(returnType);
@@ -1021,12 +1019,11 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     const childTypePriority = this.getPriority(childType);
     const parentTypePriority = this.getPriority(parentType);
 
-    if (childTypePriority < parentTypePriority)
+    if (childTypePriority < parentTypePriority && childTypePriority !== 0 && parentTypePriority !== 0)
       return '(' + typeTextWithoutBrackets + ')';
 
     return  typeTextWithoutBrackets
   };
-
 
   getPriority = (type: string): number => {
     return TypesPriority[type as  keyof typeof TypesPriority] ?? 0;
