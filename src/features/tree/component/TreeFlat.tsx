@@ -156,6 +156,13 @@ export default function TreeFlat(
                 zIndex: 999,
               }}
           >
+            {editorContext.globalCtx && !editorContext.globalCtx.isEmpty() && <Switch
+                defaultSelected={showGammaDefinition}
+                onChange={(isChecked) => setShowGammaDefinition(isChecked)}
+            >
+                <div className="indicator"/>
+              {translations[confContext.language].tree.showGamma}
+            </Switch>}
             {editorContext.aliasesPresent && <Switch
 
                 defaultSelected={showAliases}
@@ -165,14 +172,7 @@ export default function TreeFlat(
 
               {translations[confContext.language].tree.showAlias}
             </Switch>}
-            {editorContext.globalCtx && !editorContext.globalCtx.isEmpty() && <Switch
-                defaultSelected={showGammaDefinition}
-                onChange={(isChecked) => setShowGammaDefinition(isChecked)}
-            >
-              <div className="indicator"/>
-              Show Gamma definition
 
-            </Switch>}
           </div>
 
           {!editorContext.tree &&

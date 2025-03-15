@@ -52,7 +52,7 @@ export const ConfigButton = () => {
                   onChange={(isChecked) => confCtx.setShowGamma(isChecked)}
               >
                 <div className="indicator"/>
-                Show Gamma content window
+                {translations[confCtx.language].conf.gammaWindow}
               </Switch>
 
             </div>

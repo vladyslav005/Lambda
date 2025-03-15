@@ -39,6 +39,10 @@ const translations = {
       fillColor: "Fill color",
       centerTree: "Center tree",
       showAlias: "Type aliases",
+      showGamma: "Show Gamma in tree",
+      gammaTitle: "Gamma content",
+      gammaEmpty: "Gamma is empty",
+      gammaPlaceholder: "Gamma content will be displayed here",
     },
 
     error: {
@@ -47,7 +51,8 @@ const translations = {
 
     conf: {
       interactiveMode: "Run after change",
-      fontSize: "Font size"
+      fontSize: "Font size",
+      gammaWindow: "Gamma content window",
     },
 
     toast: {
@@ -236,6 +241,11 @@ const translations = {
       fillColor: "Farba pozadia",
       centerTree: "Centrovať strom",
       showAlias: "Zobraziť skratky typov",
+      showGamma: "Zobraziť Gamma v strome",
+      gammaTitle: "Obsah Gamma",
+      gammaEmpty: "Gamma je prázdna",
+      gammaPlaceholder: "Obsah Gamma bude zobrazený tu",
+
     },
 
     error: {
@@ -244,7 +254,8 @@ const translations = {
 
     conf: {
       interactiveMode: "Spustiť po zmene",
-      fontSize: "Veľkosť písma"
+      fontSize: "Veľkosť písma",
+      gammaWindow: "Okno obsahu Gamma",
     },
 
     toast: {
@@ -422,7 +433,11 @@ const translations = {
       fontColor: "Колір шрифту",
       fillColor: "Колір заливки",
       centerTree: "Центрувати дерево",
-      showAlias: "Скорочення типів"
+      showAlias: "Скорочення типів",
+      showGamma: "Показати Гамму в дереві",
+      gammaTitle: "Вміст Гамми",
+      gammaPlaceholder: "Вміст Гамми буде відображено тут",
+      gammaEmpty: "Гамма порожня",
     },
 
     error: {
@@ -431,7 +446,8 @@ const translations = {
 
     conf: {
       interactiveMode: "Запускати після зміни",
-      fontSize: "Розмір шрифту"
+      fontSize: "Розмір шрифту",
+      gammaWindow: "Вікно вмісту Гаммa",
 
     },
 

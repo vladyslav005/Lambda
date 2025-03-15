@@ -6,7 +6,6 @@
 
 .sk {
     border-radius: 100px 0px 0px 100px;
-
 }
 
 .en {
@@ -15,9 +14,9 @@
 
 .ua {
     border-radius: 0 0 0 0;
-
 }
 
 .lang-btn-selected {
-    background: var(--Schemes-Secondary-Container, #d9c4fb);
+    background: var(--Schemes-Primary, #d9c4fb);
+    color: white;
 }

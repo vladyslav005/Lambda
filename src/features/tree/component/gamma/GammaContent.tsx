@@ -5,6 +5,8 @@ import {GammaItem} from "./GammaItem";
 import {decodeAlias} from "../../../../core/utils";
 import {Context} from "../../../../core/context/Context";
 import {MathComponent} from "mathjax-react";
+import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
+import translations from "../../../configurations/data/translations";
 
 interface GammaContentProps {
   showAliases: boolean;
@@ -12,13 +14,13 @@ interface GammaContentProps {
 
 export const GammaContent = (props: GammaContentProps) => {
   const editorContext = useContext(EditorContext);
-
+  const confCtx = useContext(ConfigurationContext)
   return (
       <div className="gamma-content ui-block flex flex-col items-center gap-4 relative ">
 
         <div className="modal-title gamma-title w-full"
         >
-          <h1>Gamma content</h1>
+          <h1>{translations[confCtx.language].tree.gammaTitle}</h1>
         </div>
         <div className="flex flex-col gap-2 gamma-el-bx">
           {editorContext.globalCtx && editorContext.globalCtx.getAllElements().map((el, i) => (
@@ -26,9 +28,9 @@ export const GammaContent = (props: GammaContentProps) => {
           ))}
         </div>
         {editorContext.globalCtx && editorContext.globalCtx.isEmpty() &&
-            <div className="ctx-el"
+            <div className="flex flex-col gap-2 gamma-el-bx"
             >
-                <p>Gamma is empty</p>
+                <p className="ctx-el">{translations[confCtx.language].tree.gammaEmpty}</p>
             </div>
 
         }
@@ -36,7 +38,7 @@ export const GammaContent = (props: GammaContentProps) => {
         {!editorContext.globalCtx &&
             <div className="tree-info-bx">
                 <h1 className="text-center text-wrap">
-                  Gamma content will be displayed here
+                  {translations[confCtx.language].tree.gammaPlaceholder}
                 </h1>
             </div>
         }
