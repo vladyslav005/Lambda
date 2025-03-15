@@ -139,7 +139,7 @@ export function setUpMonacoLanguage(monaco: any) {
       "editor.background": "#2D2D2D",
       "editorCursor.foreground": "#dcdcdc",
 
-      "editor.lineHighlightBackground": "#2D2D2D",
+      "editor.lineHighlightBackground": "#3e3e3e",
 
       "editorLineNumber.foreground": "#7a7a7a",
       "editor.selectionBackground": "#3a3a3a",

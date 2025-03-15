@@ -19,18 +19,36 @@ export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-      <div className="header-bx flex flex-row justify-between items-center gap-0 xl:gap-2 flex-wrap">
-        <div className=" flex flex-row items-center gap-2">
+      <div className={"header-bx flex flex-row justify-between items-center gap-0 xl:gap-2 " + (menuOpen ? "flex-wrap" : "")}>
+         <div className="flex items-center grow justify-between flex-nowrap">
+          <div className="flex flex-row items-center gap-2">
 
-          <img src={logo} alt={"Logo"} className="logo"/>
-          <h1 className="name">Type Checker</h1>
-          <IconButton className="mx-3 feedback-btn" onClick={() =>
-              window.open("https://docs.google.com/forms/d/e/1FAIpQLScZPEpHaDug8IzCJHdx6IYVfqtrKoTTHb6ZCk1lInks7poLHw/viewform?usp=dialog", "_blank")}>
-            {translations[confCtx.language].feedback}
-            <MdFeedback size={24}/>
-          </IconButton>
-        </div>
+            <img src={logo} alt={"Logo"} className="logo"/>
+            <h1 className="name text-s sm:text-xl md:text-2xl">Type Checker</h1>
+            <IconButton className="mx-3 feedback-btn" onClick={() =>
+                window.open("https://docs.google.com/forms/d/e/1FAIpQLScZPEpHaDug8IzCJHdx6IYVfqtrKoTTHb6ZCk1lInks7poLHw/viewform?usp=dialog", "_blank")}>
 
+              <p className={"hidden sm:block"}>
+                {translations[confCtx.language].feedback}
+              </p>
+              <MdFeedback size={24}/>
+            </IconButton>
+          </div>
+
+          {/* Mobile Burger Button */}
+          <div className="block lg:hidden mx-8">
+            <IconButton
+                className=""
+                onClick={() => setMenuOpen(!menuOpen)}
+            >
+              {menuOpen ?
+                  <MdClose size={28}
+                           color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/> :
+                  <MdMenu size={28}
+                          color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/>}
+            </IconButton>
+          </div>
+         </div>
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex flex-row items-center gap-1 xl:gap-8 mx-8">
@@ -47,19 +65,7 @@ export const Header = () => {
 
         </div>
 
-        {/* Mobile Burger Button */}
-        <div className="block lg:hidden mx-8">
-          <IconButton
-              className=""
-              onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ?
-                <MdClose size={28}
-                         color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/> :
-                <MdMenu size={28}
-                        color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/>}
-          </IconButton>
-        </div>
+
         {/* Mobile Menu (Dropdown) */}
         {menuOpen && (
             <div className="flex lg:hidden flex-row items-center m-3 gap-8 flex-wrap">

@@ -114,7 +114,7 @@ export function MainPage() {
                   <div style={{ display: selectedTab === 'MaR' ? 'block' : 'none' }}>
                     <TabPanel id="MaR" shouldForceMount={true}  className="flex flex-col grow">
                         <Suspense fallback={<div className="tree-flat-container ui-block"><LoadingIndicator/></div>}>
-                            <div className="flex grow">
+                            <div className="flex grow mt-4">
                                 <TreeFlat showAliases={showAliases} setShowAliases={setShowAliases}/>
                             </div>
                             {confCtx.showGamma && <div className="flex grow">

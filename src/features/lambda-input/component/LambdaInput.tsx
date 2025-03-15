@@ -19,7 +19,7 @@ export default function LambdaInput() {
 
   const {setEditorErrors} = useEditorErrorsHook();
 
-  const [theme, setTheme] = useState("lambda-theme");
+  const [theme, setTheme] = useState("");
 
   const handleEditorDidMount = (editor: any, monaco: any) => {
     editorContext.setEditor(editor);
@@ -109,7 +109,6 @@ export default function LambdaInput() {
 
         <Editor
             className="h-full"
-            keepCurrentModel={true}
             language="lambda"
             theme={theme}
             options={{

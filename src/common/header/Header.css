@@ -16,11 +16,13 @@
     color: var(--Schemes-On-Surface-Variant, #49454F);
     text-align: center;
     font-family: var(--Headline-Medium-Font, Roboto);
-    font-size: 1.5rem;
     font-style: normal;
     font-weight: 400;
     line-height: var(--Display-Large-Line-Height, 64px); /* 160% */
     letter-spacing: var(--Display-Large-Tracking, -0.25px);
+    text-wrap: nowrap;
+    display: block;
+    min-width: 100px;
 }
 
 .name::selection {
@@ -29,11 +31,8 @@
 
 .configurations {
     display: flex;
-
     justify-content: space-around;
-
     align-items: center;
-
 }
 
 .configurations-btn {

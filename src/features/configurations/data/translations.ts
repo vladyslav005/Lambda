@@ -180,7 +180,10 @@ const translations = {
           injection syntax with labeled fields.`,
       },
       syntax: {
-        t1: `Conditional expressions and arithmetic operations:`,
+        tt1: "Syntax review",
+        tt2: "Abstract syntax rules",
+        t0: "Abstract syntax",
+        t1: `Basic term types:`,
         t2: `Lambda expressions abstractions functions and their applications:`,
         t3: `Conditional expressions, arithmetic operations, comparison:`,
         t4: `<b>Case Analysis & Injection: </b>pattern matching with case expressions:`,
@@ -198,7 +201,6 @@ const translations = {
     },
 
     feedback: "Feedback",
-
   },
 
   sk: {
@@ -376,7 +378,10 @@ const translations = {
         syntax s pomenovanými prvkámi.`,
       },
       syntax: {
-        t1: `Podmienené výrazy a aritmetické operácie:`,
+        tt1: "Prehľad syntaxe",
+        tt2: "Pravidlá abstraktnej syntaktixe ",
+        t0: "Abstraktná syntax",
+        t1: `Základné typy termov:`,
         t2: `Lambda abstrakcie a ich aplikácie:`,
         t3: `Podmienené výrazy, aritmetické operácie, porovnávanie:`,
         t4: `Konštrukcia case-of a injekcia:`,
@@ -392,7 +397,6 @@ const translations = {
     },
 
     feedback: "Spätná väzba",
-
   },
 
   ua: {
@@ -557,7 +561,10 @@ const translations = {
             і використовують більш структурований синтаксис інжекції з позначеними полями.`
       },
       syntax: {
-        t1: `Умовні вирази та арифметичні операції:`,
+        tt1: "Огляд синтаксису",
+        tt2: "Синтаксичні правила",
+        t0: "Абстрактний синтаксис",
+        t1: `Основні типи термів:`,
         t2: `Лямбда-вирази абстракції функцій та їх застосування:`,
         t3: `Умовні вирази, арифметичні операції, порівняння:`,
         t4: `<b>Аналіз випадків і інжекція:</b> патерн-матчинг з виразами case:`,

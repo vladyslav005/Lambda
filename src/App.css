@@ -37,15 +37,7 @@
         max-height: none !important;
     }
 
-    .sidebar {
-        flex-direction: column-reverse;
-        margin-bottom: 0 !important;
-        margin-right: 0 !important;
-        margin-top: 0 !important;
-        gap: 1rem !important;
 
-        max-width: none !important;
-    }
 
     .main-pane {
         margin-bottom: 0 !important;
@@ -60,8 +52,7 @@
     }
 
     .error-output {
-        margin-top: 1rem !important;
-        margin-bottom: 0 !important;
+        margin: 0.5rem 0.5rem 0.5rem 0.5rem !important;
 
         padding-bottom: 1rem;
         overflow-y: scroll !important;
@@ -71,15 +62,21 @@
 
     .lambda-input {
         flex-grow: 2 !important;
-        margin: 1rem 1rem 1rem 1rem !important;
+        margin: 1rem .5rem .5rem .5rem !important;
         min-height: 400px !important;
+    }
+
+    .gamma-content {
+        margin: 0.5rem 0.5rem 0.5rem 0.5rem !important;
+
     }
 
     .tree-flat-container {
         min-height: 400px !important;
-        margin-top: 0 !important;
+        margin: 0.5rem 0.5rem 0.5rem 0.5rem !important;
         /*margin-bottom: 0 !important;*/
     }
+
 
     .header-bx {
         margin: 0 1rem 0 1rem !important;
@@ -90,9 +87,6 @@
         width: 3rem !important;
     }
 
-    .name {
-        font-size: 1.5rem !important;
-    }
 
     .tree-flat-container {
         /*flex-grow: 2 !important;*/
@@ -182,7 +176,7 @@
     background: var(--Schemes-Surface-Container-High, #ECE6F0);
 
     /* M3/Elevation Light/3 */
-    box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.30);
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.30);
 
 
     color: var(--M3-sys-light-primary, var(--Schemes-Primary, #65558F));
@@ -195,10 +189,9 @@
     font-weight: 500;
     line-height: var(--Label-Large-Line-Height, 20px); /* 142.857% */
     letter-spacing: var(--Label-Large-Tracking, 0.1px);
-    padding: .8rem !important;
+    padding: .6rem !important;
     font-size: 1rem;
 }
-
 
 .feedback-btn:hover {
     background: var(--Schemes-Surface-Container-High, #d8d2dd) !important;
@@ -251,6 +244,8 @@
     display: flex;
     width: 100%;
     justify-content: center;
+    background: var(--Schemes-On-Primary, #4A4459);
+    border-radius: 8px;
 
 
     &[data-orientation=horizontal] {
