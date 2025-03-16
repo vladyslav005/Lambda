@@ -17,8 +17,8 @@ export const CodeExample = ({code}: { code: string }) => {
         <IconButton
             style={{
               position: "absolute",
-              top: 0,
-              right: 0,
+              top: -5,
+              left: -5,
             }}
             onClick={() => {
               navigator.clipboard.writeText(code).then()

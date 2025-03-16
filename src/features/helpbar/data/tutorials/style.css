@@ -49,13 +49,13 @@
     color: var(--Schemes-On-Surface, #000000);
     background: var(--Schemes-Surface, #FEF7FF);
     font-family: "Fira Code", monospace;
-    padding: 12px;
+    padding: 2rem;
     border-radius: 6px;
     overflow-x: auto;
     font-size: 14px;
     line-height: 1.5;
     border: 1px solid #ddd; /* Subtle border for separation */
-    margin: 0 auto 1rem auto;
+    margin: 1rem auto 1rem auto;
     max-width: 790px;
     overflow: auto;
 }

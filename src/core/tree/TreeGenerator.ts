@@ -306,8 +306,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const premises = [this.visit(body)]
 
     const cncs = this.generateConclusionStr(premises);
-    const unwrappedConclusion = `λ \\_:${argumentType}.${cncs.conclusion}`;
-    const unwrappedConclusionWithAlias = `λ \\_:${argumentTypeWithAlias}.${cncs.conclusionWithAlias}`;
+    const unwrappedConclusion = `λ _:${argumentType}.${cncs.conclusion}`;
+    const unwrappedConclusionWithAlias = `λ _:${argumentTypeWithAlias}.${cncs.conclusionWithAlias}`;
 
     return {
       type: type,

@@ -1,7 +1,7 @@
 import {Context, ContextElement} from "../../../../core/context/Context";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
 import {useContext, useEffect, useState} from "react";
-import {decodeAlias, encodeToAlias, preprocessString} from "../../../../core/utils";
+import {decodeAlias, encodeToAlias, preprocessString, preprocessTex} from "../../../../core/utils";
 import {MathComponent} from "mathjax-react";
 
 interface GammaItemProps {
@@ -15,8 +15,9 @@ export const GammaItem = ({ctxElement, showAliases}: GammaItemProps) => {
   const [ctxElStr, setCtxElStr] = useState('')
 
   const genCtxElStr = () =>  {
-    return `${ctxElement.name}: ${preprocessString(showAliases ? encodeToAlias(ctxElement.type ?? '', editorContext.aliasCtx ?? new Context())
-        : decodeAlias(ctxElement.type ?? '', editorContext.aliasCtx ?? new Context()) )}`
+    return preprocessTex(preprocessString(`${ctxElement.name}: ${showAliases ? encodeToAlias(ctxElement.type ?? '', 
+            editorContext.aliasCtx ?? new Context())
+        : decodeAlias(ctxElement.type ?? '', editorContext.aliasCtx ?? new Context())}`))
   }
 
   useEffect(() => {

@@ -164,11 +164,11 @@ t ::= t t                                   (Application)
     | [ID = t] as T                         (Injection)
     | (inl | inr) t as T                    (Left/Right Injection)
     | <ID = t (, x = t)*>                   (Record)
-    | t . x                                 (Record Projection)
+    | t . n                                 (Record Projection)
     | <t (, t)*>                            (Tuple)
-    | t . n                                 (Tuple Projection)
+    | t . ID                                (Tuple Projection)
     | list_op                               (List)
-    | case t of [x = t] => t (|| [x = t-] => t)*          (Case Of)
+    | case t of [x = t] => t (|| [x = t] => t)*          (Case Of)
     | case t of (inl | inr) x => t || (inl | inr) x => t (Binary Case Of)`
             }/>
             <CodeExample code={`
@@ -191,7 +191,7 @@ T ::= ID | Nat | Bool | Unit               (Primitive type)
 v ::= N | 0                                (Natural Number)
     | true | True | false | False          (Boolean)
     | Unit | unit                          (Unit)
-    | ID                                   (Variable)`}/>
+    | ID                                   (Variable Name)`}/>
 
             <CodeExample code={`
 globalDecl ::= typedef ID = T;             (Type Alias)

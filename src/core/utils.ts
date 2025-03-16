@@ -75,6 +75,7 @@ export function preprocessString(str: string): string {
       .replaceAll(/`/g, "<")
       .replaceAll(/~/g, ">")
       .replaceAll(/§/g, "*")
+      .replaceAll(/_/g, "{\\_}")
 
       .replaceAll(" ", "{\\ }")
 }
@@ -135,9 +136,10 @@ export function preprocessTex(text: string): string {
       .replace(/[α-ωΑ-Ω]/g, (match) => greekToLatex[match] || match)
       .replaceAll("{\\Rightarrow}", " \\Rightarrow ")
       .replaceAll("{\\times}", " \\times ")
-      .replaceAll("{\\rightarrow}", " \\rightarrow")
-      .replaceAll("{\\langle}", "\\langle")
-      .replaceAll("{\\rangle}", "\\rangle")
+      .replaceAll("{\\rightarrow}", " \\rightarrow ")
+      .replaceAll("{\\langle}", " \\langle ")
+      .replaceAll("{\\rangle}", " \\rangle ")
+
       .replaceAll("{\\ }", " ")
 }
 

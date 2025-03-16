@@ -53,7 +53,7 @@ export const Topics = ({searchQuery}: TopicsProps) => {
                 <div key={index}>{topic}</div>
             ))
         ) : (
-            <p className="text-gray-500 text-center p-2">No matching topics found.</p>
+            <p className="text-gray-500 text-center p-8">No matching topics found.</p>
         )}
       </div>
   )

@@ -43,7 +43,6 @@ export function useExportToLatex() {
       const nodeConclusion = showAliases ? node.wrappedConclusionWithAlias : node.wrappedConclusion;
 
       if (premises) {
-
         for (const premise of premises) {
           traverseTree(premise);
         }
