@@ -16,7 +16,9 @@ export interface ConfigurationContextInterface {
   interactive: boolean;
   theme: Theme;
   showGamma: boolean;
+  stepByStepMode: boolean;
 
+  setStepByStepMode: (stepMode: boolean) => void;
   setShowGamma: (showGamma: boolean) => void;
   setLanguage: (language: Language) => void;
   setInteractive: (interactive: boolean) => void;
@@ -28,7 +30,9 @@ export const ConfigurationContext = createContext<ConfigurationContextInterface>
   interactive: true,
   theme: Theme.Light,
   showGamma: true,
+  stepByStepMode: false,
 
+  setStepByStepMode: (stepMode: boolean) => {},
   setShowGamma: showGamma => {},
   setInteractive: interactive => {},
   setLanguage: (language: Language) => {},
@@ -43,8 +47,8 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
   const [language, setLanguage] = useState(Language.EN);
   const [interactive, setInteractive] = useState(true);
   const [theme, setTheme] = useState(Theme.Light);
-
-  const [showGamma, setShowGamma] = useState(true)
+  const [showGamma, setShowGamma] = useState(true);
+  const [stepByStepMode, setStepByStepMode] = useState(false)
 
 
   const setInteractiveHandler = (value: boolean) => {
@@ -68,6 +72,11 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
     localStorage.setItem('showgamma', showGamma.toString());
   }
 
+  const setStepByStepModeHandler = (stepMode: boolean) => {
+    setStepByStepMode(stepMode);
+    localStorage.setItem('stepByStepMode', stepMode.toString());
+  }
+
   useEffect(() => {
     const interactivePersisted = localStorage.getItem("interactive") ?? 'true'
     if (interactivePersisted === 'true')
@@ -79,6 +88,11 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
       setShowGammaHandler(true);
     else setShowGammaHandler(false);
 
+    const stepByStepModePersisted = localStorage.getItem("stepByStepMode") ?? 'true'
+    if (stepByStepModePersisted === 'true')
+      setStepByStepModeHandler(true);
+    else setStepByStepModeHandler(false);
+
     setThemeHandler(localStorage.getItem("theme") as Theme ?? Theme.Light);
     setLanguageHandler(localStorage.getItem("language") as Language ?? Language.EN);
   }, [])
@@ -87,8 +101,10 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
     language: language,
     interactive: interactive,
     theme: theme,
-    showGamma,
+    showGamma: showGamma,
+    stepByStepMode: stepByStepMode,
 
+    setStepByStepMode: setStepByStepModeHandler,
     setShowGamma: setShowGammaHandler,
     setInteractive: setInteractiveHandler,
     setLanguage: setLanguageHandler,

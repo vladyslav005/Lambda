@@ -16,7 +16,9 @@ export interface EditorContextInterface {
   setAliasesPresent: (value: boolean) => void,
   setAliasCtx: (globalCtx: Context | undefined) => void,
   setGlobalCtx: (globalCtx: Context | undefined) => void,
+  setNodeNumber: (number: number) => void,
 
+  nodeNumber: number ,
   aliasCtx: Context | undefined,
   globalCtx: Context | undefined,
   aliasesPresent: boolean
@@ -28,26 +30,28 @@ export interface EditorContextInterface {
 }
 
 export const EditorContext = createContext<EditorContextInterface>({
-      setEditorValue: (value: any) => {},
-      setTree: (tree: ProofNode | undefined) => {},
-      setErrors: (errors: Error[]) => {},
-      setEditor: (editor: any) => {},
-      setMonaco: (monaco: any) => {},
-      setFontSize: (newSize: number) => {},
-      setAliasesPresent: (value: boolean) => {},
-      setAliasCtx: (globalCtx: Context | undefined) => {},
-      setGlobalCtx: (globalCtx: Context | undefined) => {},
+    setEditorValue: (value: any) => {},
+    setTree: (tree: ProofNode | undefined) => {},
+    setErrors: (errors: Error[]) => {},
+    setEditor: (editor: any) => {},
+    setMonaco: (monaco: any) => {},
+    setFontSize: (newSize: number) => {},
+    setAliasesPresent: (value: boolean) => {},
+    setAliasCtx: (globalCtx: Context | undefined) => {},
+    setGlobalCtx: (globalCtx: Context | undefined) => {},
+    setNodeNumber: (number: number) => {},
 
-      aliasCtx: undefined,
-      globalCtx: undefined,
-      aliasesPresent: false,
-      fontSize: 18,
-      editorValue: '',
-      tree: undefined,
-      errors: [],
-      editor: undefined,
-      monaco: undefined,
-    }
+    nodeNumber: 0,
+    aliasCtx: undefined,
+    globalCtx: undefined,
+    aliasesPresent: false,
+    fontSize: 18,
+    editorValue: '',
+    tree: undefined,
+    errors: [],
+    editor: undefined,
+    monaco: undefined,
+  }
 )
 
 interface EditorProviderProps {
@@ -64,8 +68,7 @@ export const EditorContextProvider = (props: EditorProviderProps) => {
   const [aliasesPresent, setAliasesPresent] = useState(false)
   const [globalCtx, setGlobalCtx] = useState<Context | undefined>(undefined);
   const [aliasCtx, setAliasCtx] = useState<Context | undefined>(undefined);
-
-
+  const [nodeNumber, setNodeNumber] = useState(0)
 
   const contextValue: EditorContextInterface = {
     setEditorValue,
@@ -77,7 +80,9 @@ export const EditorContextProvider = (props: EditorProviderProps) => {
     setAliasesPresent,
     setAliasCtx,
     setGlobalCtx,
+    setNodeNumber,
 
+    nodeNumber,
     globalCtx,
     aliasCtx,
     aliasesPresent,
@@ -94,6 +99,5 @@ export const EditorContextProvider = (props: EditorProviderProps) => {
         {props.children}
       </EditorContext.Provider>
   );
-
 }
 

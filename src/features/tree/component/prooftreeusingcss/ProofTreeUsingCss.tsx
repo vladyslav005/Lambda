@@ -1,7 +1,7 @@
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import "./ProofTreeUsingCss.css"
 import {ConclusionCenter} from "./ConclusionCenter";
-import React, {Ref, useState} from "react";
+import React, {Ref, useEffect, useState} from "react";
 
 interface ProofTreeUsingCssProps {
   node: ProofNode,
@@ -15,6 +15,8 @@ interface ProofTreeUsingCssProps {
   parentIsExpanded?: boolean;
   parentSetIsExpanded?: (expanded: boolean) => void;
   showGammaDefinition: boolean;
+  stepNumber?: number;
+  stepByStepModeEnabled: boolean;
 }
 
 export function ProofTreeComponentUsingCss(
@@ -30,6 +32,8 @@ export function ProofTreeComponentUsingCss(
       setTreeHasChanged,
       canMutateTree,
       showGammaDefinition,
+      stepNumber,
+      stepByStepModeEnabled,
     }: ProofTreeUsingCssProps,) {
   const isItRoot = node.root ? "root" : "not-root";
   const isItLeaf = node.premises === undefined ? 'leaf-node' : 'not-leaf-node';
@@ -44,10 +48,14 @@ export function ProofTreeComponentUsingCss(
     }
   }
 
-  return (
-      <div ref={isItRoot && treeRef ? treeRef : undefined} className="proof-node"
-           style={{color: color ? color : "black"}}>
+  useEffect(() => {
+    console.warn(node.nodeNumber)
+  }, [])
 
+  return (
+      <>
+      {(!stepByStepModeEnabled || !stepNumber || ((node.nodeNumber ?? 0) < stepNumber)) &&
+        <div ref={isItRoot && treeRef ? treeRef : undefined} className="proof-node" style={{color: color ? color : "black"}}>
         {node.premises && !isExpanded && (
             <div className={`premises`}
                  style={{borderColor: color ? color : "black"}}
@@ -55,6 +63,8 @@ export function ProofTreeComponentUsingCss(
               {node.premises.map((premise, index) => (
                   <React.Fragment key={index}>
                     <ProofTreeComponentUsingCss
+                        stepByStepModeEnabled={stepByStepModeEnabled}
+                        stepNumber={stepNumber}
                         showGammaDefinition={showGammaDefinition}
                         key={`${premise.rule}-${premise.tokenLocation.join("-")}-${index}`}
                         canMutateTree={canMutateTree}
@@ -78,6 +88,8 @@ export function ProofTreeComponentUsingCss(
               {node.expandedPremises.map((premise, index) => (
                   <React.Fragment key={index}>
                     <ProofTreeComponentUsingCss
+                        stepByStepModeEnabled={stepByStepModeEnabled}
+                        stepNumber={stepNumber}
                         showGammaDefinition={showGammaDefinition}
                         key={index}
                         isExpandedPremise={true}
@@ -119,6 +131,7 @@ export function ProofTreeComponentUsingCss(
 
             </div>
         </div>}
-      </div>
+      </div>}
+      </>
   );
 }

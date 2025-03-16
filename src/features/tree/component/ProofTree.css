@@ -41,6 +41,12 @@
     z-index: 1000;
 }
 
+.step-label {
+    color: var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459));
+    font-size: 16px;
+    margin: 0 .4rem 0 .4rem;
+}
+
 .tree-info-bx h1 {
     font-size: 1.5rem;
     color: var(--Schemes-On-Surface-Variant, #4A4459);

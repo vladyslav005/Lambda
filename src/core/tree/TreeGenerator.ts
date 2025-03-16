@@ -56,6 +56,7 @@ export interface ProofNode {
   aliasesPresent?: boolean; // only for root node
   aliasCtx?: Context;
   globalCtx?: Context;
+  nodeNumber?: number;
 }
 
 export class TreeGenerator extends LambdaCalcVisitor<any> {

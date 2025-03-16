@@ -9,6 +9,7 @@ import {IconButton} from "../../../common/components/button/IconButton";
 import {Switch} from "react-aria-components";
 import {ConfigurationContext} from "../../configurations/context/ConfigurationContext";
 import translations from "../../configurations/data/translations";
+import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 
 const ExportButton = lazy(() => import('./exportbutton/ExportButton'))
 
@@ -33,6 +34,8 @@ export default function TreeFlat(
   const [isTreeCentered, setIsTreeCentered] = useState(true)
 
   const [treeHasChanged, setTreeHasChanged] = useState(false)
+
+  const [step, setStep] = useState(1);
 
   const [map, setMap] = useState({
     value: {
@@ -79,7 +82,7 @@ export default function TreeFlat(
 
       return () => observer.disconnect();
     }
-  }, [editorContext.tree, showAliases, showGammaDefinition, fullScreen, treeHasChanged]);
+  }, [editorContext.tree, showAliases, showGammaDefinition, fullScreen, treeHasChanged, step, confContext.stepByStepMode]);
 
   useEffect(() => {
     centerTree();
@@ -101,6 +104,8 @@ export default function TreeFlat(
               onChange={(value) => setMap({value})}
           >
             {editorContext.tree && <ProofTreeComponentUsingCss
+                stepByStepModeEnabled={confContext.stepByStepMode}
+                stepNumber={step}
                 showGammaDefinition={showGammaDefinition}
                 color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
                 canMutateTree={true}
@@ -126,6 +131,7 @@ export default function TreeFlat(
 
           <Suspense fallback={<div></div>}>
             <ExportButton
+                step={step}
                 treeWidth={treeWidth}
                 treeHeight={treeHeight}
                 style={{
@@ -142,6 +148,7 @@ export default function TreeFlat(
             position: 'absolute',
             bottom: '.5rem',
             left: '.5rem',
+            zIndex: 999,
           }} title={"Center tree"}
           >
             <AiOutlineAim size={26}
@@ -174,6 +181,27 @@ export default function TreeFlat(
             </Switch>}
 
           </div>
+
+          {confContext.stepByStepMode && <div className="flex flex-row items-center justify-center align-middle w-full"
+              style={{
+                position: 'absolute',
+                bottom: '.8rem',
+              }}
+          >
+              <IconButton
+                  onClick={() => {if (step > 1) setStep(step-1)}}
+              >
+                <FaArrowLeft size={26} color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/>
+              </IconButton>
+              <p className="step-label">
+                {step}/{editorContext.nodeNumber}
+              </p>
+              <IconButton
+                onClick={() => {if (step < editorContext.nodeNumber) setStep(step+1)}}
+              >
+                <FaArrowRight size={26} color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/>
+              </IconButton>
+          </div>}
 
           {!editorContext.tree &&
               <div className="tree-info-bx">

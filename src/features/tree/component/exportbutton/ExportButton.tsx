@@ -13,6 +13,7 @@ interface ExportButtonProps {
   useAliases: boolean;
   treeWidth: number;
   treeHeight: number;
+  step: number;
 }
 
 const ExportButton = (props: ExportButtonProps) => {
@@ -82,6 +83,7 @@ const ExportButton = (props: ExportButtonProps) => {
         </MenuTrigger>
 
         <ExportToPngModal
+            step={props.step}
             treeWidth={props.treeWidth} treeHeight={props.treeHeight}
             isOpen={pngModal} setIsOpen={setPngModal}/>
 

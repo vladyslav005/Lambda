@@ -54,8 +54,17 @@ export const ConfigButton = () => {
                 <div className="indicator"/>
                 {translations[confCtx.language].conf.gammaWindow}
               </Switch>
-
             </div>
+            <div className="p-4">
+              <Switch
+                  defaultSelected={confCtx.stepByStepMode}
+                  onChange={(isChecked) => confCtx.setStepByStepMode(isChecked)}
+              >
+                <div className="indicator"/>
+                {translations[confCtx.language].conf.step}
+              </Switch>
+            </div>
+
             <Separator></Separator>
             <Group aria-label="Font size" className="flex flex-row items-center p-4">
               <Label className="label">

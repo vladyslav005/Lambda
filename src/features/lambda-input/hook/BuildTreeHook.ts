@@ -1,5 +1,6 @@
 import {useContext} from "react";
 import {EditorContext} from "../context/EditorContext";
+import {ProofNode} from "../../../core/tree/TreeGenerator";
 
 
 export function useBuildTree() {
@@ -22,6 +23,7 @@ export function useBuildTree() {
       const proofTree = analyzer.analyzeInput(value);
 
       if (proofTree) {
+        editorContext.setNodeNumber(setNodeNumbers(proofTree));
         editorContext.setTree(proofTree);
         editorContext.setAliasesPresent(proofTree.aliasesPresent ?? false);
         editorContext.setGlobalCtx(proofTree.globalCtx ?? undefined);
@@ -42,4 +44,25 @@ export function useBuildTree() {
   }
 
   return {buildTree};
+}
+
+function setNodeNumbers(node: ProofNode): number {
+  let total = 0;
+  const traverseTree = (node: ProofNode): void => {
+
+    const premises: ProofNode[] | undefined =
+        node.isExpanded && node.expandedPremises ? node.expandedPremises : node.premises;
+
+    node.nodeNumber = total++;
+    if (premises) {
+
+      for (let premise of premises)
+        traverseTree(premise);
+    }
+
+  };
+
+  traverseTree(node)
+
+  return total;
 }

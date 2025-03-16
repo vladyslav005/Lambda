@@ -30,6 +30,7 @@ interface ExportToEbpModalProps {
   setIsOpen: (isOpen: boolean) => void;
   treeWidth: number;
   treeHeight: number;
+  step: number;
 }
 
 export const ExportToPngModal = (props: ExportToEbpModalProps) => {
@@ -98,7 +99,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
       observer.observe(treeRef.current);
       return () => observer.disconnect();
     }
-  }, [treeHasChanged, showGammaDefinition, showAliases, map.value.scale]);
+  }, [treeHasChanged, showGammaDefinition, showAliases, map.value.scale, confContext.stepByStepMode]);
 
   return (
       <Modal isDismissable isOpen={props.isOpen} onOpenChange={props.setIsOpen}>
@@ -158,6 +159,8 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 >
                   {editorContext.tree &&
                       <ProofTreeComponentUsingCss
+                          stepByStepModeEnabled={confContext.stepByStepMode}
+                          stepNumber={props.step}
                           showGammaDefinition={showGammaDefinition}
                           canMutateTree={false}
                           treeRef={treeRef}
