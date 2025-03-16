@@ -10,7 +10,7 @@ export const CodeExample = ({code}: { code: string }) => {
 
   const confCtx = useContext(ConfigurationContext)
   return (
-      <p className="code relative">
+      <div className="code relative">
           <pre>
             {`${code}`}
           </pre>
@@ -27,6 +27,6 @@ export const CodeExample = ({code}: { code: string }) => {
         >
           <MdContentCopy size={20}/>
         </IconButton>
-      </p>
+      </div>
   )
 }

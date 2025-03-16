@@ -21,7 +21,7 @@ export const Header = () => {
   return (
       <div className={"header-bx flex flex-row justify-between items-center gap-0 xl:gap-2 " + (menuOpen ? "flex-wrap" : "")}>
          <div className="flex items-center grow justify-between flex-nowrap">
-          <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-row items-center gap-0 sm:gap-2">
 
             <img src={logo} alt={"Logo"} className="logo"/>
             <h1 className="name text-s sm:text-xl md:text-2xl">Type Checker</h1>

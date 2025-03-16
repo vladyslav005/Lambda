@@ -12,7 +12,6 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "antlr4": "^4.13.2",
-    "framer-motion": "11.13.0",
     "html-to-image": "^1.11.11",
     "mathjax-react": "^2.0.1",
     "monaco-editor": "^0.52.0",

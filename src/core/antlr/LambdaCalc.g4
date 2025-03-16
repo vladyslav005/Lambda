@@ -31,8 +31,8 @@ term
     | '['ID EQ term']' 'as' type                                                     # Injection
     | ('inl'|'inr') term 'as' type                                                   # LeftRightInj
     | '<' ID EQ term (COMMA ID EQ term)*'>'                                          # Record
-    | term DOT ID                                                                    # RecordProjection
     | '<'term (COMMA term)* '>'                                                      # Tuple
+    | term DOT ID                                                                    # RecordProjection
     | term DOT NATURAL_NUMBER                                                        # TupleProjection
     | list_op                                                                        # List
     | 'case' term 'of' '['ID EQ ID ']' DOUBLEARROW term ('||' '['ID EQ ID ']' DOUBLEARROW term)*   # CaseOf

@@ -48,9 +48,6 @@ export function ProofTreeComponentUsingCss(
     }
   }
 
-  useEffect(() => {
-    console.warn(node.nodeNumber)
-  }, [])
 
   return (
       <>

@@ -13,6 +13,7 @@ const translations = {
         lists: "Lists",
         ifCondition: "If condition",
         fixOperator: "Fix operator",
+        wildcard: "Wildcard",
       }
     },
 
@@ -220,6 +221,7 @@ const translations = {
         lists: "Zoznamy",
         ifCondition: "Podmienka",
         fixOperator: "Operátor fix",
+        wildcard: "Zastúpenie",
       }
     },
 
@@ -421,6 +423,7 @@ const translations = {
         lists: "Списки",
         ifCondition: "Умова if",
         fixOperator: "Оператор fix",
+        wildcard: "Абс. без аргумента"
       }
     },
 

@@ -583,7 +583,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const recordTypeWithAlias = this.typeChecker.encodeToAlias(recordType);
     const projectionTypeWithAlias = this.typeChecker.encodeToAlias(projectionType);
-    console.warn(recordType)
 
     return {
       type: projectionType,
