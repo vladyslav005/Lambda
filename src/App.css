@@ -52,7 +52,7 @@
     }
 
     .error-output {
-        margin: 0.5rem 0.5rem 0.5rem 0.5rem !important;
+        margin: 0.5rem 0 0 0 !important;
 
         padding-bottom: 1rem;
         overflow-y: scroll !important;
@@ -62,18 +62,18 @@
 
     .lambda-input {
         flex-grow: 2 !important;
-        margin: 1rem .5rem .5rem .5rem !important;
+        margin: 1rem 0 .5rem 0rem !important;
         min-height: 400px !important;
     }
 
     .gamma-content {
-        margin: 0.5rem 0.5rem 0.5rem 0.5rem !important;
+        margin: 0.5rem 0 0 0 !important;
 
     }
 
     .tree-flat-container {
         min-height: 400px !important;
-        margin: 0.5rem 0.5rem 0.5rem 0.5rem !important;
+        margin: 0 0 .6rem 0 !important;
         /*margin-bottom: 0 !important;*/
     }
 
@@ -140,11 +140,11 @@
 }
 
 .main-pane {
-    min-width: 400px;
+    min-width: 300px;
 }
 
 .main-page {
-    min-width: 400px;
+    min-width: 300px;
 }
 
 .error-message {
@@ -227,8 +227,6 @@
     height: 100px !important;
 }
 
-
-
 .react-aria-Tabs {
     display: flex;
     width: 100%;
@@ -240,11 +238,13 @@
     }
 }
 
+
 .react-aria-TabList {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     display: flex;
     width: 100%;
     justify-content: center;
-    background: var(--Schemes-On-Primary, #4A4459);
+    background: var(--Schemes-Surface-Container, #e8e0ef);
     border-radius: 8px;
 
 

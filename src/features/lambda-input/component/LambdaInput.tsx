@@ -108,6 +108,7 @@ export default function LambdaInput() {
         </div>
 
         <Editor
+
             className="h-full"
             language="lambda"
             theme={theme}

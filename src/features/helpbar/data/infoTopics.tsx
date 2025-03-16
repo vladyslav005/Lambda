@@ -6,7 +6,7 @@ import {VariantsTutorial} from "./tutorials/VariantsTutorial";
 import {useContext} from "react";
 import {ConfigurationContext} from "../../configurations/context/ConfigurationContext";
 import translations from "../../configurations/data/translations";
-import SyntaTutorial from "./tutorials/SyntaTutorial";
+import SyntaTutorial from "./tutorials/SyntaxTutorial";
 
 interface TopicsProps {
   searchQuery: string

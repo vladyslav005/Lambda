@@ -155,7 +155,7 @@ export default function TreeFlat(
                           color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"></AiOutlineAim>
           </IconButton>
 
-          <div className="flex flex-col"
+          <div className="flex flex-col gap-4 sm:gap-1 "
               style={{
                 position: 'absolute',
                 left: '1rem',
