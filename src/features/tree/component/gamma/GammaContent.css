@@ -9,7 +9,7 @@
 
 .ctx-el {
     min-height: 50px;
-    padding: .5rem .5rem ;
+    padding: .5rem .5rem;
     color: var(--Schemes-On-Secondary-Container, #4A4459);
     background: var(--Schemes-Surface-Container-High, #E8DEF8);
 

@@ -47,7 +47,6 @@ import {IndexError, SyntaxError, TypeError} from "../errorhandling/customErrors"
 import {Context} from "../context/Context";
 import {eliminateOutParentheses, getTokenLocation, parseTypeAndElimParentheses, tupleTypeToArray} from "../utils";
 import hash from "object-hash";
-import translations from "../../features/configurations/data/translations";
 
 // TODO : refactor: split file, split type checker class
 // TODO : types priority
@@ -56,10 +55,6 @@ import translations from "../../features/configurations/data/translations";
 // TODO : cover all errors for case
 
 export class TypeChecker extends LambdaCalcVisitor<any> {
-  get predefinedFunctionsContext(): Context {
-    return this._predefinedFunctionsContext;
-  }
-
   private cache: Map<string, string>
 
   constructor() {
@@ -81,6 +76,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   }
 
   private _predefinedFunctionsContext: Context = new Context();
+
+  get predefinedFunctionsContext(): Context {
+    return this._predefinedFunctionsContext;
+  }
 
   private _localContext: Context = new Context();
 
@@ -341,7 +340,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     const absType = paramType + "->" + bodyType;
 
-    if (declaredType && absType !== declaredType &&  ctx.parentCtx && !(parentCtx instanceof LambdaAbstractionContext)) {
+    if (declaredType && absType !== declaredType && ctx.parentCtx && !(parentCtx instanceof LambdaAbstractionContext)) {
       throw new TypeError(
           `Abstraction '${ctx.getText()}' has type '${absType}', that doesn't match declared type '${declaredType}'`,
           getTokenLocation(ctx)
@@ -1005,16 +1004,16 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       argumentType = '(' + argumentType + ')';
     }
 
-    return argumentType + '->' +  returnType;
+    return argumentType + '->' + returnType;
   };
 
   visitParenType = (ctx: ParenTypeContext): any => {
     let typeTextWithoutBrackets = this.visit(ctx.getChild(1));
-    const childType : string = ctx.getChild(1).constructor.name;
-    const parentType : string | undefined  = ctx.parentCtx?.constructor.name;
+    const childType: string = ctx.getChild(1).constructor.name;
+    const parentType: string | undefined = ctx.parentCtx?.constructor.name;
 
     if (parentType === undefined)
-      return  typeTextWithoutBrackets
+      return typeTextWithoutBrackets
 
     const childTypePriority = this.getPriority(childType);
     const parentTypePriority = this.getPriority(parentType);
@@ -1022,11 +1021,11 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     if (childTypePriority < parentTypePriority && childTypePriority !== 0 && parentTypePriority !== 0)
       return '(' + typeTextWithoutBrackets + ')';
 
-    return  typeTextWithoutBrackets
+    return typeTextWithoutBrackets
   };
 
   getPriority = (type: string): number => {
-    return TypesPriority[type as  keyof typeof TypesPriority] ?? 0;
+    return TypesPriority[type as keyof typeof TypesPriority] ?? 0;
   };
 
   visitListNil = (ctx: ListNilContext): any => {
@@ -1156,9 +1155,8 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 }
 
 
-
 const TypesPriority = {
-  FunctionTypeContext : 1,
-  VariantTypeContext : 2,
-  TupleTypeContext : 3,
+  FunctionTypeContext: 1,
+  VariantTypeContext: 2,
+  TupleTypeContext: 3,
 }

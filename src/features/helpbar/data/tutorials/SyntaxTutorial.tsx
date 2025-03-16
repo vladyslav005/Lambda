@@ -1,12 +1,9 @@
 import {HelpListItem} from "../../component/ListItem/HelpListItem";
 import {CodeExample} from "./CodeExample";
-import React, {Suspense, useContext} from "react";
+import React, {useContext} from "react";
 import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
 import translations from "../../../configurations/data/translations";
 import {Tab, TabList, TabPanel, Tabs} from "react-aria-components";
-import {LoadingIndicator} from "../../../../common/components/loading/LoadingIndicator";
-import {ErrorOutput} from "../../../error-output/component/ErrorOutput";
-import {GammaContent} from "../../../tree/component/gamma/GammaContent";
 
 interface GrammarTutorialProps {
   title: string;
@@ -140,7 +137,7 @@ tail [Nat] t  // ListTail
 [1, 2, 3]  // ListConstructor`}></CodeExample>
 
           </TabPanel>
-          <TabPanel id="MaR"  className="">
+          <TabPanel id="MaR" className="">
             <div className="m-4"></div>
             <h1 className="title"
                 dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.syntax.t0}}

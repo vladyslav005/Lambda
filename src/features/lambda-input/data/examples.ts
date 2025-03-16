@@ -94,12 +94,11 @@ head[Nat] (cons[Nat] 3 (cons[Nat] 8 list));
     code: `fix (λ f : Nat → Nat . (λ n : Nat . if iszero(n) then 1 else n * f (pred n)) : (Nat → Nat) → (Nat → Nat));`
   },
   {
-    name : "wildcard",
+    name: "wildcard",
     code: `x = 10 : Nat;
 y = 9999 : Nat;
 λ _ : Unit. x*y : Unit → Nat;`
   }
-
 
 
 ];

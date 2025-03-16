@@ -18,7 +18,7 @@ export interface EditorContextInterface {
   setGlobalCtx: (globalCtx: Context | undefined) => void,
   setNodeNumber: (number: number) => void,
 
-  nodeNumber: number ,
+  nodeNumber: number,
   aliasCtx: Context | undefined,
   globalCtx: Context | undefined,
   aliasesPresent: boolean
@@ -30,28 +30,38 @@ export interface EditorContextInterface {
 }
 
 export const EditorContext = createContext<EditorContextInterface>({
-    setEditorValue: (value: any) => {},
-    setTree: (tree: ProofNode | undefined) => {},
-    setErrors: (errors: Error[]) => {},
-    setEditor: (editor: any) => {},
-    setMonaco: (monaco: any) => {},
-    setFontSize: (newSize: number) => {},
-    setAliasesPresent: (value: boolean) => {},
-    setAliasCtx: (globalCtx: Context | undefined) => {},
-    setGlobalCtx: (globalCtx: Context | undefined) => {},
-    setNodeNumber: (number: number) => {},
+      setEditorValue: (value: any) => {
+      },
+      setTree: (tree: ProofNode | undefined) => {
+      },
+      setErrors: (errors: Error[]) => {
+      },
+      setEditor: (editor: any) => {
+      },
+      setMonaco: (monaco: any) => {
+      },
+      setFontSize: (newSize: number) => {
+      },
+      setAliasesPresent: (value: boolean) => {
+      },
+      setAliasCtx: (globalCtx: Context | undefined) => {
+      },
+      setGlobalCtx: (globalCtx: Context | undefined) => {
+      },
+      setNodeNumber: (number: number) => {
+      },
 
-    nodeNumber: 0,
-    aliasCtx: undefined,
-    globalCtx: undefined,
-    aliasesPresent: false,
-    fontSize: 18,
-    editorValue: '',
-    tree: undefined,
-    errors: [],
-    editor: undefined,
-    monaco: undefined,
-  }
+      nodeNumber: 0,
+      aliasCtx: undefined,
+      globalCtx: undefined,
+      aliasesPresent: false,
+      fontSize: 18,
+      editorValue: '',
+      tree: undefined,
+      errors: [],
+      editor: undefined,
+      monaco: undefined,
+    }
 )
 
 interface EditorProviderProps {

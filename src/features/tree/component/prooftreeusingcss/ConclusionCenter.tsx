@@ -116,8 +116,7 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
           ? preprocessString(props.node.wrappedConclusion
               .replace(/\\Gamma/g, editorContext.globalCtx.toStringWithoutAliases(editorContext.aliasCtx)))
           : preprocessString(props.node.wrappedConclusion)
-    }
-    else
+    } else
       returnValue = props.showGammaDefinition || editorContext.globalCtx.isEmpty()
           ? preprocessString(props.node.wrappedConclusionWithAlias)
           : preprocessString(props.node.wrappedConclusionWithAlias)

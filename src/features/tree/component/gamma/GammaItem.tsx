@@ -14,8 +14,8 @@ export const GammaItem = ({ctxElement, showAliases}: GammaItemProps) => {
 
   const [ctxElStr, setCtxElStr] = useState('')
 
-  const genCtxElStr = () =>  {
-    return preprocessTex(preprocessString(`${ctxElement.name}: ${showAliases ? encodeToAlias(ctxElement.type ?? '', 
+  const genCtxElStr = () => {
+    return preprocessTex(preprocessString(`${ctxElement.name}: ${showAliases ? encodeToAlias(ctxElement.type ?? '',
             editorContext.aliasCtx ?? new Context())
         : decodeAlias(ctxElement.type ?? '', editorContext.aliasCtx ?? new Context())}`))
   }
@@ -67,8 +67,8 @@ export const GammaItem = ({ctxElement, showAliases}: GammaItemProps) => {
     setDecorations(editorContext.editor.deltaDecorations(decorations, []));
     if (editorContext.editor.getModel())
       editorContext.editor.deltaDecorations(editorContext.editor.getModel().getAllDecorations()
-        .filter((decorator: any) => decorator.options.className === "highlighted-code")
-        .map((decorator: any) => decorator.id), [])
+          .filter((decorator: any) => decorator.options.className === "highlighted-code")
+          .map((decorator: any) => decorator.id), [])
     setIsHovered(false)
   }
 
@@ -79,7 +79,7 @@ export const GammaItem = ({ctxElement, showAliases}: GammaItemProps) => {
            onTouchStart={handleTouch}
            title={ctxElement.name + ': ' + decodeAlias(ctxElement.type, editorContext.aliasCtx ?? new Context())}
       >
-        <MathComponent tex= {ctxElStr}/>
+        <MathComponent tex={ctxElStr}/>
       </div>
 
   )

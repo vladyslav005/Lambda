@@ -14,7 +14,7 @@ import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 const ExportButton = lazy(() => import('./exportbutton/ExportButton'))
 
 export default function TreeFlat(
-    {showAliases, setShowAliases}: {showAliases: boolean, setShowAliases: (showAliases: boolean) => void}
+    {showAliases, setShowAliases}: { showAliases: boolean, setShowAliases: (showAliases: boolean) => void }
 ) {
   const confContext = useContext(ConfigurationContext);
 
@@ -156,12 +156,12 @@ export default function TreeFlat(
           </IconButton>
 
           <div className="flex flex-col gap-4 sm:gap-1 "
-              style={{
-                position: 'absolute',
-                left: '1rem',
-                top: '1rem',
-                zIndex: 999,
-              }}
+               style={{
+                 position: 'absolute',
+                 left: '1rem',
+                 top: '1rem',
+                 zIndex: 999,
+               }}
           >
             {editorContext.globalCtx && !editorContext.globalCtx.isEmpty() && <Switch
                 defaultSelected={showGammaDefinition}
@@ -183,23 +183,29 @@ export default function TreeFlat(
           </div>
 
           {confContext.stepByStepMode && <div className="flex flex-row items-center justify-center align-middle w-full"
-              style={{
-                position: 'absolute',
-                bottom: '.8rem',
-              }}
+                                              style={{
+                                                position: 'absolute',
+                                                bottom: '.8rem',
+                                              }}
           >
               <IconButton
-                  onClick={() => {if (step > 1) setStep(step-1)}}
+                  onClick={() => {
+                    if (step > 1) setStep(step - 1)
+                  }}
               >
-                <FaArrowLeft size={26} color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/>
+                  <FaArrowLeft size={26}
+                               color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/>
               </IconButton>
               <p className="step-label">
                 {step}/{editorContext.nodeNumber}
               </p>
               <IconButton
-                onClick={() => {if (step < editorContext.nodeNumber) setStep(step+1)}}
+                  onClick={() => {
+                    if (step < editorContext.nodeNumber) setStep(step + 1)
+                  }}
               >
-                <FaArrowRight size={26} color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/>
+                  <FaArrowRight size={26}
+                                color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"/>
               </IconButton>
           </div>}
 

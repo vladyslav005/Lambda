@@ -27,7 +27,7 @@ export const ExportToTexModal = (props: ExportToEbpModalProps) => {
 
   const generateGammaTex = () => {
     return preprocessTex(preprocessString(
-        `$\\Gamma = \\{${!props.showAliases 
+        `$\\Gamma = \\{${!props.showAliases
             ? editorContext.globalCtx?.toStringWithoutAliases(editorContext.aliasCtx ?? new Context())
             : editorContext.globalCtx?.toStringWithAliases(editorContext.aliasCtx ?? new Context())
         }\\}$`

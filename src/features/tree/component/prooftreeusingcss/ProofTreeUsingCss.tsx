@@ -1,7 +1,7 @@
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import "./ProofTreeUsingCss.css"
 import {ConclusionCenter} from "./ConclusionCenter";
-import React, {Ref, useEffect, useState} from "react";
+import React, {Ref, useState} from "react";
 
 interface ProofTreeUsingCssProps {
   node: ProofNode,
@@ -51,84 +51,85 @@ export function ProofTreeComponentUsingCss(
 
   return (
       <>
-      {(!stepByStepModeEnabled || !stepNumber || ((node.nodeNumber ?? 0) < stepNumber)) &&
-        <div ref={isItRoot && treeRef ? treeRef : undefined} className="proof-node" style={{color: color ? color : "black"}}>
-        {node.premises && !isExpanded && (
-            <div className={`premises`}
-                 style={{borderColor: color ? color : "black"}}
-            >
-              {node.premises.map((premise, index) => (
-                  <React.Fragment key={index}>
-                    <ProofTreeComponentUsingCss
-                        stepByStepModeEnabled={stepByStepModeEnabled}
-                        stepNumber={stepNumber}
-                        showGammaDefinition={showGammaDefinition}
-                        key={`${premise.rule}-${premise.tokenLocation.join("-")}-${index}`}
-                        canMutateTree={canMutateTree}
-                        setTreeHasChanged={setTreeHasChanged} treeHasChanged={treeHasChanged}
-                        showAliases={showAliases} color={color} node={premise}/>
-                    {node.premises !== undefined && index !== node.premises.length - 1 && (
-                        <div className="inter-proof"></div>
-                    )}
-                  </React.Fragment>
-              ))}
-            </div>
-        )}
+        {(!stepByStepModeEnabled || !stepNumber || ((node.nodeNumber ?? 0) < stepNumber)) &&
+            <div ref={isItRoot && treeRef ? treeRef : undefined} className="proof-node"
+                 style={{color: color ? color : "black"}}>
+              {node.premises && !isExpanded && (
+                  <div className={`premises`}
+                       style={{borderColor: color ? color : "black"}}
+                  >
+                    {node.premises.map((premise, index) => (
+                        <React.Fragment key={index}>
+                          <ProofTreeComponentUsingCss
+                              stepByStepModeEnabled={stepByStepModeEnabled}
+                              stepNumber={stepNumber}
+                              showGammaDefinition={showGammaDefinition}
+                              key={`${premise.rule}-${premise.tokenLocation.join("-")}-${index}`}
+                              canMutateTree={canMutateTree}
+                              setTreeHasChanged={setTreeHasChanged} treeHasChanged={treeHasChanged}
+                              showAliases={showAliases} color={color} node={premise}/>
+                          {node.premises !== undefined && index !== node.premises.length - 1 && (
+                              <div className="inter-proof"></div>
+                          )}
+                        </React.Fragment>
+                    ))}
+                  </div>
+              )}
 
-        {node.expandedPremises && isExpanded && (
-            <div className={`premises`}
-                 style={{
-                   borderColor: color ? color : "black",
-                   borderBottom: "none"
-                 }}
-            >
-              {node.expandedPremises.map((premise, index) => (
-                  <React.Fragment key={index}>
-                    <ProofTreeComponentUsingCss
-                        stepByStepModeEnabled={stepByStepModeEnabled}
-                        stepNumber={stepNumber}
-                        showGammaDefinition={showGammaDefinition}
-                        key={index}
-                        isExpandedPremise={true}
-                        parentIsExpanded={isExpanded}
-                        parentSetIsExpanded={setIsExpanded}
-                        canMutateTree={canMutateTree}
-                        treeHasChanged={treeHasChanged} setTreeHasChanged={setTreeHasChanged}
-                        showAliases={showAliases} color={color} node={premise}/>
-                    {node.expandedPremises !== undefined && index !== node.expandedPremises.length - 1 && (
-                        <div className="inter-proof"></div>
-                    )}
-                  </React.Fragment>
-              ))}
-            </div>
-        )}
+              {node.expandedPremises && isExpanded && (
+                  <div className={`premises`}
+                       style={{
+                         borderColor: color ? color : "black",
+                         borderBottom: "none"
+                       }}
+                  >
+                    {node.expandedPremises.map((premise, index) => (
+                        <React.Fragment key={index}>
+                          <ProofTreeComponentUsingCss
+                              stepByStepModeEnabled={stepByStepModeEnabled}
+                              stepNumber={stepNumber}
+                              showGammaDefinition={showGammaDefinition}
+                              key={index}
+                              isExpandedPremise={true}
+                              parentIsExpanded={isExpanded}
+                              parentSetIsExpanded={setIsExpanded}
+                              canMutateTree={canMutateTree}
+                              treeHasChanged={treeHasChanged} setTreeHasChanged={setTreeHasChanged}
+                              showAliases={showAliases} color={color} node={premise}/>
+                          {node.expandedPremises !== undefined && index !== node.expandedPremises.length - 1 && (
+                              <div className="inter-proof"></div>
+                          )}
+                        </React.Fragment>
+                    ))}
+                  </div>
+              )}
 
-        {!isExpanded && <div className={`conclusion ${isItRoot} ${isItLeaf}`}>
-            <div className="conclusion-left">
-            </div>
+              {!isExpanded && <div className={`conclusion ${isItRoot} ${isItLeaf}`}>
+                  <div className="conclusion-left">
+                  </div>
 
-            <ConclusionCenter
-                showGammaDefinition={showGammaDefinition}
-                isExpandedPremise={isExpandedPremise ?? false}
-                parentIsExpanded={parentIsExpanded}
-                parentSetIsExpanded={parentSetIsExpanded}
-                isExpanded={isExpanded}
-                setIsExpanded={setIsExpanded}
-                isItLeaf={isItLeaf}
-                isItRoot={isItRoot}
-                node={node}
-                showAliases={showAliases}
-                color={color}
-                treeHasChanged={treeHasChanged}
-                setTreeHasChanged={setTreeHasChanged}
-            ></ConclusionCenter>
+                  <ConclusionCenter
+                      showGammaDefinition={showGammaDefinition}
+                      isExpandedPremise={isExpandedPremise ?? false}
+                      parentIsExpanded={parentIsExpanded}
+                      parentSetIsExpanded={parentSetIsExpanded}
+                      isExpanded={isExpanded}
+                      setIsExpanded={setIsExpanded}
+                      isItLeaf={isItLeaf}
+                      isItRoot={isItRoot}
+                      node={node}
+                      showAliases={showAliases}
+                      color={color}
+                      treeHasChanged={treeHasChanged}
+                      setTreeHasChanged={setTreeHasChanged}
+                  ></ConclusionCenter>
 
-            <div className="conclusion-right">
-                <p className="rule-name">{node.rule.replaceAll('-', ' – ')}</p>
+                  <div className="conclusion-right">
+                      <p className="rule-name">{node.rule.replaceAll('-', ' – ')}</p>
 
-            </div>
-        </div>}
-      </div>}
+                  </div>
+              </div>}
+            </div>}
       </>
   );
 }

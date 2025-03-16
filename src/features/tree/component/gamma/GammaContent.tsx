@@ -2,9 +2,6 @@ import './GammaContent.css'
 import React, {useContext} from "react";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
 import {GammaItem} from "./GammaItem";
-import {decodeAlias} from "../../../../core/utils";
-import {Context} from "../../../../core/context/Context";
-import {MathComponent} from "mathjax-react";
 import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
 import translations from "../../../configurations/data/translations";
 
@@ -24,7 +21,7 @@ export const GammaContent = (props: GammaContentProps) => {
         </div>
         <div className="flex flex-col gap-2 gamma-el-bx">
           {editorContext.globalCtx && editorContext.globalCtx.getAllElements().map((el, i) => (
-              <GammaItem key={i} ctxElement={el} showAliases={props.showAliases} />
+              <GammaItem key={i} ctxElement={el} showAliases={props.showAliases}/>
           ))}
         </div>
         {editorContext.globalCtx && editorContext.globalCtx.isEmpty() &&

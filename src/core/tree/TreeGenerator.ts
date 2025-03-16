@@ -337,52 +337,52 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const varName = ctx.getText()
 
     return !this.typeChecker.predefinedFunctionsContext.isVariableInContext(ctx.getText()) ? {
-      type: type,
-      wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${ctx.getText()} : ${(type)}`,
-      wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${ctx.getText()} : ${(typeWithAlias)}`,
-      unwrappedConclusion: varName,
-      unwrappedConclusionWithAlias: varName,
-      rule: "(T-var)",
-      root: false,
-      context: ctx,
-      tokenLocation: getTokenLocation(ctx),
-      declarationLocation: ctxInfo.declarationLocation,
-      isExpandable: ctxInfo.isExpandable,
-      expandedPremises: ctxInfo.declarationNode ? [
-        this.visit(ctxInfo.declarationNode.getChild(2))
-      ] : undefined,
-      premises: [
-        {
           type: type,
-          wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${ctx.getText()} : ${type}\\in \\Gamma${this.contextExtension}`,
-          wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${ctx.getText()} : ${typeWithAlias}\\in \\Gamma${this.contextExtensionWithAlies}`,
+          wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${ctx.getText()} : ${(type)}`,
+          wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${ctx.getText()} : ${(typeWithAlias)}`,
           unwrappedConclusion: varName,
           unwrappedConclusionWithAlias: varName,
-          rule: "",
+          rule: "(T-var)",
           root: false,
+          context: ctx,
           tokenLocation: getTokenLocation(ctx),
           declarationLocation: ctxInfo.declarationLocation,
           isExpandable: ctxInfo.isExpandable,
-        }
-      ],
-    } as ProofNode :
-    {
-      type: type,
-      wrappedConclusion: `${ctx.getText()} : ${(type)}`,
-      wrappedConclusionWithAlias: `${ctx.getText()} : ${(typeWithAlias)}`,
-      unwrappedConclusion: varName,
-      unwrappedConclusionWithAlias: varName,
-      rule: `(T-${ctx.getText()})`,
-      root: false,
-      context: ctx,
-      tokenLocation: getTokenLocation(ctx),
-      declarationLocation: ctxInfo.declarationLocation,
-      isExpandable: ctxInfo.isExpandable,
-      expandedPremises: ctxInfo.declarationNode ? [
-        this.visit(ctxInfo.declarationNode.getChild(2))
-      ] : undefined,
-      premises: [this.empty],
-    } as ProofNode;
+          expandedPremises: ctxInfo.declarationNode ? [
+            this.visit(ctxInfo.declarationNode.getChild(2))
+          ] : undefined,
+          premises: [
+            {
+              type: type,
+              wrappedConclusion: `\\Gamma${this.contextExtension}\\vdash ${ctx.getText()} : ${type}\\in \\Gamma${this.contextExtension}`,
+              wrappedConclusionWithAlias: `\\Gamma${this.contextExtensionWithAlies}\\vdash ${ctx.getText()} : ${typeWithAlias}\\in \\Gamma${this.contextExtensionWithAlies}`,
+              unwrappedConclusion: varName,
+              unwrappedConclusionWithAlias: varName,
+              rule: "",
+              root: false,
+              tokenLocation: getTokenLocation(ctx),
+              declarationLocation: ctxInfo.declarationLocation,
+              isExpandable: ctxInfo.isExpandable,
+            }
+          ],
+        } as ProofNode :
+        {
+          type: type,
+          wrappedConclusion: `${ctx.getText()} : ${(type)}`,
+          wrappedConclusionWithAlias: `${ctx.getText()} : ${(typeWithAlias)}`,
+          unwrappedConclusion: varName,
+          unwrappedConclusionWithAlias: varName,
+          rule: `(T-${ctx.getText()})`,
+          root: false,
+          context: ctx,
+          tokenLocation: getTokenLocation(ctx),
+          declarationLocation: ctxInfo.declarationLocation,
+          isExpandable: ctxInfo.isExpandable,
+          expandedPremises: ctxInfo.declarationNode ? [
+            this.visit(ctxInfo.declarationNode.getChild(2))
+          ] : undefined,
+          premises: [this.empty],
+        } as ProofNode;
   };
 
   visitApplication = (ctx: ApplicationContext): ProofNode => {

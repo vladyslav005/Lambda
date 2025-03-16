@@ -4,7 +4,9 @@ import LambdaCalcParser, {
   GreekTypeContext,
   ListTypeContext,
   ParenthesesContext,
-  ParenTypeContext, RecordTypeContext, TupleTypeContext,
+  ParenTypeContext,
+  RecordTypeContext,
+  TupleTypeContext,
   TypeContext
 } from "./antlr/LambdaCalcParser";
 import LambdaCalcLexer from "./antlr/LambdaCalcLexer";
@@ -164,7 +166,7 @@ export function decodeAlias(typeAlias: string, aliasCtx: Context) {
   }
 
   return typeAlias;
-};
+}
 
 export function encodeToAlias(typeAlias: string, aliasCtx: Context): string {
 

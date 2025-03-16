@@ -32,11 +32,16 @@ export const ConfigurationContext = createContext<ConfigurationContextInterface>
   showGamma: true,
   stepByStepMode: false,
 
-  setStepByStepMode: (stepMode: boolean) => {},
-  setShowGamma: showGamma => {},
-  setInteractive: interactive => {},
-  setLanguage: (language: Language) => {},
-  setTheme: (theme: Theme) => {}
+  setStepByStepMode: (stepMode: boolean) => {
+  },
+  setShowGamma: showGamma => {
+  },
+  setInteractive: interactive => {
+  },
+  setLanguage: (language: Language) => {
+  },
+  setTheme: (theme: Theme) => {
+  }
 })
 
 interface ConfigurationContextProps {
