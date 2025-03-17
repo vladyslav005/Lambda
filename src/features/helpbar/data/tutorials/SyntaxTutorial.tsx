@@ -27,7 +27,7 @@ export const SyntaxTutorial = (props: GrammarTutorialProps) => {
   ];
 
   const specialSymbols = [
-    { label: "\\abstraction", insertText: "λ x : T . (M) : T -> T" },
+    { label: "\\abstraction", insertText: "λ x : T . (x) : T -> T" },
     { label: "\\to", insertText: "->" },
     { label: "\\Rightarrow", insertText: "=>" },
   ];

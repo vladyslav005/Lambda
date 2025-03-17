@@ -14,7 +14,7 @@ import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 const ExportButton = lazy(() => import('./exportbutton/ExportButton'))
 
 export default function TreeFlat(
-    {showAliases, setShowAliases}: { showAliases: boolean, setShowAliases: (showAliases: boolean) => void }
+    {showAliases, setShowAliases, resized}: { showAliases: boolean, setShowAliases: (showAliases: boolean) => void, resized?: boolean}
 ) {
   const confContext = useContext(ConfigurationContext);
 
@@ -63,26 +63,44 @@ export default function TreeFlat(
     }
   }
 
-  useEffect(() => {
-    if (treeContainerRef.current && treeRef.current) {
-      const observer = new ResizeObserver(() => {
-        if (treeContainerRef.current) {
-          setTreeContainerWidth(treeContainerRef.current.getBoundingClientRect().width);
-          setTreeContainerHeight(treeContainerRef.current.getBoundingClientRect().height);
-        }
-        if (treeRef.current) {
-          setTreeWidth(treeRef.current.getBoundingClientRect().width / map.value.scale);
-          setTreeHeight(treeRef.current.getBoundingClientRect().height / map.value.scale);
-        }
-      });
+  const updateTree = () => {
+    const observer = new ResizeObserver(() => {
+      if (treeContainerRef.current) {
+        setTreeContainerWidth(treeContainerRef.current.getBoundingClientRect().width);
+        setTreeContainerHeight(treeContainerRef.current.getBoundingClientRect().height);
+      }
+      if (treeRef.current) {
+        setTreeWidth(treeRef.current.getBoundingClientRect().width / map.value.scale);
+        setTreeHeight(treeRef.current.getBoundingClientRect().height / map.value.scale);
+      }
+    });
 
+    if (treeContainerRef.current)
       observer.observe(treeContainerRef.current);
+    if (treeRef.current)
       observer.observe(treeRef.current);
-      setIsTreeCentered(false)
 
-      return () => observer.disconnect();
-    }
-  }, [editorContext.tree, showAliases, showGammaDefinition, fullScreen, treeHasChanged, step, confContext.stepByStepMode]);
+    return () => observer.disconnect();
+  }
+
+
+  useEffect(() => {
+
+    setIsTreeCentered(false)
+    return updateTree();
+  }, [editorContext.tree,
+      showAliases, showGammaDefinition,
+      fullScreen, treeHasChanged,
+      step, confContext.stepByStepMode,
+      treeContainerRef.current
+  ]);
+
+  useEffect(() => {
+
+    return updateTree();
+  }, [
+    confContext.showGamma, resized,
+  ]);
 
   useEffect(() => {
     centerTree();

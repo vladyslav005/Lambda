@@ -296,7 +296,7 @@ export function setUpMonacoLanguage(monaco: any) {
         {
           label: '\\abstraction',
           kind: monaco.languages.CompletionItemKind.Text,
-          insertText: 'λ x : T . (M) : T -> T',
+          insertText: 'λ x : T . (x) : T -> T',
           detail: 'Abstraction',
           range: slashRange,
         },

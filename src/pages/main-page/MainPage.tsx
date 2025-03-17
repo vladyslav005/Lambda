@@ -29,11 +29,12 @@ export function MainPage() {
     });
 
     observer.observe(document.body);
-
     return () => observer.disconnect();
   }, []);
 
   const [selectedTab, setSelectedTab] = useState<Key>('FoR');
+
+  const [resized, setResized] = useState(false)
 
   return (
       <div className="main-page flex flex-col relative">
@@ -63,13 +64,13 @@ export function MainPage() {
                 </Panel>
 
                 <PanelResizeHandle className="resize resize-vertical"/>
-                <Panel defaultSize={50} minSize={25} className="flex grow">
+                <Panel onResize={()=>{setResized(!resized)}} defaultSize={50} minSize={25} className="flex grow">
                     <Suspense
                         fallback={<div className="tree-flat-container ui-block"><LoadingIndicator/></div>}>
                         <PanelGroup direction={"horizontal"} className="flex grow relative"
                                     style={{marginRight: "1rem"}}>
-                            <Panel minSize={25} defaultSize={75} className="flex grow">
-                                <TreeFlat showAliases={showAliases} setShowAliases={setShowAliases}/>
+                            <Panel onResize={()=>{setResized(!resized)}} minSize={25} defaultSize={75} className="flex grow">
+                                <TreeFlat resized={resized} showAliases={showAliases} setShowAliases={setShowAliases}/>
                             </Panel>
 
                             { confCtx.showGamma && <>
