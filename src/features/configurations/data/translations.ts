@@ -186,6 +186,7 @@ const translations = {
       syntax: {
         tt1: "Syntax review",
         tt2: "Abstract syntax rules",
+        tt3: "Special Symbols",
         t0: "Abstract syntax",
         t1: `Basic term types:`,
         t2: `Lambda expressions abstractions functions and their applications:`,
@@ -199,8 +200,9 @@ const translations = {
         t10: `Lambda Calculus allows the definition of recursive functions using the fixpoint operator. This is commonly used in defining recursive functions like factorial or Fibonacci.`,
         t11: `List Operations`,
         t12: `Here’s a more concise description of the whole syntax:`,
-        t13: ``,
-
+        t13: "Keywords",
+        t14: "Special Symbols",
+        t15: "Greek Letters",
       }
     },
 
@@ -387,8 +389,10 @@ const translations = {
         syntax s pomenovanými prvkámi.`,
       },
       syntax: {
+
         tt1: "Prehľad syntaxe",
-        tt2: "Pravidlá abstraktnej syntaktixe ",
+        tt2: "Pravidlá abstraktnej syntaxe",
+        tt3: "Špeciálne symboly",
         t0: "Abstraktná syntax",
         t1: `Základné typy termov:`,
         t2: `Lambda abstrakcie a ich aplikácie:`,
@@ -402,6 +406,9 @@ const translations = {
         t10: `Lambda Calculus umožňuje definíciu rekurzívnych funkcií pomocou fixpoint operátora. Toto sa bežne používa pri definovaní rekurzívnych funkcií ako faktoriál alebo Fibonacci.`,
         t11: `Operácie so zoznamami`,
         t12: `Tu je stručnejší popis celej syntaxe:`,
+        t13: "Kľúčové slová",
+        t14: "Špeciálne symboly",
+        t15: "Grécke písmená",
       }
     },
 
@@ -576,6 +583,7 @@ const translations = {
       syntax: {
         tt1: "Огляд синтаксису",
         tt2: "Синтаксичні правила",
+        tt3: "Ключові слова",
         t0: "Абстрактний синтаксис",
         t1: `Основні типи термів:`,
         t2: `Лямбда-вирази абстракції функцій та їх застосування:`,
@@ -591,7 +599,9 @@ const translations = {
               таких як факторіал або Фібоначчі.`,
         t11: `Операції зі списками`,
         t12: `Ось більш стислий опис усього синтаксису:`,
-        t13: ``
+        t13: "Ключові слова",
+        t14: "Спеціальні символи",
+        t15: "Грецькі літери",
       }
     },
 

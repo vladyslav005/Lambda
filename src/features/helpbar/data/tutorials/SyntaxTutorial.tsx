@@ -3,7 +3,8 @@ import {CodeExample} from "./CodeExample";
 import React, {useContext} from "react";
 import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
 import translations from "../../../configurations/data/translations";
-import {Tab, TabList, TabPanel, Tabs} from "react-aria-components";
+import {Key, Tab, Table, TabList, TabPanel, Tabs} from "react-aria-components";
+import {Cell, Column, Row, TableBody, TableHeader} from 'react-aria-components';
 
 interface GrammarTutorialProps {
   title: string;
@@ -12,6 +13,51 @@ interface GrammarTutorialProps {
 
 export const SyntaxTutorial = (props: GrammarTutorialProps) => {
   const confCtx = useContext(ConfigurationContext)
+  const keywords = [
+    { label: "typedef", insertText: "typedef " },
+    { label: "true", insertText: "true" },
+    { label: "false", insertText: "false" },
+    { label: "unit", insertText: "unit" },
+    { label: "Unit", insertText: "Unit" },
+    { label: "nil", insertText: "nil[$1]" },
+    { label: "head", insertText: "head[$1]" },
+    { label: "cons", insertText: "cons[$1]" },
+    { label: "tail", insertText: "tail[$1]" },
+    { label: "isnil", insertText: "isnil[$1]" },
+  ];
+
+  const specialSymbols = [
+    { label: "\\abstraction", insertText: "λ x : T . (M) : T -> T" },
+    { label: "\\to", insertText: "->" },
+    { label: "\\Rightarrow", insertText: "=>" },
+  ];
+
+  const greekLetters = [
+    { label: "\\alpha", insertText: "α" },
+    { label: "\\beta", insertText: "β" },
+    { label: "\\gamma", insertText: "γ" },
+    { label: "\\delta", insertText: "δ" },
+    { label: "\\epsilon", insertText: "ε" },
+    { label: "\\zeta", insertText: "ζ" },
+    { label: "\\eta", insertText: "η" },
+    { label: "\\theta", insertText: "θ" },
+    { label: "\\iota", insertText: "ι" },
+    { label: "\\kappa", insertText: "κ" },
+    { label: "\\lambda", insertText: "λ" },
+    { label: "\\mu", insertText: "μ" },
+    { label: "\\nu", insertText: "ν" },
+    { label: "\\xi", insertText: "ξ" },
+    { label: "\\omicron", insertText: "ο" },
+    { label: "\\pi", insertText: "π" },
+    { label: "\\rho", insertText: "ρ" },
+    { label: "\\sigma", insertText: "σ" },
+    { label: "\\tau", insertText: "τ" },
+    { label: "\\upsilon", insertText: "υ" },
+    { label: "\\phi", insertText: "φ" },
+    { label: "\\chi", insertText: "χ" },
+    { label: "\\psi", insertText: "ψ" },
+    { label: "\\omega", insertText: "ω" },
+  ];
 
   return (
       <HelpListItem title={props.title} description={props.description}>
@@ -19,8 +65,84 @@ export const SyntaxTutorial = (props: GrammarTutorialProps) => {
           <TabList>
             <Tab id="FoR">{translations[confCtx.language].tutorials.syntax.tt1}</Tab>
             <Tab id="MaR">{translations[confCtx.language].tutorials.syntax.tt2}</Tab>
+            <Tab id="VvV">{translations[confCtx.language].tutorials.syntax.tt3}</Tab>
           </TabList>
+          <TabPanel id="VvV" className="">
+            <div className="m-4"></div>
+            <h1 className="title"
+                dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.syntax.t13}}
+            >
+            </h1>
 
+            <Table >
+              <TableHeader>
+                <Column isRowHeader>Label</Column>
+                <Column>Insert Text</Column>
+              </TableHeader>
+              <TableBody>
+                {keywords.map((row) => (
+                    <Row isDisabled={true}
+                        key={row.label}
+                        onAction={() => {
+
+                        }}
+                    >
+                      <Cell>{row.label}</Cell>
+                      <Cell>{row.insertText}</Cell>
+                    </Row>
+                ))}
+              </TableBody>
+            </Table>
+
+            <h1 className="title"
+                dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.syntax.t14}}
+            >
+            </h1>
+            <Table disabledBehavior={"all"}>
+              <TableHeader>
+                <Column isRowHeader>Label</Column>
+                <Column>Insert Text</Column>
+              </TableHeader>
+              <TableBody>
+                {specialSymbols.map((row) => (
+                    <Row isDisabled={true}
+                         key={row.label}
+                         onAction={() => {
+
+                         }}
+                    >
+                      <Cell>{row.label}</Cell>
+                      <Cell>{row.insertText}</Cell>
+                    </Row>
+                ))}
+              </TableBody>
+            </Table>
+
+            <h1 className="title"
+                dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.syntax.t15}}
+            >
+            </h1>
+
+            <Table selectionMode={"none"} disabledKeys={"all"}>
+              <TableHeader>
+                <Column isRowHeader>Label</Column>
+                <Column>Insert Text</Column>
+              </TableHeader>
+              <TableBody>
+                {greekLetters.map((row) => (
+                    <Row isDisabled={true}
+                         key={row.label}
+                         onAction={() => {
+
+                         }}
+                    >
+                      <Cell>{row.label}</Cell>
+                      <Cell>{row.insertText}</Cell>
+                    </Row>
+                ))}
+              </TableBody>
+            </Table>
+          </TabPanel>
           <TabPanel id="FoR" className="">
             <div className="m-4"></div>
             <h1 className="title"

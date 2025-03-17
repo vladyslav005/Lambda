@@ -59,3 +59,121 @@
     max-width: 790px;
     overflow: auto;
 }
+
+
+
+
+.react-aria-Table {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+
+    width: 100%;
+    max-width: 800px;
+    margin: 1rem auto;
+    padding: 0.286rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    outline: none;
+    border-spacing: 0;
+    min-height: 100px;
+    align-self: start;
+    /*max-width: 100%;*/
+    word-break: break-word;
+    forced-color-adjust: none;
+
+
+    &[data-focus-visible] {
+        outline: 2px solid var(--focus-ring-color);
+        outline-offset: -1px;
+    }
+
+    .react-aria-TableHeader {
+        color: var(--Schemes-On-Surface-Variant, #49454F);
+        border-bottom: 3px solid var(--Schemes-Outline-Variant);
+
+        &:after {
+            content: '';
+            display: table-row;
+            height: 2px;
+        }
+
+        & tr:last-child .react-aria-Column {
+            border-bottom: 1px solid var(--border-color);
+            cursor: default;
+        }
+    }
+
+    .react-aria-Row {
+        border-bottom: 1px solid var(--Schemes-Outline-Variant);
+
+        --radius-top: 6px;
+        --radius-bottom: 6px;
+        --radius: var(--radius-top) var(--radius-top) var(--radius-bottom) var(--radius-bottom);
+        border-radius: var(--radius);
+        clip-path: inset(0 round var(--radius)); /* firefox */
+        outline: none;
+        cursor: default;
+        color: var(--Schemes-On-Surface-Variant, #49454F);
+        font-size: 1.072rem;
+        position: relative;
+        transform: scale(1);
+
+        &[data-focus-visible] {
+            outline: 2px solid var(--focus-ring-color);
+            outline-offset: -2px;
+        }
+
+        &[data-pressed] {
+            /*background: var(--gray-100);*/
+        }
+
+        &[data-selected] {
+
+            &[data-focus-visible],
+            .react-aria-Cell[data-focus-visible] {
+                outline-offset: -4px;
+            }
+        }
+
+        &[data-disabled] {
+            /*color: var(--text-color-disabled);*/
+        }
+    }
+
+    .react-aria-Cell,
+    .react-aria-Column {
+        padding: 4px 8px;
+        text-align: left;
+        outline: none;
+
+        &[data-focus-visible] {
+            /*outline: 2px solid var(--focus-ring-color);*/
+            outline-offset: -2px;
+        }
+    }
+
+    .react-aria-Cell {
+        transform: translateZ(0);
+
+        &:first-child {
+            border-radius: var(--radius-top) 0 0 var(--radius-bottom);
+        }
+
+        &:last-child {
+            border-radius: 0 var(--radius-top) var(--radius-bottom) 0;
+        }
+    }
+
+    /* join selected items if :has selector is supported */
+    @supports selector(:has(.foo)) {
+        .react-aria-Row[data-selected]:has(+ [data-selected]),
+        .react-aria-Row[data-selected]:has(+ .react-aria-DropIndicator + [data-selected]) {
+            --radius-bottom: 0px;
+        }
+
+        .react-aria-Row[data-selected] + [data-selected],
+        .react-aria-Row[data-selected] + .react-aria-DropIndicator + [data-selected]{
+            --radius-top: 0px;
+        }
+    }
+}
+
