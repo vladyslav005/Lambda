@@ -251,7 +251,6 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
 
                       setTimeout(async () => {
                         await handleDownloadPng(pngDivRef);
-
                         setIsImageLoading(false);
                         toast(translations[confContext.language].toast.imgDownload, {duration: 1000});
                       }, 500);

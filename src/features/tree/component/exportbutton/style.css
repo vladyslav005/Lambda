@@ -45,7 +45,9 @@
     min-height: 100px;
 
     width: 100%;
-    overflow-x: auto;
+    overflow-x: scroll;
+    overflow-y: scroll;
+
     white-space: nowrap;
     display: block;
 

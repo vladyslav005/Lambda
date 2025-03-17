@@ -1,15 +1,21 @@
-import {toPng} from "html-to-image";
+import html2canvas from 'html2canvas';
 
+type DivRef = React.MutableRefObject<HTMLDivElement | null>;
 
 export const useExportToImage = () => {
-
-  const handleDownloadPng = async (divRef: any) => {
-    if (!divRef.current) return;
+  const handleDownloadPng = async (divRef: DivRef) => {
+    if (!divRef.current) {
+      console.error("Div reference is not available.");
+      return;
+    }
 
     try {
-      const pngDataUrl = await toPng(divRef.current, {
-        skipFonts: true,
+      const canvas = await html2canvas(divRef.current, {
+        useCORS: true,
+        logging: true,
       });
+
+      const pngDataUrl = canvas.toDataURL('image/png');
 
       const link = document.createElement("a");
       link.href = pngDataUrl;
@@ -22,7 +28,5 @@ export const useExportToImage = () => {
     }
   };
 
-
-  return {handleDownloadPng};
-
-}
+  return { handleDownloadPng };
+};

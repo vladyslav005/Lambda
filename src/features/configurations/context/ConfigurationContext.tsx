@@ -83,7 +83,7 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
   }
 
   useEffect(() => {
-    const interactivePersisted = localStorage.getItem("interactive") ?? 'true'
+    const interactivePersisted = localStorage.getItem("interactive") ?? 'false'
     if (interactivePersisted === 'true')
       setInteractiveHandler(true);
     else setInteractiveHandler(false);
@@ -93,7 +93,7 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
       setShowGammaHandler(true);
     else setShowGammaHandler(false);
 
-    const stepByStepModePersisted = localStorage.getItem("stepByStepMode") ?? 'true'
+    const stepByStepModePersisted = localStorage.getItem("stepByStepMode") ?? 'false'
     if (stepByStepModePersisted === 'true')
       setStepByStepModeHandler(true);
     else setStepByStepModeHandler(false);
