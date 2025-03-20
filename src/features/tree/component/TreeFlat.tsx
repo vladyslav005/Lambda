@@ -111,6 +111,10 @@ export default function TreeFlat(
     setFullScreen(!fullScreen);
   }
 
+  useEffect(() => {
+    setStep(1);
+  }, [editorContext.tree]);
+
   return (
       <div ref={treeContainerRef}
            className={`${fullScreen ? 'tree-flat-container-full-screen' : 'tree-flat-container'} ui-block `}

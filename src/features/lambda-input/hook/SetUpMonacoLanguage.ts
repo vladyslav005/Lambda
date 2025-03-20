@@ -406,7 +406,7 @@ export function setUpMonacoLanguage(monaco: any) {
           label: '\\lambda',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'λ',
-          detail: 'Lambda type',
+          detail: 'Lambda',
           range: slashRange
         },
         {

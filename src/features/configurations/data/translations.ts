@@ -24,7 +24,7 @@ const translations = {
         application: {title: "Application", desc: "Abstraction rule"},
         abstraction: {title: "Abstraction", desc: "Application rule"},
         recordsAndTuples: {title: "Records & Tuples", desc: "Records, tuples, their projections"},
-        variants: {title: "Varians", desc: "Varians, case-of construction"},
+        variants: {title: "Variants", desc: "Variants, case-of construction"},
         syntax: {title: "Syntax", desc: "Short syntax overview"},
 
       },
