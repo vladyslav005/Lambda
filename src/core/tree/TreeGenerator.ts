@@ -10,7 +10,7 @@ import {
   GlobalFunctionDeclarationContext,
   GlobalVariableDeclarationContext,
   IfElseContext,
-  InjectionContext,
+  InjectionContext, InnerLambdaAbstractionContext, InnerWildCardContext,
   LambdaAbstractionContext,
   LeftRightInjContext,
   ListConsContext,
@@ -107,6 +107,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     this._proofTree = undefined;
     this.typeChecker.clearContexts()
+    this.typeChecker.clearCache();
     this.contextExtension = "";
     this.contextExtensionWithAlies = "";
 
@@ -292,6 +293,48 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     } as ProofNode;
   };
 
+  visitInnerLambdaAbstraction = (ctx: InnerLambdaAbstractionContext): ProofNode => {
+    console.log("T-abs: " + ctx.getText())
+
+    const ctxExtensionTmp = this.contextExtension
+    this.localContext.addVariable(ctx.ID().getText(),
+        this.typeChecker.decodeAlias(this.typeChecker.visit(ctx.type_())), undefined)
+    this.typeChecker.localContext = this.localContext;
+    this.updateContextExtension()
+
+    const type = this.typeChecker.visit(ctx);
+    const typeWithAlias = this.typeChecker.encodeToAlias(type)
+    const body = ctx.term();
+
+    const argumentType = ctx.type_().getText()
+    const argumentTypeWithAlias = this.typeChecker.encodeToAlias(argumentType)
+
+    const premises = [this.visit(body)]
+
+    const cncs = this.generateConclusionStr(premises);
+    const unwrappedConclusion = `λ ${ctx.ID().getText()}:${argumentType}.${cncs.conclusion}`;
+    const unwrappedConclusionWithAlias = `λ ${ctx.ID().getText()}:${argumentTypeWithAlias}.${cncs.conclusionWithAlias}`;
+
+    this.localContext.deleteVariable(ctx.ID().getText())
+    this.typeChecker.clearLocalContext();
+    this.updateContextExtension()
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${ctxExtensionTmp}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.typeChecker.encodeToAlias(ctxExtensionTmp)}\\vdash ${unwrappedConclusionWithAlias} : ${typeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: "(T-abs)",
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      premises: premises,
+      isExpandable: false
+    } as ProofNode;
+  };
+
   visitWildCard = (ctx: WildCardContext) => {
     console.log("T-abs: " + ctx.getText())
 
@@ -325,6 +368,40 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       isExpandable: false
     } as ProofNode;
   };
+
+  visitInnerWildCard = (ctx: InnerWildCardContext) => {
+    console.log("T-abs: " + ctx.getText())
+
+    const ctxExtensionTmp = this.contextExtension
+
+    const type = this.typeChecker.visit(ctx);
+    const typeWithAlias = this.typeChecker.encodeToAlias(type)
+    const body = ctx.term();
+
+    const argumentType = ctx.type_().getText()
+    const argumentTypeWithAlias = this.typeChecker.encodeToAlias(argumentType)
+
+    const premises = [this.visit(body)]
+
+    const cncs = this.generateConclusionStr(premises);
+    const unwrappedConclusion = `λ _:${argumentType}.${cncs.conclusion}`;
+    const unwrappedConclusionWithAlias = `λ _:${argumentTypeWithAlias}.${cncs.conclusionWithAlias}`;
+
+    return {
+      type: type,
+      wrappedConclusion: `\\Gamma${ctxExtensionTmp}\\vdash ${unwrappedConclusion} : ${type}`,
+      wrappedConclusionWithAlias:
+          `\\Gamma${this.typeChecker.encodeToAlias(ctxExtensionTmp)}\\vdash ${unwrappedConclusionWithAlias} : ${typeWithAlias}`,
+      unwrappedConclusion: unwrappedConclusion,
+      unwrappedConclusionWithAlias: unwrappedConclusionWithAlias,
+      rule: "(T-wildcard)",
+      context: ctx,
+      tokenLocation: getTokenLocation(ctx),
+      root: false,
+      premises: premises,
+      isExpandable: false
+    } as ProofNode;
+  }
 
 
   visitVariable = (ctx: VariableContext): ProofNode => {

@@ -22,8 +22,13 @@ term
     | term ('*') term                                                                # Multiplication
     | term ('^') term                                                                # Power
 
-    | LAMBDA ID COLON type DOT term (COLON type)?                                    # LambdaAbstraction
-    | LAMBDA '_' COLON type DOT term (COLON type)?                                   # WildCard
+    | LAMBDA ID COLON type DOT term COLON type                                       # LambdaAbstraction
+    | LAMBDA ID COLON type DOT term                                                  # InnerLambdaAbstraction
+
+    | LAMBDA '_' COLON type DOT term COLON type                                      # WildCard
+    | LAMBDA '_' COLON type DOT term                                                 # InnerWildCard
+
+
     | 'if' term 'then' term ('else if' term 'then' term)* ('else' term)?             # IfElse
     | ID                                                                             # Variable
     | 'fix' term                                                                     # Fix

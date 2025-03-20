@@ -13,7 +13,7 @@ import {
   GlobalVariableDeclarationContext,
   GreekTypeContext,
   IfElseContext,
-  InjectionContext,
+  InjectionContext, InnerLambdaAbstractionContext, InnerWildCardContext,
   LambdaAbstractionContext,
   LeftRightInjContext,
   ListConsContext,
@@ -140,6 +140,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     this._globalContext = new Context();
     // set built-in functions
     this.initBuiltInFunctions()
+  }
+
+  clearCache() {
+    this.cache.clear();
   }
 
   visitExpr = (ctx: ExprContext): any => {
@@ -322,18 +326,12 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     let bodyTypeNode = parseTypeAndElimParentheses(bodyType);
 
-    if (bodyTypeNode instanceof FunctionTypeContext //||
-        // bodyTypeNode instanceof TupleTypeContext ||
-        // bodyTypeNode instanceof RecordTypeContext ||
-        // bodyTypeNode instanceof ListTypeContext
+    if (bodyTypeNode instanceof FunctionTypeContext
     ) {
-      bodyType = '(' + bodyType + ')';
+      // bodyType = '(' + bodyType + ')';
     }
 
-    if (parseTypeAndElimParentheses(paramType) instanceof FunctionTypeContext //||
-        // parseTypeAndElimParentheses(paramType) instanceof TupleTypeContext ||
-        // parseTypeAndElimParentheses(paramType) instanceof RecordTypeContext ||
-        // parseTypeAndElimParentheses(paramType) instanceof ListTypeContext
+    if (parseTypeAndElimParentheses(paramType) instanceof FunctionTypeContext
     ) {
       paramType = '(' + paramType + ')';
     }
@@ -349,6 +347,50 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     return absType
   };
+
+  visitInnerLambdaAbstraction = (ctx: InnerLambdaAbstractionContext): string => {
+    console.log("Visiting inner lambda abstraction ", ctx.getText());
+    const paramName = ctx.ID().getText();
+    const paramTypeNode = ctx.type_();
+
+
+    let parentCtx = ctx.parentCtx;
+    while (parentCtx instanceof ParenthesesContext) {
+      parentCtx = parentCtx.parentCtx;
+      if (parentCtx === undefined)
+        break;
+    }
+
+
+    let paramType: string = this.decodeAlias(this.visit(paramTypeNode));
+
+    let body: ParseTree = ctx.term();
+    body = eliminateOutParentheses(body);
+
+    this._localContext.addVariable(paramName, paramType, undefined);
+
+    let bodyType = this.visit(body); // defines type, that function's body returns
+
+    this._localContext.deleteVariable(paramName);
+
+    let bodyTypeNode = parseTypeAndElimParentheses(bodyType);
+
+    if (bodyTypeNode instanceof FunctionTypeContext
+    ) {
+      // bodyType = '(' + bodyType + ')';
+    }
+
+    if (parseTypeAndElimParentheses(paramType) instanceof FunctionTypeContext
+    ) {
+      paramType = '(' + paramType + ')';
+    }
+
+    const absType = paramType + "->" + bodyType;
+
+
+    return absType
+
+  }
 
   visitWildCard = (ctx: WildCardContext) => {
     const paramTypeNode = ctx.type_(0);
@@ -385,18 +427,13 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     let bodyTypeNode = parseTypeAndElimParentheses(bodyType);
 
-    if (bodyTypeNode instanceof FunctionTypeContext ||
-        bodyTypeNode instanceof TupleTypeContext ||
-        bodyTypeNode instanceof RecordTypeContext ||
-        bodyTypeNode instanceof ListTypeContext
+    if (bodyTypeNode instanceof FunctionTypeContext
+
     ) {
-      bodyType = '(' + bodyType + ')';
+      // bodyType = '(' + bodyType + ')';
     }
 
-    if (parseTypeAndElimParentheses(paramType) instanceof FunctionTypeContext ||
-        parseTypeAndElimParentheses(paramType) instanceof TupleTypeContext ||
-        parseTypeAndElimParentheses(paramType) instanceof RecordTypeContext ||
-        parseTypeAndElimParentheses(paramType) instanceof ListTypeContext
+    if (parseTypeAndElimParentheses(paramType) instanceof FunctionTypeContext
     ) {
       paramType = '(' + paramType + ')';
     }
@@ -412,6 +449,45 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     return absType
   };
+
+  visitInnerWildCard = (ctx: InnerWildCardContext): string => {
+    const paramTypeNode = ctx.type_();
+
+
+    let parentCtx = ctx.parentCtx;
+    while (parentCtx instanceof ParenthesesContext) {
+      parentCtx = parentCtx.parentCtx;
+      if (parentCtx === undefined)
+        break;
+    }
+
+    let paramType: string = this.decodeAlias(this.visit(paramTypeNode));
+
+    let body: ParseTree = ctx.term();
+    body = eliminateOutParentheses(body);
+
+
+    let bodyType = this.visit(body); // defines type, that function's body returns
+
+
+    let bodyTypeNode = parseTypeAndElimParentheses(bodyType);
+
+    if (bodyTypeNode instanceof FunctionTypeContext
+
+    ) {
+      // bodyType = '(' + bodyType + ')';
+    }
+
+    if (parseTypeAndElimParentheses(paramType) instanceof FunctionTypeContext
+    ) {
+      paramType = '(' + paramType + ')';
+    }
+
+    const absType = paramType + "->" + bodyType;
+
+
+    return absType
+  }
 
   /* IMPLEMENTS VAR RULE */
   visitVariable = (ctx: VariableContext): string => {
@@ -996,9 +1072,9 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     let returnTypeNode = parseTypeAndElimParentheses(returnType);
     let argumentTypeNode = parseTypeAndElimParentheses(argumentType);
 
-    if (returnTypeNode instanceof FunctionTypeContext) {
-      returnType = '(' + returnType + ')';
-    }
+    // if (returnTypeNode instanceof FunctionTypeContext) {
+    //   returnType = '(' + returnType + ')';
+    // }
 
     if (argumentTypeNode instanceof FunctionTypeContext) {
       argumentType = '(' + argumentType + ')';
