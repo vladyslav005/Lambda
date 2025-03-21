@@ -51,7 +51,7 @@ var2 : Nat -> Nat;  // type annotation only`}></CodeExample>
         <CodeExample code={`var1 = λ x: Nat . x : Nat -> Nat;
 var2 : Nat -> Nat;  // type annotation only
 
-var1;`}></CodeExample>
+var1 : Nat -> Nat`}></CodeExample>
 
         <p className="paragraph"
            dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.grammar.p6}}

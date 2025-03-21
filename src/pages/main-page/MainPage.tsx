@@ -55,7 +55,7 @@ export function MainPage() {
                                 <LambdaInput></LambdaInput>
                             </Panel>
                             <PanelResizeHandle className="resize resize-horizontal"/>
-                            <Panel className={`flex grow`} collapsible={true} defaultSize={25} minSize={20}
+                            <Panel className={`flex grow`} collapsible={true} defaultSize={25} minSize={15}
                             >
                                 <ErrorOutput></ErrorOutput>
                             </Panel>
@@ -75,7 +75,7 @@ export function MainPage() {
 
                             { confCtx.showGamma && <>
                               <PanelResizeHandle className="resize resize-horizontal"/>
-                              <Panel minSize={20} collapsible={true} defaultSize={25} className="flex grow">
+                              <Panel minSize={15} collapsible={true} defaultSize={25} className="flex grow">
                                   <GammaContent showAliases={showAliases}/>
                               </Panel>
                             </>}

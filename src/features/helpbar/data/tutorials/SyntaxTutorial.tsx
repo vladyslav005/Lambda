@@ -57,7 +57,50 @@ export const SyntaxTutorial = (props: GrammarTutorialProps) => {
     { label: "\\chi", insertText: "χ" },
     { label: "\\psi", insertText: "ψ" },
     { label: "\\omega", insertText: "ω" },
+
+    { label: "\\Alpha", insertText: "Α" },
+    { label: "\\Beta", insertText: "Β" },
+    { label: "\\Gamma", insertText: "Γ" },
+    { label: "\\Delta", insertText: "Δ" },
+    { label: "\\Epsilon", insertText: "Ε" },
+    { label: "\\Zeta", insertText: "Ζ" },
+    { label: "\\Eta", insertText: "Η" },
+    { label: "\\Theta", insertText: "Θ" },
+    { label: "\\Iota", insertText: "Ι" },
+    { label: "\\Kappa", insertText: "Κ" },
+    { label: "\\Lambda", insertText: "Λ" },
+    { label: "\\Mu", insertText: "Μ" },
+    { label: "\\Nu", insertText: "Ν" },
+    { label: "\\Xi", insertText: "Ξ" },
+    { label: "\\Omicron", insertText: "Ο" },
+    { label: "\\Pi", insertText: "Π" },
+    { label: "\\Rho", insertText: "Ρ" },
+    { label: "\\Sigma", insertText: "Σ" },
+    { label: "\\Tau", insertText: "Τ" },
+    { label: "\\Upsilon", insertText: "Υ" },
+    { label: "\\Phi", insertText: "Φ" },
+    { label: "\\Chi", insertText: "Χ" },
+    { label: "\\Psi", insertText: "Ψ" },
+    { label: "\\Omega", insertText: "Ω" }
   ];
+
+  const operators = [
+    { op: "=", type: " Nat → Nat → Bool" },
+    { op: ">", type: " Nat → Nat → Bool" },
+    { op: "<", type: " Nat → Nat → Bool" },
+    { op: ">=", type: " Nat → Nat → Bool" },
+    { op: "<=", type: " Nat → Nat → Bool" },
+    { op: "+", type: " Nat → Nat → Nat" },
+    { op: "-", type: " Nat → Nat → Nat" },
+    { op: "*", type: " Nat → Nat → Nat" },
+    { op: "^", type: " Nat → Nat → Nat" },
+  ]
+
+  const func = [
+    { op: "iszero", type: " Nat → Bool" },
+    { op: "succ", type: " Nat → Nat" },
+    { op: "pred", type: " Nat → Nat" },
+  ]
 
   return (
       <HelpListItem title={props.title} description={props.description}>
@@ -145,6 +188,56 @@ export const SyntaxTutorial = (props: GrammarTutorialProps) => {
           </TabPanel>
           <TabPanel id="FoR" className="">
             <div className="m-4"></div>
+            <h1 className="title"
+                dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.syntax.t16}}
+            >
+            </h1>
+            <Table >
+              <TableHeader>
+                <Column isRowHeader>Operator</Column>
+                <Column>Type</Column>
+              </TableHeader>
+              <TableBody>
+                {operators.map((row) => (
+                    <Row isDisabled={true}
+                         key={row.op}
+                         onAction={() => {
+
+                         }}
+                    >
+                      <Cell>{row.op}</Cell>
+                      <Cell>{row.type}</Cell>
+                    </Row>
+                ))}
+              </TableBody>
+            </Table>
+
+            <h1 className="title"
+                dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.syntax.t17}}
+            >
+            </h1>
+
+            <Table >
+              <TableHeader>
+                <Column isRowHeader>Function</Column>
+                <Column>Type</Column>
+              </TableHeader>
+              <TableBody>
+                {func.map((row) => (
+                    <Row isDisabled={true}
+                         key={row.op}
+                         onAction={() => {
+
+                         }}
+                    >
+                      <Cell>{row.op}</Cell>
+                      <Cell>{row.type}</Cell>
+                    </Row>
+                ))}
+              </TableBody>
+            </Table>
+
+
             <h1 className="title"
                 dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.syntax.t1}}
             >
@@ -261,13 +354,15 @@ tail [Nat] t  // ListTail
           </TabPanel>
           <TabPanel id="MaR" className="">
             <div className="m-4"></div>
+
+
             <h1 className="title"
                 dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.syntax.t0}}
             >
 
             </h1>
             <CodeExample code={`
-terms ::= ((t;)* (globalDecl)*)+       (Sequence)        
+terms ::= ((globalDecl)*  (t;)* t : T )+    (Sequence)        
 `}/>
             <CodeExample code={`
 t ::= t t                                   (Application)
@@ -275,8 +370,8 @@ t ::= t t                                   (Application)
     | t (+ | -) t                           (Addition)
     | t * t                                 (Multiplication)
     | t ^ t                                 (Power)
-    | λ x : T . t (: T)?                    (Lambda Abstraction)
-    | λ _ : T . t (: T)?                    (Wildcard)
+    | λ x : T . t                           (Lambda Abstraction)
+    | λ _ : T . t                           (Wildcard)
     | if t then t (else if t then t)* (else t)? (If-Else)
     | v                                     (Variable)
     | fix t                                 (Fix)

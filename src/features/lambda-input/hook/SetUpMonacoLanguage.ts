@@ -336,70 +336,70 @@ export function setUpMonacoLanguage(monaco: any) {
           label: '\\alpha',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'α',
-          detail: 'Alpha type',
+          detail: 'Alpha',
           range: slashRange
         },
         {
           label: '\\beta',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'β',
-          detail: 'Beta type',
+          detail: 'Beta',
           range: slashRange
         },
         {
           label: '\\gamma',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'γ',
-          detail: 'Gamma type',
+          detail: 'Gamma',
           range: slashRange
         },
         {
           label: '\\delta',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'δ',
-          detail: 'Delta type',
+          detail: 'Delta',
           range: slashRange
         },
         {
           label: '\\epsilon',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'ε',
-          detail: 'Epsilon type',
+          detail: 'Epsilon',
           range: slashRange
         },
         {
           label: '\\zeta',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'ζ',
-          detail: 'Zeta type',
+          detail: 'Zeta',
           range: slashRange
         },
         {
           label: '\\eta',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'η',
-          detail: 'Eta type',
+          detail: 'Eta',
           range: slashRange
         },
         {
           label: '\\theta',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'θ',
-          detail: 'Theta type',
+          detail: 'Theta',
           range: slashRange
         },
         {
           label: '\\iota',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'ι',
-          detail: 'Iota type',
+          detail: 'Iota',
           range: slashRange
         },
         {
           label: '\\kappa',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'κ',
-          detail: 'Kappa type',
+          detail: 'Kappa',
           range: slashRange
         },
         {
@@ -413,93 +413,119 @@ export function setUpMonacoLanguage(monaco: any) {
           label: '\\mu',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'μ',
-          detail: 'Mu type',
+          detail: 'Mu',
           range: slashRange
         },
         {
           label: '\\nu',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'ν',
-          detail: 'Nu type',
+          detail: 'Nu',
           range: slashRange
         },
         {
           label: '\\xi',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'ξ',
-          detail: 'Xi type',
+          detail: 'Xi',
           range: slashRange
         },
         {
           label: '\\omicron',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'ο',
-          detail: 'Omicron type',
+          detail: 'Omicron',
           range: slashRange
         },
         {
           label: '\\pi',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'π',
-          detail: 'Pi type',
+          detail: 'Pi',
           range: slashRange
         },
         {
           label: '\\rho',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'ρ',
-          detail: 'Rho type',
+          detail: 'Rho',
           range: slashRange
         },
         {
           label: '\\sigma',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'σ',
-          detail: 'Sigma type',
+          detail: 'Sigma',
           range: slashRange
         },
         {
           label: '\\tau',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'τ',
-          detail: 'Tau type',
+          detail: 'Tau',
           range: slashRange
         },
         {
           label: '\\upsilon',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'υ',
-          detail: 'Upsilon type',
+          detail: 'Upsilon',
           range: slashRange
         },
         {
           label: '\\phi',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'φ',
-          detail: 'Phi type',
+          detail: 'Phi',
           range: slashRange
         },
         {
           label: '\\chi',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'χ',
-          detail: 'Chi type',
+          detail: 'Chi',
           range: slashRange
         },
         {
           label: '\\psi',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'ψ',
-          detail: 'Psi type',
+          detail: 'Psi',
           range: slashRange
         },
         {
           label: '\\omega',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: 'ω',
-          detail: 'Omega type',
+          detail: 'Omega',
           range: slashRange
-        }
+        },
+        { label: '\\Alpha', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Α', detail: 'Capital Alpha', range: slashRange },
+        { label: '\\Beta', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Β', detail: 'Capital Beta', range: slashRange },
+        { label: '\\Gamma', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Γ', detail: 'Capital Gamma', range: slashRange },
+        { label: '\\Delta', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Δ', detail: 'Capital Delta', range: slashRange },
+        { label: '\\Epsilon', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Ε', detail: 'Capital Epsilon', range: slashRange },
+        { label: '\\Zeta', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Ζ', detail: 'Capital Zeta', range: slashRange },
+        { label: '\\Eta', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Η', detail: 'Capital Eta', range: slashRange },
+        { label: '\\Theta', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Θ', detail: 'Capital Theta', range: slashRange },
+        { label: '\\Iota', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Ι', detail: 'Capital Iota', range: slashRange },
+        { label: '\\Kappa', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Κ', detail: 'Capital Kappa', range: slashRange },
+        { label: '\\Lambda', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Λ', detail: 'Capital Lambda', range: slashRange },
+        { label: '\\Mu', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Μ', detail: 'Capital Mu', range: slashRange },
+        { label: '\\Nu', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Ν', detail: 'Capital Nu', range: slashRange },
+        { label: '\\Xi', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Ξ', detail: 'Capital Xi', range: slashRange },
+        { label: '\\Omicron', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Ο', detail: 'Capital Omicron', range: slashRange },
+        { label: '\\Pi', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Π', detail: 'Capital Pi', range: slashRange },
+        { label: '\\Rho', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Ρ', detail: 'Capital Rho', range: slashRange },
+        { label: '\\Sigma', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Σ', detail: 'Capital Sigma', range: slashRange },
+        { label: '\\Tau', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Τ', detail: 'Capital Tau', range: slashRange },
+        { label: '\\Upsilon', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Υ', detail: 'Capital Upsilon', range: slashRange },
+        { label: '\\Phi', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Φ', detail: 'Capital Phi', range: slashRange },
+        { label: '\\Chi', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Χ', detail: 'Capital Chi', range: slashRange },
+        { label: '\\Psi', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Ψ', detail: 'Capital Psi', range: slashRange },
+        { label: '\\Omega', kind: monaco.languages.CompletionItemKind.Text, insertText: 'Ω', detail: 'Capital Omega', range: slashRange }
+
+
       ];
 
       return {suggestions};

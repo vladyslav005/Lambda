@@ -32,7 +32,7 @@ export const RecordsAndTuplesTutorial = (props: GrammarTutorialProps) => {
 
 john : Human; // define var of type 'Human'
 
-john.name; john.age; // use record projections`}></CodeExample>
+john.age : Nat // use record projection`}></CodeExample>
 
         <p className="paragraph"
            dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.recordsAndTuples.p3}}
@@ -51,9 +51,11 @@ var2 : B;
 
 tuple = <var1, var2> : A * B; // define tuple
 
-tuple;  // access entire tuple
-tuple.1; // access first element (var1)
-tuple.2; // access second element (var2)`}></CodeExample>
+tuple : A * B  // access entire tuple
+
+tuple.1 : A // access first element (var1)
+
+tuple.2 : B // access second element (var2)`}></CodeExample>
 
         <p className="paragraph"
            dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.recordsAndTuples.p5}}

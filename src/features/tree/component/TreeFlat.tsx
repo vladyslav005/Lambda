@@ -89,7 +89,7 @@ export default function TreeFlat(
     setIsTreeCentered(false)
     return updateTree();
   }, [editorContext.tree,
-    showGammaDefinition,
+      showGammaDefinition,
       fullScreen,
       step, confContext.stepByStepMode,
       treeContainerRef.current,
@@ -99,6 +99,7 @@ export default function TreeFlat(
     return updateTree();
   }, [
     confContext.showGamma,
+    showGammaDefinition,
     resized,
     treeHasChanged,
     showAliases

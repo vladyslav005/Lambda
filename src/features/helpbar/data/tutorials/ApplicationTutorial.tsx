@@ -37,7 +37,7 @@ export const ApplicationTutorial = (props: GrammarTutorialProps) => {
         </p>
 
         <CodeExample code={`id = λ x: Nat . x : Nat -> Nat;
-id 5;`}></CodeExample>
+id 5 : Nat`}></CodeExample>
 
         <p className="paragraph"
            dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.application.p4}}

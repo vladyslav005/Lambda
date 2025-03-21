@@ -48,7 +48,7 @@ a = inl pa as Addr : Addr; // make injection
 
 case a of                // use case of construction injection
     inl x => x.firstlast
- || inr y => y.name;`}/>
+ || inr y => y.name : String`}/>
 
         <p className="paragraph"
            dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.variants.p4}}
@@ -82,7 +82,7 @@ a = [physical = pa] as Addr : Addr; // make injection
 
 case a of                       // use case of construction injection
      [physical = x] => x.firstlast
-  || [virtual = y] => y.name;`}/>
+  || [virtual = y] => y.name : String`}/>
 
         <p className="paragraph"
            dangerouslySetInnerHTML={{__html: translations[confCtx.language].tutorials.variants.p7}}

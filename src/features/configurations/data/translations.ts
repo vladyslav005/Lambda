@@ -49,7 +49,7 @@ const translations = {
     },
 
     error: {
-      info: "There you'll see the errors"
+      info: "Here you'll see the errors"
     },
 
     conf: {
@@ -90,8 +90,9 @@ const translations = {
           You can use this approach to write more complex terms.
           It's also possible to write a sequence of unrelated terms
           to see them all in the proof tree. In such cases, they will appear under the <em>sequence rule</em>.
-          But due to definition of sequence rule, all terms should have type <code>Unit</code>, except for last term.`,
-        p7: `Generally all kinds of terms that you write in editor will be displayed in tree, 
+          But due to definition of sequence rule, all terms should have type <code>Unit</code>, except for last term. 
+          Also is needed to provide type annotation for end type of term`,
+        p7: `All kinds of terms that you write in editor will be displayed in tree, 
         except for variable declarations and type declarations.`
 
       },
@@ -184,7 +185,7 @@ const translations = {
           injection syntax with labeled fields.`,
       },
       syntax: {
-        tt1: "Syntax review",
+        tt1: "Review",
         tt2: "Abstract syntax rules",
         tt3: "Special Symbols",
         t0: "Abstract syntax",
@@ -203,6 +204,8 @@ const translations = {
         t13: "Keywords",
         t14: "Special Symbols",
         t15: "Greek Letters",
+        t16: "Operators",
+        t17: "Predefined functions"
       }
     },
 
@@ -303,7 +306,9 @@ const translations = {
           Môžete použiť tento prístup na zápis zložitejších termov.
           Je tiež možné napísať sekvenciu nesúvisiacich termov,
           aby sa zobrazili všetky v dôkazovom strome. V takom prípade sa zobrazia v pravidle <em>sequence rule</em>.
-          Ale podľa definície pravidla sekvencie by všetky termíny mali mať typ <code>Unit</code>, okrem posledného termínu.`,
+          Ale podľa definície pravidla sekvencie by všetky termíny mali mať typ <code>Unit</code>, okrem posledného termínu.
+          Tiež je potrebné poskytnúť typovú anotáciu pre koncový typ termu.
+`,
         p7: `Vo všeobecnosti sa všetky druhy termov, ktoré napíšete v editore, zobrazia v strome, 
              okrem deklarácií premenných a typov.`
       },
@@ -390,7 +395,7 @@ const translations = {
       },
       syntax: {
 
-        tt1: "Prehľad syntaxe",
+        tt1: "Prehľad",
         tt2: "Pravidlá abstraktnej syntaxe",
         tt3: "Špeciálne symboly",
         t0: "Abstraktná syntax",
@@ -409,6 +414,8 @@ const translations = {
         t13: "Kľúčové slová",
         t14: "Špeciálne symboly",
         t15: "Grécke písmená",
+        t16: "Operátory",
+        t17: "Preddefinované funkcie"
       }
     },
 
@@ -500,7 +507,9 @@ const translations = {
              написання складніших термів. 
              Також можна написати послідовність не пов'язаних термів, щоб побачити їх усі в дереві доведень. 
              У таких випадках вони з'являться під <em>правилом послідовності</em>. 
-             Але за визначенням правила послідовності, всі терми повинні мати тип <code>Одиниця</code>, окрім останнього терма.`,
+             Але за визначенням правила послідовності, всі терми повинні мати тип <code>Одиниця</code>, окрім останнього терма.
+             Також необхідно надати анотацію типу для кінцевого типу терма
+`,
         p7: `Як правило, всі типи термінів, які ви пишете у редакторі, відображаються у дереві, за винятком оголошень змінних та типів.`
       },
       abstraction: {
@@ -581,7 +590,7 @@ const translations = {
             і використовують більш структурований синтаксис інжекції з позначеними полями.`
       },
       syntax: {
-        tt1: "Огляд синтаксису",
+        tt1: "Огляд",
         tt2: "Синтаксичні правила",
         tt3: "Ключові слова",
         t0: "Абстрактний синтаксис",
@@ -602,6 +611,8 @@ const translations = {
         t13: "Ключові слова",
         t14: "Спеціальні символи",
         t15: "Грецькі літери",
+        t16: "Оператори",
+        t17: "Вбудовані функції"
       }
     },
 

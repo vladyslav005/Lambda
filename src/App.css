@@ -200,15 +200,43 @@
 
 
 .resize {
-    background: var(--Schemes-Outline-Variant);
+    /*background: var(--Schemes-Outline-Variant);*/
 }
 
+/*.resize-vertical:after {*/
+/*    position: absolute;*/
+/*    content: "";*/
+/*    display: block;*/
+/*    width: 100%;*/
+/*    background: var(--Schemes-Outline-Variant);*/
+/*    height: 1px;*/
+/*    top: 4px;*/
+/*    z-index: 0;*/
+/*}*/
+
+/*.resize-horizontal:after {*/
+/*    position: absolute;*/
+/*    content: "";*/
+/*    display: block;*/
+/*    height: 100%;*/
+/*    background: var(--Schemes-Outline-Variant);*/
+/*    width: 1px;*/
+/*    left: 4px;*/
+/*    */
+/*}*/
+
+
 .resize-vertical {
-    height: 1px;
+    position: relative;
+    background: var(--Schemes-Outline-Variant);
+    height: 4px;
 }
 
 .resize-horizontal {
-    width: 1px;
+    background: var(--Schemes-Outline-Variant);
+
+    position: relative;
+    width: 4px;
 }
 
 .main-pane-mobile {
@@ -218,9 +246,6 @@
     display: flex;
     flex-direction: column;
 }
-
-
-
 
 .editor-tab {
     display: block !important;
