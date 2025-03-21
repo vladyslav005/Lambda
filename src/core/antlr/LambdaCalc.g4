@@ -5,13 +5,13 @@ expression
     ;
 
 terms
-    : (seqTerm=term SEMI (seqTerm=term SEMI)* (globalDecl)*)+ # Sequence
+    : (seqTerm=term SEMI)* seqTerm=term COLON type (SEMI)? # Sequence
     ;
 
 globalDecl
     : 'typedef' ID EQ type SEMI               # TypeAlias
     | ID COLON type SEMI                      # GlobalVariableDeclaration
-    | ID EQ term (COLON type)? SEMI           # GlobalFunctionDeclaration
+    | ID EQ term (COLON type)? SEMI              # GlobalFunctionDeclaration
     ;
 
 term
@@ -22,12 +22,9 @@ term
     | term ('*') term                                                                # Multiplication
     | term ('^') term                                                                # Power
 
-    | LAMBDA ID COLON type DOT term COLON type                                       # LambdaAbstraction
-    | LAMBDA ID COLON type DOT term                                                  # InnerLambdaAbstraction
+    | LAMBDA ID COLON type DOT term                                                  # LambdaAbstraction
 
-    | LAMBDA '_' COLON type DOT term COLON type                                      # WildCard
-    | LAMBDA '_' COLON type DOT term                                                 # InnerWildCard
-
+    | LAMBDA '_' COLON type DOT term                                                 # WildCard
 
     | 'if' term 'then' term ('else if' term 'then' term)* ('else' term)?             # IfElse
     | ID                                                                             # Variable

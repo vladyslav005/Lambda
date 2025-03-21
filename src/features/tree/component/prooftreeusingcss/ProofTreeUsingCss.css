@@ -17,7 +17,7 @@
 }
 
 .conclusion-center {
-    padding: 5px;
+    /*padding: 5px;*/
     cursor: auto;
 }
 
@@ -112,4 +112,12 @@
 .highlighted-code {
     background-color: rgba(255, 255, 0, 0.3); /* Light yellow background */
     border-radius: 2px; /* Optional: to soften the edges of the highlight */
+}
+
+.gamma {
+    padding: 6px;
+    cursor: pointer;
+}
+.gamma:hover {
+    background-color:  rgba(255, 0, 0, 0.3);
 }

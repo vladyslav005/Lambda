@@ -122,6 +122,7 @@ export function ProofTreeComponentUsingCss(
                       color={color}
                       treeHasChanged={treeHasChanged}
                       setTreeHasChanged={setTreeHasChanged}
+                      canMutateTree={canMutateTree}
                   ></ConclusionCenter>
 
                   <div className="conclusion-right">

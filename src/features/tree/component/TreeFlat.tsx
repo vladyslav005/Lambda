@@ -89,17 +89,19 @@ export default function TreeFlat(
     setIsTreeCentered(false)
     return updateTree();
   }, [editorContext.tree,
-      showAliases, showGammaDefinition,
-      fullScreen, treeHasChanged,
+    showGammaDefinition,
+      fullScreen,
       step, confContext.stepByStepMode,
-      treeContainerRef.current
+      treeContainerRef.current,
   ]);
 
   useEffect(() => {
-
     return updateTree();
   }, [
-    confContext.showGamma, resized,
+    confContext.showGamma,
+    resized,
+    treeHasChanged,
+    showAliases
   ]);
 
   useEffect(() => {

@@ -78,6 +78,7 @@ export function preprocessString(str: string): string {
       .replaceAll(/~/g, ">")
       .replaceAll(/§/g, "*")
       .replaceAll(/_/g, "{\\_}")
+      .replaceAll(/@/g, "_")
 
       .replaceAll(" ", "{\\ }")
 }

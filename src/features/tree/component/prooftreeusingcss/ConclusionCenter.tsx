@@ -1,8 +1,9 @@
 import {MathComponent} from "mathjax-react";
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
 import {preprocessString} from "../../../../core/utils";
+import {Gamma} from "./Gamma";
 
 interface ConclusionCenterProps {
   isItLeaf: string;
@@ -18,10 +19,10 @@ interface ConclusionCenterProps {
   parentIsExpanded?: boolean;
   parentSetIsExpanded?: (expanded: boolean) => void;
   showGammaDefinition: boolean;
+  canMutateTree?: boolean;
 }
 
 export const ConclusionCenter = (props: ConclusionCenterProps) => {
-
   const editorContext = useContext(EditorContext);
   const [isHovered, setIsHovered] = useState(false)
   const [decorations, setDecorations] = useState([])
@@ -110,35 +111,51 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
   const prepareConclusion = () => {
     if (!(editorContext.globalCtx && editorContext.aliasCtx))
       return '';
+
     let returnValue = ""
     if (!props.showAliases) {
-      returnValue = props.showGammaDefinition || editorContext.globalCtx.isEmpty()
-          ? preprocessString(props.node.wrappedConclusion
-              .replace(/\\Gamma/g, editorContext.globalCtx.toStringWithoutAliases(editorContext.aliasCtx)))
-          : preprocessString(props.node.wrappedConclusion)
+      returnValue = (props.node.wrappedConclusion)
     } else
-      returnValue = props.showGammaDefinition || editorContext.globalCtx.isEmpty()
-          ? preprocessString(props.node.wrappedConclusionWithAlias)
-          : preprocessString(props.node.wrappedConclusionWithAlias)
+      returnValue = (props.node.wrappedConclusionWithAlias)
 
-    return returnValue;
+    return preprocessString(returnValue.replaceAll("$", ""));
   }
 
+
+  const gammaOccurrences = props.node.wrappedConclusion.match(/\$/g)?.length ?? 0;
+
   return (
-      <div className={`conclusion-center ${props.isItLeaf} ${props.isItRoot}`}
+      <div className={`conclusion-center ${props.isItLeaf} ${props.isItRoot} flex items-center`}
            onMouseEnter={handleMouseEnter}
            onMouseLeave={handleMouseLeave}
-           onClick={handleClick}
-           onTouchStart={props.node.isExpandable || (props.isExpandedPremise && props.parentSetIsExpanded && props.parentIsExpanded) ? handleClick : handleTouch}
-           title={generateTitle()}
-           style={{
-             backgroundColor: isHovered ? "rgba(255, 255, 0, 0.3)" : "", // Highlight the div when hovered
-             borderRadius: '10px',
-             cursor: props.node.isExpandable || (props.isExpandedPremise && props.parentSetIsExpanded && props.parentIsExpanded) ? 'pointer' : 'default',
-           }}
+
       >
-        <MathComponent
-            tex={prepareConclusion()}/>
+        {props.node.wrappedConclusion !== "" &&
+          <Gamma node={props.node} showAliases={props.showAliases} treeHasChanged={props.treeHasChanged}
+                 setTreeHasChanged={props.setTreeHasChanged} showGammaDefinition={props.showGammaDefinition}
+                 handleMouseLeave={handleMouseLeave} canMutateTree={props.canMutateTree}
+          />
+        }
+
+        <div
+            onClick={handleClick}
+            onTouchStart={props.node.isExpandable || (props.isExpandedPremise && props.parentSetIsExpanded && props.parentIsExpanded) ? handleClick : handleTouch}
+            title={generateTitle()}
+            style={{
+              padding: "5px",
+              backgroundColor: isHovered ? "rgba(255, 255, 0, 0.3)" : "", // Highlight the div when hovered
+              cursor: props.node.isExpandable || (props.isExpandedPremise && props.parentSetIsExpanded && props.parentIsExpanded) ? 'pointer' : 'default',
+            }}
+        >
+          <MathComponent tex={prepareConclusion()}/>
+        </div>
+
+        {props.node.wrappedConclusion !== "" && gammaOccurrences > 1 &&
+            <Gamma node={props.node} showAliases={props.showAliases} treeHasChanged={props.treeHasChanged}
+                   setTreeHasChanged={props.setTreeHasChanged} showGammaDefinition={props.showGammaDefinition}
+                   handleMouseLeave={handleMouseLeave} canMutateTree={props.canMutateTree}
+            />
+        }
       </div>
   )
 }

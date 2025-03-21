@@ -13,7 +13,7 @@ import {
   GlobalVariableDeclarationContext,
   GreekTypeContext,
   IfElseContext,
-  InjectionContext, InnerLambdaAbstractionContext, InnerWildCardContext,
+  InjectionContext,
   LambdaAbstractionContext,
   LeftRightInjContext,
   ListConsContext,
@@ -120,7 +120,7 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
       };
     }
 
-    return hash(serialize(ctx as ParserRuleContext));
+    return hash(serialize(ctx));
   }
 
 
@@ -179,19 +179,14 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
         throw new TypeError(`Cant assign term of type '${bodyType}' to variable of type '${varType}'`, getTokenLocation(ctx))
       }
     } else {
-      if (!(body instanceof LambdaAbstractionContext)) {
-        if (ctx.getChildCount() !== 6)
-          throw new TypeError("Provide explicit type declaration", getTokenLocation(ctx))
 
-        const declaredType = this.findType('', ctx.getChild(4));
+      const declaredType = this.findType('', ctx.getChild(4));
 
-        if (bodyType !== declaredType)
-          throw new TypeError(
-              `Term ${body.getText()} is of type ${bodyType}, but declared type is ${declaredType}`,
-              getTokenLocation(ctx)
-          );
-
-      }
+      if (bodyType !== declaredType)
+        throw new TypeError(
+            `Term ${body.getText()} is of type ${bodyType}, but declared type is ${declaredType}`,
+            getTokenLocation(ctx)
+        );
 
       this._globalContext.addVariable(id, bodyType, getTokenLocation(ctx), true, ctx);
 
@@ -290,70 +285,10 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   visitLambdaAbstraction = (ctx: LambdaAbstractionContext): string => {
     console.log("Visiting lambda abstraction ", ctx.getText());
     const paramName = ctx.ID().getText();
-    const paramTypeNode = ctx.type_(0);
-
-    let declaredType = undefined;
-    try {
-      declaredType = this.visit(ctx.type_(1))
-      declaredType = this.decodeAlias(declaredType);
-    } catch (e) {
-
-    }
-
-    let parentCtx = ctx.parentCtx;
-    while (parentCtx instanceof ParenthesesContext) {
-      parentCtx = parentCtx.parentCtx;
-      if (parentCtx === undefined)
-        break;
-    }
-
-    if (!declaredType && ctx.parentCtx && !(parentCtx instanceof LambdaAbstractionContext)) {
-      throw new SyntaxError(`Provide explicit type declaration for term ${ctx.getText()}`,
-          getTokenLocation(ctx)
-      )
-    }
-
-    let paramType: string = this.decodeAlias(this.visit(paramTypeNode));
-
-    let body: ParseTree = ctx.term();
-    body = eliminateOutParentheses(body);
-
-    this._localContext.addVariable(paramName, paramType, undefined);
-
-    let bodyType = this.visit(body); // defines type, that function's body returns
-
-    this._localContext.deleteVariable(paramName);
-
-    let bodyTypeNode = parseTypeAndElimParentheses(bodyType);
-
-    if (bodyTypeNode instanceof FunctionTypeContext
-    ) {
-      // bodyType = '(' + bodyType + ')';
-    }
-
-    if (parseTypeAndElimParentheses(paramType) instanceof FunctionTypeContext
-    ) {
-      paramType = '(' + paramType + ')';
-    }
-
-    const absType = paramType + "->" + bodyType;
-
-    if (declaredType && absType !== declaredType && ctx.parentCtx && !(parentCtx instanceof LambdaAbstractionContext)) {
-      throw new TypeError(
-          `Abstraction '${ctx.getText()}' has type '${absType}', that doesn't match declared type '${declaredType}'`,
-          getTokenLocation(ctx)
-      );
-    }
-
-    return absType
-  };
-
-  visitInnerLambdaAbstraction = (ctx: InnerLambdaAbstractionContext): string => {
-    console.log("Visiting inner lambda abstraction ", ctx.getText());
-    const paramName = ctx.ID().getText();
     const paramTypeNode = ctx.type_();
 
 
+
     let parentCtx = ctx.parentCtx;
     while (parentCtx instanceof ParenthesesContext) {
       parentCtx = parentCtx.parentCtx;
@@ -389,31 +324,16 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
 
     return absType
-
-  }
+  };
 
   visitWildCard = (ctx: WildCardContext) => {
-    const paramTypeNode = ctx.type_(0);
-
-    let declaredType = undefined;
-    try {
-      declaredType = this.visit(ctx.type_(1))
-      declaredType = this.decodeAlias(declaredType);
-    } catch (e) {
-
-    }
+    const paramTypeNode = ctx.type_();
 
     let parentCtx = ctx.parentCtx;
     while (parentCtx instanceof ParenthesesContext) {
       parentCtx = parentCtx.parentCtx;
       if (parentCtx === undefined)
         break;
-    }
-
-    if (!declaredType && ctx.parentCtx && !(parentCtx instanceof LambdaAbstractionContext)) {
-      throw new SyntaxError(`Provide explicit type declaration for term ${ctx.getText()}`,
-          getTokenLocation(ctx)
-      )
     }
 
     let paramType: string = this.decodeAlias(this.visit(paramTypeNode));
@@ -439,55 +359,11 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
     }
 
     const absType = paramType + "->" + bodyType;
-
-    if (declaredType && absType !== declaredType) {
-      throw new TypeError(
-          `Abstraction '${ctx.getText()}' has type '${absType}', that doesn't match declared type '${declaredType}'`,
-          getTokenLocation(ctx)
-      );
-    }
 
     return absType
   };
 
-  visitInnerWildCard = (ctx: InnerWildCardContext): string => {
-    const paramTypeNode = ctx.type_();
 
-
-    let parentCtx = ctx.parentCtx;
-    while (parentCtx instanceof ParenthesesContext) {
-      parentCtx = parentCtx.parentCtx;
-      if (parentCtx === undefined)
-        break;
-    }
-
-    let paramType: string = this.decodeAlias(this.visit(paramTypeNode));
-
-    let body: ParseTree = ctx.term();
-    body = eliminateOutParentheses(body);
-
-
-    let bodyType = this.visit(body); // defines type, that function's body returns
-
-
-    let bodyTypeNode = parseTypeAndElimParentheses(bodyType);
-
-    if (bodyTypeNode instanceof FunctionTypeContext
-
-    ) {
-      // bodyType = '(' + bodyType + ')';
-    }
-
-    if (parseTypeAndElimParentheses(paramType) instanceof FunctionTypeContext
-    ) {
-      paramType = '(' + paramType + ')';
-    }
-
-    const absType = paramType + "->" + bodyType;
-
-
-    return absType
-  }
 
   /* IMPLEMENTS VAR RULE */
   visitVariable = (ctx: VariableContext): string => {
@@ -631,6 +507,18 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
       returnType = childType ? childType : returnType;
     }
+
+    let declaredType = this.decodeAlias(ctx.type_().getText());
+
+    const declaredTypeNode = parseTypeAndElimParentheses(declaredType);
+
+    declaredType = this.visit(declaredTypeNode);
+
+    if (declaredType !== returnType)
+      throw new TypeError(
+          `Term ${ctx.getText()} is of type ${returnType}, but declared type is ${declaredType}`,
+          getTokenLocation(ctx))
+
 
     return returnType;
   };

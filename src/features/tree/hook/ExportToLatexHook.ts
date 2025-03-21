@@ -1,7 +1,28 @@
-import {ProofNode} from "../../../core/tree/TreeGenerator";
+import {CtxStackElement, ProofNode} from "../../../core/tree/TreeGenerator";
 import {preprocessString, preprocessTex} from "../../../core/utils";
 
 export function useExportToLatex() {
+
+  const prepareGamma = (node: ProofNode, showAliases: boolean): string => {
+    let gamma = ""
+
+    const ctxEx = node.ctxExtension
+    if (node.isGammaUnwrapped) {
+      gamma = !showAliases
+          ? "\\{ " + ctxEx.unwrapped + " \\}"
+          : "\\{ " + ctxEx.unwrappedWithAlias + " \\}"
+    } else {
+      if (ctxEx.isTaken) {
+        gamma = ctxEx.declaration
+      } else {
+        gamma = !showAliases
+            ? ctxEx.wrapped
+            : ctxEx.wrappedWithAlias
+      }
+    }
+
+    return gamma;
+  }
 
   function exportToLatex(tree: ProofNode, showAliases: boolean): string {
     let latex = '\\begin{prooftree}\n';
@@ -13,7 +34,8 @@ export function useExportToLatex() {
           node.isExpanded && node.expandedPremises ? node.expandedPremises : node.premises;
 
       const premisesCount = premises ? premises.length : 0;
-      const nodeConclusion = showAliases ? node.wrappedConclusionWithAlias : node.wrappedConclusion;
+      let nodeConclusion = showAliases ? node.wrappedConclusionWithAlias : node.wrappedConclusion;
+      nodeConclusion = nodeConclusion.replaceAll(/\$/g, prepareGamma(node, showAliases));
 
       if (premises) {
         for (let premise of premises)
@@ -40,7 +62,8 @@ export function useExportToLatex() {
           node.isExpanded && node.expandedPremises ? node.expandedPremises : node.premises;
 
       const premisesCount = premises ? premises.length : 0;
-      const nodeConclusion = showAliases ? node.wrappedConclusionWithAlias : node.wrappedConclusion;
+      let nodeConclusion = showAliases ? node.wrappedConclusionWithAlias : node.wrappedConclusion;
+      nodeConclusion = nodeConclusion.replaceAll(/\$/g, prepareGamma(node, showAliases));
 
       if (premises) {
         for (const premise of premises) {
