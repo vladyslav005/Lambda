@@ -28,22 +28,60 @@ export default function LambdaInput() {
     const model = editor.getModel();
     if (!model) return;
 
-    model.onDidChangeContent(() => {
-      const value = model.getValue();
-      const newValue = value
-          .replace(/->/g, "→")
-          .replace(/=>/g, "⇒");
+    let isReplacing = false;
 
-      if (value !== newValue) {
-        editor.executeEdits("", [
-          {
-            range: model.getFullModelRange(),
-            text: newValue,
+    model.onDidChangeContent(() => {
+      if (isReplacing) return;
+      isReplacing = true;
+
+      const position = editor.getPosition(); // Get current cursor position
+      const value = model.getValue();
+      const regex = /->|=>/g;
+
+      let match;
+      const edits = [];
+      let newCursorPosition = { ...position }; // Default cursor position
+
+      while ((match = regex.exec(value)) !== null) {
+        const replacement = match[0] === "->" ? "→" : "⇒";
+        const startPos = model.getPositionAt(match.index);
+        const endPos = model.getPositionAt(match.index + 2);
+
+        edits.push({
+          range: {
+            startLineNumber: startPos.lineNumber,
+            startColumn: startPos.column,
+            endLineNumber: endPos.lineNumber,
+            endColumn: endPos.column,
           },
-        ]);
+          text: replacement,
+          forceMoveMarkers: true,
+        });
+
+        if (
+            position.lineNumber === endPos.lineNumber &&
+            position.column === endPos.column
+        ) {
+          newCursorPosition = {
+            lineNumber: startPos.lineNumber,
+            column: startPos.column + 1,
+          };
+        }
       }
+
+      if (edits.length > 0) {
+        editor.executeEdits("auto-replace", edits);
+
+        setTimeout(() => {
+          editor.setPosition(newCursorPosition);
+          editor.focus();
+        }, 0);
+      }
+
+      isReplacing = false;
     });
   };
+
 
 
   useEffect(() => {
@@ -73,7 +111,6 @@ export default function LambdaInput() {
 
     editorContext.setEditorValue(value);
 
-    console.log(value);
     const errors: Error[] | undefined = await buildTree(value)
     setEditorErrors(errors)
   }

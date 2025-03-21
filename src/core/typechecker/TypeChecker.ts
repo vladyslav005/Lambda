@@ -1039,14 +1039,14 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
 
     const declaredElType = this.decodeAlias(ctx.type_().getText());
 
-    return `(List ${declaredElType})->(${declaredElType})`;
+    return `List ${declaredElType}->${declaredElType}`;
   };
 
   visitListHead = (ctx: ListHeadContext): any => {
     console.log("Visiting a head", ctx.getText());
     const declaredElType = this.decodeAlias(ctx.type_().getText());
 
-    return `(List ${declaredElType})->(${declaredElType})`;
+    return `List ${declaredElType}->${declaredElType}`;
   };
 
   visitList = (ctx: ListContext): any => {
