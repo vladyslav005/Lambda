@@ -8,7 +8,7 @@ N = λ x: α . x : α -> α;
 P = λ g: α -> α . (g x) : (α -> α) -> α;
 Q = λ h: α -> α . (h x) : (α -> α) -> α; 
 
-(N (M N (P (y))));`
+(N (M N (P (y)))) : α`
 },
   {
     name: "variants",
@@ -21,9 +21,9 @@ typedef Addr = [physical : PhysicalAddr, virtual : VirtualAddr]; // define varia
 pa : PhysicalAddr;
 a = [physical = pa] as Addr : Addr; // make injection
 
-case a of                       // use case of construction injection
+(case a of                       // use case of construction injection
      [physical = x] ⇒ x.firstlast
-  || [virtual = y] ⇒ y.name;`
+  || [virtual = y] ⇒ y.name) : String`
   },
   {
     name: "binaryVariants",
@@ -35,9 +35,9 @@ typedef Addr = PhysicalAddr + VirtualAddr; // define variant type
 pa : PhysicalAddr;
 a = inl pa as Addr : Addr; // make injection
 
-case a of                // use case of construction injection
+(case a of                // use case of construction injection
     inl x => x.firstlast
- || inr y => y.name;`
+ || inr y => y.name) : String`
   },
   {
     name: "tuples",
@@ -46,9 +46,8 @@ var2 : B;
 
 tuple = <var1, var2> : A * B;
 
-//tuple; 
-//tuple.1; 
-tuple.2;`
+//tuple.1 : A 
+tuple.2 : B`
   },
   {
     name: "records",
@@ -57,7 +56,7 @@ tuple.2;`
 john : Human; // define var of type 'Human'
 
 //john.name; 
-john.age; // use record projection`
+john.age : Nat // use record projection`
   },
   {
     name: "ifCondition",
@@ -70,7 +69,7 @@ showFullName = true : Bool;
 if showFullName then 
     john.fullName
 else 
-    john.name
+    john.name : String
 ;`
   },
   {
@@ -86,18 +85,22 @@ list = cons[Nat] var list; // add var to list
 
 // tail[A] list; // get list without first element
 
-head[Nat] (cons[Nat] 3 (cons[Nat] 8 list));
+head[Nat] (cons[Nat] 3 (cons[Nat] 8 list)) : Nat
 `
   },
   {
     name: "fixOperator",
-    code: `fix (λ f : Nat → Nat . (λ n : Nat . if iszero(n) then 1 else n * f (pred n)) : (Nat → Nat) → (Nat → Nat));`
+    code: `fix 
+    (λ f : Nat → Nat . 
+        (λ n : Nat . if iszero(n) then 1 else n * f (pred n))) : Nat → Nat
+    
+    `
   },
   {
     name: "wildcard",
     code: `x = 10 : Nat;
 y = 9999 : Nat;
-λ _ : Unit. x*y : Unit → Nat;`
+λ _ : Unit. x*y : Unit → Nat`
   }
 
 
