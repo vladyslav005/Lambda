@@ -59,6 +59,7 @@ export interface ProofNode {
   aliasCtx?: Context;
   globalCtx?: Context;
   nodeNumber?: number;
+  leaf?: boolean;
 }
 
 export class TreeGenerator extends LambdaCalcVisitor<any> {
@@ -384,12 +385,13 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           premises: [
             {
               type: type,
-              wrappedConclusion: `$ \\vdash ${ctx.getText()} : ${type}\\in$`,
-              wrappedConclusionWithAlias: `$ \\vdash ${ctx.getText()} : ${typeWithAlias}\\in$`,
+              wrappedConclusion: `${ctx.getText()} : ${type}\\in$`,
+              wrappedConclusionWithAlias: `${ctx.getText()} : ${typeWithAlias}\\in$`,
               unwrappedConclusion: varName,
               unwrappedConclusionWithAlias: varName,
               rule: "",
               root: false,
+              leaf: true,
               tokenLocation: getTokenLocation(ctx),
               declarationLocation: ctxInfo.declarationLocation,
               isExpandable: ctxInfo.isExpandable,
@@ -566,19 +568,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       ctxExtension: ctxExtension,
       premises:
           [
-            {
-              type: tupleType,
-              wrappedConclusion: `$ \\vdash  ${tuple.getText()} : ${tupleType}`,
-              wrappedConclusionWithAlias: `$ \\vdash  ${tuple.getText()} : ${tupleTypeWithAlias}`,
-              unwrappedConclusion: ctx.getText(),
-              unwrappedConclusionWithAlias: ctx.getText(),
-              rule: "",
-              root: false,
-              tokenLocation: getTokenLocation(ctx),
-              declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(tuple.getText()),
-              isExpandable: false,
-              ctxExtension: this.takeExtensionCtx(),
-            }
+            this.visit(ctx.term())
           ],
     } as ProofNode;
   }
@@ -646,19 +636,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       ctxExtension: ctxExtension,
       premises:
           [
-            {
-              type: projectionType,
-              wrappedConclusion: `$ \\vdash ${record.getText()} : ${recordType}`,
-              wrappedConclusionWithAlias: `$ \\vdash  ${record.getText()} : ${recordTypeWithAlias}`,
-              unwrappedConclusion: ctx.getText(),
-              unwrappedConclusionWithAlias: ctx.getText(),
-              rule: "",
-              root: false,
-              tokenLocation: getTokenLocation(ctx),
-              declarationLocation: this.typeChecker.globalContext.getDeclarationLocation(record.getText()),
-              isExpandable: false,
-              ctxExtension: this.takeExtensionCtx(),
-            }
+              this.visit(ctx.term())
           ],
 
     } as ProofNode;
