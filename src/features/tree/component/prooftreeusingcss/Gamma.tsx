@@ -16,10 +16,13 @@ interface GammaProps {
 
 export const Gamma = (props: GammaProps) => {
 
-  const [gammaUnwrapped, setGammaUnwrapped] = useState(false)
+  const [gammaUnwrapped, setGammaUnwrapped] = useState(false);
 
   useEffect(() => {
-    setGammaUnwrapped(props.showGammaDefinition)
+    if (props.node.isGammaUnwrapped && props.node.isGammaUnwrapped !== props.showGammaDefinition) {
+      setGammaUnwrapped(props.node.isGammaUnwrapped);
+    } else
+      setGammaUnwrapped(props.showGammaDefinition)
   }, [props.showGammaDefinition])
 
 
@@ -42,8 +45,6 @@ export const Gamma = (props: GammaProps) => {
 
     return gamma;
   }
-
-
 
   return (
       <>

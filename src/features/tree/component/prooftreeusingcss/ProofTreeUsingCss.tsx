@@ -48,7 +48,6 @@ export function ProofTreeComponentUsingCss(
     }
   }
 
-
   return (
       <>
         {(!stepByStepModeEnabled || !stepNumber || ((node.nodeNumber ?? 0) < stepNumber)) &&

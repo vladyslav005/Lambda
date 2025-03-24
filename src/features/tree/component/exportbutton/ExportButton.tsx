@@ -7,6 +7,7 @@ import {EditorContext} from "../../../lambda-input/context/EditorContext";
 import "./style.css"
 import {ExportToTexModal} from "./ExportToTexModal";
 import {ExportToPngModal} from "./ExportToPngModal";
+import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
 
 interface ExportButtonProps {
   style?: React.CSSProperties;
@@ -18,6 +19,8 @@ interface ExportButtonProps {
 
 const ExportButton = (props: ExportButtonProps) => {
   const editorContext = useContext(EditorContext);
+
+  const confContext = useContext(ConfigurationContext);
 
   const [bussproofsModal, setBussproofsModal] = useState(false)
   const [ebproofModal, setEbproofModal] = useState(false)
@@ -31,7 +34,7 @@ const ExportButton = (props: ExportButtonProps) => {
     exportToLatex,
     isTreeExportableToBussproofs,
     exportToBussproofs
-  } = useExportToLatex();
+  } = useExportToLatex(props.step, confContext.stepByStepMode);
 
   const [showAliases, setShowAliases] = useState(props.useAliases)
 

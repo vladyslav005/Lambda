@@ -85,21 +85,34 @@ export default function TreeFlat(
 
 
   useEffect(() => {
+    let cleanUp : () => void;
 
-    setIsTreeCentered(false)
-    return updateTree();
+    cleanUp = updateTree()
+
+    if (!(showGammaDefinition && confContext.stepByStepMode))
+      setIsTreeCentered(false)
+
+    return () => {
+      if (cleanUp) cleanUp()
+    };
   }, [editorContext.tree,
-      showGammaDefinition,
       fullScreen,
-      step, confContext.stepByStepMode,
+      step,
       treeContainerRef.current,
   ]);
 
   useEffect(() => {
-    return updateTree();
-  }, [
+    let cleanUp : () => void;
+
+    setTimeout(async () => cleanUp = updateTree(), 0)
+
+    return () => {
+        if (cleanUp) cleanUp()
+      };
+    }, [
     confContext.showGamma,
     showGammaDefinition,
+    confContext.stepByStepMode,
     resized,
     treeHasChanged,
     showAliases

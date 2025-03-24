@@ -109,8 +109,6 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
   }
 
   const prepareConclusion = () => {
-    if (!(editorContext.globalCtx && editorContext.aliasCtx))
-      return '';
 
     let returnValue = ""
     if (!props.showAliases) {

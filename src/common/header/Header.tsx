@@ -6,7 +6,7 @@ import {PasteExampleMenu} from "../../features/lambda-input/component/pasteexamp
 import React, {useContext, useState} from "react";
 import {TutorialsDropdown} from "../../features/helpbar/component/tutorialsdropdown/TutorialsDropdown";
 import translations from "../../features/configurations/data/translations";
-import {ConfigurationContext} from "../../features/configurations/context/ConfigurationContext";
+import {ConfigurationContext, Language} from "../../features/configurations/context/ConfigurationContext";
 import {IconButton} from "../components/button/IconButton";
 import {ConfigButton} from "../../features/configurations/component/configbutton/ConfigButton";
 import {MdClose, MdFeedback, MdMenu} from "react-icons/md";
@@ -25,8 +25,11 @@ export const Header = () => {
 
             <img src={logo} alt={"Logo"} className="logo"/>
             <h1 className="name text-s sm:text-xl md:text-2xl">Type Checker</h1>
-            <IconButton className="mx-3 feedback-btn" onClick={() =>
-                window.open("https://docs.google.com/forms/d/e/1FAIpQLScZPEpHaDug8IzCJHdx6IYVfqtrKoTTHb6ZCk1lInks7poLHw/viewform?usp=dialog", "_blank")}>
+            <IconButton className="mx-3 feedback-btn"
+                onClick={() => {
+                    window.open("https://docs.google.com/forms/d/e/1FAIpQLScZPEpHaDug8IzCJHdx6IYVfqtrKoTTHb6ZCk1lInks7poLHw/viewform?usp=dialog", "_blank")
+                }}
+            >
 
               <p className={"hidden sm:block"}>
                 {translations[confCtx.language].feedback}

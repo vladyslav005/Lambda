@@ -83,7 +83,7 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
   }
 
   useEffect(() => {
-    const interactivePersisted = localStorage.getItem("interactive") ?? 'false'
+    const interactivePersisted = localStorage.getItem("interactive") ?? 'true'
     if (interactivePersisted === 'true')
       setInteractiveHandler(true);
     else setInteractiveHandler(false);
