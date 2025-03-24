@@ -40,7 +40,7 @@ export default function LambdaInput() {
 
       let match;
       const edits = [];
-      let newCursorPosition = { ...position }; // Default cursor position
+      let newCursorPosition = {...position}; // Default cursor position
 
       while ((match = regex.exec(value)) !== null) {
         const replacement = match[0] === "->" ? "→" : "⇒";
@@ -81,7 +81,6 @@ export default function LambdaInput() {
       isReplacing = false;
     });
   };
-
 
 
   useEffect(() => {

@@ -28,5 +28,5 @@ export const useExportToImage = () => {
     }
   };
 
-  return { handleDownloadPng };
+  return {handleDownloadPng};
 };

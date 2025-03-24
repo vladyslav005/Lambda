@@ -546,8 +546,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const ctxExtension = this.takeExtensionCtx()
 
     const tuple = ctx.getChild(0);
-    const tupleType = this.typeChecker.visit(tuple);
-    const tupleTypeWithAlias = this.typeChecker.encodeToAlias(tupleType);
 
     const tupleProjType = this.typeChecker.visit(ctx);
     const tupleProjTypeWithAlias = this.typeChecker.encodeToAlias(tupleProjType);
@@ -615,10 +613,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
 
     const record = ctx.getChild(0);
 
-    const recordType = this.typeChecker.visit(record);
     const projectionType = this.typeChecker.visit(ctx)
 
-    const recordTypeWithAlias = this.typeChecker.encodeToAlias(recordType);
     const projectionTypeWithAlias = this.typeChecker.encodeToAlias(projectionType);
 
     return {
@@ -1096,8 +1092,6 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const ctxExtension = this.takeExtensionCtx()
 
     const type = this.typeChecker.visit(ctx)
-
-    const elType = parseTypeAndElimParentheses(type).getChild(1).getText()
 
     const premises: ProofNode[] = ctx.term_list().map((t) => this.visit(t))
 

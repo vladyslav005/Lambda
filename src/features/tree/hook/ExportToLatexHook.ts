@@ -1,4 +1,4 @@
-import {CtxStackElement, ProofNode} from "../../../core/tree/TreeGenerator";
+import {ProofNode} from "../../../core/tree/TreeGenerator";
 import {preprocessString, preprocessTex} from "../../../core/utils";
 
 export function useExportToLatex(currentStep: number, stepByStepModeEnabled: boolean) {

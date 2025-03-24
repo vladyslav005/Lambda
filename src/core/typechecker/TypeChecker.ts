@@ -950,14 +950,12 @@ export class TypeChecker extends LambdaCalcVisitor<any> {
   }
 
   visitGreekType = (ctx: GreekTypeContext): any => {
-    // console.log("Visiting a Greek type", ctx.getText());
     return ctx.getText();
   };
 
   visitFunctionType = (ctx: FunctionTypeContext): any => {
     let returnType = this.visit(ctx.type_(1));
     let argumentType = this.visit(ctx.type_(0));
-    let returnTypeNode = parseTypeAndElimParentheses(returnType);
     let argumentTypeNode = parseTypeAndElimParentheses(argumentType);
 
     // if (returnTypeNode instanceof FunctionTypeContext) {

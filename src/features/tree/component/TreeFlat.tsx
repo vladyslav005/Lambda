@@ -14,7 +14,11 @@ import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 const ExportButton = lazy(() => import('./exportbutton/ExportButton'))
 
 export default function TreeFlat(
-    {showAliases, setShowAliases, resized}: { showAliases: boolean, setShowAliases: (showAliases: boolean) => void, resized?: boolean}
+    {showAliases, setShowAliases, resized}: {
+      showAliases: boolean,
+      setShowAliases: (showAliases: boolean) => void,
+      resized?: boolean
+    }
 ) {
   const confContext = useContext(ConfigurationContext);
 
@@ -85,7 +89,7 @@ export default function TreeFlat(
 
 
   useEffect(() => {
-    let cleanUp : () => void;
+    let cleanUp: () => void;
 
     cleanUp = updateTree()
 
@@ -96,20 +100,20 @@ export default function TreeFlat(
       if (cleanUp) cleanUp()
     };
   }, [editorContext.tree,
-      fullScreen,
-      step,
-      treeContainerRef.current,
+    fullScreen,
+    step,
+    treeContainerRef.current,
   ]);
 
   useEffect(() => {
-    let cleanUp : () => void;
+    let cleanUp: () => void;
 
     setTimeout(async () => cleanUp = updateTree(), 0)
 
     return () => {
-        if (cleanUp) cleanUp()
-      };
-    }, [
+      if (cleanUp) cleanUp()
+    };
+  }, [
     confContext.showGamma,
     showGammaDefinition,
     confContext.stepByStepMode,

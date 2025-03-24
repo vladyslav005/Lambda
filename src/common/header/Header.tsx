@@ -6,7 +6,7 @@ import {PasteExampleMenu} from "../../features/lambda-input/component/pasteexamp
 import React, {useContext, useState} from "react";
 import {TutorialsDropdown} from "../../features/helpbar/component/tutorialsdropdown/TutorialsDropdown";
 import translations from "../../features/configurations/data/translations";
-import {ConfigurationContext, Language} from "../../features/configurations/context/ConfigurationContext";
+import {ConfigurationContext} from "../../features/configurations/context/ConfigurationContext";
 import {IconButton} from "../components/button/IconButton";
 import {ConfigButton} from "../../features/configurations/component/configbutton/ConfigButton";
 import {MdClose, MdFeedback, MdMenu} from "react-icons/md";

@@ -1,5 +1,4 @@
 import {ParserRuleContext} from "antlr4";
-import {TypeChecker} from "../typechecker/TypeChecker";
 import {decodeAlias, encodeToAlias} from "../utils";
 
 export interface ContextElement {

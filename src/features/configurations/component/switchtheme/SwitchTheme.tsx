@@ -8,7 +8,7 @@ export const SwitchTheme = () => {
   const confCtx = useContext(ConfigurationContext)
 
   const clickHandler = () => {
-    if (confCtx.theme == Theme.Light) {
+    if (confCtx.theme === Theme.Light) {
       confCtx.setTheme(Theme.Dark);
     } else {
       confCtx.setTheme(Theme.Light);

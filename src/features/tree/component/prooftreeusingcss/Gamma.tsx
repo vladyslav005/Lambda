@@ -1,7 +1,7 @@
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import {MathComponent} from "mathjax-react";
 import {preprocessString} from "../../../../core/utils";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 
 
 interface GammaProps {
@@ -28,7 +28,7 @@ export const Gamma = (props: GammaProps) => {
 
   const prepareGamma = (): string => {
     let gamma = ""
-    const ctxEx= props.node.ctxExtension;
+    const ctxEx = props.node.ctxExtension;
     if (gammaUnwrapped) {
       gamma = !props.showAliases
           ? "\\{ " + ctxEx.unwrapped + " \\}"
@@ -48,20 +48,20 @@ export const Gamma = (props: GammaProps) => {
 
   return (
       <>
-      {prepareGamma() !== "" && <div className="gamma"
-           title={gammaUnwrapped ? "Wrap Gamma" : "Unwrap Gamma"}
-           onClick={(e) => {
-             e.stopPropagation();
-             props.setTreeHasChanged(!props.treeHasChanged);
-             if (props.canMutateTree) {
-               props.node.isGammaUnwrapped = !gammaUnwrapped;
-             }
-             setGammaUnwrapped(!gammaUnwrapped);
-             props.handleMouseLeave();
-           }}
-      >
-        <MathComponent tex={preprocessString(prepareGamma())}/>
-      </div>}
+        {prepareGamma() !== "" && <div className="gamma"
+                                       title={gammaUnwrapped ? "Wrap Gamma" : "Unwrap Gamma"}
+                                       onClick={(e) => {
+                                         e.stopPropagation();
+                                         props.setTreeHasChanged(!props.treeHasChanged);
+                                         if (props.canMutateTree) {
+                                           props.node.isGammaUnwrapped = !gammaUnwrapped;
+                                         }
+                                         setGammaUnwrapped(!gammaUnwrapped);
+                                         props.handleMouseLeave();
+                                       }}
+        >
+            <MathComponent tex={preprocessString(prepareGamma())}/>
+        </div>}
       </>
 
 

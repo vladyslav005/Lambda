@@ -1,6 +1,6 @@
 import {MathComponent} from "mathjax-react";
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
-import {useContext, useEffect, useState} from "react";
+import {useContext, useState} from "react";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
 import {preprocessString} from "../../../../core/utils";
 import {Gamma} from "./Gamma";
@@ -116,11 +116,8 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
     } else
       returnValue = (props.node.wrappedConclusionWithAlias)
 
-    return preprocessString(returnValue.replaceAll("$", ""));
+    return preprocessString(returnValue.replaceAll("$ ", "").replaceAll("$", ""));
   }
-
-
-  const gammaOccurrences = props.node.wrappedConclusion.match(/\$/g)?.length ?? 0;
 
   return (
       <div className={`conclusion-center ${props.isItLeaf} ${props.isItRoot} flex items-center`}
@@ -128,11 +125,11 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
            onMouseLeave={handleMouseLeave}
 
       >
-        {!props.node.leaf  &&
-          <Gamma node={props.node} showAliases={props.showAliases} treeHasChanged={props.treeHasChanged}
-                 setTreeHasChanged={props.setTreeHasChanged} showGammaDefinition={props.showGammaDefinition}
-                 handleMouseLeave={handleMouseLeave} canMutateTree={props.canMutateTree}
-          />
+        {!props.node.leaf &&
+            <Gamma node={props.node} showAliases={props.showAliases} treeHasChanged={props.treeHasChanged}
+                   setTreeHasChanged={props.setTreeHasChanged} showGammaDefinition={props.showGammaDefinition}
+                   handleMouseLeave={handleMouseLeave} canMutateTree={props.canMutateTree}
+            />
         }
 
         <div
@@ -148,7 +145,7 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
           <MathComponent tex={prepareConclusion()}/>
         </div>
 
-        {props.node.leaf  &&
+        {props.node.leaf &&
             <Gamma node={props.node} showAliases={props.showAliases} treeHasChanged={props.treeHasChanged}
                    setTreeHasChanged={props.setTreeHasChanged} showGammaDefinition={props.showGammaDefinition}
                    handleMouseLeave={handleMouseLeave} canMutateTree={props.canMutateTree}

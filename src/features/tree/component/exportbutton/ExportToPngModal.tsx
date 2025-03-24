@@ -206,7 +206,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                     onChange={(isChecked) => setShowGammaDefinition(isChecked)}
                 >
                     <div className="indicator"/>
-                    {translations[confContext.language].tree.showGamma}
+                  {translations[confContext.language].tree.showGamma}
 
                 </Switch>}
 
