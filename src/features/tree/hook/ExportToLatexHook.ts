@@ -1,7 +1,7 @@
 import {CtxStackElement, ProofNode} from "../../../core/tree/TreeGenerator";
 import {preprocessString, preprocessTex} from "../../../core/utils";
 
-export function useExportToLatex() {
+export function useExportToLatex(currentStep: number, stepByStepModeEnabled: boolean) {
 
   const prepareGamma = (node: ProofNode, showAliases: boolean): string => {
     let gamma = ""
@@ -27,7 +27,7 @@ export function useExportToLatex() {
   function exportToLatex(tree: ProofNode, showAliases: boolean): string {
     let latex = '\\begin{prooftree}\n';
 
-    const traverseTree = (node: ProofNode, level: number = 0): string => {
+    const traverseTree = (node: ProofNode): string => {
       let nodeLatex = '';
 
       const premises: ProofNode[] | undefined =
@@ -38,9 +38,15 @@ export function useExportToLatex() {
       nodeConclusion = nodeConclusion.replaceAll(/\$/g, prepareGamma(node, showAliases));
 
       if (premises) {
-        for (let premise of premises)
-          nodeLatex += traverseTree(premise, level + 1);
-        nodeLatex += `\t\\infer${premisesCount}[${node.rule}]{${nodeConclusion} }\n`;
+        let i = 0;
+        for (; i < premisesCount; i++) {
+          if (!stepByStepModeEnabled || !currentStep || ((premises[i].nodeNumber ?? 0) < currentStep))
+            nodeLatex += traverseTree(premises[i]);
+          else {
+            break;
+          }
+        }
+        nodeLatex += `\t\\infer${i}[${node.rule}]{${nodeConclusion} }\n`;
       } else
         nodeLatex += `\t\\hypo{${nodeConclusion}}\n`;
 
@@ -66,12 +72,21 @@ export function useExportToLatex() {
       nodeConclusion = nodeConclusion.replaceAll(/\$/g, prepareGamma(node, showAliases));
 
       if (premises) {
-        for (const premise of premises) {
-          traverseTree(premise);
+        let i = 0;
+        for (; i < premisesCount; i++) {
+          if (!stepByStepModeEnabled || !currentStep || ((premises[i].nodeNumber ?? 0) < currentStep))
+            traverseTree(premises[i]);
+          else {
+            break;
+          }
         }
 
         latex += '\t\\RightLabel{$' + node.rule + '$}\n';
-        switch (premisesCount) {
+        switch (i) {
+          case 0:
+            latex += '\t\\AxiomC{}\n';
+            latex += '\t\\UnaryInfC{$' + nodeConclusion + '$}\n';
+            break;
           case 1:
             latex += '\t\\UnaryInfC{$' + nodeConclusion + '$}\n';
             break;
