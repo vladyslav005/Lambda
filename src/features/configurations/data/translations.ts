@@ -56,7 +56,8 @@ const translations = {
       interactiveMode: "Run after change",
       fontSize: "Font size",
       gammaWindow: "Gamma content window",
-      step: "Draw tree step by step"
+      step: "Draw tree step by step",
+      codeHighlight: "Code highlight color",
     },
 
     toast: {
@@ -270,8 +271,8 @@ const translations = {
       interactiveMode: "Spustiť po zmene",
       fontSize: "Veľkosť písma",
       gammaWindow: "Okno obsahu Gamma",
-      step: "Kresliť strom krok za krokom"
-
+      step: "Kresliť strom krok za krokom",
+      codeHighlight: "Farba zvýraznenia kódu"
     },
 
     toast: {
@@ -480,6 +481,7 @@ const translations = {
       fontSize: "Розмір шрифту",
       gammaWindow: "Вікно вмісту Гаммa",
       step: "Малювати дерево крок за кроком",
+      codeHighlight: "Колір підсвічування коду"
     },
 
     toast: {

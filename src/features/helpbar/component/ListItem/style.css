@@ -3,7 +3,7 @@
     flex-direction: row;
     gap: 1rem;
     padding: 1.5rem;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
     background: var(--Schemes-Surface, #FEF7FF);
 
     cursor: pointer;

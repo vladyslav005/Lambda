@@ -1,5 +1,5 @@
 import {
-  Button,
+  Button, Color,
   Dialog,
   Group,
   Input,
@@ -17,6 +17,7 @@ import {MdAdd, MdOutlineSettings, MdRemove} from "react-icons/md";
 import React, {useContext} from "react";
 import {ConfigurationContext} from "../../context/ConfigurationContext";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
+import {MyColorPicker} from "../../../tree/component/colorpicker/ColorPicker";
 
 export const ConfigButton = () => {
   const confCtx = useContext(ConfigurationContext);
@@ -64,6 +65,20 @@ export const ConfigButton = () => {
                 {translations[confCtx.language].conf.step}
               </Switch>
             </div>
+            <div className="p-4">
+              <MyColorPicker defaultValue={confCtx.codeHighlightColor}
+                             label={translations[confCtx.language].conf.codeHighlight}
+                             onChange={(color: Color) => {
+                               const hslaString = color.toString();
+                               const hslaWithAlpha = hslaString.replace(
+                                   /hsla\(([^,]+,[^,]+,[^,]+),([^)]+)\)/,
+                                   (_, hsl, alpha) => `hsla(${hsl},0.4)`
+                               );
+
+                               confCtx.setCodeHighlightColor(hslaWithAlpha);
+                             }}
+              ></MyColorPicker>
+            </div>
 
             <Separator></Separator>
             <Group aria-label="Font size" className="flex flex-row items-center p-4">
@@ -78,7 +93,7 @@ export const ConfigButton = () => {
               >
                 <MdRemove size={20}/>
               </IconButton>
-              <TextField className="font-size-field">
+              <TextField isDisabled={true} className="font-size-field">
                 <Input value={editorContext.fontSize} type={"number"} className={"text-input"}/>
               </TextField>
               <IconButton

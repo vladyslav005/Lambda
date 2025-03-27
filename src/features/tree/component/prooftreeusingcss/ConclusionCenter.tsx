@@ -138,7 +138,7 @@ export const ConclusionCenter = (props: ConclusionCenterProps) => {
             title={generateTitle()}
             style={{
               padding: "5px",
-              backgroundColor: isHovered ? "rgba(255, 255, 0, 0.3)" : "", // Highlight the div when hovered
+              backgroundColor: isHovered ? "var(--Code-Highlight-Color)" : "", // Highlight the div when hovered
               cursor: props.node.isExpandable || (props.isExpandedPremise && props.parentSetIsExpanded && props.parentIsExpanded) ? 'pointer' : 'default',
             }}
         >

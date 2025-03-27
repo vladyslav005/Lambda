@@ -17,7 +17,9 @@ export interface ConfigurationContextInterface {
   theme: Theme;
   showGamma: boolean;
   stepByStepMode: boolean;
+  codeHighlightColor: string;
 
+  setCodeHighlightColor: (codeHighlightColor: string) => void;
   setStepByStepMode: (stepMode: boolean) => void;
   setShowGamma: (showGamma: boolean) => void;
   setLanguage: (language: Language) => void;
@@ -31,7 +33,11 @@ export const ConfigurationContext = createContext<ConfigurationContextInterface>
   theme: Theme.Light,
   showGamma: true,
   stepByStepMode: false,
+  codeHighlightColor: "rgba(255, 255, 0, 0.3)",
 
+
+  setCodeHighlightColor: (codeHighlightColor: string) => {
+  },
   setStepByStepMode: (stepMode: boolean) => {
   },
   setShowGamma: showGamma => {
@@ -54,9 +60,16 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
   const [theme, setTheme] = useState(Theme.Light);
   const [showGamma, setShowGamma] = useState(true);
   const [stepByStepMode, setStepByStepMode] = useState(false)
+  const [codeHighlightColor, setCodeHighlightColor] = useState("rgba(255, 255, 0, 0.3)")
 
 
-  const setInteractiveHandler = (value: boolean) => {
+  const setCodeHighlightColorHandler = (color: string) => {
+    setCodeHighlightColor(color);
+    localStorage.setItem('--Code-Highlight-Color', color);
+    document.documentElement.style.setProperty("--Code-Highlight-Color", color);
+  }
+
+    const setInteractiveHandler = (value: boolean) => {
     setInteractive(value);
     localStorage.setItem('interactive', value.toString());
   }
@@ -99,6 +112,7 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
     else setStepByStepModeHandler(false);
 
     setThemeHandler(localStorage.getItem("theme") as Theme ?? Theme.Light);
+    setCodeHighlightColorHandler(localStorage.getItem("--Code-Highlight-Color") ?? "rgba(255, 255, 0, 0.3)");
     setLanguageHandler(localStorage.getItem("language") as Language ?? Language.EN);
   }, [])
 
@@ -108,7 +122,9 @@ export const ConfigurationContextProvider = ({children}: ConfigurationContextPro
     theme: theme,
     showGamma: showGamma,
     stepByStepMode: stepByStepMode,
+    codeHighlightColor: codeHighlightColor,
 
+    setCodeHighlightColor: setCodeHighlightColorHandler,
     setStepByStepMode: setStepByStepModeHandler,
     setShowGamma: setShowGammaHandler,
     setInteractive: setInteractiveHandler,

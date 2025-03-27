@@ -13,7 +13,6 @@ Q = λ h: α -> α . (h x) : (α -> α) -> α;
   {
     name: "variants",
     code: `typedef PhysicalAddr = < firstlast : String, addr : String> ;
-typedef PhysicalAddr = <firstlast : String, addr : String> ;
 typedef VirtualAddr = <name : String, email : String>;
 
 typedef Addr = [physical : PhysicalAddr, virtual : VirtualAddr]; // define variant type

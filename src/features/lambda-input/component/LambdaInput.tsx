@@ -128,7 +128,7 @@ export default function LambdaInput() {
         <div className="flex flex-row gap-2"
              style={{
                position: "absolute",
-               zIndex: 1000,
+               zIndex: 999,
                bottom: "1rem",
                right: "1rem",
              }}

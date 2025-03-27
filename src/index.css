@@ -5,6 +5,8 @@
 @tailwind utilities;
 
 :root {
+    --Code-Highlight-Color: rgba(255, 255, 0, 0.3);
+
     --config-block-height: 100px;
     --Corner-Medium: 12px;
     --Corner-Extra-small: 4px;

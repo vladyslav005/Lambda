@@ -191,6 +191,8 @@
     letter-spacing: var(--Label-Large-Tracking, 0.1px);
     padding: .6rem !important;
     font-size: 1rem;
+
+    transition: transform 0.2s ease-in-out !important;
 }
 
 .feedback-btn:hover {

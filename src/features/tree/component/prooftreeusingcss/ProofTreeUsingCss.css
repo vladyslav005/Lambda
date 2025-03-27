@@ -110,7 +110,7 @@
 }
 
 .highlighted-code {
-    background-color: rgba(255, 255, 0, 0.3); /* Light yellow background */
+    background-color: var(--Code-Highlight-Color); /* Light yellow background */
     border-radius: 2px; /* Optional: to soften the edges of the highlight */
 }
 
