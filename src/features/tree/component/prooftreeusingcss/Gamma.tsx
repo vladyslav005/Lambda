@@ -1,7 +1,7 @@
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import {MathComponent} from "mathjax-react";
 import {preprocessString} from "../../../../core/utils";
-import {useEffect, useState} from "react";
+import {MouseEventHandler, useEffect, useState} from "react";
 
 
 interface GammaProps {
@@ -46,25 +46,25 @@ export const Gamma = (props: GammaProps) => {
     return gamma;
   }
 
+  const clickHandler = (e: any) => {
+    e.stopPropagation();
+    props.setTreeHasChanged(!props.treeHasChanged);
+    if (props.canMutateTree) {
+      props.node.isGammaUnwrapped = !gammaUnwrapped;
+    }
+    setGammaUnwrapped(!gammaUnwrapped);
+    props.handleMouseLeave();
+
+  }
   return (
       <>
         {prepareGamma() !== "" && <div className="gamma"
                                        title={gammaUnwrapped ? "Wrap Gamma" : "Unwrap Gamma"}
-                                       onClick={(e) => {
-                                         e.stopPropagation();
-                                         props.setTreeHasChanged(!props.treeHasChanged);
-                                         if (props.canMutateTree) {
-                                           props.node.isGammaUnwrapped = !gammaUnwrapped;
-                                         }
-                                         setGammaUnwrapped(!gammaUnwrapped);
-                                         props.handleMouseLeave();
-                                       }}
+                                       onClick={clickHandler}
+                                       onTouchStart={clickHandler}
         >
             <MathComponent tex={preprocessString(prepareGamma())}/>
         </div>}
       </>
-
-
   )
-
 }
