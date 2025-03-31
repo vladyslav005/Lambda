@@ -14,7 +14,7 @@ import {IconButton} from "../../../../common/components/button/IconButton";
 import {IoMdClose, IoMdDownload} from "react-icons/io";
 import {MapInteractionCSS} from "react-map-interaction";
 import {ProofTreeComponentUsingCss} from "../prooftreeusingcss/ProofTreeUsingCss";
-import {MyColorPicker} from "../colorpicker/ColorPicker";
+import {MyColorPicker} from "../../../../common/components/colorpicker/ColorPicker";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {useExportToImage} from "../../hook/ExportToImageHook";
 import {EditorContext} from "../../../lambda-input/context/EditorContext";
@@ -229,9 +229,13 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                 <div className="flex flex-row items-center ">
                   <AiOutlineAim size={26}
                                 color="var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
-                                style={{cursor: "pointer"}} onClick={() => centerTree()}></AiOutlineAim>
+                                style={{
+                                  cursor: "pointer",
+                                  marginLeft: 3,
+                                }}
+                                onClick={() => centerTree()}></AiOutlineAim>
                   <IconButton className={"center-tree-btn"} onClick={() => centerTree()}>
-                    {translations[confContext.language].tree.centerTree}
+                    <span className="mx-2">{translations[confContext.language].tree.centerTree}</span>
                   </IconButton>
                 </div>
               </div>

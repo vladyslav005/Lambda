@@ -28,13 +28,12 @@ interface MyColorPickerProps extends ColorPickerProps {
 
 export const MyColorPicker = (props: MyColorPickerProps) => {
 
-
   return (
       <ColorPicker {...props} >
         <DialogTrigger>
           <Button className="color-picker">
             <MyColorSwatch/>
-            <span>{props.label}</span>
+            <span className="pl-1">{props.label}</span>
           </Button>
           <Popover placement="bottom start">
             <Dialog className="color-picker-dialog">
@@ -51,7 +50,6 @@ export const MyColorPicker = (props: MyColorPickerProps) => {
       </ColorPicker>
   )
 }
-
 
 const MyColorArea = (props: ColorAreaProps) => {
 
@@ -73,7 +71,7 @@ const MyColorSlider = (props: ColorSliderProps) => {
 
   return (
       <ColorSlider {...props}>
-        <Label/>
+        {/*<Label/>*/}
         <SliderOutput/>
         <SliderTrack>
           <ColorThumb/>
