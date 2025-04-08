@@ -1,6 +1,6 @@
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
-import "./ProofTreeUsingCss.css"
-import {ConclusionCenter} from "./ConclusionCenter";
+import "./ProofTree.css"
+import {Conclusion} from "./Conclusion";
 import React, {Ref, useState} from "react";
 
 interface ProofTreeUsingCssProps {
@@ -107,7 +107,7 @@ export function ProofTreeComponentUsingCss(
                   <div className="conclusion-left">
                   </div>
 
-                  <ConclusionCenter
+                  <Conclusion
                       showGammaDefinition={showGammaDefinition}
                       isExpandedPremise={isExpandedPremise ?? false}
                       parentIsExpanded={parentIsExpanded}
@@ -122,7 +122,7 @@ export function ProofTreeComponentUsingCss(
                       treeHasChanged={treeHasChanged}
                       setTreeHasChanged={setTreeHasChanged}
                       canMutateTree={canMutateTree}
-                  ></ConclusionCenter>
+                  ></Conclusion>
 
                   <div className="conclusion-right">
                       <p className="rule-name">{node.rule.replaceAll('-', ' – ')}</p>

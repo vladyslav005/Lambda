@@ -24,7 +24,7 @@ export function useExportToLatex(currentStep: number, stepByStepModeEnabled: boo
     return gamma;
   }
 
-  function exportToLatex(tree: ProofNode, showAliases: boolean): string {
+  function exportToEbproof(tree: ProofNode, showAliases: boolean): string {
     let latex = '\\begin{prooftree}\n';
 
     const traverseTree = (node: ProofNode): string => {
@@ -139,7 +139,7 @@ export function useExportToLatex(currentStep: number, stepByStepModeEnabled: boo
   }
 
   return {
-    exportToLatex,
+    exportToLatex: exportToEbproof,
     isTreeExportableToBussproofs,
     exportToBussproofs
   };

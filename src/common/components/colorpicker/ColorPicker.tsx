@@ -33,7 +33,11 @@ export const MyColorPicker = (props: MyColorPickerProps) => {
         <DialogTrigger>
           <Button className="color-picker">
             <MyColorSwatch/>
-            <span className="pl-1">{props.label}</span>
+            <span className="pl-1 label font-normal"
+                  style={{
+                    fontSize: '1rem',
+                  }}
+            >{props.label}</span>
           </Button>
           <Popover placement="bottom start">
             <Dialog className="color-picker-dialog">

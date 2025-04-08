@@ -2,9 +2,9 @@ import "./Header.css"
 
 // @ts-ignore
 import logo from "../../assets/logo.png"
-import {PasteExampleMenu} from "../../features/lambda-input/component/pasteexample/PasteExampleMenu";
+import {PasteExampleMenu} from "../../features/editor/component/pasteexample/PasteExampleMenu";
 import React, {useContext, useState} from "react";
-import {TutorialsDropdown} from "../../features/helpbar/component/tutorialsdropdown/TutorialsDropdown";
+import {TutorialsDropdown} from "../../features/tutorial/component/tutorialsdropdown/TutorialsDropdown";
 import translations from "../../features/configurations/data/translations";
 import {ConfigurationContext} from "../../features/configurations/context/ConfigurationContext";
 import {IconButton} from "../components/button/IconButton";

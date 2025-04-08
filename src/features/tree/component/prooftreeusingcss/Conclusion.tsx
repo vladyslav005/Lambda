@@ -1,7 +1,7 @@
 import {MathComponent} from "mathjax-react";
 import {ProofNode} from "../../../../core/tree/TreeGenerator";
 import {useContext, useState} from "react";
-import {EditorContext} from "../../../lambda-input/context/EditorContext";
+import {EditorContext} from "../../../editor/context/EditorContext";
 import {preprocessString} from "../../../../core/utils";
 import {Gamma} from "./Gamma";
 
@@ -22,7 +22,7 @@ interface ConclusionCenterProps {
   canMutateTree?: boolean;
 }
 
-export const ConclusionCenter = (props: ConclusionCenterProps) => {
+export const Conclusion = (props: ConclusionCenterProps) => {
   const editorContext = useContext(EditorContext);
   const [isHovered, setIsHovered] = useState(false)
   const [decorations, setDecorations] = useState([])

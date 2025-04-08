@@ -13,11 +13,11 @@ import toast, {Toaster} from "react-hot-toast";
 import {IconButton} from "../../../../common/components/button/IconButton";
 import {IoMdClose, IoMdDownload} from "react-icons/io";
 import {MapInteractionCSS} from "react-map-interaction";
-import {ProofTreeComponentUsingCss} from "../prooftreeusingcss/ProofTreeUsingCss";
+import {ProofTreeComponentUsingCss} from "../prooftreeusingcss/ProofTree";
 import {MyColorPicker} from "../../../../common/components/colorpicker/ColorPicker";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {useExportToImage} from "../../hook/ExportToImageHook";
-import {EditorContext} from "../../../lambda-input/context/EditorContext";
+import {EditorContext} from "../../../editor/context/EditorContext";
 
 // @ts-ignore
 import rollingGif from "../../../../assets/rolling.gif"
@@ -235,7 +235,13 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                                 }}
                                 onClick={() => centerTree()}></AiOutlineAim>
                   <IconButton className={"center-tree-btn"} onClick={() => centerTree()}>
-                    <span className="mx-2">{translations[confContext.language].tree.centerTree}</span>
+                    <span className="mx-2 font-normal"
+                          style={{
+                            fontSize:'1rem',
+                            color:"var(--M3-sys-light-on-secondary-container, var(--Schemes-On-Secondary-Container, #4A4459))"
+
+                    }}
+                    >{translations[confContext.language].tree.centerTree}</span>
                   </IconButton>
                 </div>
               </div>

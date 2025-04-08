@@ -16,7 +16,7 @@ import "./ConfigButoon.css"
 import {MdAdd, MdOutlineSettings, MdRemove} from "react-icons/md";
 import React, {useContext} from "react";
 import {ConfigurationContext} from "../../context/ConfigurationContext";
-import {EditorContext} from "../../../lambda-input/context/EditorContext";
+import {EditorContext} from "../../../editor/context/EditorContext";
 import {MyColorPicker} from "../../../../common/components/colorpicker/ColorPicker";
 
 export const ConfigButton = () => {

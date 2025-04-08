@@ -1,9 +1,9 @@
 import React, {lazy, Suspense, useContext, useEffect, useRef, useState} from "react";
-import {EditorContext} from "../../lambda-input/context/EditorContext";
+import {EditorContext} from "../../editor/context/EditorContext";
 import {AiOutlineAim} from "react-icons/ai";
 import {MapInteractionCSS} from 'react-map-interaction';
 import "./ProofTree.css"
-import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTreeUsingCss";
+import {ProofTreeComponentUsingCss} from "./prooftreeusingcss/ProofTree";
 import {MdFullscreen, MdFullscreenExit} from "react-icons/md";
 import {IconButton} from "../../../common/components/button/IconButton";
 import {Switch} from "react-aria-components";
@@ -13,7 +13,7 @@ import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 
 const ExportButton = lazy(() => import('./exportbutton/ExportButton'))
 
-export default function TreeFlat(
+export default function TreeContainer(
     {showAliases, setShowAliases, resized}: {
       showAliases: boolean,
       setShowAliases: (showAliases: boolean) => void,

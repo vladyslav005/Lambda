@@ -1,5 +1,5 @@
 import {Context, ContextElement} from "../../../../core/context/Context";
-import {EditorContext} from "../../../lambda-input/context/EditorContext";
+import {EditorContext} from "../../../editor/context/EditorContext";
 import {useContext, useEffect, useState} from "react";
 import {decodeAlias, encodeToAlias, preprocessString, preprocessTex} from "../../../../core/utils";
 import {MathComponent} from "mathjax-react";

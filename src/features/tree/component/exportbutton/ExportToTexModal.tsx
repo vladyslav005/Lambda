@@ -4,7 +4,7 @@ import {IconButton} from "../../../../common/components/button/IconButton";
 import {IoMdClose} from "react-icons/io";
 import {MdContentCopy} from "react-icons/md";
 import React, {useContext, useEffect, useState} from "react";
-import {EditorContext} from "../../../lambda-input/context/EditorContext";
+import {EditorContext} from "../../../editor/context/EditorContext";
 import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
 import translations from "../../../configurations/data/translations";
 import {Context} from "../../../../core/context/Context";

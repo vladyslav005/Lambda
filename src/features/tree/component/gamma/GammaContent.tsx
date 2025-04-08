@@ -1,6 +1,6 @@
 import './GammaContent.css'
 import React, {useContext} from "react";
-import {EditorContext} from "../../../lambda-input/context/EditorContext";
+import {EditorContext} from "../../../editor/context/EditorContext";
 import {GammaItem} from "./GammaItem";
 import {ConfigurationContext} from "../../../configurations/context/ConfigurationContext";
 import translations from "../../../configurations/data/translations";

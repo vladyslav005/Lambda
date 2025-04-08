@@ -8,8 +8,8 @@ import {Key, Tab, TabList, TabPanel, Tabs} from 'react-aria-components';
 import {ConfigurationContext} from "../../features/configurations/context/ConfigurationContext";
 import translations from "../../features/configurations/data/translations";
 
-const TreeFlat = lazy(() => import('../../features/tree/component/TreeFlat'))
-const LambdaInput = lazy(() => import('../../features/lambda-input/component/LambdaInput'))
+const TreeFlat = lazy(() => import('../../features/tree/component/TreeContainer'))
+const LambdaInput = lazy(() => import('../../features/editor/component/LambdaInput'))
 
 export enum Screen {
   PC,
@@ -45,42 +45,43 @@ export function MainPage() {
                 <Panel defaultSize={50} minSize={25} className="flex flex-col-reverse lg:flex-row grow relative">
                     <PanelGroup direction={'horizontal'} className="flex  lg:flex-row grow relative"
                                 style={{marginRight: "1rem"}}>
-                        <Suspense
-                            fallback={
-                              <div className="lambda-input ui-block flex-row justify-center items-center">
-                                <LoadingIndicator/>
-                              </div>}
-                        >
-                            <Panel defaultSize={75} minSize={25} className="flex grow">
-                                <LambdaInput></LambdaInput>
-                            </Panel>
-                            <PanelResizeHandle className="resize resize-horizontal"/>
-                            <Panel className={`flex grow`} collapsible={true} defaultSize={25} minSize={15}
+                        <Panel defaultSize={75} minSize={25} className="flex grow">
+                            <Suspense
+                                fallback={
+                                  <div className="lambda-input ui-block flex-row justify-center items-center">
+                                    <LoadingIndicator/>
+                                  </div>}
                             >
-                                <ErrorOutput></ErrorOutput>
-                            </Panel>
-                        </Suspense>
+                              <LambdaInput></LambdaInput>
+                            </Suspense>
+                        </Panel>
+                        <PanelResizeHandle className="resize resize-horizontal"/>
+                        <Panel className={`flex grow`} collapsible={true} defaultSize={25} minSize={15}
+                        >
+                            <ErrorOutput></ErrorOutput>
+                        </Panel>
                     </PanelGroup>
                 </Panel>
 
                 <PanelResizeHandle className="resize resize-vertical"/>
                 <Panel onResize={()=>{setResized(!resized)}} defaultSize={50} minSize={25} className="flex grow">
-                    <Suspense
-                        fallback={<div className="tree-flat-container ui-block"><LoadingIndicator/></div>}>
-                        <PanelGroup direction={"horizontal"} className="flex grow relative"
-                                    style={{marginRight: "1rem"}}>
-                            <Panel onResize={()=>{setResized(!resized)}} minSize={25} defaultSize={75} className="flex grow">
-                                <TreeFlat resized={resized} showAliases={showAliases} setShowAliases={setShowAliases}/>
-                            </Panel>
 
-                            { confCtx.showGamma && <>
-                              <PanelResizeHandle className="resize resize-horizontal"/>
-                              <Panel minSize={15} collapsible={true} defaultSize={25} className="flex grow">
-                                  <GammaContent showAliases={showAliases}/>
-                              </Panel>
-                            </>}
-                        </PanelGroup>
-                    </Suspense>
+                    <PanelGroup direction={"horizontal"} className="flex grow relative"
+                                style={{marginRight: "1rem"}}>
+                        <Panel onResize={()=>{setResized(!resized)}} minSize={25} defaultSize={75} className="flex grow">
+                            <Suspense
+                                fallback={<div className="tree-flat-container ui-block"><LoadingIndicator/></div>}>
+                              <TreeFlat resized={resized} showAliases={showAliases} setShowAliases={setShowAliases}/>
+                            </Suspense>
+                        </Panel>
+
+                        { confCtx.showGamma && <>
+                          <PanelResizeHandle className="resize resize-horizontal"/>
+                          <Panel minSize={15} collapsible={true} defaultSize={25} className="flex grow">
+                              <GammaContent showAliases={showAliases}/>
+                          </Panel>
+                        </>}
+                    </PanelGroup>
                 </Panel>
             </PanelGroup>
         }
@@ -98,31 +99,32 @@ export function MainPage() {
                   </TabList>
                   <div style={{ display: selectedTab === 'FoR' ? 'block' : 'none' }}>
                     <TabPanel id="FoR" shouldForceMount={true} className="flex flex-col grow">
+
+                      <div className="flex grow">
                         <Suspense
                             fallback={
                               <div className="lambda-input ui-block flex-row justify-center items-center">
                                 <LoadingIndicator/>
                               </div>}
                         >
-                            <div className="flex grow">
-                                <LambdaInput></LambdaInput>
-                            </div>
-                            <div className="flex ">
-                                <ErrorOutput></ErrorOutput>
-                            </div>
+                         <LambdaInput></LambdaInput>
                         </Suspense>
+                      </div>
+                      <div className="flex ">
+                          <ErrorOutput></ErrorOutput>
+                      </div>
                     </TabPanel>
                   </div>
                   <div style={{ display: selectedTab === 'MaR' ? 'block' : 'none' }}>
                     <TabPanel id="MaR" shouldForceMount={true}  className="flex flex-col grow">
+                      <div className="flex grow mt-4">
                         <Suspense fallback={<div className="tree-flat-container ui-block"><LoadingIndicator/></div>}>
-                            <div className="flex grow mt-4">
-                                <TreeFlat showAliases={showAliases} setShowAliases={setShowAliases}/>
-                            </div>
-                            {confCtx.showGamma && <div className="flex grow">
-                                <GammaContent showAliases={showAliases}/>
-                            </div>}
+                          <TreeFlat showAliases={showAliases} setShowAliases={setShowAliases}/>
                         </Suspense>
+                      </div>
+                      {confCtx.showGamma && <div className="flex grow">
+                          <GammaContent showAliases={showAliases}/>
+                      </div>}
                     </TabPanel>
                   </div>
               </Tabs>

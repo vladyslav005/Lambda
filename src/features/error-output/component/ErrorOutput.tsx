@@ -1,7 +1,7 @@
 import {ErrorMessage} from "./ErrorMessage.";
 import {ErrorType} from "../types/error_types";
 import {useContext} from "react";
-import {EditorContext} from "../../lambda-input/context/EditorContext";
+import {EditorContext} from "../../editor/context/EditorContext";
 import './ErrorOutput.css'
 import {ConfigurationContext} from "../../configurations/context/ConfigurationContext";
 import translations from "../../configurations/data/translations";

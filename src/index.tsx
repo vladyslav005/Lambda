@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
-import {EditorContextProvider} from "./features/lambda-input/context/EditorContext";
+import {EditorContextProvider} from "./features/editor/context/EditorContext";
 import {ConfigurationContextProvider} from "./features/configurations/context/ConfigurationContext";
 
 

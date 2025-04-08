@@ -3,7 +3,7 @@ import {IconButton} from "../../../../common/components/button/IconButton";
 import {MdDownload} from "react-icons/md";
 import React, {useContext, useEffect, useState} from "react";
 import {useExportToLatex} from "../../hook/ExportToLatexHook";
-import {EditorContext} from "../../../lambda-input/context/EditorContext";
+import {EditorContext} from "../../../editor/context/EditorContext";
 import "./style.css"
 import {ExportToTexModal} from "./ExportToTexModal";
 import {ExportToPngModal} from "./ExportToPngModal";
