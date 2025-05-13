@@ -125,7 +125,7 @@ export const Conclusion = (props: ConclusionCenterProps) => {
            onMouseLeave={handleMouseLeave}
 
       >
-        {!props.node.leaf &&
+        {!props.node.leaf && !props.node.isPredefined &&
             <Gamma node={props.node} showAliases={props.showAliases} treeHasChanged={props.treeHasChanged}
                    setTreeHasChanged={props.setTreeHasChanged} showGammaDefinition={props.showGammaDefinition}
                    handleMouseLeave={handleMouseLeave} canMutateTree={props.canMutateTree}
@@ -145,7 +145,7 @@ export const Conclusion = (props: ConclusionCenterProps) => {
           <MathComponent tex={prepareConclusion()}/>
         </div>
 
-        {props.node.leaf &&
+        {props.node.leaf && !props.node.isPredefined &&
             <Gamma node={props.node} showAliases={props.showAliases} treeHasChanged={props.treeHasChanged}
                    setTreeHasChanged={props.setTreeHasChanged} showGammaDefinition={props.showGammaDefinition}
                    handleMouseLeave={handleMouseLeave} canMutateTree={props.canMutateTree}

@@ -151,6 +151,9 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                      position: "relative",
                      right: "0",
                      top: "0",
+                     animation: "none",
+                     boxShadow: "none",
+                     transition: "none"
                    }}
               >
                 <MapInteractionCSS
@@ -260,7 +263,7 @@ export const ExportToPngModal = (props: ExportToEbpModalProps) => {
                       setIsImageLoading(true);
 
                       setTimeout(async () => {
-                        await handleDownloadPng(pngDivRef);
+                        await handleDownloadPng(treeRef);
                         setIsImageLoading(false);
                         toast(translations[confContext.language].toast.imgDownload, {duration: 1000});
                       }, 500);

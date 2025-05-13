@@ -60,6 +60,7 @@ export interface ProofNode {
   globalCtx?: Context;
   nodeNumber?: number;
   leaf?: boolean;
+  isPredefined?: boolean;
 }
 
 export class TreeGenerator extends LambdaCalcVisitor<any> {
@@ -401,12 +402,13 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
         } as ProofNode :
         {
           type: type,
-          wrappedConclusion: `${ctx.getText()} : ${(type)}`,
-          wrappedConclusionWithAlias: `${ctx.getText()} : ${(typeWithAlias)}`,
+          wrappedConclusion: `\\Gamma \\vdash ${ctx.getText()} : ${(type)}`,
+          wrappedConclusionWithAlias: `\\Gamma \\vdash ${ctx.getText()} : ${(typeWithAlias)}`,
           unwrappedConclusion: varName,
           unwrappedConclusionWithAlias: varName,
           rule: `(T-${ctx.getText()})`,
           root: false,
+          isPredefined: true,
           context: ctx,
           tokenLocation: getTokenLocation(ctx),
           declarationLocation: ctxInfo.declarationLocation,
@@ -417,12 +419,13 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           premises: [
             {
               type: type,
-              wrappedConclusion: `\\Gamma \\vdash ${ctx.getText()} : ${type}\\in \\Gamma`,
-              wrappedConclusionWithAlias: `\\Gamma \\vdash ${ctx.getText()} : ${typeWithAlias}\\in \\Gamma`,
+              wrappedConclusion: `${ctx.getText()} : ${type}\\in \\Gamma`,
+              wrappedConclusionWithAlias: `${ctx.getText()} : ${typeWithAlias}\\in \\Gamma`,
               unwrappedConclusion: varName,
               unwrappedConclusionWithAlias: varName,
               rule: "",
               root: false,
+              isPredefined: true,
               tokenLocation: getTokenLocation(ctx),
               declarationLocation: ctxInfo.declarationLocation,
               isExpandable: ctxInfo.isExpandable,
@@ -910,6 +913,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       context: ctx,
       tokenLocation: getTokenLocation(ctx),
       root: false,
+      isPredefined: true,
       isExpandable: false,
       ctxExtension: ctxExtension,
       premises: [
@@ -922,6 +926,8 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
           rule: "",
           tokenLocation: getTokenLocation(ctx),
           root: false,
+          leaf: true,
+          isPredefined: true,
           isExpandable: false,
           ctxExtension: this.takeExtensionCtx(),
         }

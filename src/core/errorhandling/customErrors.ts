@@ -23,7 +23,9 @@ export class SyntaxError extends ErrorWithLocation {
 }
 
 export class TypeError extends ErrorWithLocation {
-
+  constructor(msg: string, location: number[]) {
+    super("Type error: " + msg, location);
+  }
 }
 
 export class IndexError extends ErrorWithLocation {
