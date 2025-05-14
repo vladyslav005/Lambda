@@ -399,7 +399,7 @@ T ::= ID | Nat | Bool | Unit               (Primitive type)
     | <x : T (, ID : T)*>                  (Record Type)
     | T * T                                (Tuple Type)
     | List T                               (List Type)
-    | ( T )                                (Parenthesized Type)`}/>
+`}/>
             <CodeExample code={`
 v ::= N | 0                                (Natural Number)
     | true | True | false | False          (Boolean)
