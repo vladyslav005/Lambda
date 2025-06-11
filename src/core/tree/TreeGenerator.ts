@@ -672,22 +672,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       root: false,
       isExpandable: false,
       ctxExtension: ctxExtension,
-      premises:
-          [
-            {
-              type: variantType,
-              wrappedConclusion: `$ \\vdash ${premise.unwrappedConclusion} : ${bodyType}`,
-              wrappedConclusionWithAlias: `$ \\vdash ${premise.unwrappedConclusionWithAlias} : ${bodyTypeWithAlias}`,
-              unwrappedConclusion: premise.unwrappedConclusion,
-              unwrappedConclusionWithAlias: premise.unwrappedConclusionWithAlias,
-              rule: "",
-              root: false,
-              tokenLocation: getTokenLocation(ctx),
-              isExpandable: false,
-              ctxExtension: this.takeExtensionCtx(),
-            }
-          ],
-
+      premises: [this.visit(body)],
     } as ProofNode;
   }
 
@@ -705,7 +690,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
     const bodyTypeWithAlias = this.typeChecker.encodeToAlias(bodyType);
     const unwrappedConclusion = `${injType} ${premise.unwrappedConclusion} as ${variantType}`;
     const unwrappedConclusionWithAlias =
-        `${injType} = ${premise.unwrappedConclusionWithAlias} as ${variantTypeWithAlias}`;
+        `${injType} ${premise.unwrappedConclusionWithAlias} as ${variantTypeWithAlias}`;
 
     return {
       type: variantType,
@@ -722,20 +707,7 @@ export class TreeGenerator extends LambdaCalcVisitor<any> {
       isExpandable: false,
       ctxExtension: ctxExtension,
       premises:
-          [
-            {
-              type: variantType,
-              wrappedConclusion: `$ \\vdash ${premise.unwrappedConclusion} : ${bodyType}`,
-              wrappedConclusionWithAlias: `$ \\vdash ${premise.unwrappedConclusionWithAlias} : ${bodyTypeWithAlias}`,
-              unwrappedConclusion: premise.unwrappedConclusion,
-              unwrappedConclusionWithAlias: premise.unwrappedConclusionWithAlias,
-              rule: "",
-              root: false,
-              tokenLocation: getTokenLocation(ctx),
-              isExpandable: false,
-              ctxExtension: this.takeExtensionCtx(),
-            }
-          ],
+          [this.visit(body)],
 
     } as ProofNode;
 

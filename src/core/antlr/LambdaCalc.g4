@@ -16,16 +16,12 @@ globalDecl
 
 term
     : <assoc=left> term term                                                         # Application
-
     | term ('>'|'>='|'<'|'<='|'==') term                                             # Comparison
     | term ('+'|'-') term                                                            # Addition
     | term ('*') term                                                                # Multiplication
     | term ('^') term                                                                # Power
-
     | LAMBDA ID COLON type DOT term                                                  # LambdaAbstraction
-
     | LAMBDA '_' COLON type DOT term                                                 # WildCard
-
     | 'if' term 'then' term ('else if' term 'then' term)* ('else' term)?             # IfElse
     | ID                                                                             # Variable
     | 'fix' term                                                                     # Fix
