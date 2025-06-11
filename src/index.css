@@ -56,6 +56,7 @@
     --Log-Error-Container: #F9DEDC;
     --Log-On-Info-Container: #226303;
     --Log-On-Error-Container: #852221;
+    --Gamma-Hover: rgba(140, 255, 0, 0.3);
 }
 
 [data-theme='dark'] {
