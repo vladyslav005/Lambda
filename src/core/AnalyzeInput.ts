@@ -23,8 +23,6 @@ export class InputAnalyzer {
   }
 
   public analyzeInput(input: string): ProofNode | undefined {
-    input = input.replaceAll(/\/\/.*$/gm, " ") // remove comments
-
     this.lexer = new LambdaCalcLexer(new CharStream(input))
     this.lexer.removeErrorListeners()
     this.lexer.addErrorListener(new CustomLexerErrorListener())

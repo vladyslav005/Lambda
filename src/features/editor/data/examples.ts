@@ -12,7 +12,7 @@ Q = λ h: α -> α . (h x) : (α -> α) -> α;
 },
   {
     name: "variants",
-    code: `typedef PhysicalAddr = < firstlast : String, addr : String> ;
+    code: `typedef PhysicalAddr = <firstlast : String, addr : String>;
 typedef VirtualAddr = <name : String, email : String>;
 
 typedef Addr = [physical : PhysicalAddr, virtual : VirtualAddr]; // define variant type
@@ -26,7 +26,7 @@ a = [physical = pa] as Addr : Addr; // make injection
   },
   {
     name: "binaryVariants",
-    code: `typedef PhysicalAddr = < firstlast : String, addr : String>;
+    code: `typedef PhysicalAddr = <firstlast : String, addr : String>;
 typedef VirtualAddr = <name : String, email : String>;
 
 typedef Addr = PhysicalAddr + VirtualAddr; // define variant type
@@ -35,8 +35,8 @@ pa : PhysicalAddr;
 a = inl pa as Addr : Addr; // make injection
 
 (case a of                // use case of construction injection
-    inl x => x.firstlast
- || inr y => y.name) : String`
+     inl x => x.firstlast
+  || inr y => y.name) : String`
   },
   {
     name: "tuples",
